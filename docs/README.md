@@ -13,6 +13,9 @@ yarn
 ## Running the app
 
 ```bash
+# run docker
+docker-compose up
+
 # development
 yarn start
 
