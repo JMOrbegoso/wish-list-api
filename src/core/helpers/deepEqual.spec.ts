@@ -2,6 +2,33 @@ import { deepEqual } from './deepEqual';
 
 describe('helpers', () => {
 	describe('deepEqual', () => {
+		it('should throw error', () => {
+			// Arrange
+
+			// Act
+
+			// Assert
+			expect(() => deepEqual(undefined, undefined)).toThrowError();
+		});
+
+		it('should throw error', () => {
+			// Arrange
+
+			// Act
+
+			// Assert
+			expect(() => deepEqual(undefined, null)).toThrowError();
+		});
+
+		it('should throw error', () => {
+			// Arrange
+
+			// Act
+
+			// Assert
+			expect(() => deepEqual(null, null)).toThrowError();
+		});
+
 		it('should return true', () => {
 			// Arrange
 			const object_1 = {};
