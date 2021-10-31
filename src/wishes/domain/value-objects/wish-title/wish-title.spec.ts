@@ -1,4 +1,4 @@
-import { WishTitle } from '.';
+import { WishTitle } from '..';
 
 describe('wishes', () => {
   describe('value-objects', () => {
