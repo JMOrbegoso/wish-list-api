@@ -1,6 +1,6 @@
 import { AggregateRoot } from '.';
 import { DomainEvent } from '../domain-events';
-import { UniqueId } from '../unique-id';
+import { UniqueId } from '../value-objects';
 import { v4 as uuidv4 } from 'uuid';
 
 describe('aggregate-roots', () => {

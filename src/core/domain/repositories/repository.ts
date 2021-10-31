@@ -1,5 +1,5 @@
 import { AggregateRoot } from '../aggregate-roots';
-import { UniqueId } from '../unique-id';
+import { UniqueId } from '../value-objects';
 
 export interface Repository<T extends AggregateRoot> {
   getAll(): Promise<T[]>;

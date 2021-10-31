@@ -1,4 +1,4 @@
-import { ValueObject } from '../value-objects';
+import { ValueObject } from '..';
 import { v4 as createUuid, validate as isUuidValid } from 'uuid';
 
 export class UniqueId extends ValueObject<string> {

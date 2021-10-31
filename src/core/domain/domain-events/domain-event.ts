@@ -1,4 +1,4 @@
-import { UniqueId } from '../unique-id';
+import { UniqueId } from '../value-objects';
 
 export abstract class DomainEvent {
   public readonly createdAt: Date;

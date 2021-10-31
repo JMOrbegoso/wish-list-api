@@ -1,5 +1,5 @@
 import { DomainEvent } from './domain-event';
-import { UniqueId } from '../unique-id';
+import { UniqueId } from '../value-objects';
 
 describe('domain-events', () => {
   class ProductCreated extends DomainEvent {
