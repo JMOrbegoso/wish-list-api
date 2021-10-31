@@ -43,6 +43,18 @@ describe('helpers', () => {
 
     it('should return true', () => {
       // Arrange
+      const object_1 = { value: 1 };
+      const object_2 = { value: 1 };
+
+      // Act
+      const result = deepEqual(object_1, object_2);
+
+      // Assert
+      expect(result).toBe(true);
+    });
+
+    it('should return true', () => {
+      // Arrange
       const object_1 = { firstName: 'Jhon', lastName: 'Doe' };
       const object_2 = { firstName: 'Jhon', lastName: 'Doe' };
 
@@ -93,6 +105,18 @@ describe('helpers', () => {
 
       // Assert
       expect(result).toBe(true);
+    });
+
+    it('should return false', () => {
+      // Arrange
+      const object_1 = { value: 1 };
+      const object_2 = { value: 2 };
+
+      // Act
+      const result = deepEqual(object_1, object_2);
+
+      // Assert
+      expect(result).toBe(false);
     });
 
     it('should return false', () => {
