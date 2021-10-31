@@ -1,4 +1,4 @@
-import { CategoryName } from '.';
+import { CategoryName } from '..';
 
 describe('wishes', () => {
   describe('value-objects', () => {

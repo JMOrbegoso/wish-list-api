@@ -1,4 +1,4 @@
-import { ValueObject } from '../../../core/domain/value-objects';
+import { ValueObject } from '../../../../core/domain/value-objects';
 
 export class CategoryName extends ValueObject<string> {
   validate(value: string): void {
