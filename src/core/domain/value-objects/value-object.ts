@@ -19,6 +19,6 @@ export abstract class ValueObject<T> {
       return false;
     }
 
-    return deepEqual(this.value, other.value);
+    return deepEqual(this, other);
   }
 }
