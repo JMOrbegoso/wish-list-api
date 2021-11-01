@@ -1,25 +1,15 @@
-import { UniqueId } from './unique-id';
-import { v4 as createUuid, validate as isUuidValid } from 'uuid';
+import { UniqueId } from '..';
+import { v4 as createUuid } from 'uuid';
 
 describe('unique-id', () => {
-  it('should throw error on validation', () => {
-    // Arrange
-
-    // Act
-
-    // Assert
-    expect(() => UniqueId.create('id')).toThrowError('Invalid id');
-  });
-
   it('should create a valid unique id', () => {
     // Arrange
 
     // Act
     const uniqueId = UniqueId.create(undefined);
-    const result = isUuidValid(uniqueId.value);
 
     // Assert
-    expect(result).toBe(true);
+    expect(uniqueId.value).not.toBeUndefined();
   });
 
   it('should create a valid unique id', () => {
@@ -27,10 +17,9 @@ describe('unique-id', () => {
 
     // Act
     const uniqueId = UniqueId.create(null);
-    const result = isUuidValid(uniqueId.value);
 
     // Assert
-    expect(result).toBe(true);
+    expect(uniqueId.value).not.toBeNull();
   });
 
   it('should create a valid unique id', () => {
@@ -38,10 +27,9 @@ describe('unique-id', () => {
 
     // Act
     const uniqueId = UniqueId.create('');
-    const result = isUuidValid(uniqueId.value);
 
     // Assert
-    expect(result).toBe(true);
+    expect(uniqueId.value).not.toBeNull();
   });
 
   it('should create a valid unique id', () => {
