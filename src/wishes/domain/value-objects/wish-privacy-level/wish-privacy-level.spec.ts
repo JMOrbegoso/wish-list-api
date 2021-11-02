@@ -1,117 +1,119 @@
 import { WishPrivacyLevel, PrivacyLevel } from '..';
 
 describe('wishes', () => {
-  describe('value-objects', () => {
-    describe('wish-privacy-level', () => {
-      it('should throw error on validation', () => {
-        // Arrange
+  describe('domain', () => {
+    describe('value-objects', () => {
+      describe('wish-privacy-level', () => {
+        it('should throw error on validation', () => {
+          // Arrange
 
-        // Act
+          // Act
 
-        // Assert
-        expect(() => WishPrivacyLevel.create(undefined)).toThrowError(
-          'Invalid wish privacy level.',
-        );
-      });
+          // Assert
+          expect(() => WishPrivacyLevel.create(undefined)).toThrowError(
+            'Invalid wish privacy level.',
+          );
+        });
 
-      it('should throw error on validation', () => {
-        // Arrange
+        it('should throw error on validation', () => {
+          // Arrange
 
-        // Act
+          // Act
 
-        // Assert
-        expect(() => WishPrivacyLevel.create(null)).toThrowError(
-          'Invalid wish privacy level.',
-        );
-      });
+          // Assert
+          expect(() => WishPrivacyLevel.create(null)).toThrowError(
+            'Invalid wish privacy level.',
+          );
+        });
 
-      it('should throw error on validation', () => {
-        // Arrange
+        it('should throw error on validation', () => {
+          // Arrange
 
-        // Act
+          // Act
 
-        // Assert
-        expect(() => WishPrivacyLevel.create(10)).toThrowError(
-          'Invalid wish privacy level.',
-        );
-      });
+          // Assert
+          expect(() => WishPrivacyLevel.create(10)).toThrowError(
+            'Invalid wish privacy level.',
+          );
+        });
 
-      it('should create a public privacy level', () => {
-        // Arrange
+        it('should create a public privacy level', () => {
+          // Arrange
 
-        // Act
-        const publicWishPrivacyLevel = WishPrivacyLevel.public();
+          // Act
+          const publicWishPrivacyLevel = WishPrivacyLevel.public();
 
-        // Assert
-        expect(publicWishPrivacyLevel.getPrivacyLevel).toBe(
-          PrivacyLevel.Public,
-        );
-      });
+          // Assert
+          expect(publicWishPrivacyLevel.getPrivacyLevel).toBe(
+            PrivacyLevel.Public,
+          );
+        });
 
-      it('should create a justFriends privacy level', () => {
-        // Arrange
+        it('should create a justFriends privacy level', () => {
+          // Arrange
 
-        // Act
-        const justFriendsWishPrivacyLevel = WishPrivacyLevel.justFriends();
+          // Act
+          const justFriendsWishPrivacyLevel = WishPrivacyLevel.justFriends();
 
-        // Assert
-        expect(justFriendsWishPrivacyLevel.getPrivacyLevel).toBe(
-          PrivacyLevel.JustFriends,
-        );
-      });
+          // Assert
+          expect(justFriendsWishPrivacyLevel.getPrivacyLevel).toBe(
+            PrivacyLevel.JustFriends,
+          );
+        });
 
-      it('should create a onlyMe privacy level', () => {
-        // Arrange
+        it('should create a onlyMe privacy level', () => {
+          // Arrange
 
-        // Act
-        const onlyMeWishPrivacyLevel = WishPrivacyLevel.onlyMe();
+          // Act
+          const onlyMeWishPrivacyLevel = WishPrivacyLevel.onlyMe();
 
-        // Assert
-        expect(onlyMeWishPrivacyLevel.getPrivacyLevel).toBe(
-          PrivacyLevel.OnlyMe,
-        );
-      });
+          // Assert
+          expect(onlyMeWishPrivacyLevel.getPrivacyLevel).toBe(
+            PrivacyLevel.OnlyMe,
+          );
+        });
 
-      it('should create a public privacy level using the function create', () => {
-        // Arrange
+        it('should create a public privacy level using the function create', () => {
+          // Arrange
 
-        // Act
-        const publicWishPrivacyLevel = WishPrivacyLevel.create(
-          PrivacyLevel.Public,
-        );
+          // Act
+          const publicWishPrivacyLevel = WishPrivacyLevel.create(
+            PrivacyLevel.Public,
+          );
 
-        // Assert
-        expect(publicWishPrivacyLevel.getPrivacyLevel).toBe(
-          PrivacyLevel.Public,
-        );
-      });
+          // Assert
+          expect(publicWishPrivacyLevel.getPrivacyLevel).toBe(
+            PrivacyLevel.Public,
+          );
+        });
 
-      it('should create a justFriends privacy level using the function create', () => {
-        // Arrange
+        it('should create a justFriends privacy level using the function create', () => {
+          // Arrange
 
-        // Act
-        const justFriendsWishPrivacyLevel = WishPrivacyLevel.create(
-          PrivacyLevel.JustFriends,
-        );
+          // Act
+          const justFriendsWishPrivacyLevel = WishPrivacyLevel.create(
+            PrivacyLevel.JustFriends,
+          );
 
-        // Assert
-        expect(justFriendsWishPrivacyLevel.getPrivacyLevel).toBe(
-          PrivacyLevel.JustFriends,
-        );
-      });
+          // Assert
+          expect(justFriendsWishPrivacyLevel.getPrivacyLevel).toBe(
+            PrivacyLevel.JustFriends,
+          );
+        });
 
-      it('should create a onlyMe privacy level using the function create', () => {
-        // Arrange
+        it('should create a onlyMe privacy level using the function create', () => {
+          // Arrange
 
-        // Act
-        const onlyMeWishPrivacyLevel = WishPrivacyLevel.create(
-          PrivacyLevel.OnlyMe,
-        );
+          // Act
+          const onlyMeWishPrivacyLevel = WishPrivacyLevel.create(
+            PrivacyLevel.OnlyMe,
+          );
 
-        // Assert
-        expect(onlyMeWishPrivacyLevel.getPrivacyLevel).toBe(
-          PrivacyLevel.OnlyMe,
-        );
+          // Assert
+          expect(onlyMeWishPrivacyLevel.getPrivacyLevel).toBe(
+            PrivacyLevel.OnlyMe,
+          );
+        });
       });
     });
   });
