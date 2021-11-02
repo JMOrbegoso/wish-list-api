@@ -11,7 +11,7 @@ describe('core', () => {
         const millisecondsDate = MillisecondsDate.create(undefined);
 
         // Assert
-        expect(millisecondsDate.value).toBeCloseTo(milliseconds);
+        expect(millisecondsDate.getMilliseconds).toBeCloseTo(milliseconds);
       });
 
       it('should create a valid milliseconds date', () => {
@@ -22,7 +22,7 @@ describe('core', () => {
         const millisecondsDate = MillisecondsDate.create(null);
 
         // Assert
-        expect(millisecondsDate.value).toBeCloseTo(milliseconds);
+        expect(millisecondsDate.getMilliseconds).toBeCloseTo(milliseconds);
       });
 
       it('should create a valid milliseconds date', () => {
@@ -33,7 +33,7 @@ describe('core', () => {
         const millisecondsDate = MillisecondsDate.create(date.getTime());
 
         // Assert
-        expect(millisecondsDate.value).toBeCloseTo(date.getTime());
+        expect(millisecondsDate.getMilliseconds).toBeCloseTo(date.getTime());
       });
 
       it('both value objects should be different', () => {
@@ -96,7 +96,7 @@ describe('core', () => {
         const millisecondsDate = MillisecondsDate.create(date.getTime());
 
         // Assert
-        expect(millisecondsDate.asDate.getTime()).toBe(date.getTime());
+        expect(millisecondsDate.getDate.getTime()).toBe(date.getTime());
       });
     });
   });
