@@ -13,4 +13,8 @@ export class MillisecondsDate extends ValueObject<number> {
 
     return new MillisecondsDate(value);
   }
+
+  public get asDate(): Date {
+    return new Date(this.value);
+  }
 }

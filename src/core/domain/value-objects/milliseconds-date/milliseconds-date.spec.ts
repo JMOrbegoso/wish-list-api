@@ -87,6 +87,17 @@ describe('core', () => {
         // Assert
         expect(result).toBe(true);
       });
+
+      it('should create a valid milliseconds date', () => {
+        // Arrange
+
+        // Act
+        const date = new Date('1999-10-10');
+        const millisecondsDate = MillisecondsDate.create(date.getTime());
+
+        // Assert
+        expect(millisecondsDate.asDate.getTime()).toBe(date.getTime());
+      });
     });
   });
 });
