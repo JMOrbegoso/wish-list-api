@@ -1,7 +1,6 @@
 import { WishStage } from '..';
-import { UniqueId } from '../../../../core/domain/value-objects';
+import { UniqueId, WebUrl } from '../../../../core/domain/value-objects';
 import {
-  WebUrl,
   WishDateMetadata,
   WishDescription,
   WishTitle,

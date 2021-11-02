@@ -1,4 +1,4 @@
-import { ValueObject } from '../../../../core/domain/value-objects';
+import { ValueObject } from '..';
 
 export class WebUrl extends ValueObject<string> {
   validate(value: string): void {

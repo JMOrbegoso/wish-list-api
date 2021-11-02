@@ -1,6 +1,6 @@
 import { WebUrl } from '..';
 
-describe('wishes', () => {
+describe('core', () => {
   describe('value-objects', () => {
     describe('web-url', () => {
       it('using "undefined" to create a WebUrl should throw error on validation', () => {
