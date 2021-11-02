@@ -11,4 +11,8 @@ export class Wisher extends Entity {
   public static create(id: UniqueId): Wisher {
     return new Wisher(id);
   }
+
+  public get getId(): UniqueId {
+    return this.id;
+  }
 }

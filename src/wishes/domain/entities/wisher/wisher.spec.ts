@@ -14,7 +14,7 @@ describe('wishes', () => {
         const wisher = Wisher.create(uniqueId);
 
         // Assert
-        expect(wisher.id.value).toBe(uuid);
+        expect(wisher.getId.value).toBe(uuid);
       });
 
       it('both wishers should be different', () => {
