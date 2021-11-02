@@ -1,5 +1,4 @@
 import { UniqueId } from '..';
-import { v4 as createUuid } from 'uuid';
 
 describe('unique-id', () => {
   it('should create a valid unique id', () => {
@@ -36,7 +35,7 @@ describe('unique-id', () => {
     // Arrange
 
     // Act
-    const id = createUuid();
+    const id = 'id';
     const uniqueId = UniqueId.create(id);
 
     // Assert
@@ -47,8 +46,8 @@ describe('unique-id', () => {
     // Arrange
 
     // Act
-    const uuid = createUuid();
-    const uniqueId = UniqueId.create(uuid);
+    const id = 'id';
+    const uniqueId = UniqueId.create(id);
     const result = uniqueId.equals(undefined);
 
     // Assert
@@ -59,8 +58,8 @@ describe('unique-id', () => {
     // Arrange
 
     // Act
-    const uuid = createUuid();
-    const uniqueId = UniqueId.create(uuid);
+    const id = 'id';
+    const uniqueId = UniqueId.create(id);
     const result = uniqueId.equals(null);
 
     // Assert
@@ -71,10 +70,10 @@ describe('unique-id', () => {
     // Arrange
 
     // Act
-    const uuid_1 = createUuid();
-    const uuid_2 = createUuid();
-    const uniqueId_1 = UniqueId.create(uuid_1);
-    const uniqueId_2 = UniqueId.create(uuid_2);
+    const id_1 = 'id_1';
+    const id_2 = 'id_2';
+    const uniqueId_1 = UniqueId.create(id_1);
+    const uniqueId_2 = UniqueId.create(id_2);
     const result = uniqueId_1.equals(uniqueId_2);
 
     // Assert
@@ -85,9 +84,9 @@ describe('unique-id', () => {
     // Arrange
 
     // Act
-    const uuid = createUuid();
-    const uniqueId_1 = UniqueId.create(uuid);
-    const uniqueId_2 = UniqueId.create(uuid);
+    const id = 'id';
+    const uniqueId_1 = UniqueId.create(id);
+    const uniqueId_2 = UniqueId.create(id);
     const result = uniqueId_1.equals(uniqueId_2);
 
     // Assert

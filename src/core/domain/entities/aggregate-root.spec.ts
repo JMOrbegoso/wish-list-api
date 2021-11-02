@@ -1,7 +1,6 @@
 import { AggregateRoot } from '.';
 import { DomainEvent } from '../domain-events';
 import { UniqueId } from '../value-objects';
-import { v4 as uuidv4 } from 'uuid';
 
 describe('aggregate-roots', () => {
   class OrderAggregateRoot extends AggregateRoot {
@@ -40,13 +39,13 @@ describe('aggregate-roots', () => {
     // Arrange
 
     // Act
-    const uuid = uuidv4();
-    const id = UniqueId.create(uuid);
+    const id = 'id';
+    const uniqueId = UniqueId.create(id);
     const price = 40;
-    const order = OrderAggregateRoot.create(id, price);
+    const order = OrderAggregateRoot.create(uniqueId, price);
 
     // Assert
-    expect(order.getId.value).toBe(uuid);
+    expect(order.getId.value).toBe(id);
     expect(order.price).toBe(price);
   });
 
@@ -54,10 +53,10 @@ describe('aggregate-roots', () => {
     // Arrange
 
     // Act
-    const uuid = uuidv4();
-    const id = UniqueId.create(uuid);
+    const id = 'id';
+    const uniqueId = UniqueId.create(id);
     const price = 40;
-    const order = OrderAggregateRoot.create(id, price);
+    const order = OrderAggregateRoot.create(uniqueId, price);
 
     // Assert
     expect(order.domainEvents.length).toBe(0);
@@ -67,10 +66,10 @@ describe('aggregate-roots', () => {
     // Arrange
 
     // Act
-    const uuid = uuidv4();
-    const id = UniqueId.create(uuid);
+    const id = 'id';
+    const uniqueId = UniqueId.create(id);
     const price = 40;
-    const order = OrderAggregateRoot.create(id, price);
+    const order = OrderAggregateRoot.create(uniqueId, price);
     const orderAdded = new OrderAdded(order);
     order.addDomainEvent(orderAdded);
 
@@ -82,10 +81,10 @@ describe('aggregate-roots', () => {
     // Arrange
 
     // Act
-    const uuid = uuidv4();
-    const id = UniqueId.create(uuid);
+    const id = 'id';
+    const uniqueId = UniqueId.create(id);
     const price = 40;
-    const order = OrderAggregateRoot.create(id, price);
+    const order = OrderAggregateRoot.create(uniqueId, price);
     const orderAdded = new OrderAdded(order);
     order.domainEvents.push(orderAdded);
 
@@ -97,10 +96,10 @@ describe('aggregate-roots', () => {
     // Arrange
 
     // Act
-    const uuid = uuidv4();
-    const id = UniqueId.create(uuid);
+    const id = 'id';
+    const uniqueId = UniqueId.create(id);
     const price = 40;
-    const order = OrderAggregateRoot.create(id, price);
+    const order = OrderAggregateRoot.create(uniqueId, price);
     const orderAdded = new OrderAdded(order);
     order.addDomainEvent(orderAdded);
     order.clearDomainEvents();
@@ -113,10 +112,10 @@ describe('aggregate-roots', () => {
     // Arrange
 
     // Act
-    const uuid = uuidv4();
-    const id = UniqueId.create(uuid);
+    const id = 'id';
+    const uniqueId = UniqueId.create(id);
     const price = 40;
-    const order = OrderAggregateRoot.create(id, price);
+    const order = OrderAggregateRoot.create(uniqueId, price);
     const orderAdded = new OrderAdded(order);
     order.addDomainEvent(orderAdded);
     order.domainEvents.slice(0, order.domainEvents.length);
@@ -129,13 +128,13 @@ describe('aggregate-roots', () => {
     // Arrange
 
     // Act
-    const uuid_1 = uuidv4();
-    const uuid_2 = uuidv4();
-    const id_1 = UniqueId.create(uuid_1);
-    const id_2 = UniqueId.create(uuid_2);
+    const id_1 = 'id_1';
+    const id_2 = 'id_2';
+    const uniqueId_1 = UniqueId.create(id_1);
+    const uniqueId_2 = UniqueId.create(id_2);
     const price = 40;
-    const order_1 = OrderAggregateRoot.create(id_1, price);
-    const order_2 = OrderAggregateRoot.create(id_2, price);
+    const order_1 = OrderAggregateRoot.create(uniqueId_1, price);
+    const order_2 = OrderAggregateRoot.create(uniqueId_2, price);
     const result = order_1.equals(order_2);
 
     // Assert
@@ -146,10 +145,10 @@ describe('aggregate-roots', () => {
     // Arrange
 
     // Act
-    const uuid = uuidv4();
-    const id = UniqueId.create(uuid);
+    const id = 'id';
+    const uniqueId = UniqueId.create(id);
     const price = 20;
-    const order = OrderAggregateRoot.create(id, price);
+    const order = OrderAggregateRoot.create(uniqueId, price);
     const result = order.equals(undefined);
 
     // Assert
@@ -160,10 +159,10 @@ describe('aggregate-roots', () => {
     // Arrange
 
     // Act
-    const uuid = uuidv4();
-    const id = UniqueId.create(uuid);
+    const id = 'id';
+    const uniqueId = UniqueId.create(id);
     const price = 20;
-    const order = OrderAggregateRoot.create(id, price);
+    const order = OrderAggregateRoot.create(uniqueId, price);
     const result = order.equals(null);
 
     // Assert
@@ -174,12 +173,12 @@ describe('aggregate-roots', () => {
     // Arrange
 
     // Act
-    const uuid = uuidv4();
-    const id = UniqueId.create(uuid);
+    const id = 'id';
+    const uniqueId = UniqueId.create(id);
     const price_1 = 40;
     const price_2 = 80;
-    const order_1 = OrderAggregateRoot.create(id, price_1);
-    const order_2 = OrderAggregateRoot.create(id, price_2);
+    const order_1 = OrderAggregateRoot.create(uniqueId, price_1);
+    const order_2 = OrderAggregateRoot.create(uniqueId, price_2);
     const result = order_1.equals(order_2);
 
     // Assert

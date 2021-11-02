@@ -1,6 +1,5 @@
 import { Entity } from './entity';
 import { UniqueId } from '../value-objects';
-import { v4 as uuidv4 } from 'uuid';
 
 describe('entities', () => {
   class ProductEntity extends Entity {
@@ -25,13 +24,13 @@ describe('entities', () => {
     // Arrange
 
     // Act
-    const uuid = uuidv4();
-    const id = UniqueId.create(uuid);
+    const id = 'id';
+    const uniqueId = UniqueId.create(id);
     const price = 40;
-    const product = ProductEntity.create(id, price);
+    const product = ProductEntity.create(uniqueId, price);
 
     // Assert
-    expect(product.getId.value).toBe(uuid);
+    expect(product.getId.value).toBe(id);
     expect(product.price).toBe(price);
   });
 
@@ -39,13 +38,13 @@ describe('entities', () => {
     // Arrange
 
     // Act
-    const uuid_1 = uuidv4();
-    const uuid_2 = uuidv4();
-    const id_1 = UniqueId.create(uuid_1);
-    const id_2 = UniqueId.create(uuid_2);
+    const id_1 = 'id_1';
+    const id_2 = 'id_2';
+    const uniqueId_1 = UniqueId.create(id_1);
+    const uniqueId_2 = UniqueId.create(id_2);
     const price = 40;
-    const product_1 = ProductEntity.create(id_1, price);
-    const product_2 = ProductEntity.create(id_2, price);
+    const product_1 = ProductEntity.create(uniqueId_1, price);
+    const product_2 = ProductEntity.create(uniqueId_2, price);
     const result = product_1.equals(product_2);
 
     // Assert
@@ -56,10 +55,10 @@ describe('entities', () => {
     // Arrange
 
     // Act
-    const uuid = uuidv4();
-    const id = UniqueId.create(uuid);
+    const id = 'id';
+    const uniqueId = UniqueId.create(id);
     const price = 20;
-    const product = ProductEntity.create(id, price);
+    const product = ProductEntity.create(uniqueId, price);
     const result = product.equals(undefined);
 
     // Assert
@@ -70,10 +69,10 @@ describe('entities', () => {
     // Arrange
 
     // Act
-    const uuid = uuidv4();
-    const id = UniqueId.create(uuid);
+    const id = 'id';
+    const uniqueId = UniqueId.create(id);
     const price = 20;
-    const product = ProductEntity.create(id, price);
+    const product = ProductEntity.create(uniqueId, price);
     const result = product.equals(null);
 
     // Assert
@@ -84,12 +83,12 @@ describe('entities', () => {
     // Arrange
 
     // Act
-    const uuid = uuidv4();
-    const id = UniqueId.create(uuid);
+    const id = 'id';
+    const uniqueId = UniqueId.create(id);
     const price_1 = 40;
     const price_2 = 80;
-    const product_1 = ProductEntity.create(id, price_1);
-    const product_2 = ProductEntity.create(id, price_2);
+    const product_1 = ProductEntity.create(uniqueId, price_1);
+    const product_2 = ProductEntity.create(uniqueId, price_2);
     const result = product_1.equals(product_2);
 
     // Assert
