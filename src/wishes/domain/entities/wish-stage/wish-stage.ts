@@ -41,27 +41,27 @@ export class WishStage extends Entity {
     return new WishStage(id, title, description, createdAt, urls, imageUrls);
   }
 
-  public get getId(): UniqueId {
+  public get id(): UniqueId {
     return this._id;
   }
 
-  public get getTitle(): WishTitle {
+  public get title(): WishTitle {
     return this._title;
   }
 
-  public get getDescription(): WishDescription {
+  public get description(): WishDescription {
     return this._description;
   }
 
-  public get getCreatedAtDate(): MillisecondsDate {
+  public get createdAt(): MillisecondsDate {
     return this._createdAt;
   }
 
-  public get getUrls(): WebUrl[] {
+  public get urls(): WebUrl[] {
     return this._urls;
   }
 
-  public get getImageUrls(): WebUrl[] {
+  public get imageUrls(): WebUrl[] {
     return this._imageUrls;
   }
 }

@@ -38,14 +38,14 @@ describe('wishes', () => {
         );
 
         // Assert
-        expect(wishStage.getId.value).toBe(id);
-        expect(wishStage.getTitle.value).toBe(title);
-        expect(wishStage.getDescription.value).toBe(description);
-        expect(wishStage.getCreatedAtDate.value).toBe(creationDateMilliseconds);
-        expect(wishStage.getUrls[0].value).toBe(urls[0]);
-        expect(wishStage.getUrls[1].value).toBe(urls[1]);
-        expect(wishStage.getImageUrls[0].value).toBe(imageUrls[0]);
-        expect(wishStage.getImageUrls[1].value).toBe(imageUrls[1]);
+        expect(wishStage.id.value).toBe(id);
+        expect(wishStage.title.value).toBe(title);
+        expect(wishStage.description.value).toBe(description);
+        expect(wishStage.createdAt.value).toBe(creationDateMilliseconds);
+        expect(wishStage.urls[0].value).toBe(urls[0]);
+        expect(wishStage.urls[1].value).toBe(urls[1]);
+        expect(wishStage.imageUrls[0].value).toBe(imageUrls[0]);
+        expect(wishStage.imageUrls[1].value).toBe(imageUrls[1]);
       });
 
       it('created wish-stage entities should be different because both have different unique id', () => {

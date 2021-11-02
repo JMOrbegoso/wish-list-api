@@ -13,7 +13,7 @@ describe('wishes', () => {
         const wisher = Wisher.create(uniqueId);
 
         // Assert
-        expect(wisher.getId.value).toBe(id);
+        expect(wisher.id.value).toBe(id);
       });
 
       it('both wishers should be different', () => {

@@ -15,7 +15,7 @@ describe('entities', () => {
       return new ProductEntity(id, price);
     }
 
-    public get getId(): UniqueId {
+    public get id(): UniqueId {
       return this._id;
     }
   }
@@ -30,7 +30,7 @@ describe('entities', () => {
     const product = ProductEntity.create(uniqueId, price);
 
     // Assert
-    expect(product.getId.value).toBe(id);
+    expect(product.id.value).toBe(id);
     expect(product.price).toBe(price);
   });
 

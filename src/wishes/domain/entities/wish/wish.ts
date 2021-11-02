@@ -89,55 +89,55 @@ export class Wish extends AggregateRoot {
     );
   }
 
-  public get getId(): UniqueId {
+  public get id(): UniqueId {
     return this._id;
   }
 
-  public get getTitle(): WishTitle {
+  public get title(): WishTitle {
     return this._title;
   }
 
-  public get getDescription(): WishDescription {
+  public get description(): WishDescription {
     return this._description;
   }
 
-  public get getPrivacyLevel(): WishPrivacyLevel {
+  public get privacyLevel(): WishPrivacyLevel {
     return this._privacyLevel;
   }
 
-  public get getCreatedAtDate(): MillisecondsDate {
+  public get createdAt(): MillisecondsDate {
     return this._createdAt;
   }
 
-  public get getUpdatedAtDate(): MillisecondsDate {
+  public get updatedAt(): MillisecondsDate {
     return this._updatedAt;
   }
 
-  public get getWisher(): Wisher {
+  public get wisher(): Wisher {
     return this._wisher;
   }
 
-  public get getUrls(): WebUrl[] {
+  public get urls(): WebUrl[] {
     return this._urls;
   }
 
-  public get getImageUrls(): WebUrl[] {
+  public get imageUrls(): WebUrl[] {
     return this._imageUrls;
   }
 
-  public get getCategories(): CategoryName[] {
+  public get categories(): CategoryName[] {
     return this._categories;
   }
 
-  public get getStages(): WishStage[] {
+  public get stages(): WishStage[] {
     return this._stages;
   }
 
-  public get getDeletedAtDate(): MillisecondsDate {
+  public get deletedAt(): MillisecondsDate {
     return this._deletedAt;
   }
 
-  public get getCompletedAtDate(): MillisecondsDate {
+  public get completedAt(): MillisecondsDate {
     return this._completedAt;
   }
 

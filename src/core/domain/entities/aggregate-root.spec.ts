@@ -16,7 +16,7 @@ describe('aggregate-roots', () => {
       return new OrderAggregateRoot(id, price);
     }
 
-    public get getId(): UniqueId {
+    public get id(): UniqueId {
       return this._id;
     }
   }
@@ -31,7 +31,7 @@ describe('aggregate-roots', () => {
     }
 
     getAggregateRootId(): UniqueId {
-      return this.order.getId;
+      return this.order.id;
     }
   }
 
@@ -45,7 +45,7 @@ describe('aggregate-roots', () => {
     const order = OrderAggregateRoot.create(uniqueId, price);
 
     // Assert
-    expect(order.getId.value).toBe(id);
+    expect(order.id.value).toBe(id);
     expect(order.price).toBe(price);
   });
 

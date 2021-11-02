@@ -39,12 +39,12 @@ describe('wishes', () => {
         );
 
         // Assert
-        expect(wish.getId.value).toBe(id);
-        expect(wish.getTitle.value).toBe(title);
-        expect(wish.getDescription.value).toBe(description);
-        expect(wish.getPrivacyLevel.value).toBe(privacyLevel);
-        expect(wish.getCreatedAtDate.value).toBe(creationDateMilliseconds);
-        expect(wish.getUpdatedAtDate.value).toBe(creationDateMilliseconds);
+        expect(wish.id.value).toBe(id);
+        expect(wish.title.value).toBe(title);
+        expect(wish.description.value).toBe(description);
+        expect(wish.privacyLevel.value).toBe(privacyLevel);
+        expect(wish.createdAt.value).toBe(creationDateMilliseconds);
+        expect(wish.updatedAt.value).toBe(creationDateMilliseconds);
       });
 
       it('created wish entities should be different because both have different unique id', () => {

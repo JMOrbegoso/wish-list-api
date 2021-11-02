@@ -10,7 +10,7 @@ export class Wisher extends Entity {
     return new Wisher(id);
   }
 
-  public get getId(): UniqueId {
+  public get id(): UniqueId {
     return this._id;
   }
 }
