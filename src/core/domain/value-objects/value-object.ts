@@ -8,7 +8,7 @@ export abstract class ValueObject<T> {
     this.value = Object.freeze(value);
   }
 
-  abstract validate(value: T): void;
+  protected abstract validate(value: T): void;
 
   public equals(other?: ValueObject<T>): boolean {
     if (other === null || other === undefined) {

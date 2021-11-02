@@ -19,7 +19,7 @@ export class WishPrivacyLevel extends ValueObject<PrivacyLevel> {
     return new WishPrivacyLevel(PrivacyLevel.OnlyMe);
   }
 
-  validate(value: PrivacyLevel): void {
+  protected validate(value: PrivacyLevel): void {
     if (!Object.values(PrivacyLevel).includes(value))
       throw new Error('Invalid wish privacy level.');
   }

@@ -1,7 +1,7 @@
 import { ValueObject } from '..';
 
 export class WebUrl extends ValueObject<string> {
-  validate(value: string): void {
+  protected validate(value: string): void {
     if (!value) throw new Error('Invalid url.');
 
     const url = new URL(value);

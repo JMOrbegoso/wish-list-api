@@ -1,7 +1,7 @@
 import { ValueObject } from '..';
 
 export class MillisecondsDate extends ValueObject<number> {
-  validate(value: number): void {
+  protected validate(value: number): void {
     if (!value) throw new Error('Invalid date.');
   }
 

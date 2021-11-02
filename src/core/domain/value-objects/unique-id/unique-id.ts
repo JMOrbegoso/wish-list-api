@@ -2,7 +2,7 @@ import { ValueObject } from '..';
 import { v4 as createUuid } from 'uuid';
 
 export class UniqueId extends ValueObject<string> {
-  validate(value: string): void {
+  protected validate(value: string): void {
     if (!value) throw new Error('Invalid id.');
   }
 

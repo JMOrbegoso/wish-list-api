@@ -2,7 +2,7 @@ import { ValueObject } from './value-object';
 
 describe('value-objects', () => {
   class NameValueObject extends ValueObject<string> {
-    validate(value: string): void {
+    protected validate(value: string): void {
       if (!value) throw new Error('Invalid name.');
     }
 
