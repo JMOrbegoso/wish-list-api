@@ -13,8 +13,6 @@ import {
 } from '../../value-objects';
 
 export class Wish extends AggregateRoot {
-  id: UniqueId;
-
   private title: WishTitle;
   private description: WishDescription;
   private privacyLevel: WishPrivacyLevel;

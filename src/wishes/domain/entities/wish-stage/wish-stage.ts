@@ -7,8 +7,6 @@ import {
 import { WishTitle, WishDescription } from '../../value-objects';
 
 export class WishStage extends Entity {
-  public readonly id: UniqueId;
-
   private title: WishTitle;
   private description: WishDescription;
   private createdAt: MillisecondsDate;

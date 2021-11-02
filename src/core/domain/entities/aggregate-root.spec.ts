@@ -16,6 +16,10 @@ describe('aggregate-roots', () => {
     static create(id: UniqueId, price: number): OrderAggregateRoot {
       return new OrderAggregateRoot(id, price);
     }
+
+    public get getId(): UniqueId {
+      return this.id;
+    }
   }
 
   class OrderAdded extends DomainEvent {
@@ -28,7 +32,7 @@ describe('aggregate-roots', () => {
     }
 
     getAggregateRootId(): UniqueId {
-      return this.order.id;
+      return this.order.getId;
     }
   }
 
@@ -42,7 +46,7 @@ describe('aggregate-roots', () => {
     const order = OrderAggregateRoot.create(id, price);
 
     // Assert
-    expect(order.id.value).toBe(uuid);
+    expect(order.getId.value).toBe(uuid);
     expect(order.price).toBe(price);
   });
 
