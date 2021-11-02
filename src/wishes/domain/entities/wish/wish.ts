@@ -1,4 +1,4 @@
-import { AggregateRoot } from '../../../../core/domain/aggregate-roots';
+import { AggregateRoot } from '../../../../core/domain/entities';
 import { UniqueId } from '../../../../core/domain/value-objects';
 import { WishStage, Wisher } from '..';
 import {

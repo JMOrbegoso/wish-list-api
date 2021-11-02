@@ -1,4 +1,4 @@
-import { AggregateRoot } from '../aggregate-roots';
+import { AggregateRoot } from '../entities';
 import { UniqueId } from '../value-objects';
 
 export interface Repository<T extends AggregateRoot> {
