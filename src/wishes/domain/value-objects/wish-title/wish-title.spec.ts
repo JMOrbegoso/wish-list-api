@@ -32,6 +32,29 @@ describe('wishes', () => {
         expect(() => WishTitle.create('')).toThrowError('Invalid wish title');
       });
 
+      it('should throw error on validation', () => {
+        // Arrange
+
+        // Act
+        const invalidTitle = 'a'.repeat(WishTitle.MaxLength + 1);
+
+        // Assert
+        expect(() => WishTitle.create(invalidTitle)).toThrowError(
+          'Invalid wish title',
+        );
+      });
+
+      it('created value object should store the value', () => {
+        // Arrange
+
+        // Act
+        const largerValidTitle = 'a'.repeat(WishTitle.MaxLength);
+        const wishTitle = WishTitle.create(largerValidTitle);
+
+        // Assert
+        expect(wishTitle.value).toBe(largerValidTitle);
+      });
+
       it('created value object should store the value', () => {
         // Arrange
 
