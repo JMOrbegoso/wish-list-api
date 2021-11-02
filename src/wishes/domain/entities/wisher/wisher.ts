@@ -11,6 +11,6 @@ export class Wisher extends Entity {
   }
 
   public get getId(): UniqueId {
-    return this.id;
+    return this._id;
   }
 }

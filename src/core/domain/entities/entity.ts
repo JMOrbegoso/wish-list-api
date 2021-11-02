@@ -1,10 +1,10 @@
 import { UniqueId } from '../value-objects';
 
 export abstract class Entity {
-  protected readonly id: UniqueId;
+  protected readonly _id: UniqueId;
 
   protected constructor(id: UniqueId) {
-    this.id = id;
+    this._id = id;
   }
 
   public equals(other?: Entity): boolean {
@@ -12,6 +12,6 @@ export abstract class Entity {
       return false;
     }
 
-    return this.id.equals(other.id);
+    return this._id.equals(other._id);
   }
 }

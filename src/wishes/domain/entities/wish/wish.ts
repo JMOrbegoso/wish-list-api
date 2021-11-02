@@ -13,18 +13,18 @@ import {
 } from '../../value-objects';
 
 export class Wish extends AggregateRoot {
-  private title: WishTitle;
-  private description: WishDescription;
-  private privacyLevel: WishPrivacyLevel;
-  private createdAt: MillisecondsDate;
-  private updatedAt: MillisecondsDate;
-  private wisher: Wisher;
-  private urls: WebUrl[];
-  private imageUrls: WebUrl[];
-  private categories: CategoryName[];
-  private stages: WishStage[];
-  private deletedAt?: MillisecondsDate;
-  private completedAt?: MillisecondsDate;
+  private _title: WishTitle;
+  private _description: WishDescription;
+  private _privacyLevel: WishPrivacyLevel;
+  private _createdAt: MillisecondsDate;
+  private _updatedAt: MillisecondsDate;
+  private _wisher: Wisher;
+  private _urls: WebUrl[];
+  private _imageUrls: WebUrl[];
+  private _categories: CategoryName[];
+  private _stages: WishStage[];
+  private _deletedAt?: MillisecondsDate;
+  private _completedAt?: MillisecondsDate;
 
   private constructor(
     id: UniqueId,
@@ -43,18 +43,18 @@ export class Wish extends AggregateRoot {
   ) {
     super(id);
 
-    this.title = title;
-    this.description = description;
-    this.privacyLevel = privacyLevel;
-    this.createdAt = createdAt;
-    this.updatedAt = updatedAt;
-    this.wisher = wisher;
-    this.urls = urls;
-    this.imageUrls = imageUrls;
-    this.categories = categories;
-    this.stages = stages;
-    this.deletedAt = deletedAt;
-    this.completedAt = completedAt;
+    this._title = title;
+    this._description = description;
+    this._privacyLevel = privacyLevel;
+    this._createdAt = createdAt;
+    this._updatedAt = updatedAt;
+    this._wisher = wisher;
+    this._urls = urls;
+    this._imageUrls = imageUrls;
+    this._categories = categories;
+    this._stages = stages;
+    this._deletedAt = deletedAt;
+    this._completedAt = completedAt;
   }
 
   public static create(
@@ -90,62 +90,62 @@ export class Wish extends AggregateRoot {
   }
 
   public get getId(): UniqueId {
-    return this.id;
+    return this._id;
   }
 
   public get getTitle(): WishTitle {
-    return this.title;
+    return this._title;
   }
 
   public get getDescription(): WishDescription {
-    return this.description;
+    return this._description;
   }
 
   public get getPrivacyLevel(): WishPrivacyLevel {
-    return this.privacyLevel;
+    return this._privacyLevel;
   }
 
   public get getCreatedAtDate(): MillisecondsDate {
-    return this.createdAt;
+    return this._createdAt;
   }
 
   public get getUpdatedAtDate(): MillisecondsDate {
-    return this.updatedAt;
+    return this._updatedAt;
   }
 
   public get getWisher(): Wisher {
-    return this.wisher;
+    return this._wisher;
   }
 
   public get getUrls(): WebUrl[] {
-    return this.urls;
+    return this._urls;
   }
 
   public get getImageUrls(): WebUrl[] {
-    return this.imageUrls;
+    return this._imageUrls;
   }
 
   public get getCategories(): CategoryName[] {
-    return this.categories;
+    return this._categories;
   }
 
   public get getStages(): WishStage[] {
-    return this.stages;
+    return this._stages;
   }
 
   public get getDeletedAtDate(): MillisecondsDate {
-    return this.deletedAt;
+    return this._deletedAt;
   }
 
   public get getCompletedAtDate(): MillisecondsDate {
-    return this.completedAt;
+    return this._completedAt;
   }
 
   public get isCompleted(): boolean {
-    return !this.completedAt;
+    return !this._completedAt;
   }
 
   public get isDeleted(): boolean {
-    return !this.deletedAt;
+    return !this._deletedAt;
   }
 }

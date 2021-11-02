@@ -17,7 +17,7 @@ describe('aggregate-roots', () => {
     }
 
     public get getId(): UniqueId {
-      return this.id;
+      return this._id;
     }
   }
 
