@@ -1,7 +1,7 @@
 import { AggregateRoot } from '../../../../core/domain/entities';
 import {
   UniqueId,
-  WishDateMetadata,
+  MillisecondsDate,
   WebUrl,
 } from '../../../../core/domain/value-objects';
 import { WishStage, Wisher } from '..';
@@ -18,30 +18,30 @@ export class Wish extends AggregateRoot {
   private title: WishTitle;
   private description: WishDescription;
   private privacyLevel: WishPrivacyLevel;
-  private createdAt: WishDateMetadata;
-  private updatedAt: WishDateMetadata;
+  private createdAt: MillisecondsDate;
+  private updatedAt: MillisecondsDate;
   private wisher: Wisher;
   private urls: WebUrl[];
   private imageUrls: WebUrl[];
   private categories: CategoryName[];
   private stages: WishStage[];
-  private deletedAt?: WishDateMetadata;
-  private completedAt?: WishDateMetadata;
+  private deletedAt?: MillisecondsDate;
+  private completedAt?: MillisecondsDate;
 
   private constructor(
     id: UniqueId,
     title: WishTitle,
     description: WishDescription,
     privacyLevel: WishPrivacyLevel,
-    createdAt: WishDateMetadata,
-    updatedAt: WishDateMetadata,
+    createdAt: MillisecondsDate,
+    updatedAt: MillisecondsDate,
     wisher: Wisher,
     urls: WebUrl[],
     imageUrls: WebUrl[],
     categories: CategoryName[],
     stages: WishStage[],
-    deletedAt?: WishDateMetadata,
-    completedAt?: WishDateMetadata,
+    deletedAt?: MillisecondsDate,
+    completedAt?: MillisecondsDate,
   ) {
     super(id);
 
@@ -64,15 +64,15 @@ export class Wish extends AggregateRoot {
     title: WishTitle,
     description: WishDescription,
     privacyLevel: WishPrivacyLevel,
-    createdAt: WishDateMetadata,
-    updatedAt: WishDateMetadata,
+    createdAt: MillisecondsDate,
+    updatedAt: MillisecondsDate,
     wisher: Wisher,
     urls: WebUrl[] = [],
     imageUrls: WebUrl[] = [],
     categories: CategoryName[] = [],
     stages: WishStage[] = [],
-    deletedAt: WishDateMetadata = null,
-    completedAt: WishDateMetadata = null,
+    deletedAt: MillisecondsDate = null,
+    completedAt: MillisecondsDate = null,
   ): Wish {
     return new Wish(
       id,
@@ -107,11 +107,11 @@ export class Wish extends AggregateRoot {
     return this.privacyLevel;
   }
 
-  public get getCreatedAtDate(): WishDateMetadata {
+  public get getCreatedAtDate(): MillisecondsDate {
     return this.createdAt;
   }
 
-  public get getUpdatedAtDate(): WishDateMetadata {
+  public get getUpdatedAtDate(): MillisecondsDate {
     return this.updatedAt;
   }
 
@@ -135,11 +135,11 @@ export class Wish extends AggregateRoot {
     return this.stages;
   }
 
-  public get getDeletedAtDate(): WishDateMetadata {
+  public get getDeletedAtDate(): MillisecondsDate {
     return this.deletedAt;
   }
 
-  public get getCompletedAtDate(): WishDateMetadata {
+  public get getCompletedAtDate(): MillisecondsDate {
     return this.completedAt;
   }
 

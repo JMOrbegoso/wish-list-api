@@ -1,7 +1,7 @@
 import { Entity } from '../../../../core/domain/entities';
 import {
   UniqueId,
-  WishDateMetadata,
+  MillisecondsDate,
   WebUrl,
 } from '../../../../core/domain/value-objects';
 import { WishTitle, WishDescription } from '../../value-objects';
@@ -11,7 +11,7 @@ export class WishStage extends Entity {
 
   private title: WishTitle;
   private description: WishDescription;
-  private createdAt: WishDateMetadata;
+  private createdAt: MillisecondsDate;
   private urls: WebUrl[];
   private imageUrls: WebUrl[];
 
@@ -19,7 +19,7 @@ export class WishStage extends Entity {
     id: UniqueId,
     title: WishTitle,
     description: WishDescription,
-    createdAt: WishDateMetadata,
+    createdAt: MillisecondsDate,
     urls: WebUrl[],
     imageUrls: WebUrl[],
   ) {
@@ -36,7 +36,7 @@ export class WishStage extends Entity {
     id: UniqueId,
     title: WishTitle,
     description: WishDescription,
-    createdAt: WishDateMetadata,
+    createdAt: MillisecondsDate,
     urls: WebUrl[] = [],
     imageUrls: WebUrl[] = [],
   ): WishStage {
@@ -55,7 +55,7 @@ export class WishStage extends Entity {
     return this.description;
   }
 
-  public get getCreatedAtDate(): WishDateMetadata {
+  public get getCreatedAtDate(): MillisecondsDate {
     return this.createdAt;
   }
 

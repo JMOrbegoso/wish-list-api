@@ -1,7 +1,7 @@
 import { WishStage } from '..';
 import {
   UniqueId,
-  WishDateMetadata,
+  MillisecondsDate,
   WebUrl,
 } from '../../../../core/domain/value-objects';
 import { WishTitle, WishDescription } from '../../value-objects';
@@ -20,7 +20,7 @@ describe('wishes', () => {
         const description = 'description';
         const wishDescription = WishDescription.create(description);
         const creationDateMilliseconds = Date.now();
-        const creationDate = WishDateMetadata.create(creationDateMilliseconds);
+        const creationDate = MillisecondsDate.create(creationDateMilliseconds);
         const urls = ['https://www.example.com', 'https://wwww.example.net'];
         const wishUrls = urls.map((url) => WebUrl.create(url));
         const imageUrls = [
@@ -61,7 +61,7 @@ describe('wishes', () => {
         const description = 'description';
         const wishDescription = WishDescription.create(description);
         const milliseconds = Date.now();
-        const creationDate = WishDateMetadata.create(milliseconds);
+        const creationDate = MillisecondsDate.create(milliseconds);
 
         const wishStage_1 = WishStage.create(
           uniqueId_1,
@@ -96,7 +96,7 @@ describe('wishes', () => {
         const description = 'description';
         const wishDescription = WishDescription.create(description);
         const milliseconds = Date.now();
-        const creationDate = WishDateMetadata.create(milliseconds);
+        const creationDate = MillisecondsDate.create(milliseconds);
 
         const wishStage_1 = WishStage.create(
           uniqueId,

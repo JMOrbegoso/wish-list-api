@@ -1,7 +1,7 @@
 import { Wish } from '..';
 import {
   UniqueId,
-  WishDateMetadata,
+  MillisecondsDate,
 } from '../../../../core/domain/value-objects';
 import {
   WishTitle,
@@ -26,7 +26,7 @@ describe('wishes', () => {
         const privacyLevel = PrivacyLevel.Public;
         const wishPrivacyLevel = WishPrivacyLevel.create(privacyLevel);
         const creationDateMilliseconds = Date.now();
-        const creationDate = WishDateMetadata.create(creationDateMilliseconds);
+        const creationDate = MillisecondsDate.create(creationDateMilliseconds);
 
         const wish = Wish.create(
           uniqueId,
@@ -62,7 +62,7 @@ describe('wishes', () => {
         const privacyLevel = PrivacyLevel.Public;
         const wishPrivacyLevel = WishPrivacyLevel.create(privacyLevel);
         const creationDateMilliseconds = Date.now();
-        const creationDate = WishDateMetadata.create(creationDateMilliseconds);
+        const creationDate = MillisecondsDate.create(creationDateMilliseconds);
 
         const wish_1 = Wish.create(
           uniqueId_1,
@@ -104,7 +104,7 @@ describe('wishes', () => {
         const privacyLevel = PrivacyLevel.Public;
         const wishPrivacyLevel = WishPrivacyLevel.create(privacyLevel);
         const creationDateMilliseconds = Date.now();
-        const creationDate = WishDateMetadata.create(creationDateMilliseconds);
+        const creationDate = MillisecondsDate.create(creationDateMilliseconds);
 
         const wish_1 = Wish.create(
           uniqueId,
