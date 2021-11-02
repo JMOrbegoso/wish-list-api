@@ -8,7 +8,7 @@ describe('unique-id', () => {
     const uniqueId = UniqueId.create(undefined);
 
     // Assert
-    expect(uniqueId.value).not.toBeUndefined();
+    expect(uniqueId.getId).not.toBeUndefined();
   });
 
   it('should create a valid unique id', () => {
@@ -18,7 +18,7 @@ describe('unique-id', () => {
     const uniqueId = UniqueId.create(null);
 
     // Assert
-    expect(uniqueId.value).not.toBeNull();
+    expect(uniqueId.getId).not.toBeNull();
   });
 
   it('should create a valid unique id', () => {
@@ -28,7 +28,7 @@ describe('unique-id', () => {
     const uniqueId = UniqueId.create('');
 
     // Assert
-    expect(uniqueId.value).not.toBeNull();
+    expect(uniqueId.getId).not.toBeNull();
   });
 
   it('should create a valid unique id', () => {
@@ -39,7 +39,7 @@ describe('unique-id', () => {
     const uniqueId = UniqueId.create(id);
 
     // Assert
-    expect(uniqueId.value).toBe(id);
+    expect(uniqueId.getId).toBe(id);
   });
 
   it('both unique ids should be different', () => {

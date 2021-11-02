@@ -9,6 +9,10 @@ describe('value-objects', () => {
     static create(value: string): NameValueObject {
       return new NameValueObject(value);
     }
+
+    public get getName(): string {
+      return this.value;
+    }
   }
 
   it('should throw error on validation', () => {
@@ -28,7 +32,7 @@ describe('value-objects', () => {
     const nameValueObject = NameValueObject.create(name);
 
     // Assert
-    expect(nameValueObject.value).toBe(name);
+    expect(nameValueObject.getName).toBe(name);
   });
 
   it('both value objects should be different', () => {

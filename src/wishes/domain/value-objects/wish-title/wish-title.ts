@@ -13,4 +13,8 @@ export class WishTitle extends ValueObject<string> {
   static create(value: string): WishTitle {
     return new WishTitle(value);
   }
+
+  public get getTitle(): string {
+    return this.value;
+  }
 }

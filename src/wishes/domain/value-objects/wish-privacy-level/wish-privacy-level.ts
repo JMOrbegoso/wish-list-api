@@ -27,4 +27,8 @@ export class WishPrivacyLevel extends ValueObject<PrivacyLevel> {
   static create(value: PrivacyLevel): WishPrivacyLevel {
     return new WishPrivacyLevel(value);
   }
+
+  public get getPrivacyLevel(): PrivacyLevel {
+    return this.value;
+  }
 }

@@ -13,4 +13,8 @@ export class WebUrl extends ValueObject<string> {
   static create(value: string): WebUrl {
     return new WebUrl(value);
   }
+
+  public get getUrl(): string {
+    return this.value;
+  }
 }

@@ -43,7 +43,9 @@ describe('wishes', () => {
         const publicWishPrivacyLevel = WishPrivacyLevel.public();
 
         // Assert
-        expect(publicWishPrivacyLevel.value).toBe(PrivacyLevel.Public);
+        expect(publicWishPrivacyLevel.getPrivacyLevel).toBe(
+          PrivacyLevel.Public,
+        );
       });
 
       it('should create a justFriends privacy level', () => {
@@ -53,7 +55,7 @@ describe('wishes', () => {
         const justFriendsWishPrivacyLevel = WishPrivacyLevel.justFriends();
 
         // Assert
-        expect(justFriendsWishPrivacyLevel.value).toBe(
+        expect(justFriendsWishPrivacyLevel.getPrivacyLevel).toBe(
           PrivacyLevel.JustFriends,
         );
       });
@@ -65,7 +67,9 @@ describe('wishes', () => {
         const onlyMeWishPrivacyLevel = WishPrivacyLevel.onlyMe();
 
         // Assert
-        expect(onlyMeWishPrivacyLevel.value).toBe(PrivacyLevel.OnlyMe);
+        expect(onlyMeWishPrivacyLevel.getPrivacyLevel).toBe(
+          PrivacyLevel.OnlyMe,
+        );
       });
 
       it('should create a public privacy level using the function create', () => {
@@ -77,7 +81,9 @@ describe('wishes', () => {
         );
 
         // Assert
-        expect(publicWishPrivacyLevel.value).toBe(PrivacyLevel.Public);
+        expect(publicWishPrivacyLevel.getPrivacyLevel).toBe(
+          PrivacyLevel.Public,
+        );
       });
 
       it('should create a justFriends privacy level using the function create', () => {
@@ -89,7 +95,7 @@ describe('wishes', () => {
         );
 
         // Assert
-        expect(justFriendsWishPrivacyLevel.value).toBe(
+        expect(justFriendsWishPrivacyLevel.getPrivacyLevel).toBe(
           PrivacyLevel.JustFriends,
         );
       });
@@ -103,7 +109,9 @@ describe('wishes', () => {
         );
 
         // Assert
-        expect(onlyMeWishPrivacyLevel.value).toBe(PrivacyLevel.OnlyMe);
+        expect(onlyMeWishPrivacyLevel.getPrivacyLevel).toBe(
+          PrivacyLevel.OnlyMe,
+        );
       });
     });
   });

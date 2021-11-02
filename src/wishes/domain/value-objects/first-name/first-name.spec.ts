@@ -40,7 +40,7 @@ describe('wishes', () => {
         const nameValueObject = FirstName.create(name);
 
         // Assert
-        expect(nameValueObject.value).toBe(name);
+        expect(nameValueObject.getFirstName).toBe(name);
       });
 
       it('both value objects should be different', () => {

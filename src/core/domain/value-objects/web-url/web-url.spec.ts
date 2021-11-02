@@ -49,7 +49,7 @@ describe('core', () => {
         const webUrl = WebUrl.create(url);
 
         // Assert
-        expect(webUrl.value).toBe(url);
+        expect(webUrl.getUrl).toBe(url);
       });
 
       it('comparing two equals created WebUrl should be equal', () => {

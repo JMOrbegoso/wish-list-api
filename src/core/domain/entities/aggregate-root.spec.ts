@@ -45,7 +45,7 @@ describe('aggregate-roots', () => {
     const order = OrderAggregateRoot.create(uniqueId, price);
 
     // Assert
-    expect(order.id.value).toBe(id);
+    expect(order.id.getId).toBe(id);
     expect(order.price).toBe(price);
   });
 

@@ -8,4 +8,8 @@ export class CategoryName extends ValueObject<string> {
   static create(value: string): CategoryName {
     return new CategoryName(value);
   }
+
+  public get getName(): string {
+    return this.value;
+  }
 }

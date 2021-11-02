@@ -11,4 +11,8 @@ export class UniqueId extends ValueObject<string> {
 
     return new UniqueId(value);
   }
+
+  public get getId(): string {
+    return this.value;
+  }
 }

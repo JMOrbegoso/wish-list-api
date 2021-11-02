@@ -27,7 +27,7 @@ describe('domain-events', () => {
     const domainEvent = new ProductCreated(id, productName);
 
     // Assert
-    expect(domainEvent.id.value).toBe(id.value);
+    expect(domainEvent.id.getId).toBe(id.getId);
     expect(domainEvent.name).toBe(productName);
   });
 

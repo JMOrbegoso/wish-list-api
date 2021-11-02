@@ -44,7 +44,7 @@ describe('wishes', () => {
         const nameValueObject = CategoryName.create(name);
 
         // Assert
-        expect(nameValueObject.value).toBe(name);
+        expect(nameValueObject.getName).toBe(name);
       });
 
       it('both value objects should be different', () => {

@@ -1,7 +1,7 @@
 import { deepEqual } from '../../helpers';
 
 export abstract class ValueObject<T> {
-  public readonly value: T;
+  protected readonly value: T;
 
   protected constructor(value: T) {
     this.validate(value);

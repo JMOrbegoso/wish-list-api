@@ -56,7 +56,7 @@ describe('wishes', () => {
         const wishDescription = WishDescription.create(largerValidDescription);
 
         // Assert
-        expect(wishDescription.value).toBe(largerValidDescription);
+        expect(wishDescription.getDescription).toBe(largerValidDescription);
       });
 
       it('created value object should store the value', () => {
@@ -67,7 +67,7 @@ describe('wishes', () => {
         const nameValueObject = WishDescription.create(name);
 
         // Assert
-        expect(nameValueObject.value).toBe(name);
+        expect(nameValueObject.getDescription).toBe(name);
       });
 
       it('both value objects should be different', () => {

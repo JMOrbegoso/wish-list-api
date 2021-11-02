@@ -30,7 +30,7 @@ describe('entities', () => {
     const product = ProductEntity.create(uniqueId, price);
 
     // Assert
-    expect(product.id.value).toBe(id);
+    expect(product.id.getId).toBe(id);
     expect(product.price).toBe(price);
   });
 
