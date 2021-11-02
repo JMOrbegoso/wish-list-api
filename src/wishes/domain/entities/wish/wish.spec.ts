@@ -1,11 +1,13 @@
 import { Wish } from '..';
-import { UniqueId } from '../../../../core/domain/value-objects';
+import {
+  UniqueId,
+  WishDateMetadata,
+} from '../../../../core/domain/value-objects';
 import {
   WishTitle,
   WishDescription,
   PrivacyLevel,
   WishPrivacyLevel,
-  WishDateMetadata,
 } from '../../value-objects';
 
 describe('wishes', () => {

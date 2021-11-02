@@ -1,4 +1,4 @@
-import { ValueObject } from '../../../../core/domain/value-objects';
+import { ValueObject } from '..';
 
 export class WishDateMetadata extends ValueObject<number> {
   validate(value: number): void {

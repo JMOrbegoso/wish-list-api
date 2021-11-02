@@ -1,10 +1,10 @@
 import { WishStage } from '..';
-import { UniqueId, WebUrl } from '../../../../core/domain/value-objects';
 import {
+  UniqueId,
   WishDateMetadata,
-  WishDescription,
-  WishTitle,
-} from '../../value-objects';
+  WebUrl,
+} from '../../../../core/domain/value-objects';
+import { WishTitle, WishDescription } from '../../value-objects';
 
 describe('wishes', () => {
   describe('entities', () => {

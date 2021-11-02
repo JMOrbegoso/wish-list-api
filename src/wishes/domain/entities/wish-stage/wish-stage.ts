@@ -1,10 +1,10 @@
 import { Entity } from '../../../../core/domain/entities';
-import { UniqueId, WebUrl } from '../../../../core/domain/value-objects';
 import {
-  WishTitle,
-  WishDescription,
+  UniqueId,
   WishDateMetadata,
-} from '../../value-objects';
+  WebUrl,
+} from '../../../../core/domain/value-objects';
+import { WishTitle, WishDescription } from '../../value-objects';
 
 export class WishStage extends Entity {
   public readonly id: UniqueId;

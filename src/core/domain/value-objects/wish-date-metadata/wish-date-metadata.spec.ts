@@ -1,6 +1,6 @@
 import { WishDateMetadata } from '..';
 
-describe('wishes', () => {
+describe('core', () => {
   describe('value-objects', () => {
     describe('wish-date-metadata', () => {
       it('should create valid wish date metadata', () => {
