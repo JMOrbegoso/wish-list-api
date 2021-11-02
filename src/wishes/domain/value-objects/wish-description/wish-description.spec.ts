@@ -36,6 +36,29 @@ describe('wishes', () => {
         );
       });
 
+      it('should throw error on validation', () => {
+        // Arrange
+
+        // Act
+        const invalidDescription = 'a'.repeat(WishDescription.MaxLength + 1);
+
+        // Assert
+        expect(() => WishDescription.create(invalidDescription)).toThrowError(
+          'Invalid wish description',
+        );
+      });
+
+      it('created value object should store the value', () => {
+        // Arrange
+
+        // Act
+        const largerValidDescription = 'a'.repeat(WishDescription.MaxLength);
+        const wishDescription = WishDescription.create(largerValidDescription);
+
+        // Assert
+        expect(wishDescription.value).toBe(largerValidDescription);
+      });
+
       it('created value object should store the value', () => {
         // Arrange
 
