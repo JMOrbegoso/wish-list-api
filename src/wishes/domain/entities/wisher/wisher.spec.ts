@@ -5,7 +5,7 @@ describe('wishes', () => {
   describe('domain', () => {
     describe('entities', () => {
       describe('wisher', () => {
-        it('created wisher entity should store the values', () => {
+        it('should create a Wisher instance and should store the value', () => {
           // Arrange
 
           // Act
@@ -17,7 +17,7 @@ describe('wishes', () => {
           expect(wisher.id.getId).toBe(id);
         });
 
-        it('both wishers should be different', () => {
+        it('create two Wisher instances with different ids and compare them using "equals" should return false', () => {
           // Arrange
 
           // Act
@@ -33,33 +33,7 @@ describe('wishes', () => {
           expect(result).toBe(false);
         });
 
-        it('both wishers should be different', () => {
-          // Arrange
-
-          // Act
-          const id = 'id';
-          const uniqueId = UniqueId.create(id);
-          const wisher = Wisher.create(uniqueId);
-          const result = wisher.equals(undefined);
-
-          // Assert
-          expect(result).toBe(false);
-        });
-
-        it('both wishers should be different', () => {
-          // Arrange
-
-          // Act
-          const id = 'id';
-          const uniqueId = UniqueId.create(id);
-          const wisher = Wisher.create(uniqueId);
-          const result = wisher.equals(null);
-
-          // Assert
-          expect(result).toBe(false);
-        });
-
-        it('both wishers should be equal', () => {
+        it('create two Wisher instances with the same value and compare them using "equals" should return true', () => {
           // Arrange
 
           // Act

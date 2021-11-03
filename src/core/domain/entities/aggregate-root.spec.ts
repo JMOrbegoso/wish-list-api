@@ -38,7 +38,7 @@ describe('core', () => {
           }
         }
 
-        it('created order aggregate root should store the values', () => {
+        it('should create an aggregate root instance and should store the values and should have zero domain events', () => {
           // Arrange
 
           // Act
@@ -50,22 +50,10 @@ describe('core', () => {
           // Assert
           expect(order.id.getId).toBe(id);
           expect(order.price).toBe(price);
-        });
-
-        it('created order aggregate root should have zero domain events', () => {
-          // Arrange
-
-          // Act
-          const id = 'id';
-          const uniqueId = UniqueId.create(id);
-          const price = 40;
-          const order = OrderAggregateRoot.create(uniqueId, price);
-
-          // Assert
           expect(order.domainEvents.length).toBe(0);
         });
 
-        it('created order aggregate root should have one domain events after add one', () => {
+        it('aggregate root instance should have one domain event after add one', () => {
           // Arrange
 
           // Act
@@ -80,7 +68,7 @@ describe('core', () => {
           expect(order.domainEvents.length).toBe(1);
         });
 
-        it('created order aggregate root should have zero domain events after push one using getter', () => {
+        it('aggregate root instance should have zero domain events after push one using list getter', () => {
           // Arrange
 
           // Act
@@ -95,7 +83,7 @@ describe('core', () => {
           expect(order.domainEvents.length).toBe(0);
         });
 
-        it('created order aggregate root should have zero domain events after add one and clear them', () => {
+        it('aggregate root instance should have zero domain events after add one and clear all of them', () => {
           // Arrange
 
           // Act
@@ -111,7 +99,7 @@ describe('core', () => {
           expect(order.domainEvents.length).toBe(0);
         });
 
-        it('created order aggregate root should have one domain events after add one and clear them using getter', () => {
+        it('aggregate root instance should have one domain events after add one and clear all of them using getter', () => {
           // Arrange
 
           // Act
@@ -127,7 +115,7 @@ describe('core', () => {
           expect(order.domainEvents.length).toBe(1);
         });
 
-        it('both aggregate roots should be different', () => {
+        it('create two aggregate root instances with different id and compare them using "equals" should return false', () => {
           // Arrange
 
           // Act
@@ -144,35 +132,7 @@ describe('core', () => {
           expect(result).toBe(false);
         });
 
-        it('both aggregate roots should be different', () => {
-          // Arrange
-
-          // Act
-          const id = 'id';
-          const uniqueId = UniqueId.create(id);
-          const price = 20;
-          const order = OrderAggregateRoot.create(uniqueId, price);
-          const result = order.equals(undefined);
-
-          // Assert
-          expect(result).toBe(false);
-        });
-
-        it('both aggregate roots should be different', () => {
-          // Arrange
-
-          // Act
-          const id = 'id';
-          const uniqueId = UniqueId.create(id);
-          const price = 20;
-          const order = OrderAggregateRoot.create(uniqueId, price);
-          const result = order.equals(null);
-
-          // Assert
-          expect(result).toBe(false);
-        });
-
-        it('both aggregate roots should be equal', () => {
+        it('create two aggregate root instances with the same id and compare them using "equals" should return true', () => {
           // Arrange
 
           // Act

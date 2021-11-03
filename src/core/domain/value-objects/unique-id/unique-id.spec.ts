@@ -4,7 +4,7 @@ describe('core', () => {
   describe('domain', () => {
     describe('value-objects', () => {
       describe('unique-id', () => {
-        it('create UniqueId from undefined should throw error', () => {
+        it('should throw an error when trying to create a UniqueId from undefined', () => {
           // Arrange
 
           // Act
@@ -13,7 +13,7 @@ describe('core', () => {
           expect(() => UniqueId.create(undefined)).toThrowError('Invalid id');
         });
 
-        it('create UniqueId from null should throw error', () => {
+        it('should throw an error when trying to create a UniqueId from null', () => {
           // Arrange
 
           // Act
@@ -22,7 +22,7 @@ describe('core', () => {
           expect(() => UniqueId.create(null)).toThrowError('Invalid id');
         });
 
-        it('create UniqueId from an empty string should throw error', () => {
+        it('should throw an error when trying to create a UniqueId from an empty string', () => {
           // Arrange
 
           // Act
@@ -31,7 +31,7 @@ describe('core', () => {
           expect(() => UniqueId.create('')).toThrowError('Invalid id');
         });
 
-        it('should create a valid UniqueId', () => {
+        it('should create an UniqueId instance and should store the value', () => {
           // Arrange
 
           // Act
@@ -42,7 +42,7 @@ describe('core', () => {
           expect(uniqueId.getId).toBe(id);
         });
 
-        it('create two UniqueId instances from different ids and compare them using "equals" should return false', () => {
+        it('create two UniqueId instances with different value and compare them using "equals" should return false', () => {
           // Arrange
 
           // Act
@@ -56,7 +56,7 @@ describe('core', () => {
           expect(result).toBe(false);
         });
 
-        it('create two UniqueId instances with the same id and compare them using "equals" should return true', () => {
+        it('create two UniqueId instances with the same value and compare them using "equals" should return true', () => {
           // Arrange
 
           // Act

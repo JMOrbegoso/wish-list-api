@@ -3,7 +3,7 @@ import { deepEqual } from './deepEqual';
 describe('core', () => {
   describe('helpers', () => {
     describe('deepEqual', () => {
-      it('should throw error', () => {
+      it('comparing undefineds should throw error', () => {
         // Arrange
 
         // Act
@@ -12,7 +12,7 @@ describe('core', () => {
         expect(() => deepEqual(undefined, undefined)).toThrowError();
       });
 
-      it('should throw error', () => {
+      it('comparing an undefined and a null should throw error', () => {
         // Arrange
 
         // Act
@@ -21,7 +21,16 @@ describe('core', () => {
         expect(() => deepEqual(undefined, null)).toThrowError();
       });
 
-      it('should throw error', () => {
+      it('comparing a null and an undefined should throw error', () => {
+        // Arrange
+
+        // Act
+
+        // Assert
+        expect(() => deepEqual(null, undefined)).toThrowError();
+      });
+
+      it('comparing nulls should throw error', () => {
         // Arrange
 
         // Act
@@ -30,7 +39,7 @@ describe('core', () => {
         expect(() => deepEqual(null, null)).toThrowError();
       });
 
-      it('should return true', () => {
+      it('comparing two empty objects should return true', () => {
         // Arrange
         const object_1 = {};
         const object_2 = {};
@@ -42,7 +51,7 @@ describe('core', () => {
         expect(result).toBe(true);
       });
 
-      it('should return true', () => {
+      it('comparing two equal objects should return true', () => {
         // Arrange
         const object_1 = { value: 1 };
         const object_2 = { value: 1 };
@@ -54,7 +63,7 @@ describe('core', () => {
         expect(result).toBe(true);
       });
 
-      it('should return true', () => {
+      it('comparing two equal objects should return true', () => {
         // Arrange
         const object_1 = { firstName: 'Jhon', lastName: 'Doe' };
         const object_2 = { firstName: 'Jhon', lastName: 'Doe' };
@@ -66,7 +75,7 @@ describe('core', () => {
         expect(result).toBe(true);
       });
 
-      it('should return true', () => {
+      it('comparing two equal objects should return true', () => {
         // Arrange
         const object_1 = { firstName: 'Jhon', lastName: 'Doe', age: 25 };
         const object_2 = { firstName: 'Jhon', lastName: 'Doe', age: 25 };
@@ -78,7 +87,7 @@ describe('core', () => {
         expect(result).toBe(true);
       });
 
-      it('should return true', () => {
+      it('comparing two equal objects (with an array nested) should return true', () => {
         // Arrange
         const object_1 = { names: ['Jhon', 'Doe'], age: 25 };
         const object_2 = { names: ['Jhon', 'Doe'], age: 25 };
@@ -90,7 +99,7 @@ describe('core', () => {
         expect(result).toBe(true);
       });
 
-      it('should return true', () => {
+      it('comparing two equal objects (with an object nested) should return true', () => {
         // Arrange
         const object_1 = {
           fullName: { firstName: 'Jhon', lastName: 'Doe' },
@@ -108,7 +117,7 @@ describe('core', () => {
         expect(result).toBe(true);
       });
 
-      it('should return false', () => {
+      it('comparing two different objects should return false', () => {
         // Arrange
         const object_1 = { value: 1 };
         const object_2 = { value: 2 };
@@ -120,7 +129,7 @@ describe('core', () => {
         expect(result).toBe(false);
       });
 
-      it('should return false', () => {
+      it('comparing two different objects should return false', () => {
         // Arrange
         const object_1 = { firstName: 'Jhon', lastName: 'Doe' };
         const object_2 = { firstName: 'Jhon' };
@@ -132,7 +141,7 @@ describe('core', () => {
         expect(result).toBe(false);
       });
 
-      it('should return false', () => {
+      it('comparing two different objects should return false', () => {
         // Arrange
         const object_1 = { firstName: 'Jhon', lastName: 'Doe', age: 25 };
         const object_2 = { firstName: 'Jhon', lastName: 'Doe' };
@@ -144,7 +153,7 @@ describe('core', () => {
         expect(result).toBe(false);
       });
 
-      it('should return false', () => {
+      it('comparing two different objects (with an array nested) should return false', () => {
         // Arrange
         const object_1 = { names: ['Jhon', 'Doe'], age: 25 };
         const object_2 = { names: ['Jhon'], age: 25 };
@@ -156,7 +165,7 @@ describe('core', () => {
         expect(result).toBe(false);
       });
 
-      it('should return false', () => {
+      it('comparing two different objects (with an object nested) should return false', () => {
         // Arrange
         const object_1 = {
           fullName: { firstName: 'Jhon', lastName: 'Doe' },

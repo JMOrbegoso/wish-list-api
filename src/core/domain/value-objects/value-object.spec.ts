@@ -18,7 +18,29 @@ describe('core', () => {
           }
         }
 
-        it('should throw error on validation', () => {
+        it('should throw an error when trying to create a NameValueObject from undefined', () => {
+          // Arrange
+
+          // Act
+
+          // Assert
+          expect(() => NameValueObject.create(undefined)).toThrowError(
+            'Invalid name',
+          );
+        });
+
+        it('should throw an error when trying to create a NameValueObject from null', () => {
+          // Arrange
+
+          // Act
+
+          // Assert
+          expect(() => NameValueObject.create(null)).toThrowError(
+            'Invalid name',
+          );
+        });
+
+        it('should throw an error when trying to create a NameValueObject from an empty text', () => {
           // Arrange
 
           // Act
@@ -27,7 +49,7 @@ describe('core', () => {
           expect(() => NameValueObject.create('')).toThrowError('Invalid name');
         });
 
-        it('created value object should store the value', () => {
+        it('should create a NameValueObject instance and should store the value', () => {
           // Arrange
 
           // Act
@@ -38,7 +60,7 @@ describe('core', () => {
           expect(nameValueObject.getName).toBe(name);
         });
 
-        it('both value objects should be different', () => {
+        it('create two NameValueObject instances with different value and compare them using "equals" should return false', () => {
           // Arrange
 
           // Act
@@ -52,7 +74,7 @@ describe('core', () => {
           expect(result).toBe(false);
         });
 
-        it('both value objects should be different', () => {
+        it('compare a NameValueObject instance with undefined using "equals" should return false', () => {
           // Arrange
 
           // Act
@@ -64,7 +86,7 @@ describe('core', () => {
           expect(result).toBe(false);
         });
 
-        it('both value objects should be different', () => {
+        it('compare a NameValueObject instance with null using "equals" should return false', () => {
           // Arrange
 
           // Act
@@ -76,7 +98,7 @@ describe('core', () => {
           expect(result).toBe(false);
         });
 
-        it('both value objects should be equal', () => {
+        it('create two NameValueObject instances with the same value and compare them using "equals" should return true', () => {
           // Arrange
 
           // Act

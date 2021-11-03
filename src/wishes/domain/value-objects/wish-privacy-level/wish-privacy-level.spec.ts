@@ -4,7 +4,7 @@ describe('wishes', () => {
   describe('domain', () => {
     describe('value-objects', () => {
       describe('wish-privacy-level', () => {
-        it('should throw error on validation', () => {
+        it('should throw an error when trying to create a WishPrivacyLevel from undefined', () => {
           // Arrange
 
           // Act
@@ -15,7 +15,7 @@ describe('wishes', () => {
           );
         });
 
-        it('should throw error on validation', () => {
+        it('should throw an error when trying to create a WishPrivacyLevel from null', () => {
           // Arrange
 
           // Act
@@ -26,7 +26,7 @@ describe('wishes', () => {
           );
         });
 
-        it('should throw error on validation', () => {
+        it('should throw an error when trying to create a WishPrivacyLevel from an invalid index', () => {
           // Arrange
 
           // Act
@@ -37,7 +37,7 @@ describe('wishes', () => {
           );
         });
 
-        it('should create a public privacy level', () => {
+        it('should create a WishPrivacyLevel with public privacy level', () => {
           // Arrange
 
           // Act
@@ -49,7 +49,7 @@ describe('wishes', () => {
           );
         });
 
-        it('should create a justFriends privacy level', () => {
+        it('should create a WishPrivacyLevel with justFriends privacy level', () => {
           // Arrange
 
           // Act
@@ -61,7 +61,7 @@ describe('wishes', () => {
           );
         });
 
-        it('should create a onlyMe privacy level', () => {
+        it('should create a WishPrivacyLevel with onlyMe privacy level', () => {
           // Arrange
 
           // Act
@@ -73,7 +73,7 @@ describe('wishes', () => {
           );
         });
 
-        it('should create a public privacy level using the function create', () => {
+        it('should create a WishPrivacyLevel with public privacy level using the function create', () => {
           // Arrange
 
           // Act
@@ -87,7 +87,7 @@ describe('wishes', () => {
           );
         });
 
-        it('should create a justFriends privacy level using the function create', () => {
+        it('should create a WishPrivacyLevel with justFriends privacy level using the function create', () => {
           // Arrange
 
           // Act
@@ -101,7 +101,7 @@ describe('wishes', () => {
           );
         });
 
-        it('should create a onlyMe privacy level using the function create', () => {
+        it('should create a WishPrivacyLevel with onlyMe privacy level using the function create', () => {
           // Arrange
 
           // Act
@@ -113,6 +113,38 @@ describe('wishes', () => {
           expect(onlyMeWishPrivacyLevel.getPrivacyLevel).toBe(
             PrivacyLevel.OnlyMe,
           );
+        });
+
+        it('create two WishPrivacyLevel instances with different value and compare them using "equals" should return false', () => {
+          // Arrange
+
+          // Act
+          const justFriendsWishPrivacyLevel = WishPrivacyLevel.justFriends();
+          const onlyMeWishPrivacyLevel = WishPrivacyLevel.create(
+            PrivacyLevel.OnlyMe,
+          );
+          const result = justFriendsWishPrivacyLevel.equals(
+            onlyMeWishPrivacyLevel,
+          );
+
+          // Assert
+          expect(result).toBe(false);
+        });
+
+        it('create two WishPrivacyLevel instances with the same value and compare them using "equals" should return true', () => {
+          // Arrange
+
+          // Act
+          const publicWishPrivacyLevel_1 = WishPrivacyLevel.public();
+          const publicWishPrivacyLevel_2 = WishPrivacyLevel.create(
+            PrivacyLevel.Public,
+          );
+          const result = publicWishPrivacyLevel_1.equals(
+            publicWishPrivacyLevel_2,
+          );
+
+          // Assert
+          expect(result).toBe(true);
         });
       });
     });

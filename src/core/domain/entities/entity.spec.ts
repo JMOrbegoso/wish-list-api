@@ -23,7 +23,7 @@ describe('core', () => {
           }
         }
 
-        it('created product entity should store the values', () => {
+        it('should create an entity instance and should store the values', () => {
           // Arrange
 
           // Act
@@ -37,7 +37,7 @@ describe('core', () => {
           expect(product.price).toBe(price);
         });
 
-        it('both entities should be different', () => {
+        it('create two entity instances with different id and compare them using "equals" should return false', () => {
           // Arrange
 
           // Act
@@ -54,35 +54,7 @@ describe('core', () => {
           expect(result).toBe(false);
         });
 
-        it('both entities should be different', () => {
-          // Arrange
-
-          // Act
-          const id = 'id';
-          const uniqueId = UniqueId.create(id);
-          const price = 20;
-          const product = ProductEntity.create(uniqueId, price);
-          const result = product.equals(undefined);
-
-          // Assert
-          expect(result).toBe(false);
-        });
-
-        it('both entities should be different', () => {
-          // Arrange
-
-          // Act
-          const id = 'id';
-          const uniqueId = UniqueId.create(id);
-          const price = 20;
-          const product = ProductEntity.create(uniqueId, price);
-          const result = product.equals(null);
-
-          // Assert
-          expect(result).toBe(false);
-        });
-
-        it('both entities should be equal', () => {
+        it('create two entity instances with the same id and compare them using "equals" should return true', () => {
           // Arrange
 
           // Act

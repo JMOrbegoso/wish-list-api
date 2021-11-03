@@ -4,7 +4,7 @@ describe('core', () => {
   describe('domain', () => {
     describe('value-objects', () => {
       describe('web-url', () => {
-        it('using "undefined" to create a WebUrl should throw error on validation', () => {
+        it('should throw an error when trying to create a WebUrl from undefined', () => {
           // Arrange
 
           // Act
@@ -13,7 +13,7 @@ describe('core', () => {
           expect(() => WebUrl.create(undefined)).toThrowError('Invalid url.');
         });
 
-        it('using "null" to create a WebUrl should throw error on validation', () => {
+        it('should throw an error when trying to create a WebUrl from null', () => {
           // Arrange
 
           // Act
@@ -22,7 +22,7 @@ describe('core', () => {
           expect(() => WebUrl.create(null)).toThrowError('Invalid url.');
         });
 
-        it('using an empty string to create a WebUrl should throw error on validation', () => {
+        it('should throw an error when trying to create a WebUrl from an empty string', () => {
           // Arrange
 
           // Act
@@ -31,7 +31,7 @@ describe('core', () => {
           expect(() => WebUrl.create('')).toThrowError('Invalid url.');
         });
 
-        it('using an invalid url to create a WebUrl should throw error on validation', () => {
+        it('should throw an error when trying to create a WebUrl from an invalid url', () => {
           // Arrange
 
           // Act
@@ -42,7 +42,7 @@ describe('core', () => {
           );
         });
 
-        it('using a valid url to create a WebUrl should create it and store the value', () => {
+        it('should create a WebUrl instance from a valid url and should store the value', () => {
           // Arrange
 
           // Act
@@ -53,20 +53,7 @@ describe('core', () => {
           expect(webUrl.getUrl).toBe(url);
         });
 
-        it('comparing two equals created WebUrl should be equal', () => {
-          // Arrange
-
-          // Act
-          const name = 'https://example.com';
-          const webUrl_1 = WebUrl.create(name);
-          const webUrl_2 = WebUrl.create(name);
-          const result = webUrl_1.equals(webUrl_2);
-
-          // Assert
-          expect(result).toBe(true);
-        });
-
-        it('comparing two different created WebUrl should be different', () => {
+        it('create two WebUrl instances with different value and compare them using "equals" should return false', () => {
           // Arrange
 
           // Act
@@ -78,6 +65,19 @@ describe('core', () => {
 
           // Assert
           expect(result).toBe(false);
+        });
+
+        it('create two WebUrl instances with the same value and compare them using "equals" should return true', () => {
+          // Arrange
+
+          // Act
+          const name = 'https://example.com';
+          const webUrl_1 = WebUrl.create(name);
+          const webUrl_2 = WebUrl.create(name);
+          const result = webUrl_1.equals(webUrl_2);
+
+          // Assert
+          expect(result).toBe(true);
         });
       });
     });

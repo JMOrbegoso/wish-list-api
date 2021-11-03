@@ -10,7 +10,7 @@ describe('wishes', () => {
   describe('domain', () => {
     describe('entities', () => {
       describe('wish-stage', () => {
-        it('should create a valid wish-stage entity and should store the values', () => {
+        it('should create a WishStage instance and should store the value', () => {
           // Arrange
 
           // Act
@@ -53,7 +53,7 @@ describe('wishes', () => {
           expect(wishStage.imageUrls[1].getUrl).toBe(imageUrls[1]);
         });
 
-        it('created wish-stage entities should be different because both have different unique id', () => {
+        it('create two WishStage instances with different ids and compare them using "equals" should return false', () => {
           // Arrange
 
           // Act
@@ -88,7 +88,7 @@ describe('wishes', () => {
           expect(result).toBe(false);
         });
 
-        it('created wish-stage entities should be equal because both have the same unique id', () => {
+        it('create two WishStage instances with the same value and compare them using "equals" should return true', () => {
           // Arrange
 
           // Act

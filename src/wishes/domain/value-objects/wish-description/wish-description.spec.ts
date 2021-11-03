@@ -4,7 +4,7 @@ describe('wishes', () => {
   describe('domain', () => {
     describe('value-objects', () => {
       describe('wish-description', () => {
-        it('should throw error on validation', () => {
+        it('should throw an error when trying to create a WishDescription from undefined', () => {
           // Arrange
 
           // Act
@@ -15,7 +15,7 @@ describe('wishes', () => {
           );
         });
 
-        it('should throw error on validation', () => {
+        it('should throw an error when trying to create a WishDescription from null', () => {
           // Arrange
 
           // Act
@@ -26,7 +26,7 @@ describe('wishes', () => {
           );
         });
 
-        it('should throw error on validation', () => {
+        it('should throw an error when trying to create a WishDescription from an empty string', () => {
           // Arrange
 
           // Act
@@ -37,7 +37,7 @@ describe('wishes', () => {
           );
         });
 
-        it('should throw error on validation', () => {
+        it('should throw an error when trying to create a WishDescription from an string with more characters than the limit', () => {
           // Arrange
 
           // Act
@@ -49,76 +49,52 @@ describe('wishes', () => {
           );
         });
 
-        it('created value object should store the value', () => {
+        it('should create a WishDescription instance from the largest valid string and should store the value', () => {
           // Arrange
 
           // Act
-          const largerValidDescription = 'a'.repeat(WishDescription.MaxLength);
+          const largestValidDescription = 'a'.repeat(WishDescription.MaxLength);
           const wishDescription = WishDescription.create(
-            largerValidDescription,
+            largestValidDescription,
           );
 
           // Assert
-          expect(wishDescription.getDescription).toBe(largerValidDescription);
+          expect(wishDescription.getDescription).toBe(largestValidDescription);
         });
 
-        it('created value object should store the value', () => {
+        it('should create a WishDescription instance and should store the value', () => {
           // Arrange
 
           // Act
-          const name = 'John';
-          const nameValueObject = WishDescription.create(name);
+          const description = 'Nice wish.';
+          const wishDescription = WishDescription.create(description);
 
           // Assert
-          expect(nameValueObject.getDescription).toBe(name);
+          expect(wishDescription.getDescription).toBe(description);
         });
 
-        it('both value objects should be different', () => {
+        it('create two WishDescription instances with different value and compare them using "equals" should return false', () => {
           // Arrange
 
           // Act
-          const name_1 = 'John';
-          const name_2 = 'Johnny';
-          const nameValueObject_1 = WishDescription.create(name_1);
-          const nameValueObject_2 = WishDescription.create(name_2);
-          const result = nameValueObject_1.equals(nameValueObject_2);
-
-          // Assert
-          expect(result).toBe(false);
-        });
-
-        it('both value objects should be different', () => {
-          // Arrange
-
-          // Act
-          const name = 'John';
-          const nameValueObject = WishDescription.create(name);
-          const result = nameValueObject.equals(undefined);
+          const description_1 = 'Nice wish.';
+          const description_2 = 'No so nice wish.';
+          const wishDescription_1 = WishDescription.create(description_1);
+          const wishDescription_2 = WishDescription.create(description_2);
+          const result = wishDescription_1.equals(wishDescription_2);
 
           // Assert
           expect(result).toBe(false);
         });
 
-        it('both value objects should be different', () => {
+        it('create two WishDescription instances with the same value and compare them using "equals" should return true', () => {
           // Arrange
 
           // Act
-          const name = 'John';
-          const nameValueObject = WishDescription.create(name);
-          const result = nameValueObject.equals(null);
-
-          // Assert
-          expect(result).toBe(false);
-        });
-
-        it('both value objects should be equal', () => {
-          // Arrange
-
-          // Act
-          const name = 'John';
-          const nameValueObject_1 = WishDescription.create(name);
-          const nameValueObject_2 = WishDescription.create(name);
-          const result = nameValueObject_1.equals(nameValueObject_2);
+          const description = 'Nice wish.';
+          const wishDescription_1 = WishDescription.create(description);
+          const wishDescription_2 = WishDescription.create(description);
+          const result = wishDescription_1.equals(wishDescription_2);
 
           // Assert
           expect(result).toBe(true);

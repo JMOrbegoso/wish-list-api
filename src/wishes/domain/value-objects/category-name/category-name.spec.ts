@@ -4,7 +4,7 @@ describe('wishes', () => {
   describe('domain', () => {
     describe('value-objects', () => {
       describe('category-name', () => {
-        it('should throw error on validation', () => {
+        it('should throw an error when trying to create a CategoryName from undefined', () => {
           // Arrange
 
           // Act
@@ -15,7 +15,7 @@ describe('wishes', () => {
           );
         });
 
-        it('should throw error on validation', () => {
+        it('should throw an error when trying to create a CategoryName from null', () => {
           // Arrange
 
           // Act
@@ -26,7 +26,7 @@ describe('wishes', () => {
           );
         });
 
-        it('should throw error on validation', () => {
+        it('should throw an error when trying to create a CategoryName from an empty string', () => {
           // Arrange
 
           // Act
@@ -37,63 +37,39 @@ describe('wishes', () => {
           );
         });
 
-        it('created value object should store the value', () => {
+        it('should create a CategoryName instance and should store the value', () => {
           // Arrange
 
           // Act
-          const name = 'John';
-          const nameValueObject = CategoryName.create(name);
+          const name = 'Tech';
+          const categoryName = CategoryName.create(name);
 
           // Assert
-          expect(nameValueObject.getName).toBe(name);
+          expect(categoryName.getName).toBe(name);
         });
 
-        it('both value objects should be different', () => {
+        it('create two CategoryName instances with different value and compare them using "equals" should return false', () => {
           // Arrange
 
           // Act
-          const name_1 = 'John';
-          const name_2 = 'Johnny';
-          const nameValueObject_1 = CategoryName.create(name_1);
-          const nameValueObject_2 = CategoryName.create(name_2);
-          const result = nameValueObject_1.equals(nameValueObject_2);
-
-          // Assert
-          expect(result).toBe(false);
-        });
-
-        it('both value objects should be different', () => {
-          // Arrange
-
-          // Act
-          const name = 'John';
-          const nameValueObject = CategoryName.create(name);
-          const result = nameValueObject.equals(undefined);
+          const name_1 = 'Tech';
+          const name_2 = 'Future';
+          const categoryName_1 = CategoryName.create(name_1);
+          const categoryName_2 = CategoryName.create(name_2);
+          const result = categoryName_1.equals(categoryName_2);
 
           // Assert
           expect(result).toBe(false);
         });
 
-        it('both value objects should be different', () => {
+        it('create two CategoryName instances with the same value and compare them using "equals" should return true', () => {
           // Arrange
 
           // Act
-          const name = 'John';
-          const nameValueObject = CategoryName.create(name);
-          const result = nameValueObject.equals(null);
-
-          // Assert
-          expect(result).toBe(false);
-        });
-
-        it('both value objects should be equal', () => {
-          // Arrange
-
-          // Act
-          const name = 'John';
-          const nameValueObject_1 = CategoryName.create(name);
-          const nameValueObject_2 = CategoryName.create(name);
-          const result = nameValueObject_1.equals(nameValueObject_2);
+          const name = 'Tech';
+          const categoryName_1 = CategoryName.create(name);
+          const categoryName_2 = CategoryName.create(name);
+          const result = categoryName_1.equals(categoryName_2);
 
           // Assert
           expect(result).toBe(true);
