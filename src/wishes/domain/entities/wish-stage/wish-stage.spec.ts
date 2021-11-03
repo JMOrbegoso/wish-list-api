@@ -21,7 +21,7 @@ describe('wishes', () => {
           const description = 'description';
           const wishDescription = WishDescription.create(description);
           const creationDateMilliseconds = Date.now();
-          const creationDate = MillisecondsDate.create(
+          const creationDate = MillisecondsDate.createFromMilliseconds(
             creationDateMilliseconds,
           );
           const urls = ['https://www.example.com', 'https://wwww.example.net'];
@@ -65,8 +65,7 @@ describe('wishes', () => {
           const wishTitle = WishTitle.create(title);
           const description = 'description';
           const wishDescription = WishDescription.create(description);
-          const milliseconds = Date.now();
-          const creationDate = MillisecondsDate.create(milliseconds);
+          const creationDate = MillisecondsDate.create();
 
           const wishStage_1 = WishStage.create(
             uniqueId_1,
@@ -100,8 +99,7 @@ describe('wishes', () => {
           const wishTitle_2 = WishTitle.create(title_2);
           const description = 'description';
           const wishDescription = WishDescription.create(description);
-          const milliseconds = Date.now();
-          const creationDate = MillisecondsDate.create(milliseconds);
+          const creationDate = MillisecondsDate.create();
 
           const wishStage_1 = WishStage.create(
             uniqueId,

@@ -27,7 +27,7 @@ describe('wishes', () => {
           const privacyLevel = PrivacyLevel.Public;
           const wishPrivacyLevel = WishPrivacyLevel.create(privacyLevel);
           const creationDateMilliseconds = Date.now();
-          const creationDate = MillisecondsDate.create(
+          const creationDate = MillisecondsDate.createFromMilliseconds(
             creationDateMilliseconds,
           );
 
@@ -64,10 +64,7 @@ describe('wishes', () => {
           const wishDescription = WishDescription.create(description);
           const privacyLevel = PrivacyLevel.Public;
           const wishPrivacyLevel = WishPrivacyLevel.create(privacyLevel);
-          const creationDateMilliseconds = Date.now();
-          const creationDate = MillisecondsDate.create(
-            creationDateMilliseconds,
-          );
+          const creationDate = MillisecondsDate.create();
 
           const wish_1 = Wish.create(
             uniqueId_1,
@@ -108,10 +105,7 @@ describe('wishes', () => {
           const wishDescription = WishDescription.create(description);
           const privacyLevel = PrivacyLevel.Public;
           const wishPrivacyLevel = WishPrivacyLevel.create(privacyLevel);
-          const creationDateMilliseconds = Date.now();
-          const creationDate = MillisecondsDate.create(
-            creationDateMilliseconds,
-          );
+          const creationDate = MillisecondsDate.create();
 
           const wish_1 = Wish.create(
             uniqueId,
