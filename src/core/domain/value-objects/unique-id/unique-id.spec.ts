@@ -4,37 +4,34 @@ describe('core', () => {
   describe('domain', () => {
     describe('value-objects', () => {
       describe('unique-id', () => {
-        it('should create a valid unique id', () => {
+        it('create UniqueId from undefined should throw error', () => {
           // Arrange
 
           // Act
-          const uniqueId = UniqueId.create(undefined);
 
           // Assert
-          expect(uniqueId.getId).not.toBeUndefined();
+          expect(() => UniqueId.create(undefined)).toThrowError('Invalid id');
         });
 
-        it('should create a valid unique id', () => {
+        it('create UniqueId from null should throw error', () => {
           // Arrange
 
           // Act
-          const uniqueId = UniqueId.create(null);
 
           // Assert
-          expect(uniqueId.getId).not.toBeNull();
+          expect(() => UniqueId.create(null)).toThrowError('Invalid id');
         });
 
-        it('should create a valid unique id', () => {
+        it('create UniqueId from an empty string should throw error', () => {
           // Arrange
 
           // Act
-          const uniqueId = UniqueId.create('');
 
           // Assert
-          expect(uniqueId.getId).not.toBeNull();
+          expect(() => UniqueId.create('')).toThrowError('Invalid id');
         });
 
-        it('should create a valid unique id', () => {
+        it('should create a valid UniqueId', () => {
           // Arrange
 
           // Act
@@ -45,31 +42,7 @@ describe('core', () => {
           expect(uniqueId.getId).toBe(id);
         });
 
-        it('both unique ids should be different', () => {
-          // Arrange
-
-          // Act
-          const id = 'id';
-          const uniqueId = UniqueId.create(id);
-          const result = uniqueId.equals(undefined);
-
-          // Assert
-          expect(result).toBe(false);
-        });
-
-        it('both unique ids should be different', () => {
-          // Arrange
-
-          // Act
-          const id = 'id';
-          const uniqueId = UniqueId.create(id);
-          const result = uniqueId.equals(null);
-
-          // Assert
-          expect(result).toBe(false);
-        });
-
-        it('both unique ids should be different', () => {
+        it('create two UniqueId instances from different ids and compare them using "equals" should return false', () => {
           // Arrange
 
           // Act
@@ -83,7 +56,7 @@ describe('core', () => {
           expect(result).toBe(false);
         });
 
-        it('both value objects should be equal', () => {
+        it('create two UniqueId instances with the same id and compare them using "equals" should return true', () => {
           // Arrange
 
           // Act

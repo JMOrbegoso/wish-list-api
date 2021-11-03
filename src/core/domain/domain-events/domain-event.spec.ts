@@ -23,25 +23,27 @@ describe('core', () => {
 
         it('created domain event should save values', () => {
           // Arrange
-          const id = UniqueId.create();
+          const id = 'id';
+          const uniqueId = UniqueId.create(id);
           const productName = 'product name';
 
           // Act
-          const domainEvent = new ProductCreated(id, productName);
+          const domainEvent = new ProductCreated(uniqueId, productName);
 
           // Assert
-          expect(domainEvent.id.getId).toBe(id.getId);
+          expect(domainEvent.id.getId).toBe(uniqueId.getId);
           expect(domainEvent.name).toBe(productName);
         });
 
         it('creation date should be valid', () => {
           // Arrange
           const creationDate = new Date();
-          const id = UniqueId.create();
+          const id = 'id';
+          const uniqueId = UniqueId.create(id);
           const productName = 'product name';
 
           // Act
-          const domainEvent = new ProductCreated(id, productName);
+          const domainEvent = new ProductCreated(uniqueId, productName);
 
           // Assert
           expect(domainEvent.createdAt.getUTCDate()).toBeCloseTo(
