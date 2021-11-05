@@ -1,7 +1,7 @@
 import { UserRepository } from '../../../auth/domain/repositories';
 
-export interface UnitOfWork {
+export abstract class UnitOfWork {
   userRepository: UserRepository;
 
-  commitChanges(): Promise<void>;
+  abstract commitChanges(): Promise<void>;
 }
