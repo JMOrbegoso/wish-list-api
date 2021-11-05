@@ -17,6 +17,7 @@ import {
   UserName,
 } from '../../../auth/domain/value-objects';
 import { CreateUserDto } from '../dtos';
+import { CreateUserCommand } from '../../../auth/application/command';
 
 export function toUser(userEntity: UserEntity): User {
   const id = UniqueId.create(userEntity.id);
@@ -78,7 +79,7 @@ export function toUserEntity(user: User): UserEntity {
   return userEntity;
 }
 
-export function toNewUser(dto: CreateUserDto): User {
+export function toCreateUserCommand(dto: CreateUserDto): CreateUserCommand {
   const id = UniqueId.create(new ObjectId().toString());
   const email = Email.create(dto.email);
   const userName = UserName.create(dto.userName);
@@ -94,7 +95,7 @@ export function toNewUser(dto: CreateUserDto): User {
     ? WebUrl.create(dto.profilePicture)
     : null;
 
-  const user = User.create(
+  return new CreateUserCommand(
     id,
     email,
     userName,
@@ -107,10 +108,7 @@ export function toNewUser(dto: CreateUserDto): User {
     updatedAt,
     biography,
     profilePicture,
-    null,
   );
-
-  return user;
 }
 
 function encryptPassword(password: string): string {

@@ -11,7 +11,7 @@ import {
   UserName,
 } from '../../../auth/domain/value-objects';
 import { CreateUserDto } from '../dtos';
-import { toNewUser, toUser, toUserEntity } from '.';
+import { toCreateUserCommand, toUser, toUserEntity } from '.';
 
 describe('auth', () => {
   describe('infrastructure', () => {
@@ -114,8 +114,8 @@ describe('auth', () => {
         });
       });
 
-      describe('map CreateUserDto to User', () => {
-        it('should map CreateUserDto to new User keeping all the property values', () => {
+      describe('map CreateUserDto to CreateUserCommand', () => {
+        it('should map CreateUserDto to a CreateUserCommand keeping all the property values', () => {
           // Arrange
           const dto = new CreateUserDto();
           dto.email = email;
@@ -128,22 +128,21 @@ describe('auth', () => {
           dto.profilePicture = null;
 
           // Act
-          const user = toNewUser(dto);
+          const command = toCreateUserCommand(dto);
 
           // Assert
-          expect(user.id.getId).not.toBeNull();
-          expect(user.email.getEmail).toBe(email);
-          expect(user.userName.getUserName).toBe(username);
-          expect(user.passwordHash.getPasswordHash).not.toBeNull();
-          expect(user.isVerified.getStatus).toBe(false);
-          expect(user.firstName.getFirstName).toBe(firstNameText);
-          expect(user.lastName.getLastName).toBe(lastNameText);
-          expect(user.birthday.getMilliseconds).toBe(birthDateMilliseconds);
-          expect(user.createdAt.getMilliseconds).not.toBeNull();
-          expect(user.updatedAt.getMilliseconds).not.toBeNull();
-          expect(user.biography.getBiography).toBe(bio);
-          expect(user.profilePicture).toBeNull();
-          expect(user.deletedAt).toBeNull();
+          expect(command.id.getId).not.toBeNull();
+          expect(command.email.getEmail).toBe(email);
+          expect(command.userName.getUserName).toBe(username);
+          expect(command.passwordHash.getPasswordHash).not.toBeNull();
+          expect(command.isVerified.getStatus).toBe(false);
+          expect(command.firstName.getFirstName).toBe(firstNameText);
+          expect(command.lastName.getLastName).toBe(lastNameText);
+          expect(command.birthday.getMilliseconds).toBe(birthDateMilliseconds);
+          expect(command.createdAt.getMilliseconds).not.toBeNull();
+          expect(command.updatedAt.getMilliseconds).not.toBeNull();
+          expect(command.biography.getBiography).toBe(bio);
+          expect(command.profilePicture).toBeNull();
         });
       });
     });
