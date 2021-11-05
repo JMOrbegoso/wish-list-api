@@ -2,14 +2,14 @@ import { Injectable } from '@nestjs/common';
 import { MikroORM, UnitOfWork as MikroOrmUnitOfWork } from '@mikro-orm/core';
 import { UnitOfWork } from '../../domain/repositories';
 import { UserEntity } from '../../../auth/infrastructure/persistence/entities';
-import { UserMongoDbRepository } from '../../../auth/infrastructure/persistence/repositories';
+import { UserRepository } from '../../../auth/domain/repositories';
 
 @Injectable()
 export class UnitOfWorkMongoDb
   extends MikroOrmUnitOfWork
   implements UnitOfWork
 {
-  public userRepository: UserMongoDbRepository;
+  public userRepository: UserRepository;
 
   constructor(private readonly orm: MikroORM) {
     super(orm.em);
