@@ -1,4 +1,4 @@
-import { User } from '../../../auth/domain/entities';
+import { User } from '../../domain/entities';
 import { UserEntity } from '../persistence/entities';
 import { UniqueId, MillisecondsDate } from '../../../core/domain/value-objects';
 import {
@@ -9,11 +9,11 @@ import {
   LastName,
   PasswordHash,
   UserName,
-} from '../../../auth/domain/value-objects';
+} from '../../domain/value-objects';
 import { CreateUserDto } from '../dtos';
 import { toCreateUserCommand, toUser, toUserEntity } from '.';
 
-describe('auth', () => {
+describe('users', () => {
   describe('infrastructure', () => {
     describe('mappings', () => {
       const id = 'id';

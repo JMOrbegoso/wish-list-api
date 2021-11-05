@@ -1,6 +1,6 @@
 import { FirstName } from '..';
 
-describe('auth', () => {
+describe('users', () => {
   describe('domain', () => {
     describe('value-objects', () => {
       describe('first-name', () => {

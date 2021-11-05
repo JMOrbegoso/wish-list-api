@@ -11,7 +11,7 @@ import {
   FirstName,
   LastName,
   Biography,
-} from '../../../auth/domain/value-objects';
+} from '../../domain/value-objects';
 
 export class CreateUserCommand {
   constructor(

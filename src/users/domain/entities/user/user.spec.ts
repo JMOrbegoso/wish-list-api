@@ -13,7 +13,7 @@ import {
   Biography,
 } from '../../value-objects';
 
-describe('auth', () => {
+describe('users', () => {
   describe('domain', () => {
     describe('entities', () => {
       describe('user', () => {

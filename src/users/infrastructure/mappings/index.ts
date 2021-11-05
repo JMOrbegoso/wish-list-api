@@ -1,6 +1,6 @@
 import { ObjectId } from '@mikro-orm/mongodb';
 import { genSaltSync, hashSync as hashPasswordSync } from 'bcrypt';
-import { User } from '../../../auth/domain/entities';
+import { User } from '../../domain/entities';
 import { UserEntity } from '../persistence/entities';
 import {
   UniqueId,
@@ -15,9 +15,9 @@ import {
   LastName,
   PasswordHash,
   UserName,
-} from '../../../auth/domain/value-objects';
+} from '../../domain/value-objects';
 import { CreateUserDto } from '../dtos';
-import { CreateUserCommand } from '../../../auth/application/command';
+import { CreateUserCommand } from '../../application/command';
 
 export function toUser(userEntity: UserEntity): User {
   const id = UniqueId.create(userEntity.id);

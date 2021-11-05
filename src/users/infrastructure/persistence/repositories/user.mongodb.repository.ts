@@ -7,7 +7,7 @@ import { User } from '../../../domain/entities';
 import { UserEntity } from '../entities';
 import { toUser, toUserEntity } from '../../mappings';
 import { UniqueId } from '../../../../core/domain/value-objects';
-import { UserName } from '../../../../auth/domain/value-objects';
+import { UserName } from '../../../domain/value-objects';
 
 @MikroOrmRepository(UserEntity)
 export class UserMongoDbRepository

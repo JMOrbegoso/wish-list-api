@@ -1,4 +1,4 @@
-import { UserRepository } from '../../../auth/domain/repositories';
+import { UserRepository } from '../../../users/domain/repositories';
 
 export abstract class UnitOfWork {
   userRepository: UserRepository;
