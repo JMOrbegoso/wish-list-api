@@ -117,15 +117,16 @@ describe('auth', () => {
       describe('map CreateUserDto to CreateUserCommand', () => {
         it('should map CreateUserDto to a CreateUserCommand keeping all the property values', () => {
           // Arrange
-          const dto = new CreateUserDto();
-          dto.email = email;
-          dto.userName = username;
-          dto.password = password;
-          dto.firstName = firstNameText;
-          dto.lastName = lastNameText;
-          dto.birthday = birthDateMilliseconds;
-          dto.biography = bio;
-          dto.profilePicture = null;
+          const dto: CreateUserDto = {
+            email: email,
+            userName: username,
+            password: password,
+            firstName: firstNameText,
+            lastName: lastNameText,
+            birthday: birthDateMilliseconds,
+            biography: bio,
+            profilePicture: null,
+          };
 
           // Act
           const command = toCreateUserCommand(dto);
