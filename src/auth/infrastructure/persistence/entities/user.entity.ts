@@ -1,13 +1,17 @@
 import {
   Entity,
+  EntityRepositoryType,
   PrimaryKey,
   Property,
   SerializedPrimaryKey,
 } from '@mikro-orm/core';
 import { ObjectId } from '@mikro-orm/mongodb';
+import { UserMongoDbRepository } from '../repositories';
 
 @Entity({ collection: 'users' })
 export class UserEntity {
+  [EntityRepositoryType]?: UserMongoDbRepository;
+
   @PrimaryKey()
   _id: ObjectId;
 
