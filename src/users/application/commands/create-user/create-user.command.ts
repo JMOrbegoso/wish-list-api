@@ -2,7 +2,7 @@ import {
   UniqueId,
   MillisecondsDate,
   WebUrl,
-} from '../../../core/domain/value-objects';
+} from '../../../../core/domain/value-objects';
 import {
   Email,
   UserName,
@@ -11,7 +11,7 @@ import {
   FirstName,
   LastName,
   Biography,
-} from '../../domain/value-objects';
+} from '../../../domain/value-objects';
 
 export class CreateUserCommand {
   constructor(
