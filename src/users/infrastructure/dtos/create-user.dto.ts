@@ -46,7 +46,7 @@ export class CreateUserDto {
     type: String,
     required: true,
     description: 'Password of the new user.',
-    example: 'password',
+    example: 'Pa$$w0rd',
   })
   @IsString()
   @IsNotEmpty()
