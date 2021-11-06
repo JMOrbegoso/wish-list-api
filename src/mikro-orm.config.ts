@@ -16,6 +16,7 @@ const mikroOrmConfig: MikroOrmOptions = {
   password: process.env.DB_PASSWORD,
   dbName: process.env.DB_DATABASE,
   port: parseInt(process.env.DB_PORT),
+  ensureIndexes: true,
 };
 
 export default mikroOrmConfig;

@@ -3,6 +3,7 @@ import {
   EntityRepositoryType,
   PrimaryKey,
   SerializedPrimaryKey,
+  Unique,
   Property,
 } from '@mikro-orm/core';
 import { ObjectId } from '@mikro-orm/mongodb';
@@ -18,15 +19,19 @@ export class UserEntity {
   @SerializedPrimaryKey()
   id!: string;
 
+  @Unique()
   @Property()
   email: string;
 
+  @Unique()
   @Property()
   normalizedEmail: string;
 
+  @Unique()
   @Property()
   userName: string;
 
+  @Unique()
   @Property()
   normalizedUserName: string;
 
