@@ -9,9 +9,8 @@ export class GetUserByIdHandler implements IQueryHandler<GetUserByIdQuery> {
   constructor(private readonly unitOfWork: UnitOfWork) {}
 
   async execute(query: GetUserByIdQuery): Promise<User> {
-    const { id } = query;
-    const uniqueId = UniqueId.create(id);
+    const id = UniqueId.create(query.id);
 
-    return await this.unitOfWork.userRepository.getOne(uniqueId);
+    return await this.unitOfWork.userRepository.getOne(id);
   }
 }
