@@ -17,7 +17,7 @@ import {
   UserName,
 } from '../../domain/value-objects';
 import { CreateUserDto } from '../dtos';
-import { CreateUserCommand } from '../../application/command';
+import { CreateUserCommand } from '../../application/commands';
 
 export function toUser(userEntity: UserEntity): User {
   const id = UniqueId.create(userEntity.id);
