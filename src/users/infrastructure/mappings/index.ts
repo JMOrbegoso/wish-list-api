@@ -86,37 +86,25 @@ export function toUserEntity(user: User): UserEntity {
 }
 
 export function toCreateUserCommand(dto: CreateUserDto): CreateUserCommand {
-  const id = UniqueId.create(new ObjectId().toString());
-  const email = Email.create(dto.email);
-  const userName = UserName.create(dto.userName);
-  const passwordHash = PasswordHash.create(encryptPassword(dto.password));
-  const isVerified = IsVerified.notVerified();
-  const isBlocked = IsBlocked.notBlocked();
-  const firstName = FirstName.create(dto.firstName);
-  const lastName = LastName.create(dto.lastName);
-  const birthday = MillisecondsDate.createFromMilliseconds(dto.birthday);
-  const createdAt = MillisecondsDate.create();
-  const updatedAt = createdAt;
-  const biography = dto.biography ? Biography.create(dto.biography) : null;
-  const profilePicture = dto.profilePicture
-    ? WebUrl.create(dto.profilePicture)
-    : null;
+  const id = generateMongoDbObjectId();
+  const passwordHash = encryptPassword(dto.password);
 
   return new CreateUserCommand(
     id,
-    email,
-    userName,
+    dto.email,
+    dto.userName,
     passwordHash,
-    isVerified,
-    isBlocked,
-    firstName,
-    lastName,
-    birthday,
-    createdAt,
-    updatedAt,
-    biography,
-    profilePicture,
+    dto.firstName,
+    dto.lastName,
+    dto.birthday,
+    dto.biography,
+    dto.profilePicture,
   );
+}
+
+function generateMongoDbObjectId(): string {
+  const objectId = new ObjectId();
+  return objectId.toString();
 }
 
 function encryptPassword(password: string): string {

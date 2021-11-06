@@ -141,18 +141,14 @@ describe('users', () => {
           const command = toCreateUserCommand(dto);
 
           // Assert
-          expect(command.id.getId).not.toBeNull();
-          expect(command.email.getEmail).toBe(email);
-          expect(command.userName.getUserName).toBe(username);
-          expect(command.passwordHash.getPasswordHash).not.toBeNull();
-          expect(command.isVerified.getStatus).toBe(false);
-          expect(command.isBlocked.getStatus).toBe(false);
-          expect(command.firstName.getFirstName).toBe(firstNameText);
-          expect(command.lastName.getLastName).toBe(lastNameText);
-          expect(command.birthday.getMilliseconds).toBe(birthDateMilliseconds);
-          expect(command.createdAt.getMilliseconds).not.toBeNull();
-          expect(command.updatedAt.getMilliseconds).not.toBeNull();
-          expect(command.biography.getBiography).toBe(bio);
+          expect(command.id).not.toBeNull();
+          expect(command.email).toBe(email);
+          expect(command.userName).toBe(username);
+          expect(command.passwordHash).not.toBeNull();
+          expect(command.firstName).toBe(firstNameText);
+          expect(command.lastName).toBe(lastNameText);
+          expect(command.birthday).toBe(birthDateMilliseconds);
+          expect(command.biography).toBe(bio);
           expect(command.profilePicture).toBeNull();
         });
       });
