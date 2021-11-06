@@ -7,10 +7,13 @@ import {
   IsNotEmpty,
   IsOptional,
   MaxLength,
+  MinLength,
   IsPositive,
+  Matches,
 } from 'class-validator';
 import {
   UserName,
+  Password,
   FirstName,
   LastName,
   Biography,
@@ -47,6 +50,12 @@ export class CreateUserDto {
   })
   @IsString()
   @IsNotEmpty()
+  @MaxLength(Password.MaxLength)
+  @MinLength(Password.MinLength)
+  @Matches(Password.Regex, {
+    message:
+      'The password must have at least one number, one capital letter, and one symbol.',
+  })
   password: string;
 
   @ApiProperty({
