@@ -2,8 +2,8 @@ import {
   Entity,
   EntityRepositoryType,
   PrimaryKey,
-  Property,
   SerializedPrimaryKey,
+  Property,
 } from '@mikro-orm/core';
 import { ObjectId } from '@mikro-orm/mongodb';
 import { UserMongoDbRepository } from '../repositories';
@@ -45,12 +45,12 @@ export class UserEntity {
   @Property()
   updatedAt: Date;
 
-  @Property()
+  @Property({ nullable: true })
   biography?: string;
 
-  @Property()
+  @Property({ nullable: true })
   profilePicture?: string;
 
-  @Property()
+  @Property({ nullable: true })
   deletedAt?: Date;
 }
