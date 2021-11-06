@@ -22,7 +22,13 @@ export class UserEntity {
   email: string;
 
   @Property()
+  normalizedEmail: string;
+
+  @Property()
   userName: string;
+
+  @Property()
+  normalizedUserName: string;
 
   @Property()
   passwordHash: string;

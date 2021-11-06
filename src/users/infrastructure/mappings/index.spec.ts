@@ -12,13 +12,14 @@ import {
 } from '../../domain/value-objects';
 import { CreateUserDto } from '../dtos';
 import { toCreateUserCommand, toUser, toUserEntity } from '.';
+import { normalizeString } from '../../../core/helpers';
 
 describe('users', () => {
   describe('infrastructure', () => {
     describe('mappings', () => {
       const id = 'id';
-      const email = 'john@doe.com';
-      const username = 'john_doe';
+      const email = 'john@DOE.com';
+      const username = 'John_Doe';
       const password = 'password';
       const hash = 'password hash';
       const verificationStatus = true;
@@ -104,7 +105,9 @@ describe('users', () => {
           // Assert
           expect(userEntity.id).toBe(id);
           expect(userEntity.email).toBe(email);
+          expect(userEntity.normalizedEmail).toBe(normalizeString(email));
           expect(userEntity.userName).toBe(username);
+          expect(userEntity.normalizedUserName).toBe(normalizeString(username));
           expect(userEntity.passwordHash).toBe(hash);
           expect(userEntity.isVerified).toBe(verificationStatus);
           expect(userEntity.firstName).toBe(firstNameText);

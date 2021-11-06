@@ -64,7 +64,9 @@ export function toUserEntity(user: User): UserEntity {
 
   userEntity.id = user.id.getId;
   userEntity.email = user.email.getEmail;
+  userEntity.normalizedEmail = user.email.getNormalizedEmail;
   userEntity.userName = user.userName.getUserName;
+  userEntity.normalizedUserName = user.userName.getNormalizedUserName;
   userEntity.passwordHash = user.passwordHash.getPasswordHash;
   userEntity.isVerified = user.isVerified.getStatus;
   userEntity.firstName = user.firstName.getFirstName;

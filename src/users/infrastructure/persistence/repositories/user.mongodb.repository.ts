@@ -16,7 +16,7 @@ export class UserMongoDbRepository
 {
   async getOneByEmail(email: Email): Promise<User> {
     const userEntity = await this.findOne({
-      email: email.getEmail,
+      normalizedEmail: email.getNormalizedEmail,
     });
     if (!userEntity) return null;
     const user = toUser(userEntity);
@@ -25,7 +25,7 @@ export class UserMongoDbRepository
 
   async getOneByUserName(userName: UserName): Promise<User> {
     const userEntity = await this.findOne({
-      userName: userName.getUserName,
+      normalizedUserName: userName.getNormalizedUserName,
     });
     if (!userEntity) return null;
     const user = toUser(userEntity);
