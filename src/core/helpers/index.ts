@@ -1,1 +1,1 @@
-export * from './deepEqual';
+export * from './deep-equal/deep-equal';

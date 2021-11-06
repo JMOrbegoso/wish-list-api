@@ -1,4 +1,4 @@
-import { deepEqual } from './deepEqual';
+import { deepEqual } from '..';
 
 describe('core', () => {
   describe('helpers', () => {
