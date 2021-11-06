@@ -9,6 +9,7 @@ import {
   UserName,
   PasswordHash,
   IsVerified,
+  IsBlocked,
   FirstName,
   LastName,
   Biography,
@@ -19,6 +20,7 @@ export class User extends AggregateRoot {
   private _userName: UserName;
   private _passwordHash: PasswordHash;
   private _isVerified: IsVerified;
+  private _isBlocked: IsBlocked;
   private _firstName: FirstName;
   private _lastName: LastName;
   private _birthday: MillisecondsDate;
@@ -34,6 +36,7 @@ export class User extends AggregateRoot {
     userName: UserName,
     passwordHash: PasswordHash,
     isVerified: IsVerified,
+    isBlocked: IsBlocked,
     firstName: FirstName,
     lastName: LastName,
     birthday: MillisecondsDate,
@@ -49,6 +52,7 @@ export class User extends AggregateRoot {
     this._userName = userName;
     this._passwordHash = passwordHash;
     this._isVerified = isVerified;
+    this._isBlocked = isBlocked;
     this._firstName = firstName;
     this._lastName = lastName;
     this._birthday = birthday;
@@ -65,6 +69,7 @@ export class User extends AggregateRoot {
     userName: UserName,
     passwordHash: PasswordHash,
     isVerified: IsVerified,
+    isBlocked: IsBlocked,
     firstName: FirstName,
     lastName: LastName,
     birthday: MillisecondsDate,
@@ -80,6 +85,7 @@ export class User extends AggregateRoot {
       userName,
       passwordHash,
       isVerified,
+      isBlocked,
       firstName,
       lastName,
       birthday,
@@ -109,6 +115,10 @@ export class User extends AggregateRoot {
 
   public get isVerified(): IsVerified {
     return this._isVerified;
+  }
+
+  public get isBlocked(): IsBlocked {
+    return this._isBlocked;
   }
 
   public get firstName(): FirstName {

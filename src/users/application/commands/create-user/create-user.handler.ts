@@ -22,6 +22,7 @@ export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
       command.userName,
       command.passwordHash,
       command.isVerified,
+      command.isBlocked,
       command.firstName,
       command.lastName,
       command.birthday,

@@ -6,6 +6,7 @@ import {
   Email,
   FirstName,
   IsVerified,
+  IsBlocked,
   LastName,
   PasswordHash,
   UserName,
@@ -23,6 +24,7 @@ describe('users', () => {
       const password = 'password';
       const hash = 'password hash';
       const verificationStatus = true;
+      const blockedStatus = true;
       const firstNameText = 'John';
       const lastNameText = 'Doe';
       const birthDate = new Date('2000-05-05');
@@ -40,6 +42,7 @@ describe('users', () => {
           userEntity.userName = username;
           userEntity.passwordHash = hash;
           userEntity.isVerified = verificationStatus;
+          userEntity.isBlocked = blockedStatus;
           userEntity.firstName = firstNameText;
           userEntity.lastName = lastNameText;
           userEntity.birthday = birthDate;
@@ -58,6 +61,7 @@ describe('users', () => {
           expect(user.userName.getUserName).toBe(username);
           expect(user.passwordHash.getPasswordHash).toBe(hash);
           expect(user.isVerified.getStatus).toBe(verificationStatus);
+          expect(user.isBlocked.getStatus).toBe(blockedStatus);
           expect(user.firstName.getFirstName).toBe(firstNameText);
           expect(user.lastName.getLastName).toBe(lastNameText);
           expect(user.birthday.getMilliseconds).toBe(birthDateMilliseconds);
@@ -77,6 +81,7 @@ describe('users', () => {
           const userName = UserName.create(username);
           const passwordHash = PasswordHash.create(hash);
           const isVerified = IsVerified.create(verificationStatus);
+          const isBlocked = IsBlocked.create(blockedStatus);
           const firstName = FirstName.create(firstNameText);
           const lastName = LastName.create(lastNameText);
           const birthday = MillisecondsDate.createFromDate(birthDate);
@@ -91,6 +96,7 @@ describe('users', () => {
             userName,
             passwordHash,
             isVerified,
+            isBlocked,
             firstName,
             lastName,
             birthday,
@@ -110,6 +116,7 @@ describe('users', () => {
           expect(userEntity.normalizedUserName).toBe(normalizeString(username));
           expect(userEntity.passwordHash).toBe(hash);
           expect(userEntity.isVerified).toBe(verificationStatus);
+          expect(userEntity.isBlocked).toBe(blockedStatus);
           expect(userEntity.firstName).toBe(firstNameText);
           expect(userEntity.lastName).toBe(lastNameText);
           expect(userEntity.birthday.getTime()).toBe(birthDateMilliseconds);
@@ -139,6 +146,7 @@ describe('users', () => {
           expect(command.userName.getUserName).toBe(username);
           expect(command.passwordHash.getPasswordHash).not.toBeNull();
           expect(command.isVerified.getStatus).toBe(false);
+          expect(command.isBlocked.getStatus).toBe(false);
           expect(command.firstName.getFirstName).toBe(firstNameText);
           expect(command.lastName.getLastName).toBe(lastNameText);
           expect(command.birthday.getMilliseconds).toBe(birthDateMilliseconds);

@@ -8,6 +8,7 @@ import {
   UserName,
   PasswordHash,
   IsVerified,
+  IsBlocked,
   FirstName,
   LastName,
   Biography,
@@ -26,6 +27,7 @@ describe('users', () => {
           const username = 'john_doe';
           const hash = 'password hash';
           const verificationStatus = true;
+          const blockedStatus = true;
           const firstNameText = 'John';
           const lastNameText = 'Doe';
           const birth = new Date('2000-05-05');
@@ -37,6 +39,7 @@ describe('users', () => {
           const userName = UserName.create(username);
           const passwordHash = PasswordHash.create(hash);
           const isVerified = IsVerified.create(verificationStatus);
+          const isBlocked = IsBlocked.create(blockedStatus);
           const firstName = FirstName.create(firstNameText);
           const lastName = LastName.create(lastNameText);
           const birthday = MillisecondsDate.createFromDate(birth);
@@ -51,6 +54,7 @@ describe('users', () => {
             userName,
             passwordHash,
             isVerified,
+            isBlocked,
             firstName,
             lastName,
             birthday,
@@ -83,6 +87,7 @@ describe('users', () => {
           const username = 'john_doe';
           const hash = 'password hash';
           const verificationStatus = true;
+          const blockedStatus = true;
           const firstNameText = 'John';
           const lastNameText = 'Doe';
           const birth = new Date('2000-05-05');
@@ -95,6 +100,7 @@ describe('users', () => {
           const userName = UserName.create(username);
           const passwordHash = PasswordHash.create(hash);
           const isVerified = IsVerified.create(verificationStatus);
+          const isBlocked = IsBlocked.create(blockedStatus);
           const firstName = FirstName.create(firstNameText);
           const lastName = LastName.create(lastNameText);
           const birthday = MillisecondsDate.createFromDate(birth);
@@ -109,6 +115,7 @@ describe('users', () => {
             userName,
             passwordHash,
             isVerified,
+            isBlocked,
             firstName,
             lastName,
             birthday,
@@ -122,6 +129,7 @@ describe('users', () => {
             userName,
             passwordHash,
             isVerified,
+            isBlocked,
             firstName,
             lastName,
             birthday,
@@ -146,6 +154,7 @@ describe('users', () => {
           const username = 'john_doe';
           const hash = 'password hash';
           const verificationStatus = true;
+          const blockedStatus = true;
           const firstNameText = 'John';
           const lastNameText = 'Doe';
           const birth = new Date('2000-05-05');
@@ -158,6 +167,7 @@ describe('users', () => {
           const userName = UserName.create(username);
           const passwordHash = PasswordHash.create(hash);
           const isVerified = IsVerified.create(verificationStatus);
+          const isBlocked = IsBlocked.create(blockedStatus);
           const firstName = FirstName.create(firstNameText);
           const lastName = LastName.create(lastNameText);
           const birthday = MillisecondsDate.createFromDate(birth);
@@ -172,6 +182,7 @@ describe('users', () => {
             userName,
             passwordHash,
             isVerified,
+            isBlocked,
             firstName,
             lastName,
             birthday,
@@ -185,6 +196,7 @@ describe('users', () => {
             userName,
             passwordHash,
             isVerified,
+            isBlocked,
             firstName,
             lastName,
             birthday,

@@ -8,13 +8,14 @@ import {
   WebUrl,
 } from '../../../core/domain/value-objects';
 import {
-  Biography,
   Email,
-  FirstName,
-  IsVerified,
-  LastName,
-  PasswordHash,
   UserName,
+  PasswordHash,
+  IsVerified,
+  IsBlocked,
+  FirstName,
+  LastName,
+  Biography,
 } from '../../domain/value-objects';
 import { CreateUserDto } from '../dtos';
 import { CreateUserCommand } from '../../application/commands';
@@ -25,6 +26,7 @@ export function toUser(userEntity: UserEntity): User {
   const userName = UserName.create(userEntity.userName);
   const passwordHash = PasswordHash.create(userEntity.passwordHash);
   const isVerified = IsVerified.create(userEntity.isVerified);
+  const isBlocked = IsBlocked.create(userEntity.isBlocked);
   const firstName = FirstName.create(userEntity.firstName);
   const lastName = LastName.create(userEntity.lastName);
   const birthday = MillisecondsDate.createFromDate(userEntity.birthday);
@@ -46,6 +48,7 @@ export function toUser(userEntity: UserEntity): User {
     userName,
     passwordHash,
     isVerified,
+    isBlocked,
     firstName,
     lastName,
     birthday,
@@ -69,6 +72,7 @@ export function toUserEntity(user: User): UserEntity {
   userEntity.normalizedUserName = user.userName.getNormalizedUserName;
   userEntity.passwordHash = user.passwordHash.getPasswordHash;
   userEntity.isVerified = user.isVerified.getStatus;
+  userEntity.isBlocked = user.isBlocked.getStatus;
   userEntity.firstName = user.firstName.getFirstName;
   userEntity.lastName = user.lastName.getLastName;
   userEntity.birthday = user.birthday.getDate;
@@ -87,6 +91,7 @@ export function toCreateUserCommand(dto: CreateUserDto): CreateUserCommand {
   const userName = UserName.create(dto.userName);
   const passwordHash = PasswordHash.create(encryptPassword(dto.password));
   const isVerified = IsVerified.notVerified();
+  const isBlocked = IsBlocked.notBlocked();
   const firstName = FirstName.create(dto.firstName);
   const lastName = LastName.create(dto.lastName);
   const birthday = MillisecondsDate.createFromMilliseconds(dto.birthday);
@@ -103,6 +108,7 @@ export function toCreateUserCommand(dto: CreateUserDto): CreateUserCommand {
     userName,
     passwordHash,
     isVerified,
+    isBlocked,
     firstName,
     lastName,
     birthday,
