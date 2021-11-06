@@ -1,4 +1,5 @@
 import { ValueObject } from '../../../../core/domain/value-objects';
+import { normalizeString } from '../../../../core/helpers';
 
 export class Email extends ValueObject<string> {
   public static readonly Regex =
@@ -20,6 +21,6 @@ export class Email extends ValueObject<string> {
   }
 
   public get getNormalizedEmail(): string {
-    return this.value.toLowerCase();
+    return normalizeString(this.value);
   }
 }

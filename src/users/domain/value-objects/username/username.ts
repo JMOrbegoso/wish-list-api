@@ -1,4 +1,5 @@
 import { ValueObject } from '../../../../core/domain/value-objects';
+import { normalizeString } from '../../../../core/helpers';
 
 export class UserName extends ValueObject<string> {
   public static readonly MinLength = 6;
@@ -24,6 +25,6 @@ export class UserName extends ValueObject<string> {
   }
 
   public get getNormalizedUserName(): string {
-    return this.value.toLowerCase();
+    return normalizeString(this.value);
   }
 }
