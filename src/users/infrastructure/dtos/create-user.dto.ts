@@ -23,7 +23,7 @@ export class CreateUserDto {
   @ApiProperty({
     type: String,
     required: true,
-    description: 'Email of the new user.',
+    description: 'User email.',
     example: 'john@doe.com',
   })
   @IsEmail()
@@ -34,7 +34,7 @@ export class CreateUserDto {
   @ApiProperty({
     type: String,
     required: true,
-    description: 'UserName of the new user.',
+    description: 'User UserName.',
     example: 'john_doe',
   })
   @IsString()
@@ -45,7 +45,7 @@ export class CreateUserDto {
   @ApiProperty({
     type: String,
     required: true,
-    description: 'Password of the new user.',
+    description: 'User password.',
     example: 'Pa$$w0rd',
   })
   @IsString()
@@ -61,7 +61,7 @@ export class CreateUserDto {
   @ApiProperty({
     type: String,
     required: true,
-    description: 'First name of the new user.',
+    description: 'User first name.',
     example: 'John',
   })
   @IsString()
@@ -72,7 +72,7 @@ export class CreateUserDto {
   @ApiProperty({
     type: String,
     required: true,
-    description: 'Last name of the new user.',
+    description: 'User last name.',
     example: 'Doe',
   })
   @IsString()
@@ -83,7 +83,7 @@ export class CreateUserDto {
   @ApiProperty({
     type: Number,
     required: true,
-    description: 'Birthday in milliseconds of the new user.',
+    description: 'User birthday in milliseconds.',
     example: 1636128526164,
   })
   @IsNumber()
@@ -94,7 +94,7 @@ export class CreateUserDto {
   @ApiProperty({
     type: String,
     required: false,
-    description: 'Biography of the new user.',
+    description: 'User biography.',
     example: 'A nice person.',
   })
   @IsOptional()
@@ -105,7 +105,7 @@ export class CreateUserDto {
   @ApiProperty({
     type: String,
     required: false,
-    description: 'Profile picture url of the new user.',
+    description: 'User profile picture url.',
     example: 'https://www.example.com',
   })
   @IsOptional()
