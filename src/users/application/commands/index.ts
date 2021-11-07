@@ -6,3 +6,6 @@ export * from './delete-user/delete-user.handler';
 
 export * from './undelete-user/undelete-user.command';
 export * from './undelete-user/undelete-user.handler';
+
+export * from './block-user/block-user.command';
+export * from './block-user/block-user.handler';
