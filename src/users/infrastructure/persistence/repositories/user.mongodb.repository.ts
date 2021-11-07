@@ -53,12 +53,12 @@ export class UserMongoDbRepository
 
   update(user: User): void {
     const userEntity = toUserEntity(user);
-    const userEntityToPersist = this.create(userEntity);
-    this.persist(userEntityToPersist);
+    const userFromDb = this.getReference(user.id.getId);
+    this.assign(userFromDb, userEntity);
   }
 
   delete(id: UniqueId): void {
-    const userEntity = this.getReference(id.getId);
-    this.remove(userEntity);
+    const userFromDb = this.getReference(id.getId);
+    this.remove(userFromDb);
   }
 }
