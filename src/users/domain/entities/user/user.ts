@@ -105,7 +105,7 @@ export class User extends AggregateRoot {
     return this._email;
   }
   public set email(email: Email) {
-    if (this._email.equals(email)) throw new Error('Email is the same.');
+    if (this._email.equals(email)) return;
 
     this._email = email;
     this.updatedAt = MillisecondsDate.create();
@@ -115,8 +115,7 @@ export class User extends AggregateRoot {
     return this._userName;
   }
   public set userName(userName: UserName) {
-    if (this._userName.equals(userName))
-      throw new Error('UserName is the same.');
+    if (this._userName.equals(userName)) return;
 
     this._userName = userName;
     this.updatedAt = MillisecondsDate.create();
@@ -126,8 +125,7 @@ export class User extends AggregateRoot {
     return this._passwordHash;
   }
   public set passwordHash(passwordHash: PasswordHash) {
-    if (this._passwordHash.equals(passwordHash))
-      throw new Error('PasswordHash is the same.');
+    if (this._passwordHash.equals(passwordHash)) return;
 
     this._passwordHash = passwordHash;
     this.updatedAt = MillisecondsDate.create();
@@ -137,8 +135,7 @@ export class User extends AggregateRoot {
     return this._isVerified;
   }
   public set isVerified(isVerified: IsVerified) {
-    if (this._isVerified.equals(isVerified))
-      throw new Error('IsVerified is the same.');
+    if (this._isVerified.equals(isVerified)) return;
 
     this._isVerified = isVerified;
     this.updatedAt = MillisecondsDate.create();
@@ -148,8 +145,7 @@ export class User extends AggregateRoot {
     return this._isBlocked;
   }
   public set isBlocked(isBlocked: IsBlocked) {
-    if (this._isBlocked.equals(isBlocked))
-      throw new Error('IsBlocked is the same.');
+    if (this._isBlocked.equals(isBlocked)) return;
 
     this._isBlocked = isBlocked;
     this.updatedAt = MillisecondsDate.create();
@@ -159,8 +155,7 @@ export class User extends AggregateRoot {
     return this._firstName;
   }
   public set firstName(firstName: FirstName) {
-    if (this._firstName.equals(firstName))
-      throw new Error('FirstName is the same.');
+    if (this._firstName.equals(firstName)) return;
 
     this._firstName = firstName;
     this.updatedAt = MillisecondsDate.create();
@@ -170,8 +165,7 @@ export class User extends AggregateRoot {
     return this._lastName;
   }
   public set lastName(lastName: LastName) {
-    if (this._lastName.equals(lastName))
-      throw new Error('LastName is the same.');
+    if (this._lastName.equals(lastName)) return;
 
     this._lastName = lastName;
     this.updatedAt = MillisecondsDate.create();
@@ -181,8 +175,7 @@ export class User extends AggregateRoot {
     return this._birthday;
   }
   public set birthday(birthday: MillisecondsDate) {
-    if (this._birthday.equals(birthday))
-      throw new Error('Birthday is the same.');
+    if (this._birthday.equals(birthday)) return;
 
     this._birthday = birthday;
     this.updatedAt = MillisecondsDate.create();
@@ -203,8 +196,9 @@ export class User extends AggregateRoot {
     return this._biography;
   }
   public set biography(biography: Biography) {
-    if (this._biography.equals(biography))
-      throw new Error('Biography is the same.');
+    if (!this._biography && !biography) return;
+
+    if (this._biography && this._biography.equals(biography)) return;
 
     this._biography = biography;
     this.updatedAt = MillisecondsDate.create();
@@ -214,8 +208,10 @@ export class User extends AggregateRoot {
     return this._profilePicture;
   }
   public set profilePicture(profilePicture: WebUrl) {
-    if (this._profilePicture.equals(profilePicture))
-      throw new Error('ProfilePicture is the same.');
+    if (!this._profilePicture && !profilePicture) return;
+
+    if (this._profilePicture && this._profilePicture.equals(profilePicture))
+      return;
 
     this._profilePicture = profilePicture;
     this.updatedAt = MillisecondsDate.create();
@@ -225,8 +221,9 @@ export class User extends AggregateRoot {
     return this._deletedAt;
   }
   public set deletedAt(deletedAt: MillisecondsDate) {
-    if (this._deletedAt.equals(deletedAt))
-      throw new Error('DeletedAt is the same.');
+    if (!this._deletedAt && !deletedAt) return;
+
+    if (this._deletedAt && this._deletedAt.equals(deletedAt)) return;
 
     this._deletedAt = deletedAt;
     this.updatedAt = MillisecondsDate.create();
