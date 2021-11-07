@@ -11,8 +11,13 @@ import {
   PasswordHash,
   UserName,
 } from '../../domain/value-objects';
-import { CreateUserDto } from '../dtos';
-import { toCreateUserCommand, toUser, toUserEntity } from '.';
+import { CreateUserDto, UpdateUserDto } from '../dtos';
+import {
+  toCreateUserCommand,
+  toUpdateUserCommand,
+  toUser,
+  toUserEntity,
+} from '.';
 import { normalizeString } from '../../../core/helpers';
 
 describe('users', () => {
@@ -145,6 +150,30 @@ describe('users', () => {
           expect(command.email).toBe(email);
           expect(command.userName).toBe(username);
           expect(command.passwordHash).not.toBeNull();
+          expect(command.firstName).toBe(firstNameText);
+          expect(command.lastName).toBe(lastNameText);
+          expect(command.birthday).toBe(birthDateMilliseconds);
+          expect(command.biography).toBe(bio);
+          expect(command.profilePicture).toBeNull();
+        });
+      });
+
+      describe('map UpdateUserDto to UpdateUserCommand', () => {
+        it('should map UpdateUserDto to a UpdateUserCommand keeping all the property values', () => {
+          // Arrange
+          const dto = new UpdateUserDto();
+          dto.id = id;
+          dto.firstName = firstNameText;
+          dto.lastName = lastNameText;
+          dto.birthday = birthDateMilliseconds;
+          dto.biography = bio;
+          dto.profilePicture = null;
+
+          // Act
+          const command = toUpdateUserCommand(dto);
+
+          // Assert
+          expect(command.id).toBe(id);
           expect(command.firstName).toBe(firstNameText);
           expect(command.lastName).toBe(lastNameText);
           expect(command.birthday).toBe(birthDateMilliseconds);

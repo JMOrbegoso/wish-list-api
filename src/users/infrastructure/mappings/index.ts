@@ -17,8 +17,11 @@ import {
   LastName,
   Biography,
 } from '../../domain/value-objects';
-import { CreateUserDto } from '../dtos';
-import { CreateUserCommand } from '../../application/commands';
+import { CreateUserDto, UpdateUserDto } from '../dtos';
+import {
+  CreateUserCommand,
+  UpdateUserCommand,
+} from '../../application/commands';
 
 export function toUser(userEntity: UserEntity): User {
   const id = UniqueId.create(userEntity.id);
@@ -94,6 +97,17 @@ export function toCreateUserCommand(dto: CreateUserDto): CreateUserCommand {
     dto.email,
     dto.userName,
     passwordHash,
+    dto.firstName,
+    dto.lastName,
+    dto.birthday,
+    dto.biography,
+    dto.profilePicture,
+  );
+}
+
+export function toUpdateUserCommand(dto: UpdateUserDto): UpdateUserCommand {
+  return new UpdateUserCommand(
+    dto.id,
     dto.firstName,
     dto.lastName,
     dto.birthday,
