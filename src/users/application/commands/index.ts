@@ -9,3 +9,6 @@ export * from './undelete-user/undelete-user.handler';
 
 export * from './block-user/block-user.command';
 export * from './block-user/block-user.handler';
+
+export * from './unblock-user/unblock-user.command';
+export * from './unblock-user/unblock-user.handler';
