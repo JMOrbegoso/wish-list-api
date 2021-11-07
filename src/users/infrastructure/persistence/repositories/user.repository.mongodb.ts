@@ -10,7 +10,7 @@ import { UniqueId } from '../../../../core/domain/value-objects';
 import { Email, UserName } from '../../../domain/value-objects';
 
 @MikroOrmRepository(UserEntity)
-export class UserMongoDbRepository
+export class UserRepositoryMongoDb
   extends EntityRepository<UserEntity>
   implements UserRepository
 {

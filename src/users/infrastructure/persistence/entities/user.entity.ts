@@ -7,11 +7,11 @@ import {
   Property,
 } from '@mikro-orm/core';
 import { ObjectId } from '@mikro-orm/mongodb';
-import { UserMongoDbRepository } from '../repositories';
+import { UserRepositoryMongoDb } from '../repositories';
 
 @Entity({ collection: 'users' })
 export class UserEntity {
-  [EntityRepositoryType]?: UserMongoDbRepository;
+  [EntityRepositoryType]?: UserRepositoryMongoDb;
 
   @PrimaryKey()
   _id: ObjectId;
