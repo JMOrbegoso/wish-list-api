@@ -1,4 +1,4 @@
-import { CategoryName } from '..';
+import { CategoryName, InvalidCategoryNameError } from '..';
 
 describe('wishes', () => {
   describe('domain', () => {
@@ -11,7 +11,7 @@ describe('wishes', () => {
 
           // Assert
           expect(() => CategoryName.create(undefined)).toThrowError(
-            'Invalid category name',
+            InvalidCategoryNameError,
           );
         });
 
@@ -22,7 +22,7 @@ describe('wishes', () => {
 
           // Assert
           expect(() => CategoryName.create(null)).toThrowError(
-            'Invalid category name',
+            InvalidCategoryNameError,
           );
         });
 
@@ -33,7 +33,7 @@ describe('wishes', () => {
 
           // Assert
           expect(() => CategoryName.create('')).toThrowError(
-            'Invalid category name',
+            InvalidCategoryNameError,
           );
         });
 

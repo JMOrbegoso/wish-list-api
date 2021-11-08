@@ -1,4 +1,8 @@
-import { WishDescription } from '..';
+import {
+  WishDescription,
+  InvalidWishDescriptionError,
+  WishDescriptionIsTooLongError,
+} from '..';
 
 describe('wishes', () => {
   describe('domain', () => {
@@ -11,7 +15,7 @@ describe('wishes', () => {
 
           // Assert
           expect(() => WishDescription.create(undefined)).toThrowError(
-            'Invalid wish description',
+            InvalidWishDescriptionError,
           );
         });
 
@@ -22,7 +26,7 @@ describe('wishes', () => {
 
           // Assert
           expect(() => WishDescription.create(null)).toThrowError(
-            'Invalid wish description',
+            InvalidWishDescriptionError,
           );
         });
 
@@ -33,7 +37,7 @@ describe('wishes', () => {
 
           // Assert
           expect(() => WishDescription.create('')).toThrowError(
-            'Invalid wish description',
+            InvalidWishDescriptionError,
           );
         });
 
@@ -45,7 +49,7 @@ describe('wishes', () => {
 
           // Assert
           expect(() => WishDescription.create(invalidDescription)).toThrowError(
-            'Invalid wish description',
+            WishDescriptionIsTooLongError,
           );
         });
 

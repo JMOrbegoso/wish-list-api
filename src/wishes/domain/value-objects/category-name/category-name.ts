@@ -1,8 +1,9 @@
 import { ValueObject } from '../../../../core/domain/value-objects';
+import { InvalidCategoryNameError } from '..';
 
 export class CategoryName extends ValueObject<string> {
   protected validate(value: string): void {
-    if (!value) throw new Error('Invalid category name.');
+    if (!value) throw new InvalidCategoryNameError();
   }
 
   static create(value: string): CategoryName {

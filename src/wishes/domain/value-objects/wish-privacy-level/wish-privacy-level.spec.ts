@@ -1,4 +1,8 @@
-import { WishPrivacyLevel, PrivacyLevel } from '..';
+import {
+  WishPrivacyLevel,
+  PrivacyLevel,
+  InvalidWishPrivacyLevelError,
+} from '..';
 
 describe('wishes', () => {
   describe('domain', () => {
@@ -11,7 +15,7 @@ describe('wishes', () => {
 
           // Assert
           expect(() => WishPrivacyLevel.create(undefined)).toThrowError(
-            'Invalid wish privacy level.',
+            InvalidWishPrivacyLevelError,
           );
         });
 
@@ -22,7 +26,7 @@ describe('wishes', () => {
 
           // Assert
           expect(() => WishPrivacyLevel.create(null)).toThrowError(
-            'Invalid wish privacy level.',
+            InvalidWishPrivacyLevelError,
           );
         });
 
@@ -33,7 +37,7 @@ describe('wishes', () => {
 
           // Assert
           expect(() => WishPrivacyLevel.create(10)).toThrowError(
-            'Invalid wish privacy level.',
+            InvalidWishPrivacyLevelError,
           );
         });
 
