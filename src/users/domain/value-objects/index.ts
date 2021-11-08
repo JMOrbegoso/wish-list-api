@@ -17,6 +17,9 @@ export * from './last-name/invalid-last-name.error';
 export * from './last-name/last-name-is-too-long.error';
 
 export * from './biography/biography';
+export * from './biography/invalid-biography.error';
+export * from './biography/biography-is-too-long.error';
+
 export * from './is-verified/is-verified';
 export * from './password-hash/password-hash';
 export * from './is-blocked/is-blocked';
