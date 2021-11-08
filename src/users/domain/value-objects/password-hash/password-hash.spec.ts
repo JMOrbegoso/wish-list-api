@@ -1,4 +1,4 @@
-import { PasswordHash } from '..';
+import { PasswordHash, InvalidPasswordHashError } from '..';
 
 describe('users', () => {
   describe('domain', () => {
@@ -11,7 +11,7 @@ describe('users', () => {
 
           // Assert
           expect(() => PasswordHash.create(undefined)).toThrowError(
-            'Invalid password hash.',
+            InvalidPasswordHashError,
           );
         });
 
@@ -22,7 +22,7 @@ describe('users', () => {
 
           // Assert
           expect(() => PasswordHash.create(null)).toThrowError(
-            'Invalid password hash.',
+            InvalidPasswordHashError,
           );
         });
 
@@ -33,7 +33,7 @@ describe('users', () => {
 
           // Assert
           expect(() => PasswordHash.create('')).toThrowError(
-            'Invalid password hash.',
+            InvalidPasswordHashError,
           );
         });
 

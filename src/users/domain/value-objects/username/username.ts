@@ -1,3 +1,9 @@
+import {
+  InvalidUserNameError,
+  UserNameIsTooShortError,
+  UserNameIsTooLongError,
+  MalformedUserNameError,
+} from '..';
 import { ValueObject } from '../../../../core/domain/value-objects';
 import { normalizeString } from '../../../../core/helpers';
 
@@ -7,13 +13,13 @@ export class UserName extends ValueObject<string> {
   public static readonly Regex = /^[a-zA-Z0-9\_\-]*$/;
 
   protected validate(value: string): void {
-    if (!value) throw new Error('Invalid username.');
+    if (!value) throw new InvalidUserNameError();
 
-    if (value.length < UserName.MinLength) throw new Error('Invalid username.');
+    if (value.length < UserName.MinLength) throw new UserNameIsTooShortError();
 
-    if (value.length > UserName.MaxLength) throw new Error('Invalid username.');
+    if (value.length > UserName.MaxLength) throw new UserNameIsTooLongError();
 
-    if (!UserName.Regex.test(value)) throw new Error('Invalid username.');
+    if (!UserName.Regex.test(value)) throw new MalformedUserNameError();
   }
 
   static create(value: string): UserName {

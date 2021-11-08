@@ -1,4 +1,4 @@
-import { LastName } from '..';
+import { LastName, InvalidLastNameError, LastNameIsTooLongError } from '..';
 
 describe('users', () => {
   describe('domain', () => {
@@ -11,7 +11,7 @@ describe('users', () => {
 
           // Assert
           expect(() => LastName.create(undefined)).toThrowError(
-            'Invalid last name',
+            InvalidLastNameError,
           );
         });
 
@@ -21,7 +21,9 @@ describe('users', () => {
           // Act
 
           // Assert
-          expect(() => LastName.create(null)).toThrowError('Invalid last name');
+          expect(() => LastName.create(null)).toThrowError(
+            InvalidLastNameError,
+          );
         });
 
         it('should throw an error when trying to create a LastName from an empty string', () => {
@@ -30,7 +32,7 @@ describe('users', () => {
           // Act
 
           // Assert
-          expect(() => LastName.create('')).toThrowError('Invalid last name');
+          expect(() => LastName.create('')).toThrowError(InvalidLastNameError);
         });
 
         it('should throw an error when trying to create a LastName from an string with more characters than the limit', () => {
@@ -41,7 +43,7 @@ describe('users', () => {
 
           // Assert
           expect(() => LastName.create(invalidLastName)).toThrowError(
-            'Invalid last name.',
+            LastNameIsTooLongError,
           );
         });
 

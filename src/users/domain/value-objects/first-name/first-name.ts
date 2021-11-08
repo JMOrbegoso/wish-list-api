@@ -1,13 +1,13 @@
 import { ValueObject } from '../../../../core/domain/value-objects';
+import { InvalidFirstNameError, FirstNameIsTooLongError } from '..';
 
 export class FirstName extends ValueObject<string> {
   public static readonly MaxLength = 100;
 
   protected validate(value: string): void {
-    if (!value) throw new Error('Invalid first name.');
+    if (!value) throw new InvalidFirstNameError();
 
-    if (value.length > FirstName.MaxLength)
-      throw new Error('Invalid first name.');
+    if (value.length > FirstName.MaxLength) throw new FirstNameIsTooLongError();
   }
 
   static create(value: string): FirstName {

@@ -1,4 +1,4 @@
-import { FirstName } from '..';
+import { FirstName, InvalidFirstNameError, FirstNameIsTooLongError } from '..';
 
 describe('users', () => {
   describe('domain', () => {
@@ -11,7 +11,7 @@ describe('users', () => {
 
           // Assert
           expect(() => FirstName.create(undefined)).toThrowError(
-            'Invalid first name',
+            InvalidFirstNameError,
           );
         });
 
@@ -22,7 +22,7 @@ describe('users', () => {
 
           // Assert
           expect(() => FirstName.create(null)).toThrowError(
-            'Invalid first name',
+            InvalidFirstNameError,
           );
         });
 
@@ -32,7 +32,9 @@ describe('users', () => {
           // Act
 
           // Assert
-          expect(() => FirstName.create('')).toThrowError('Invalid first name');
+          expect(() => FirstName.create('')).toThrowError(
+            InvalidFirstNameError,
+          );
         });
 
         it('should throw an error when trying to create a FirstName from an string with more characters than the limit', () => {
@@ -43,7 +45,7 @@ describe('users', () => {
 
           // Assert
           expect(() => FirstName.create(invalidFirstName)).toThrowError(
-            'Invalid first name',
+            FirstNameIsTooLongError,
           );
         });
 

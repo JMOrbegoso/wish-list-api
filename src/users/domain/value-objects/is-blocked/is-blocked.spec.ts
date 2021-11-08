@@ -1,4 +1,4 @@
-import { IsBlocked } from '..';
+import { IsBlocked, InvalidIsBlockedStatus } from '..';
 
 describe('users', () => {
   describe('domain', () => {
@@ -11,7 +11,7 @@ describe('users', () => {
 
           // Assert
           expect(() => IsBlocked.create(undefined)).toThrowError(
-            'Invalid blocked status.',
+            InvalidIsBlockedStatus,
           );
         });
 
@@ -22,7 +22,7 @@ describe('users', () => {
 
           // Assert
           expect(() => IsBlocked.create(null)).toThrowError(
-            'Invalid blocked status.',
+            InvalidIsBlockedStatus,
           );
         });
 

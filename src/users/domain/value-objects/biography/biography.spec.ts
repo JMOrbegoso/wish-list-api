@@ -1,4 +1,4 @@
-import { Biography } from '..';
+import { Biography, InvalidBiographyError, BiographyIsTooLongError } from '..';
 
 describe('users', () => {
   describe('domain', () => {
@@ -11,7 +11,7 @@ describe('users', () => {
 
           // Assert
           expect(() => Biography.create(undefined)).toThrowError(
-            'Invalid biography',
+            InvalidBiographyError,
           );
         });
 
@@ -22,7 +22,7 @@ describe('users', () => {
 
           // Assert
           expect(() => Biography.create(null)).toThrowError(
-            'Invalid biography',
+            InvalidBiographyError,
           );
         });
 
@@ -32,7 +32,9 @@ describe('users', () => {
           // Act
 
           // Assert
-          expect(() => Biography.create('')).toThrowError('Invalid biography.');
+          expect(() => Biography.create('')).toThrowError(
+            InvalidBiographyError,
+          );
         });
 
         it('should throw an error when trying to create a Biography from an string with more characters than the limit', () => {
@@ -43,7 +45,7 @@ describe('users', () => {
 
           // Assert
           expect(() => Biography.create(invalidBiography)).toThrowError(
-            'Invalid biography.',
+            BiographyIsTooLongError,
           );
         });
 

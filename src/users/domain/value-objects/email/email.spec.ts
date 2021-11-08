@@ -1,4 +1,4 @@
-import { Email } from '..';
+import { Email, InvalidEmailError, MalformedEmailError } from '..';
 
 describe('users', () => {
   describe('domain', () => {
@@ -10,7 +10,7 @@ describe('users', () => {
           // Act
 
           // Assert
-          expect(() => Email.create(undefined)).toThrowError('Invalid email');
+          expect(() => Email.create(undefined)).toThrowError(InvalidEmailError);
         });
 
         it('should throw an error when trying to create a Email from null', () => {
@@ -19,7 +19,7 @@ describe('users', () => {
           // Act
 
           // Assert
-          expect(() => Email.create(null)).toThrowError('Invalid email');
+          expect(() => Email.create(null)).toThrowError(InvalidEmailError);
         });
 
         it('should throw an error when trying to create a Email from an empty string', () => {
@@ -28,7 +28,7 @@ describe('users', () => {
           // Act
 
           // Assert
-          expect(() => Email.create('')).toThrowError('Invalid email');
+          expect(() => Email.create('')).toThrowError(InvalidEmailError);
         });
 
         it('should throw an error when trying to create a Email from a string with characters that do not match the regex', () => {
@@ -39,7 +39,7 @@ describe('users', () => {
 
           // Assert
           expect(() => Email.create(invalidEmail)).toThrowError(
-            'Invalid email',
+            MalformedEmailError,
           );
         });
 
@@ -51,7 +51,7 @@ describe('users', () => {
 
           // Assert
           expect(() => Email.create(invalidEmail)).toThrowError(
-            'Invalid email',
+            MalformedEmailError,
           );
         });
 
@@ -63,7 +63,7 @@ describe('users', () => {
 
           // Assert
           expect(() => Email.create(invalidEmail)).toThrowError(
-            'Invalid email',
+            MalformedEmailError,
           );
         });
 

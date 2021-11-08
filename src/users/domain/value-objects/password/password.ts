@@ -1,4 +1,10 @@
 import { ValueObject } from '../../../../core/domain/value-objects';
+import {
+  InvalidPasswordError,
+  MalformedPasswordError,
+  PasswordIsTooLongError,
+  PasswordIsTooShortError,
+} from '..';
 
 export class Password extends ValueObject<string> {
   public static readonly MinLength = 6;
@@ -7,13 +13,13 @@ export class Password extends ValueObject<string> {
     /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[\*\.\!\@\$\%\^\&\(\)\{\}\[\]\:\;\<\>\,\.\?\/\~\_\+\-\=\|\\]).{6,30}$/;
 
   protected validate(value: string): void {
-    if (!value) throw new Error('Invalid password.');
+    if (!value) throw new InvalidPasswordError();
 
-    if (value.length < Password.MinLength) throw new Error('Invalid password.');
+    if (value.length < Password.MinLength) throw new PasswordIsTooShortError();
 
-    if (value.length > Password.MaxLength) throw new Error('Invalid password.');
+    if (value.length > Password.MaxLength) throw new PasswordIsTooLongError();
 
-    if (!Password.Regex.test(value)) throw new Error('Invalid password.');
+    if (!Password.Regex.test(value)) throw new MalformedPasswordError();
   }
 
   static create(value: string): Password {
