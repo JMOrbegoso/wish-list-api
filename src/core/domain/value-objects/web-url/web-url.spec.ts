@@ -1,4 +1,4 @@
-import { WebUrl } from '..';
+import { WebUrl, InvalidWebUrlError, MalformedWebUrlError } from '..';
 
 describe('core', () => {
   describe('domain', () => {
@@ -10,7 +10,9 @@ describe('core', () => {
           // Act
 
           // Assert
-          expect(() => WebUrl.create(undefined)).toThrowError('Invalid url.');
+          expect(() => WebUrl.create(undefined)).toThrowError(
+            InvalidWebUrlError,
+          );
         });
 
         it('should throw an error when trying to create a WebUrl from null', () => {
@@ -19,7 +21,7 @@ describe('core', () => {
           // Act
 
           // Assert
-          expect(() => WebUrl.create(null)).toThrowError('Invalid url.');
+          expect(() => WebUrl.create(null)).toThrowError(InvalidWebUrlError);
         });
 
         it('should throw an error when trying to create a WebUrl from an empty string', () => {
@@ -28,7 +30,7 @@ describe('core', () => {
           // Act
 
           // Assert
-          expect(() => WebUrl.create('')).toThrowError('Invalid url.');
+          expect(() => WebUrl.create('')).toThrowError(InvalidWebUrlError);
         });
 
         it('should throw an error when trying to create a WebUrl from an invalid url', () => {
@@ -38,7 +40,7 @@ describe('core', () => {
 
           // Assert
           expect(() => WebUrl.create('invalid')).toThrowError(
-            'Invalid URL: invalid',
+            MalformedWebUrlError,
           );
         });
 

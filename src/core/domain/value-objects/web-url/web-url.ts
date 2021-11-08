@@ -1,13 +1,18 @@
-import { ValueObject } from '..';
+import { ValueObject, InvalidWebUrlError, MalformedWebUrlError } from '..';
 
 export class WebUrl extends ValueObject<string> {
   protected validate(value: string): void {
-    if (!value) throw new Error('Invalid url.');
+    let url: URL;
+    if (!value) throw new InvalidWebUrlError();
 
-    const url = new URL(value);
+    try {
+      url = new URL(value);
+    } catch {
+      throw new MalformedWebUrlError();
+    }
 
     if (!(url.protocol === 'http:' || url.protocol === 'https:'))
-      throw new Error('Invalid url.');
+      throw new MalformedWebUrlError();
   }
 
   static create(value: string): WebUrl {
