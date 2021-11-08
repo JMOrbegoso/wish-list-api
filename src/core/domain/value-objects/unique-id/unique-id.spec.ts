@@ -1,4 +1,4 @@
-import { UniqueId } from '..';
+import { UniqueId, InvalidUniqueIdError } from '..';
 
 describe('core', () => {
   describe('domain', () => {
@@ -10,7 +10,9 @@ describe('core', () => {
           // Act
 
           // Assert
-          expect(() => UniqueId.create(undefined)).toThrowError('Invalid id');
+          expect(() => UniqueId.create(undefined)).toThrowError(
+            InvalidUniqueIdError,
+          );
         });
 
         it('should throw an error when trying to create a UniqueId from null', () => {
@@ -19,7 +21,9 @@ describe('core', () => {
           // Act
 
           // Assert
-          expect(() => UniqueId.create(null)).toThrowError('Invalid id');
+          expect(() => UniqueId.create(null)).toThrowError(
+            InvalidUniqueIdError,
+          );
         });
 
         it('should throw an error when trying to create a UniqueId from an empty string', () => {
@@ -28,7 +32,7 @@ describe('core', () => {
           // Act
 
           // Assert
-          expect(() => UniqueId.create('')).toThrowError('Invalid id');
+          expect(() => UniqueId.create('')).toThrowError(InvalidUniqueIdError);
         });
 
         it('should create an UniqueId instance and should store the value', () => {

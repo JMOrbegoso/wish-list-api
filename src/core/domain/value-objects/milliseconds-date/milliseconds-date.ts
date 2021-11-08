@@ -1,8 +1,8 @@
-import { ValueObject } from '..';
+import { ValueObject, InvalidMillisecondsDateError } from '..';
 
 export class MillisecondsDate extends ValueObject<number> {
   protected validate(value: number): void {
-    if (!value) throw new Error('Invalid date.');
+    if (!value) throw new InvalidMillisecondsDateError();
   }
 
   static create(): MillisecondsDate {
@@ -15,7 +15,7 @@ export class MillisecondsDate extends ValueObject<number> {
   }
 
   static createFromDate(value: Date): MillisecondsDate {
-    if (!value) throw new Error('Invalid date.');
+    if (!value) throw new InvalidMillisecondsDateError();
 
     return new MillisecondsDate(value.getTime());
   }

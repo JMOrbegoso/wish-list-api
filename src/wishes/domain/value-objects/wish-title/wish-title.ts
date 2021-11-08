@@ -1,13 +1,13 @@
 import { ValueObject } from '../../../../core/domain/value-objects';
+import { InvalidWishTitleError, WishTitleIsTooLongError } from '..';
 
 export class WishTitle extends ValueObject<string> {
   public static readonly MaxLength = 200;
 
   protected validate(value: string): void {
-    if (!value) throw new Error('Invalid wish title.');
+    if (!value) throw new InvalidWishTitleError();
 
-    if (value.length > WishTitle.MaxLength)
-      throw new Error('Invalid wish title.');
+    if (value.length > WishTitle.MaxLength) throw new WishTitleIsTooLongError();
   }
 
   static create(value: string): WishTitle {
