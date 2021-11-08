@@ -57,7 +57,12 @@ describe('core', () => {
           const millisecondsDate = MillisecondsDate.create();
 
           // Assert
-          expect(millisecondsDate.getMilliseconds).toBeCloseTo(milliseconds, 4);
+          expect(millisecondsDate.getMilliseconds).toBeGreaterThanOrEqual(
+            milliseconds,
+          );
+          expect(millisecondsDate.getMilliseconds).toBeLessThan(
+            milliseconds + 100, //add 100ms
+          );
         });
 
         it('should create a MillisecondsDate instance from a date', () => {
