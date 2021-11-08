@@ -18,8 +18,7 @@ import {
   ApiBadRequestResponse,
 } from '@nestjs/swagger';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { User } from '../../domain/entities';
-import { CreateUserDto, UpdateUserDto } from '../dtos';
+import { CreateUserDto, UpdateUserDto, OutputUserDto } from '../dtos';
 import { Mapper } from '../mappings';
 import {
   EncryptionService,
@@ -66,52 +65,47 @@ export class AccountsController {
     return await this.commandBus.execute(command);
   }
 
-  @ApiOkResponse({ type: [User] })
+  @ApiOkResponse({ type: [OutputUserDto] })
   @Get()
-  async getAllUsers(): Promise<User[]> {
+  async getAllUsers(): Promise<OutputUserDto[]> {
     const query = new GetUsersQuery();
     const users = await this.queryBus.execute(query);
-
-    return users;
+    return users.map((user) => Mapper.toOutputUserDto(user));
   }
 
-  @ApiOkResponse({ type: User })
+  @ApiOkResponse({ type: OutputUserDto })
   @ApiBadRequestResponse()
   @ApiNotFoundResponse({ description: 'User not found.' })
   @Get(':id')
-  async getUserById(@Param('id') id: string): Promise<User> {
+  async getUserById(@Param('id') id: string): Promise<OutputUserDto> {
     const query = new GetUserByIdQuery(id);
     const user = await this.queryBus.execute(query);
-
     if (!user) throw new NotFoundException();
-
-    return user;
+    return Mapper.toOutputUserDto(user);
   }
 
-  @ApiOkResponse({ type: User })
+  @ApiOkResponse({ type: OutputUserDto })
   @ApiBadRequestResponse()
   @ApiNotFoundResponse({ description: 'User not found.' })
   @Get('email/:email')
-  async getUserByEmail(@Param('email') email: string): Promise<User> {
+  async getUserByEmail(@Param('email') email: string): Promise<OutputUserDto> {
     const query = new GetUserByEmailQuery(email);
     const user = await this.queryBus.execute(query);
-
     if (!user) throw new NotFoundException();
-
-    return user;
+    return Mapper.toOutputUserDto(user);
   }
 
-  @ApiOkResponse({ type: User })
+  @ApiOkResponse({ type: OutputUserDto })
   @ApiBadRequestResponse()
   @ApiNotFoundResponse({ description: 'User not found.' })
   @Get('username/:username')
-  async getUserByUserName(@Param('username') username: string): Promise<User> {
+  async getUserByUserName(
+    @Param('username') username: string,
+  ): Promise<OutputUserDto> {
     const query = new GetUserByUserNameQuery(username);
-    return await this.queryBus.execute(query);
-    /*
+    const user = await this.queryBus.execute(query);
     if (!user) throw new NotFoundException();
-
-    return user;*/
+    return Mapper.toOutputUserDto(user);
   }
 
   @ApiBody({ required: true, type: UpdateUserDto })
