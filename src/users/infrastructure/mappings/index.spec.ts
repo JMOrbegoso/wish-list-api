@@ -1,3 +1,4 @@
+import { Mapper } from '.';
 import { User } from '../../domain/entities';
 import { UserEntity } from '../persistence/entities';
 import { UniqueId, MillisecondsDate } from '../../../core/domain/value-objects';
@@ -12,12 +13,6 @@ import {
   UserName,
 } from '../../domain/value-objects';
 import { CreateUserDto, UpdateUserDto } from '../dtos';
-import {
-  toCreateUserCommand,
-  toUpdateUserCommand,
-  toUser,
-  toUserEntity,
-} from '.';
 import { normalizeString } from '../../../core/helpers';
 
 describe('users', () => {
@@ -58,7 +53,7 @@ describe('users', () => {
           userEntity.deletedAt = null;
 
           // Act
-          const user = toUser(userEntity);
+          const user = Mapper.toUserDomain(userEntity);
 
           // Assert
           expect(user.id.getId).toBe(id);
@@ -111,7 +106,7 @@ describe('users', () => {
           );
 
           // Act
-          const userEntity = toUserEntity(user);
+          const userEntity = Mapper.toUserEntity(user);
 
           // Assert
           expect(userEntity.id).toBe(id);
@@ -143,13 +138,13 @@ describe('users', () => {
           dto.profilePicture = null;
 
           // Act
-          const command = toCreateUserCommand(dto);
+          const command = Mapper.toCreateUserCommand(dto, id, hash);
 
           // Assert
-          expect(command.id).not.toBeNull();
+          expect(command.id).toBe(id);
           expect(command.email).toBe(email);
           expect(command.userName).toBe(username);
-          expect(command.passwordHash).not.toBeNull();
+          expect(command.passwordHash).toBe(hash);
           expect(command.firstName).toBe(firstNameText);
           expect(command.lastName).toBe(lastNameText);
           expect(command.birthday).toBe(birthDateMilliseconds);
@@ -170,7 +165,7 @@ describe('users', () => {
           dto.profilePicture = null;
 
           // Act
-          const command = toUpdateUserCommand(dto);
+          const command = Mapper.toUpdateUserCommand(dto);
 
           // Assert
           expect(command.id).toBe(id);
