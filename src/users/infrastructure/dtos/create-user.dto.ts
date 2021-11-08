@@ -1,0 +1,115 @@
+import { ApiProperty } from '@nestjs/swagger';
+import {
+  IsString,
+  IsNumber,
+  IsEmail,
+  IsUrl,
+  IsNotEmpty,
+  IsOptional,
+  MaxLength,
+  MinLength,
+  IsPositive,
+  Matches,
+} from 'class-validator';
+import {
+  UserName,
+  Password,
+  FirstName,
+  LastName,
+  Biography,
+} from '../../../users/domain/value-objects';
+
+export class CreateUserDto {
+  @ApiProperty({
+    type: String,
+    required: true,
+    description: 'User email.',
+    example: 'john@doe.com',
+  })
+  @IsEmail()
+  @IsString()
+  @IsNotEmpty()
+  email: string;
+
+  @ApiProperty({
+    type: String,
+    required: true,
+    description: 'User UserName.',
+    example: 'john_doe',
+  })
+  @IsString()
+  @IsNotEmpty()
+  @MaxLength(UserName.MaxLength)
+  userName: string;
+
+  @ApiProperty({
+    type: String,
+    required: true,
+    description: 'User password.',
+    example: 'Pa$$w0rd',
+  })
+  @IsString()
+  @IsNotEmpty()
+  @MaxLength(Password.MaxLength)
+  @MinLength(Password.MinLength)
+  @Matches(Password.Regex, {
+    message:
+      'The password must have at least one number, one capital letter, and one symbol.',
+  })
+  password: string;
+
+  @ApiProperty({
+    type: String,
+    required: true,
+    description: 'User first name.',
+    example: 'John',
+  })
+  @IsString()
+  @IsNotEmpty()
+  @MaxLength(FirstName.MaxLength)
+  firstName: string;
+
+  @ApiProperty({
+    type: String,
+    required: true,
+    description: 'User last name.',
+    example: 'Doe',
+  })
+  @IsString()
+  @IsNotEmpty()
+  @MaxLength(LastName.MaxLength)
+  lastName: string;
+
+  @ApiProperty({
+    type: Number,
+    required: true,
+    description: 'User birthday in milliseconds.',
+    example: 1636128526164,
+  })
+  @IsNumber()
+  @IsNotEmpty()
+  @IsPositive()
+  birthday: number;
+
+  @ApiProperty({
+    type: String,
+    required: false,
+    description: 'User biography.',
+    example: 'A nice person.',
+  })
+  @IsOptional()
+  @IsString()
+  @MaxLength(Biography.MaxLength)
+  biography: string;
+
+  @ApiProperty({
+    type: String,
+    required: false,
+    description: 'User profile picture url.',
+    example: 'https://www.example.com',
+  })
+  @IsOptional()
+  @IsUrl()
+  @IsString()
+  profilePicture: string;
+}

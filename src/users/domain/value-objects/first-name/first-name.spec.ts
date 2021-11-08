@@ -1,6 +1,6 @@
 import { FirstName } from '..';
 
-describe('wishes', () => {
+describe('users', () => {
   describe('domain', () => {
     describe('value-objects', () => {
       describe('first-name', () => {
@@ -33,6 +33,29 @@ describe('wishes', () => {
 
           // Assert
           expect(() => FirstName.create('')).toThrowError('Invalid first name');
+        });
+
+        it('should throw an error when trying to create a FirstName from an string with more characters than the limit', () => {
+          // Arrange
+
+          // Act
+          const invalidFirstName = 'a'.repeat(FirstName.MaxLength + 1);
+
+          // Assert
+          expect(() => FirstName.create(invalidFirstName)).toThrowError(
+            'Invalid first name',
+          );
+        });
+
+        it('should create a FirstName instance from the largest valid string and should store the value', () => {
+          // Arrange
+
+          // Act
+          const largestValidFirstName = 'a'.repeat(FirstName.MaxLength);
+          const firstName = FirstName.create(largestValidFirstName);
+
+          // Assert
+          expect(firstName.getFirstName).toBe(largestValidFirstName);
         });
 
         it('should create a FirstName instance and should store the value', () => {
