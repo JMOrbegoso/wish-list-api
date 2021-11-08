@@ -26,4 +26,9 @@ export * from './password-hash/password-hash';
 export * from './password-hash/invalid-password-hash.error';
 
 export * from './is-blocked/is-blocked';
+
 export * from './password/password';
+export * from './password/invalid-password.error';
+export * from './password/password-is-too-short.error';
+export * from './password/password-is-too-long.error';
+export * from './password/malformed-password.error';

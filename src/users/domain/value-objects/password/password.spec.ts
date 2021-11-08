@@ -1,4 +1,10 @@
-import { Password } from '..';
+import {
+  Password,
+  InvalidPasswordError,
+  MalformedPasswordError,
+  PasswordIsTooLongError,
+  PasswordIsTooShortError,
+} from '..';
 
 describe('users', () => {
   describe('domain', () => {
@@ -11,7 +17,7 @@ describe('users', () => {
 
           // Assert
           expect(() => Password.create(undefined)).toThrowError(
-            'Invalid password',
+            InvalidPasswordError,
           );
         });
 
@@ -21,7 +27,9 @@ describe('users', () => {
           // Act
 
           // Assert
-          expect(() => Password.create(null)).toThrowError('Invalid password');
+          expect(() => Password.create(null)).toThrowError(
+            InvalidPasswordError,
+          );
         });
 
         it('should throw an error when trying to create a Password from an empty string', () => {
@@ -30,7 +38,7 @@ describe('users', () => {
           // Act
 
           // Assert
-          expect(() => Password.create('')).toThrowError('Invalid password');
+          expect(() => Password.create('')).toThrowError(InvalidPasswordError);
         });
 
         it('should throw an error when trying to create a Password from an string with less characters than the limit', () => {
@@ -41,7 +49,7 @@ describe('users', () => {
 
           // Assert
           expect(() => Password.create(invalidPassword)).toThrowError(
-            'Invalid password',
+            PasswordIsTooShortError,
           );
         });
 
@@ -67,7 +75,7 @@ describe('users', () => {
 
           // Assert
           expect(() => Password.create(invalidPassword)).toThrowError(
-            'Invalid password',
+            PasswordIsTooLongError,
           );
         });
 
@@ -93,7 +101,7 @@ describe('users', () => {
 
           // Assert
           expect(() => Password.create(invalidPassword)).toThrowError(
-            'Invalid password',
+            MalformedPasswordError,
           );
         });
 
@@ -105,7 +113,7 @@ describe('users', () => {
 
           // Assert
           expect(() => Password.create(invalidPassword)).toThrowError(
-            'Invalid password',
+            MalformedPasswordError,
           );
         });
 
@@ -117,7 +125,7 @@ describe('users', () => {
 
           // Assert
           expect(() => Password.create(invalidPassword)).toThrowError(
-            'Invalid password',
+            MalformedPasswordError,
           );
         });
 
