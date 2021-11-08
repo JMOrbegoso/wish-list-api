@@ -36,3 +36,9 @@ lerna-debug.log*
 
 # Environment Variables
 .env
+
+# Http requests
+*.http
+
+# yarn.lock file
+yarn.lock
