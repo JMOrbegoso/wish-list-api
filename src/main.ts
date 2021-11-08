@@ -12,9 +12,12 @@ async function bootstrap(): Promise<void> {
   // Create app
   const app = await NestFactory.create(AppModule);
 
+  // Set API global prefix
+  app.setGlobalPrefix('api');
+
   // Setup Swagger
   const document = SwaggerModule.createDocument(app, swaggerConfig);
-  SwaggerModule.setup('api', app, document);
+  SwaggerModule.setup('', app, document);
 
   // Enable Auto-validation
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));

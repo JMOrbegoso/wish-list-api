@@ -40,7 +40,7 @@ import {
 } from '../../application/commands';
 
 @ApiTags('AccountsController')
-@Controller('api/accounts')
+@Controller('accounts')
 export class AccountsController {
   constructor(
     private commandBus: CommandBus,
