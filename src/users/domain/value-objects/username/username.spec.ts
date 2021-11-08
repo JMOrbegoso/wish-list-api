@@ -1,4 +1,10 @@
-import { UserName } from '..';
+import {
+  UserName,
+  InvalidUserNameError,
+  UserNameIsTooShortError,
+  UserNameIsTooLongError,
+  MalformedUserNameError,
+} from '..';
 
 describe('users', () => {
   describe('domain', () => {
@@ -11,7 +17,7 @@ describe('users', () => {
 
           // Assert
           expect(() => UserName.create(undefined)).toThrowError(
-            'Invalid username',
+            InvalidUserNameError,
           );
         });
 
@@ -21,7 +27,9 @@ describe('users', () => {
           // Act
 
           // Assert
-          expect(() => UserName.create(null)).toThrowError('Invalid username');
+          expect(() => UserName.create(null)).toThrowError(
+            InvalidUserNameError,
+          );
         });
 
         it('should throw an error when trying to create a UserName from an empty string', () => {
@@ -30,7 +38,7 @@ describe('users', () => {
           // Act
 
           // Assert
-          expect(() => UserName.create('')).toThrowError('Invalid username');
+          expect(() => UserName.create('')).toThrowError(InvalidUserNameError);
         });
 
         it('should throw an error when trying to create a UserName from an string with less characters than the limit', () => {
@@ -41,7 +49,7 @@ describe('users', () => {
 
           // Assert
           expect(() => UserName.create(invalidUserName)).toThrowError(
-            'Invalid username',
+            UserNameIsTooShortError,
           );
         });
 
@@ -64,7 +72,7 @@ describe('users', () => {
 
           // Assert
           expect(() => UserName.create(invalidUserName)).toThrowError(
-            'Invalid username',
+            UserNameIsTooLongError,
           );
         });
 
@@ -87,7 +95,7 @@ describe('users', () => {
 
           // Assert
           expect(() => UserName.create(invalidUserName)).toThrowError(
-            'Invalid username',
+            MalformedUserNameError,
           );
         });
 
@@ -99,7 +107,7 @@ describe('users', () => {
 
           // Assert
           expect(() => UserName.create(invalidUserName)).toThrowError(
-            'Invalid username',
+            MalformedUserNameError,
           );
         });
 
@@ -111,7 +119,7 @@ describe('users', () => {
 
           // Assert
           expect(() => UserName.create(invalidUserName)).toThrowError(
-            'Invalid username',
+            MalformedUserNameError,
           );
         });
 

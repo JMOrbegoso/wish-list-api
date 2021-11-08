@@ -1,4 +1,9 @@
 export * from './username/username';
+export * from './username/invalid-username.error';
+export * from './username/username-is-too-short.error';
+export * from './username/username-is-too-long.error';
+export * from './username/malformed-username.error';
+
 export * from './email/email';
 
 export * from './first-name/first-name';
