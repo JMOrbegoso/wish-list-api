@@ -1,4 +1,4 @@
-import { MillisecondsDate } from '..';
+import { MillisecondsDate, InvalidMillisecondsDateError } from '..';
 
 describe('core', () => {
   describe('domain', () => {
@@ -12,7 +12,7 @@ describe('core', () => {
           // Assert
           expect(() =>
             MillisecondsDate.createFromMilliseconds(undefined),
-          ).toThrowError('Invalid date.');
+          ).toThrowError(InvalidMillisecondsDateError);
         });
 
         it('should throw an error when trying to create a MillisecondsDate from milliseconds with null', () => {
@@ -23,7 +23,7 @@ describe('core', () => {
           // Assert
           expect(() =>
             MillisecondsDate.createFromMilliseconds(null),
-          ).toThrowError('Invalid date.');
+          ).toThrowError(InvalidMillisecondsDateError);
         });
 
         it('should throw an error when trying to create a MillisecondsDate from date with undefined', () => {
@@ -33,7 +33,7 @@ describe('core', () => {
 
           // Assert
           expect(() => MillisecondsDate.createFromDate(undefined)).toThrowError(
-            'Invalid date.',
+            InvalidMillisecondsDateError,
           );
         });
 
@@ -44,7 +44,7 @@ describe('core', () => {
 
           // Assert
           expect(() => MillisecondsDate.createFromDate(null)).toThrowError(
-            'Invalid date.',
+            InvalidMillisecondsDateError,
           );
         });
 
