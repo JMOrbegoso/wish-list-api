@@ -41,7 +41,7 @@ describe('users', () => {
           expect(() => Password.create('')).toThrowError(InvalidPasswordError);
         });
 
-        it('should throw an error when trying to create a Password from an string with less characters than the limit', () => {
+        it('should throw an error when trying to create a Password from a string with less characters than the limit', () => {
           // Arrange
 
           // Act
@@ -67,7 +67,7 @@ describe('users', () => {
           expect(password.getPassword).toBe(shortestValidPassword);
         });
 
-        it('should throw an error when trying to create a Password from an string with more characters than the limit', () => {
+        it('should throw an error when trying to create a Password from a string with more characters than the limit', () => {
           // Arrange
 
           // Act

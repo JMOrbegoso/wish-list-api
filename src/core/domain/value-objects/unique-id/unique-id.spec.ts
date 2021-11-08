@@ -4,7 +4,7 @@ describe('core', () => {
   describe('domain', () => {
     describe('value-objects', () => {
       describe('unique-id', () => {
-        it('should throw an error when trying to create a UniqueId from undefined', () => {
+        it('should throw an error when trying to create an UniqueId from undefined', () => {
           // Arrange
 
           // Act
@@ -15,7 +15,7 @@ describe('core', () => {
           );
         });
 
-        it('should throw an error when trying to create a UniqueId from null', () => {
+        it('should throw an error when trying to create an UniqueId from null', () => {
           // Arrange
 
           // Act
@@ -26,7 +26,7 @@ describe('core', () => {
           );
         });
 
-        it('should throw an error when trying to create a UniqueId from an empty string', () => {
+        it('should throw an error when trying to create an UniqueId from an empty string', () => {
           // Arrange
 
           // Act

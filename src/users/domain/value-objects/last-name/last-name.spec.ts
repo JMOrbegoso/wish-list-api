@@ -35,7 +35,7 @@ describe('users', () => {
           expect(() => LastName.create('')).toThrowError(InvalidLastNameError);
         });
 
-        it('should throw an error when trying to create a LastName from an string with more characters than the limit', () => {
+        it('should throw an error when trying to create a LastName from a string with more characters than the limit', () => {
           // Arrange
 
           // Act

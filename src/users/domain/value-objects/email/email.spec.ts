@@ -4,7 +4,7 @@ describe('users', () => {
   describe('domain', () => {
     describe('value-objects', () => {
       describe('email', () => {
-        it('should throw an error when trying to create a Email from undefined', () => {
+        it('should throw an error when trying to create an Email from undefined', () => {
           // Arrange
 
           // Act
@@ -13,7 +13,7 @@ describe('users', () => {
           expect(() => Email.create(undefined)).toThrowError(InvalidEmailError);
         });
 
-        it('should throw an error when trying to create a Email from null', () => {
+        it('should throw an error when trying to create an Email from null', () => {
           // Arrange
 
           // Act
@@ -22,7 +22,7 @@ describe('users', () => {
           expect(() => Email.create(null)).toThrowError(InvalidEmailError);
         });
 
-        it('should throw an error when trying to create a Email from an empty string', () => {
+        it('should throw an error when trying to create an Email from an empty string', () => {
           // Arrange
 
           // Act
@@ -31,7 +31,7 @@ describe('users', () => {
           expect(() => Email.create('')).toThrowError(InvalidEmailError);
         });
 
-        it('should throw an error when trying to create a Email from a string with characters that do not match the regex', () => {
+        it('should throw an error when trying to create an Email from a string with characters that do not match the regex', () => {
           // Arrange
 
           // Act
@@ -43,7 +43,7 @@ describe('users', () => {
           );
         });
 
-        it('should throw an error when trying to create a Email from a string with characters that do not match the regex', () => {
+        it('should throw an error when trying to create an Email from a string with characters that do not match the regex', () => {
           // Arrange
 
           // Act
@@ -55,7 +55,7 @@ describe('users', () => {
           );
         });
 
-        it('should throw an error when trying to create a Email from a string with characters that do not match the regex', () => {
+        it('should throw an error when trying to create an Email from a string with characters that do not match the regex', () => {
           // Arrange
 
           // Act
@@ -67,7 +67,7 @@ describe('users', () => {
           );
         });
 
-        it('should create a Email instance and should store the value', () => {
+        it('should create an Email instance and should store the value', () => {
           // Arrange
 
           // Act

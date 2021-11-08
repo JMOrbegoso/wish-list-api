@@ -4,7 +4,7 @@ describe('users', () => {
   describe('domain', () => {
     describe('value-objects', () => {
       describe('blocked', () => {
-        it('should throw an error when trying to create a IsBlocked from undefined', () => {
+        it('should throw an error when trying to create an IsBlocked from undefined', () => {
           // Arrange
 
           // Act
@@ -15,7 +15,7 @@ describe('users', () => {
           );
         });
 
-        it('should throw an error when trying to create a IsBlocked from null', () => {
+        it('should throw an error when trying to create an IsBlocked from null', () => {
           // Arrange
 
           // Act

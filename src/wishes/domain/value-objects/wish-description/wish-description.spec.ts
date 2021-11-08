@@ -41,7 +41,7 @@ describe('wishes', () => {
           );
         });
 
-        it('should throw an error when trying to create a WishDescription from an string with more characters than the limit', () => {
+        it('should throw an error when trying to create a WishDescription from a string with more characters than the limit', () => {
           // Arrange
 
           // Act

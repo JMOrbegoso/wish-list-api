@@ -205,7 +205,7 @@ describe('users', () => {
       });
 
       describe('map UpdateUserDto to UpdateUserCommand', () => {
-        it('should map UpdateUserDto to a UpdateUserCommand keeping all the property values', () => {
+        it('should map UpdateUserDto to an UpdateUserCommand keeping all the property values', () => {
           // Arrange
           const dto = new UpdateUserDto();
           dto.id = id;

@@ -37,7 +37,7 @@ describe('users', () => {
           );
         });
 
-        it('should throw an error when trying to create a FirstName from an string with more characters than the limit', () => {
+        it('should throw an error when trying to create a FirstName from a string with more characters than the limit', () => {
           // Arrange
 
           // Act

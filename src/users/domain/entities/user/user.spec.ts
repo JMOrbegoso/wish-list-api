@@ -20,7 +20,7 @@ describe('users', () => {
     describe('entities', () => {
       describe('user', () => {
         describe('creation', () => {
-          it('should create a User instance and should store the value', () => {
+          it('should create an User instance and should store the value', () => {
             // Arrange
 
             // Act

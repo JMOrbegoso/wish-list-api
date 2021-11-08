@@ -4,7 +4,7 @@ describe('users', () => {
   describe('domain', () => {
     describe('value-objects', () => {
       describe('is-verified', () => {
-        it('should throw an error when trying to create a IsVerified from undefined', () => {
+        it('should throw an error when trying to create an IsVerified from undefined', () => {
           // Arrange
 
           // Act
@@ -15,7 +15,7 @@ describe('users', () => {
           );
         });
 
-        it('should throw an error when trying to create a IsVerified from null', () => {
+        it('should throw an error when trying to create an IsVerified from null', () => {
           // Arrange
 
           // Act

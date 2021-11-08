@@ -10,7 +10,7 @@ describe('users', () => {
   describe('domain', () => {
     describe('value-objects', () => {
       describe('username', () => {
-        it('should throw an error when trying to create a UserName from undefined', () => {
+        it('should throw an error when trying to create an UserName from undefined', () => {
           // Arrange
 
           // Act
@@ -21,7 +21,7 @@ describe('users', () => {
           );
         });
 
-        it('should throw an error when trying to create a UserName from null', () => {
+        it('should throw an error when trying to create an UserName from null', () => {
           // Arrange
 
           // Act
@@ -32,7 +32,7 @@ describe('users', () => {
           );
         });
 
-        it('should throw an error when trying to create a UserName from an empty string', () => {
+        it('should throw an error when trying to create an UserName from an empty string', () => {
           // Arrange
 
           // Act
@@ -41,7 +41,7 @@ describe('users', () => {
           expect(() => UserName.create('')).toThrowError(InvalidUserNameError);
         });
 
-        it('should throw an error when trying to create a UserName from an string with less characters than the limit', () => {
+        it('should throw an error when trying to create an UserName from a string with less characters than the limit', () => {
           // Arrange
 
           // Act
@@ -53,7 +53,7 @@ describe('users', () => {
           );
         });
 
-        it('should create a UserName instance from the shortest valid string and should store the value', () => {
+        it('should create an UserName instance from the shortest valid string and should store the value', () => {
           // Arrange
 
           // Act
@@ -64,7 +64,7 @@ describe('users', () => {
           expect(username.getUserName).toBe(shortestValidUserName);
         });
 
-        it('should throw an error when trying to create a UserName from an string with more characters than the limit', () => {
+        it('should throw an error when trying to create an UserName from a string with more characters than the limit', () => {
           // Arrange
 
           // Act
@@ -76,7 +76,7 @@ describe('users', () => {
           );
         });
 
-        it('should create a UserName instance from the largest valid string and should store the value', () => {
+        it('should create an UserName instance from the largest valid string and should store the value', () => {
           // Arrange
 
           // Act
@@ -87,7 +87,7 @@ describe('users', () => {
           expect(username.getUserName).toBe(largestValidUserName);
         });
 
-        it('should throw an error when trying to create a UserName from a string with characters that do not match the regex', () => {
+        it('should throw an error when trying to create an UserName from a string with characters that do not match the regex', () => {
           // Arrange
 
           // Act
@@ -99,7 +99,7 @@ describe('users', () => {
           );
         });
 
-        it('should throw an error when trying to create a UserName from a string with characters that do not match the regex', () => {
+        it('should throw an error when trying to create an UserName from a string with characters that do not match the regex', () => {
           // Arrange
 
           // Act
@@ -111,7 +111,7 @@ describe('users', () => {
           );
         });
 
-        it('should throw an error when trying to create a UserName from a string with characters that do not match the regex', () => {
+        it('should throw an error when trying to create an UserName from a string with characters that do not match the regex', () => {
           // Arrange
 
           // Act
@@ -123,7 +123,7 @@ describe('users', () => {
           );
         });
 
-        it('should create a UserName instance and should store the value', () => {
+        it('should create an UserName instance and should store the value', () => {
           // Arrange
 
           // Act
