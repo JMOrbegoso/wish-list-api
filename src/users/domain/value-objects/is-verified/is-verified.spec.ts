@@ -1,4 +1,4 @@
-import { IsVerified } from '..';
+import { IsVerified, InvalidIsVerifiedStatus } from '..';
 
 describe('users', () => {
   describe('domain', () => {
@@ -11,7 +11,7 @@ describe('users', () => {
 
           // Assert
           expect(() => IsVerified.create(undefined)).toThrowError(
-            'Invalid verification status.',
+            InvalidIsVerifiedStatus,
           );
         });
 
@@ -22,7 +22,7 @@ describe('users', () => {
 
           // Assert
           expect(() => IsVerified.create(null)).toThrowError(
-            'Invalid verification status.',
+            InvalidIsVerifiedStatus,
           );
         });
 

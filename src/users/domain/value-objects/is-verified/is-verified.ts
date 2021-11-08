@@ -1,4 +1,5 @@
 import { ValueObject } from '../../../../core/domain/value-objects';
+import { InvalidIsVerifiedStatus } from '..';
 
 export class IsVerified extends ValueObject<boolean> {
   static verified(): IsVerified {
@@ -10,9 +11,9 @@ export class IsVerified extends ValueObject<boolean> {
   }
 
   protected validate(value: boolean): void {
-    if (value === undefined) throw new Error('Invalid verification status.');
+    if (value === undefined) throw new InvalidIsVerifiedStatus();
 
-    if (value === null) throw new Error('Invalid verification status.');
+    if (value === null) throw new InvalidIsVerifiedStatus();
   }
 
   static create(value: boolean): IsVerified {
