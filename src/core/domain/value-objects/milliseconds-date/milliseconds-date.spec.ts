@@ -57,7 +57,7 @@ describe('core', () => {
           const millisecondsDate = MillisecondsDate.create();
 
           // Assert
-          expect(millisecondsDate.getMilliseconds).toBeCloseTo(milliseconds);
+          expect(millisecondsDate.getMilliseconds).toBeCloseTo(milliseconds, 4);
         });
 
         it('should create a MillisecondsDate instance from a date', () => {
@@ -69,7 +69,7 @@ describe('core', () => {
           const millisecondsDate = MillisecondsDate.createFromDate(currentDate);
 
           // Assert
-          expect(millisecondsDate.getMilliseconds).toBeCloseTo(milliseconds);
+          expect(millisecondsDate.getMilliseconds).toBe(milliseconds);
         });
 
         it('should create a MillisecondsDate instance from milliseconds', () => {
@@ -82,7 +82,7 @@ describe('core', () => {
             MillisecondsDate.createFromMilliseconds(milliseconds);
 
           // Assert
-          expect(millisecondsDate.getMilliseconds).toBeCloseTo(milliseconds);
+          expect(millisecondsDate.getMilliseconds).toBe(milliseconds);
         });
 
         it('create two MillisecondsDate instances with different value and compare them using "equals" should return false', () => {
