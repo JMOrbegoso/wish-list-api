@@ -10,3 +10,4 @@ export * from './category-name/category-name';
 export * from './category-name/invalid-category-name.error';
 
 export * from './wish-privacy-level/wish-privacy-level';
+export * from './wish-privacy-level/invalid-wish-privacy-level.error';

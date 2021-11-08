@@ -1,4 +1,5 @@
 import { ValueObject } from '../../../../core/domain/value-objects';
+import { InvalidWishPrivacyLevelError } from '..';
 
 export enum PrivacyLevel {
   Public = 0,
@@ -21,7 +22,7 @@ export class WishPrivacyLevel extends ValueObject<PrivacyLevel> {
 
   protected validate(value: PrivacyLevel): void {
     if (!Object.values(PrivacyLevel).includes(value))
-      throw new Error('Invalid wish privacy level.');
+      throw new InvalidWishPrivacyLevelError();
   }
 
   static create(value: PrivacyLevel): WishPrivacyLevel {
