@@ -33,16 +33,25 @@ describe('core', () => {
           expect(() => WebUrl.create('')).toThrowError(InvalidWebUrlError);
         });
 
-        it('should throw an error when trying to create a WebUrl from an invalid url', () => {
-          // Arrange
+        test.each([
+          ' ',
+          'invalid',
+          'httpp://',
+          'hhttp://www.example.com',
+          'www.example.com',
+        ])(
+          'should throw an error when trying to create a WebUrl from %p',
+          (malformedWebUrl) => {
+            // Arrange
 
-          // Act
+            // Act
 
-          // Assert
-          expect(() => WebUrl.create('invalid')).toThrowError(
-            MalformedWebUrlError,
-          );
-        });
+            // Assert
+            expect(() => WebUrl.create(malformedWebUrl)).toThrowError(
+              MalformedWebUrlError,
+            );
+          },
+        );
 
         it('should create a WebUrl instance from a valid url and should store the value', () => {
           // Arrange
