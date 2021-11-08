@@ -1,4 +1,4 @@
-import { WishTitle } from '..';
+import { WishTitle, InvalidWishTitleError, WishTitleIsTooLongError } from '..';
 
 describe('wishes', () => {
   describe('domain', () => {
@@ -11,7 +11,7 @@ describe('wishes', () => {
 
           // Assert
           expect(() => WishTitle.create(undefined)).toThrowError(
-            'Invalid wish title',
+            InvalidWishTitleError,
           );
         });
 
@@ -22,7 +22,7 @@ describe('wishes', () => {
 
           // Assert
           expect(() => WishTitle.create(null)).toThrowError(
-            'Invalid wish title',
+            InvalidWishTitleError,
           );
         });
 
@@ -32,7 +32,9 @@ describe('wishes', () => {
           // Act
 
           // Assert
-          expect(() => WishTitle.create('')).toThrowError('Invalid wish title');
+          expect(() => WishTitle.create('')).toThrowError(
+            InvalidWishTitleError,
+          );
         });
 
         it('should throw an error when trying to create a WishTitle from an string with more characters than the limit', () => {
@@ -43,7 +45,7 @@ describe('wishes', () => {
 
           // Assert
           expect(() => WishTitle.create(invalidTitle)).toThrowError(
-            'Invalid wish title',
+            WishTitleIsTooLongError,
           );
         });
 
