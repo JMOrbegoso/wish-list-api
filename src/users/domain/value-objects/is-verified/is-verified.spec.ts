@@ -7,7 +7,7 @@ describe('users', () => {
         const validValues = [true, false];
 
         test.each([undefined, null])(
-          'should throw an error when trying to create a IsVerified from %p',
+          'should throw an error when trying to create an IsVerified from %p',
           (invalid) => {
             // Arrange
 
@@ -21,7 +21,7 @@ describe('users', () => {
         );
 
         test.each(validValues)(
-          'should to create a IsVerified from %p',
+          'should to create an IsVerified from %p',
           (valid) => {
             // Arrange
 

@@ -21,7 +21,7 @@ describe('core', () => {
           }
         }
 
-        it('should create an domain event instance and should store the values', () => {
+        it('should create a domain event instance and should store the values', () => {
           // Arrange
           const id = 'id';
           const uniqueId = UniqueId.create(id);

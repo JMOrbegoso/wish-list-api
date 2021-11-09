@@ -15,7 +15,7 @@ describe('users', () => {
         ];
 
         test.each([undefined, null, ''])(
-          'should throw an error when trying to create a Email from %p',
+          'should throw an error when trying to create an Email from %p',
           (invalid) => {
             // Arrange
 
@@ -37,7 +37,7 @@ describe('users', () => {
           'aaabbb,',
           'aaabbb§',
         ])(
-          'should throw an error when trying to create a Email from %p (Malformed)',
+          'should throw an error when trying to create an Email from %p (Malformed)',
           (malformed) => {
             // Arrange
 
@@ -50,7 +50,7 @@ describe('users', () => {
           },
         );
 
-        test.each(validValues)('should to create a Email from %p', (valid) => {
+        test.each(validValues)('should to create an Email from %p', (valid) => {
           // Arrange
 
           // Act

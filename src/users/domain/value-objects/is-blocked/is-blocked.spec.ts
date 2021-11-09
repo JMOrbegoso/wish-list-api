@@ -7,7 +7,7 @@ describe('users', () => {
         const validValues = [true, false];
 
         test.each([undefined, null])(
-          'should throw an error when trying to create a IsBlocked from %p',
+          'should throw an error when trying to create an IsBlocked from %p',
           (invalid) => {
             // Arrange
 
@@ -21,7 +21,7 @@ describe('users', () => {
         );
 
         test.each(validValues)(
-          'should to create a IsBlocked from %p',
+          'should to create an IsBlocked from %p',
           (valid) => {
             // Arrange
 

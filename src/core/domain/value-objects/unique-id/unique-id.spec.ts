@@ -12,7 +12,7 @@ describe('core', () => {
         ];
 
         test.each([undefined, null, ''])(
-          'should throw an error when trying to create a UniqueId from %p',
+          'should throw an error when trying to create an UniqueId from %p',
           (invalid) => {
             // Arrange
 
@@ -26,7 +26,7 @@ describe('core', () => {
         );
 
         test.each(validValues)(
-          'should to create a UniqueId from %p',
+          'should to create an UniqueId from %p',
           (valid) => {
             // Arrange
 

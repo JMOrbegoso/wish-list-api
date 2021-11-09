@@ -32,7 +32,7 @@ describe('users', () => {
         ];
 
         test.each([undefined, null, ''])(
-          'should throw an error when trying to create a UserName from %p',
+          'should throw an error when trying to create an UserName from %p',
           (invalid) => {
             // Arrange
 
@@ -55,7 +55,7 @@ describe('users', () => {
           'ABCDE',
           '11111',
         ])(
-          'should throw an error when trying to create a UserName from %p (Less characters than the limit)',
+          'should throw an error when trying to create an UserName from %p (Less characters than the limit)',
           (shorter) => {
             // Arrange
 
@@ -79,7 +79,7 @@ describe('users', () => {
           '1'.repeat(UserName.MaxLength + 10),
           '_'.repeat(UserName.MaxLength + 10),
         ])(
-          'should throw an error when trying to create a UserName from %p (More characters than the limit)',
+          'should throw an error when trying to create an UserName from %p (More characters than the limit)',
           (larger) => {
             // Arrange
 
@@ -103,7 +103,7 @@ describe('users', () => {
           'aaabbb,',
           'aaabbb§',
         ])(
-          'should throw an error when trying to create a UserName from %p (Malformed)',
+          'should throw an error when trying to create an UserName from %p (Malformed)',
           (malformed) => {
             // Arrange
 
@@ -117,7 +117,7 @@ describe('users', () => {
         );
 
         test.each(validValues)(
-          'should to create a UserName from %p',
+          'should to create an UserName from %p',
           (valid) => {
             // Arrange
 
