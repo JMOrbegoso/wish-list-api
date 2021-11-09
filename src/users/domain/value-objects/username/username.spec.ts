@@ -10,156 +10,160 @@ describe('users', () => {
   describe('domain', () => {
     describe('value-objects', () => {
       describe('username', () => {
-        it('should throw an error when trying to create an UserName from undefined', () => {
-          // Arrange
+        const validValues = [
+          'a'.repeat(UserName.MinLength),
+          'a'.repeat(UserName.MaxLength),
+          '1'.repeat(UserName.MinLength),
+          '1'.repeat(UserName.MaxLength),
+          '_'.repeat(UserName.MinLength),
+          '_'.repeat(UserName.MaxLength),
+          'JohnDoe',
+          'John_Doe',
+          'Johnny_Doe',
+          'john_doe_0',
+          'JOHNDOE',
+          'John-Doe',
+          'John-Doe_100',
+          '1John1',
+          '_John-1-Doe_',
+          '_John-Doe_1_',
+          '999-a-999',
+          '999999',
+        ];
 
-          // Act
+        test.each([undefined, null, ''])(
+          'should throw an error when trying to create a UserName from %p',
+          (invalid) => {
+            // Arrange
 
-          // Assert
-          expect(() => UserName.create(undefined)).toThrowError(
-            InvalidUserNameError,
-          );
-        });
+            // Act
 
-        it('should throw an error when trying to create an UserName from null', () => {
-          // Arrange
+            // Assert
+            expect(() => UserName.create(invalid)).toThrowError(
+              InvalidUserNameError,
+            );
+          },
+        );
 
-          // Act
+        test.each([
+          'a'.repeat(UserName.MinLength - 1),
+          '1'.repeat(UserName.MinLength - 1),
+          'a'.repeat(UserName.MinLength - 3),
+          '1'.repeat(UserName.MinLength - 3),
+          'AA',
+          'AAA',
+          'ABCDE',
+          '11111',
+        ])(
+          'should throw an error when trying to create a UserName from %p (Less characters than the limit)',
+          (shorter) => {
+            // Arrange
 
-          // Assert
-          expect(() => UserName.create(null)).toThrowError(
-            InvalidUserNameError,
-          );
-        });
+            // Act
 
-        it('should throw an error when trying to create an UserName from an empty string', () => {
-          // Arrange
+            // Assert
+            expect(() => UserName.create(shorter)).toThrowError(
+              UserNameIsTooShortError,
+            );
+          },
+        );
 
-          // Act
+        test.each([
+          'a'.repeat(UserName.MaxLength + 1),
+          '1'.repeat(UserName.MaxLength + 1),
+          '_'.repeat(UserName.MaxLength + 1),
+          'a'.repeat(UserName.MaxLength + 5),
+          '1'.repeat(UserName.MaxLength + 5),
+          '_'.repeat(UserName.MaxLength + 5),
+          'a'.repeat(UserName.MaxLength + 10),
+          '1'.repeat(UserName.MaxLength + 10),
+          '_'.repeat(UserName.MaxLength + 10),
+        ])(
+          'should throw an error when trying to create a UserName from %p (More characters than the limit)',
+          (larger) => {
+            // Arrange
 
-          // Assert
-          expect(() => UserName.create('')).toThrowError(InvalidUserNameError);
-        });
+            // Act
 
-        it('should throw an error when trying to create an UserName from a string with less characters than the limit', () => {
-          // Arrange
+            // Assert
+            expect(() => UserName.create(larger)).toThrowError(
+              UserNameIsTooLongError,
+            );
+          },
+        );
 
-          // Act
-          const invalidUserName = 'a'.repeat(UserName.MinLength - 1);
+        test.each([
+          'aaa.bbb',
+          '        ',
+          'aaa bbb',
+          'aaaaaaa bbbbbbb',
+          'aaaaaañ',
+          'ññññññ',
+          'aaabbbÄ',
+          'aaabbb,',
+          'aaabbb§',
+        ])(
+          'should throw an error when trying to create a UserName from %p (Malformed)',
+          (malformed) => {
+            // Arrange
 
-          // Assert
-          expect(() => UserName.create(invalidUserName)).toThrowError(
-            UserNameIsTooShortError,
-          );
-        });
+            // Act
 
-        it('should create an UserName instance from the shortest valid string and should store the value', () => {
-          // Arrange
+            // Assert
+            expect(() => UserName.create(malformed)).toThrowError(
+              MalformedUserNameError,
+            );
+          },
+        );
 
-          // Act
-          const shortestValidUserName = 'a'.repeat(UserName.MinLength);
-          const username = UserName.create(shortestValidUserName);
+        test.each(validValues)(
+          'should to create a UserName from %p',
+          (valid) => {
+            // Arrange
 
-          // Assert
-          expect(username.getUserName).toBe(shortestValidUserName);
-        });
+            // Act
+            const userName = UserName.create(valid);
 
-        it('should throw an error when trying to create an UserName from a string with more characters than the limit', () => {
-          // Arrange
+            // Assert
+            expect(userName.getUserName).toBe(valid);
+          },
+        );
 
-          // Act
-          const invalidUserName = 'a'.repeat(UserName.MaxLength + 1);
+        test.each([
+          [validValues[0], validValues[1]],
+          [validValues[1], validValues[0]],
+          [validValues[0], validValues[2]],
+          [validValues[2], validValues[0]],
+          [validValues[0], validValues[3]],
+        ])(
+          'comparing two UserName created from two different values (%p and %p) should return false',
+          (text1, text2) => {
+            // Arrange
 
-          // Assert
-          expect(() => UserName.create(invalidUserName)).toThrowError(
-            UserNameIsTooLongError,
-          );
-        });
+            // Act
+            const userName_1 = UserName.create(text1);
+            const userName_2 = UserName.create(text2);
+            const result = userName_1.equals(userName_2);
 
-        it('should create an UserName instance from the largest valid string and should store the value', () => {
-          // Arrange
+            // Assert
+            expect(result).toBe(false);
+          },
+        );
 
-          // Act
-          const largestValidUserName = 'a'.repeat(UserName.MaxLength);
-          const username = UserName.create(largestValidUserName);
+        test.each(validValues)(
+          'comparing two UserName created from the same value (%p) should return true',
+          (text) => {
+            // Arrange
 
-          // Assert
-          expect(username.getUserName).toBe(largestValidUserName);
-        });
+            // Act
+            const userName1 = UserName.create(text);
+            const userName2 = UserName.create(text);
+            const result = userName1.equals(userName2);
 
-        it('should throw an error when trying to create an UserName from a string with characters that do not match the regex', () => {
-          // Arrange
-
-          // Act
-          const invalidUserName = 'aaa.bbb';
-
-          // Assert
-          expect(() => UserName.create(invalidUserName)).toThrowError(
-            MalformedUserNameError,
-          );
-        });
-
-        it('should throw an error when trying to create an UserName from a string with characters that do not match the regex', () => {
-          // Arrange
-
-          // Act
-          const invalidUserName = 'aaa bbb';
-
-          // Assert
-          expect(() => UserName.create(invalidUserName)).toThrowError(
-            MalformedUserNameError,
-          );
-        });
-
-        it('should throw an error when trying to create an UserName from a string with characters that do not match the regex', () => {
-          // Arrange
-
-          // Act
-          const invalidUserName = 'aaaaaaa bbbbbbb';
-
-          // Assert
-          expect(() => UserName.create(invalidUserName)).toThrowError(
-            MalformedUserNameError,
-          );
-        });
-
-        it('should create an UserName instance and should store the value', () => {
-          // Arrange
-
-          // Act
-          const text = 'John-Doe_100';
-          const username = UserName.create(text);
-
-          // Assert
-          expect(username.getUserName).toBe(text);
-        });
-
-        it('create two UserName instances with different value and compare them using "equals" should return false', () => {
-          // Arrange
-
-          // Act
-          const text_1 = 'John_Doe';
-          const text_2 = 'Johnny_Doe';
-          const username_1 = UserName.create(text_1);
-          const username_2 = UserName.create(text_2);
-          const result = username_1.equals(username_2);
-
-          // Assert
-          expect(result).toBe(false);
-        });
-
-        it('create two UserName instances with the same value and compare them using "equals" should return true', () => {
-          // Arrange
-
-          // Act
-          const text = 'john_doe_0';
-          const username_1 = UserName.create(text);
-          const username_2 = UserName.create(text);
-          const result = username_1.equals(username_2);
-
-          // Assert
-          expect(result).toBe(true);
-        });
+            // Assert
+            expect(result).toBe(true);
+          },
+        );
       });
     });
   });
