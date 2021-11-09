@@ -10,162 +10,149 @@ describe('users', () => {
   describe('domain', () => {
     describe('value-objects', () => {
       describe('password', () => {
-        it('should throw an error when trying to create a Password from undefined', () => {
-          // Arrange
+        const validValues = [
+          '1A%' + 'a'.repeat(Password.MinLength - 3),
+          '1A%' + 'a'.repeat(Password.MaxLength - 3),
+          'Abcd1*',
+          'aAbBcC%1',
+          'aA$b%B(c)C0',
+          'aA$b%B(c)C1',
+          'aA$b%B(1)[C]',
+        ];
 
-          // Act
+        test.each([undefined, null, ''])(
+          'should throw an error when trying to create a Password from %p',
+          (invalid) => {
+            // Arrange
 
-          // Assert
-          expect(() => Password.create(undefined)).toThrowError(
-            InvalidPasswordError,
-          );
-        });
+            // Act
 
-        it('should throw an error when trying to create a Password from null', () => {
-          // Arrange
+            // Assert
+            expect(() => Password.create(invalid)).toThrowError(
+              InvalidPasswordError,
+            );
+          },
+        );
 
-          // Act
+        test.each([
+          'a'.repeat(Password.MinLength - 1),
+          '1'.repeat(Password.MinLength - 1),
+          'a'.repeat(Password.MinLength - 3),
+          '1'.repeat(Password.MinLength - 3),
+          'AA',
+          'AAA',
+          'ABCDE',
+          '11111',
+        ])(
+          'should throw an error when trying to create a Password from %p (Less characters than the limit)',
+          (shorter) => {
+            // Arrange
 
-          // Assert
-          expect(() => Password.create(null)).toThrowError(
-            InvalidPasswordError,
-          );
-        });
+            // Act
 
-        it('should throw an error when trying to create a Password from an empty string', () => {
-          // Arrange
+            // Assert
+            expect(() => Password.create(shorter)).toThrowError(
+              PasswordIsTooShortError,
+            );
+          },
+        );
 
-          // Act
+        test.each([
+          'a'.repeat(Password.MaxLength + 1),
+          '1'.repeat(Password.MaxLength + 1),
+          '_'.repeat(Password.MaxLength + 1),
+          'a'.repeat(Password.MaxLength + 5),
+          '1'.repeat(Password.MaxLength + 5),
+          '_'.repeat(Password.MaxLength + 5),
+          'a'.repeat(Password.MaxLength + 10),
+          '1'.repeat(Password.MaxLength + 10),
+          '_'.repeat(Password.MaxLength + 10),
+        ])(
+          'should throw an error when trying to create a Password from %p (More characters than the limit)',
+          (larger) => {
+            // Arrange
 
-          // Assert
-          expect(() => Password.create('')).toThrowError(InvalidPasswordError);
-        });
+            // Act
 
-        it('should throw an error when trying to create a Password from a string with less characters than the limit', () => {
-          // Arrange
+            // Assert
+            expect(() => Password.create(larger)).toThrowError(
+              PasswordIsTooLongError,
+            );
+          },
+        );
 
-          // Act
-          const invalidPassword = 'a'.repeat(Password.MinLength - 1);
+        test.each([
+          'aaa.bbb',
+          '        ',
+          'aaa bbb',
+          'aaaaaaa bbbbbbb',
+          'aaaaaañ',
+          'ññññññ',
+          'aaabbbÄ',
+          'aaabbb,',
+          'aaabbb§',
+        ])(
+          'should throw an error when trying to create a Password from %p (Malformed)',
+          (malformed) => {
+            // Arrange
 
-          // Assert
-          expect(() => Password.create(invalidPassword)).toThrowError(
-            PasswordIsTooShortError,
-          );
-        });
+            // Act
 
-        it('should create a Password instance from the shortest valid string and should store the value', () => {
-          // Arrange
-          const passwordPrefix = '1A%';
-          const shortestValidPassword =
-            passwordPrefix +
-            'a'.repeat(Password.MinLength - passwordPrefix.length);
+            // Assert
+            expect(() => Password.create(malformed)).toThrowError(
+              MalformedPasswordError,
+            );
+          },
+        );
 
-          // Act
-          const password = Password.create(shortestValidPassword);
+        test.each(validValues)(
+          'should to create a Password from %p',
+          (valid) => {
+            // Arrange
 
-          // Assert
-          expect(password.getPassword).toBe(shortestValidPassword);
-        });
+            // Act
+            const password = Password.create(valid);
 
-        it('should throw an error when trying to create a Password from a string with more characters than the limit', () => {
-          // Arrange
+            // Assert
+            expect(password.getPassword).toBe(valid);
+          },
+        );
 
-          // Act
-          const invalidPassword = 'a'.repeat(Password.MaxLength + 1);
+        test.each([
+          [validValues[0], validValues[1]],
+          [validValues[1], validValues[0]],
+          [validValues[0], validValues[2]],
+          [validValues[2], validValues[0]],
+          [validValues[0], validValues[3]],
+        ])(
+          'comparing two Password created from two different values (%p and %p) should return false',
+          (text1, text2) => {
+            // Arrange
 
-          // Assert
-          expect(() => Password.create(invalidPassword)).toThrowError(
-            PasswordIsTooLongError,
-          );
-        });
+            // Act
+            const password_1 = Password.create(text1);
+            const password_2 = Password.create(text2);
+            const result = password_1.equals(password_2);
 
-        it('should create a Password instance from the largest valid string and should store the value', () => {
-          // Arrange
-          const passwordPrefix = '1A%';
-          const largestValidPassword =
-            passwordPrefix +
-            'a'.repeat(Password.MaxLength - passwordPrefix.length);
+            // Assert
+            expect(result).toBe(false);
+          },
+        );
 
-          // Act
-          const password = Password.create(largestValidPassword);
+        test.each(validValues)(
+          'comparing two Password created from the same value (%p) should return true',
+          (text) => {
+            // Arrange
 
-          // Assert
-          expect(password.getPassword).toBe(largestValidPassword);
-        });
+            // Act
+            const password1 = Password.create(text);
+            const password2 = Password.create(text);
+            const result = password1.equals(password2);
 
-        it('should throw an error when trying to create a Password from a string with characters that do not match the regex', () => {
-          // Arrange
-
-          // Act
-          const invalidPassword = 'aaañbbb';
-
-          // Assert
-          expect(() => Password.create(invalidPassword)).toThrowError(
-            MalformedPasswordError,
-          );
-        });
-
-        it('should throw an error when trying to create a Password from a string with characters that do not match the regex', () => {
-          // Arrange
-
-          // Act
-          const invalidPassword = 'aaa bbb';
-
-          // Assert
-          expect(() => Password.create(invalidPassword)).toThrowError(
-            MalformedPasswordError,
-          );
-        });
-
-        it('should throw an error when trying to create a Password from a string with characters that do not match the regex', () => {
-          // Arrange
-
-          // Act
-          const invalidPassword = 'aaaaaaa bbbbbbb';
-
-          // Assert
-          expect(() => Password.create(invalidPassword)).toThrowError(
-            MalformedPasswordError,
-          );
-        });
-
-        it('should create a Password instance and should store the value', () => {
-          // Arrange
-
-          // Act
-          const text = 'aAbBcC%1';
-          const password = Password.create(text);
-
-          // Assert
-          expect(password.getPassword).toBe(text);
-        });
-
-        it('create two Password instances with different value and compare them using "equals" should return false', () => {
-          // Arrange
-
-          // Act
-          const text_1 = 'aA$b%B(c)C0';
-          const text_2 = 'aA$b%B(c)C1';
-          const password_1 = Password.create(text_1);
-          const password_2 = Password.create(text_2);
-          const result = password_1.equals(password_2);
-
-          // Assert
-          expect(result).toBe(false);
-        });
-
-        it('create two Password instances with the same value and compare them using "equals" should return true', () => {
-          // Arrange
-
-          // Act
-          const text = 'aA$b%B(1)[C]';
-          const password_1 = Password.create(text);
-          const password_2 = Password.create(text);
-          const result = password_1.equals(password_2);
-
-          // Assert
-          expect(result).toBe(true);
-        });
+            // Assert
+            expect(result).toBe(true);
+          },
+        );
       });
     });
   });
