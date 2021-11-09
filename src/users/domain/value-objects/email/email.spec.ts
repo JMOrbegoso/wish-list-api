@@ -4,106 +4,97 @@ describe('users', () => {
   describe('domain', () => {
     describe('value-objects', () => {
       describe('email', () => {
-        it('should throw an error when trying to create an Email from undefined', () => {
+        const validValues = [
+          'John@DOE.com',
+          'John@Doe.com',
+          'John-@Doe.com',
+          'John-5@Doe.com',
+          'John@Do-e.com',
+          'Johnny@Doe.com',
+          'john_100@doe.com',
+        ];
+
+        test.each([undefined, null, ''])(
+          'should throw an error when trying to create a Email from %p',
+          (invalid) => {
+            // Arrange
+
+            // Act
+
+            // Assert
+            expect(() => Email.create(invalid)).toThrowError(InvalidEmailError);
+          },
+        );
+
+        test.each([
+          'aaa.bbb',
+          '        ',
+          'aaa bbb',
+          'aaaaaaa bbbbbbb',
+          'aaaaaañ',
+          'ññññññ',
+          'aaabbbÄ',
+          'aaabbb,',
+          'aaabbb§',
+        ])(
+          'should throw an error when trying to create a Email from %p (Malformed)',
+          (malformed) => {
+            // Arrange
+
+            // Act
+
+            // Assert
+            expect(() => Email.create(malformed)).toThrowError(
+              MalformedEmailError,
+            );
+          },
+        );
+
+        test.each(validValues)('should to create a Email from %p', (valid) => {
           // Arrange
 
           // Act
+          const email = Email.create(valid);
 
           // Assert
-          expect(() => Email.create(undefined)).toThrowError(InvalidEmailError);
+          expect(email.getEmail).toBe(valid);
         });
 
-        it('should throw an error when trying to create an Email from null', () => {
-          // Arrange
+        test.each([
+          [validValues[0], validValues[1]],
+          [validValues[1], validValues[0]],
+          [validValues[0], validValues[2]],
+          [validValues[2], validValues[0]],
+          [validValues[0], validValues[3]],
+        ])(
+          'comparing two Email created from two different values (%p and %p) should return false',
+          (text1, text2) => {
+            // Arrange
 
-          // Act
+            // Act
+            const email_1 = Email.create(text1);
+            const email_2 = Email.create(text2);
+            const result = email_1.equals(email_2);
 
-          // Assert
-          expect(() => Email.create(null)).toThrowError(InvalidEmailError);
-        });
+            // Assert
+            expect(result).toBe(false);
+          },
+        );
 
-        it('should throw an error when trying to create an Email from an empty string', () => {
-          // Arrange
+        test.each(validValues)(
+          'comparing two Email created from the same value (%p) should return true',
+          (text) => {
+            // Arrange
 
-          // Act
+            // Act
+            const email1 = Email.create(text);
+            const email2 = Email.create(text);
+            const result = email1.equals(email2);
 
-          // Assert
-          expect(() => Email.create('')).toThrowError(InvalidEmailError);
-        });
-
-        it('should throw an error when trying to create an Email from a string with characters that do not match the regex', () => {
-          // Arrange
-
-          // Act
-          const invalidEmail = 'aaa.bbb';
-
-          // Assert
-          expect(() => Email.create(invalidEmail)).toThrowError(
-            MalformedEmailError,
-          );
-        });
-
-        it('should throw an error when trying to create an Email from a string with characters that do not match the regex', () => {
-          // Arrange
-
-          // Act
-          const invalidEmail = 'aaa bbb';
-
-          // Assert
-          expect(() => Email.create(invalidEmail)).toThrowError(
-            MalformedEmailError,
-          );
-        });
-
-        it('should throw an error when trying to create an Email from a string with characters that do not match the regex', () => {
-          // Arrange
-
-          // Act
-          const invalidEmail = 'aaaaaaa bbbbbbb';
-
-          // Assert
-          expect(() => Email.create(invalidEmail)).toThrowError(
-            MalformedEmailError,
-          );
-        });
-
-        it('should create an Email instance and should store the value', () => {
-          // Arrange
-
-          // Act
-          const text = 'John@DOE.com';
-          const email = Email.create(text);
-
-          // Assert
-          expect(email.getEmail).toBe(text);
-        });
-
-        it('create two Email instances with different value and compare them using "equals" should return false', () => {
-          // Arrange
-
-          // Act
-          const text_1 = 'John@Doe.com';
-          const text_2 = 'Johnny@Doe.com';
-          const email_1 = Email.create(text_1);
-          const email_2 = Email.create(text_2);
-          const result = email_1.equals(email_2);
-
-          // Assert
-          expect(result).toBe(false);
-        });
-
-        it('create two Email instances with the same value and compare them using "equals" should return true', () => {
-          // Arrange
-
-          // Act
-          const text = 'john_100@doe.com';
-          const email_1 = Email.create(text);
-          const email_2 = Email.create(text);
-          const result = email_1.equals(email_2);
-
-          // Assert
-          expect(result).toBe(true);
-        });
+            // Assert
+            expect(result).toBe(true);
+          },
+        );
       });
     });
   });
