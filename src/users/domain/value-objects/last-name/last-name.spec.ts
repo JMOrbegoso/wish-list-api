@@ -4,97 +4,104 @@ describe('users', () => {
   describe('domain', () => {
     describe('value-objects', () => {
       describe('last-name', () => {
-        it('should throw an error when trying to create a LastName from undefined', () => {
-          // Arrange
+        const validValues = [
+          'a'.repeat(LastName.MaxLength),
+          '1'.repeat(LastName.MaxLength),
+          '_'.repeat(LastName.MaxLength),
+          'Doe',
+          'Doeh',
+          '_John-1-Doe_',
+          '_John-Doe_1_',
+          '999-a-999',
+          '999999',
+        ];
 
-          // Act
+        test.each([undefined, null, ''])(
+          'should throw an error when trying to create a LastName from %p',
+          (invalid) => {
+            // Arrange
 
-          // Assert
-          expect(() => LastName.create(undefined)).toThrowError(
-            InvalidLastNameError,
-          );
-        });
+            // Act
 
-        it('should throw an error when trying to create a LastName from null', () => {
-          // Arrange
+            // Assert
+            expect(() => LastName.create(invalid)).toThrowError(
+              InvalidLastNameError,
+            );
+          },
+        );
 
-          // Act
+        test.each([
+          'a'.repeat(LastName.MaxLength + 1),
+          '1'.repeat(LastName.MaxLength + 1),
+          '_'.repeat(LastName.MaxLength + 1),
+          'a'.repeat(LastName.MaxLength + 5),
+          '1'.repeat(LastName.MaxLength + 5),
+          '_'.repeat(LastName.MaxLength + 5),
+          'a'.repeat(LastName.MaxLength + 10),
+          '1'.repeat(LastName.MaxLength + 10),
+          '_'.repeat(LastName.MaxLength + 10),
+        ])(
+          'should throw an error when trying to create a LastName from %p (More characters than the limit)',
+          (larger) => {
+            // Arrange
 
-          // Assert
-          expect(() => LastName.create(null)).toThrowError(
-            InvalidLastNameError,
-          );
-        });
+            // Act
 
-        it('should throw an error when trying to create a LastName from an empty string', () => {
-          // Arrange
+            // Assert
+            expect(() => LastName.create(larger)).toThrowError(
+              LastNameIsTooLongError,
+            );
+          },
+        );
 
-          // Act
+        test.each(validValues)(
+          'should to create a LastName from %p',
+          (valid) => {
+            // Arrange
 
-          // Assert
-          expect(() => LastName.create('')).toThrowError(InvalidLastNameError);
-        });
+            // Act
+            const lastName = LastName.create(valid);
 
-        it('should throw an error when trying to create a LastName from a string with more characters than the limit', () => {
-          // Arrange
+            // Assert
+            expect(lastName.getLastName).toBe(valid);
+          },
+        );
 
-          // Act
-          const invalidLastName = 'a'.repeat(LastName.MaxLength + 1);
+        test.each([
+          [validValues[0], validValues[1]],
+          [validValues[1], validValues[0]],
+          [validValues[0], validValues[2]],
+          [validValues[2], validValues[0]],
+          [validValues[0], validValues[3]],
+        ])(
+          'comparing two LastName created from two different values (%p and %p) should return false',
+          (text1, text2) => {
+            // Arrange
 
-          // Assert
-          expect(() => LastName.create(invalidLastName)).toThrowError(
-            LastNameIsTooLongError,
-          );
-        });
+            // Act
+            const lastName_1 = LastName.create(text1);
+            const lastName_2 = LastName.create(text2);
+            const result = lastName_1.equals(lastName_2);
 
-        it('should create a LastName instance from the largest valid string and should store the value', () => {
-          // Arrange
+            // Assert
+            expect(result).toBe(false);
+          },
+        );
 
-          // Act
-          const largestValidLastName = 'a'.repeat(LastName.MaxLength);
-          const lastName = LastName.create(largestValidLastName);
+        test.each(validValues)(
+          'comparing two LastName created from the same value (%p) should return true',
+          (text) => {
+            // Arrange
 
-          // Assert
-          expect(lastName.getLastName).toBe(largestValidLastName);
-        });
+            // Act
+            const lastName1 = LastName.create(text);
+            const lastName2 = LastName.create(text);
+            const result = lastName1.equals(lastName2);
 
-        it('should create a LastName instance and should store the value', () => {
-          // Arrange
-
-          // Act
-          const name = 'Doe';
-          const lastName = LastName.create(name);
-
-          // Assert
-          expect(lastName.getLastName).toBe(name);
-        });
-
-        it('create two LastName instances with different value and compare them using "equals" should return false', () => {
-          // Arrange
-
-          // Act
-          const name_1 = 'Doe';
-          const name_2 = 'Doeh';
-          const lastName_1 = LastName.create(name_1);
-          const lastName_2 = LastName.create(name_2);
-          const result = lastName_1.equals(lastName_2);
-
-          // Assert
-          expect(result).toBe(false);
-        });
-
-        it('create two LastName instances with the same value and compare them using "equals" should return true', () => {
-          // Arrange
-
-          // Act
-          const name = 'Doeh';
-          const lastName_1 = LastName.create(name);
-          const lastName_2 = LastName.create(name);
-          const result = lastName_1.equals(lastName_2);
-
-          // Assert
-          expect(result).toBe(true);
-        });
+            // Assert
+            expect(result).toBe(true);
+          },
+        );
       });
     });
   });
