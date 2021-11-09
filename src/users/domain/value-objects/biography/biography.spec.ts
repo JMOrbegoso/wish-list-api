@@ -4,99 +4,102 @@ describe('users', () => {
   describe('domain', () => {
     describe('value-objects', () => {
       describe('biography', () => {
-        it('should throw an error when trying to create a Biography from undefined', () => {
-          // Arrange
+        const validValues = [
+          'a'.repeat(Biography.MaxLength),
+          '1'.repeat(Biography.MaxLength),
+          '_'.repeat(Biography.MaxLength),
+          'A person.',
+          'A nice person.',
+          'A kind person.',
+          'A person 1.',
+        ];
 
-          // Act
+        test.each([undefined, null, ''])(
+          'should throw an error when trying to create a Biography from %p',
+          (invalid) => {
+            // Arrange
 
-          // Assert
-          expect(() => Biography.create(undefined)).toThrowError(
-            InvalidBiographyError,
-          );
-        });
+            // Act
 
-        it('should throw an error when trying to create a Biography from null', () => {
-          // Arrange
+            // Assert
+            expect(() => Biography.create(invalid)).toThrowError(
+              InvalidBiographyError,
+            );
+          },
+        );
 
-          // Act
+        test.each([
+          'a'.repeat(Biography.MaxLength + 1),
+          '1'.repeat(Biography.MaxLength + 1),
+          '_'.repeat(Biography.MaxLength + 1),
+          'a'.repeat(Biography.MaxLength + 5),
+          '1'.repeat(Biography.MaxLength + 5),
+          '_'.repeat(Biography.MaxLength + 5),
+          'a'.repeat(Biography.MaxLength + 10),
+          '1'.repeat(Biography.MaxLength + 10),
+          '_'.repeat(Biography.MaxLength + 10),
+        ])(
+          'should throw an error when trying to create a Biography from %p (More characters than the limit)',
+          (larger) => {
+            // Arrange
 
-          // Assert
-          expect(() => Biography.create(null)).toThrowError(
-            InvalidBiographyError,
-          );
-        });
+            // Act
 
-        it('should throw an error when trying to create a Biography from an empty string', () => {
-          // Arrange
+            // Assert
+            expect(() => Biography.create(larger)).toThrowError(
+              BiographyIsTooLongError,
+            );
+          },
+        );
 
-          // Act
+        test.each(validValues)(
+          'should to create a Biography from %p',
+          (valid) => {
+            // Arrange
 
-          // Assert
-          expect(() => Biography.create('')).toThrowError(
-            InvalidBiographyError,
-          );
-        });
+            // Act
+            const biography = Biography.create(valid);
 
-        it('should throw an error when trying to create a Biography from a string with more characters than the limit', () => {
-          // Arrange
+            // Assert
+            expect(biography.getBiography).toBe(valid);
+          },
+        );
 
-          // Act
-          const invalidBiography = 'a'.repeat(Biography.MaxLength + 1);
+        test.each([
+          [validValues[0], validValues[1]],
+          [validValues[1], validValues[0]],
+          [validValues[0], validValues[2]],
+          [validValues[2], validValues[0]],
+          [validValues[0], validValues[3]],
+        ])(
+          'comparing two Biography created from two different values (%p and %p) should return false',
+          (text1, text2) => {
+            // Arrange
 
-          // Assert
-          expect(() => Biography.create(invalidBiography)).toThrowError(
-            BiographyIsTooLongError,
-          );
-        });
+            // Act
+            const biography_1 = Biography.create(text1);
+            const biography_2 = Biography.create(text2);
+            const result = biography_1.equals(biography_2);
 
-        it('should create a Biography instance from the largest valid string and should store the value', () => {
-          // Arrange
+            // Assert
+            expect(result).toBe(false);
+          },
+        );
 
-          // Act
-          const largestValidBiography = 'a'.repeat(Biography.MaxLength);
-          const biography = Biography.create(largestValidBiography);
+        test.each(validValues)(
+          'comparing two Biography created from the same value (%p) should return true',
+          (text) => {
+            // Arrange
 
-          // Assert
-          expect(biography.getBiography).toBe(largestValidBiography);
-        });
+            // Act
+            const biography1 = Biography.create(text);
+            const biography2 = Biography.create(text);
+            const result = biography1.equals(biography2);
 
-        it('should create a Biography instance and should store the value', () => {
-          // Arrange
-
-          // Act
-          const text = 'A person.';
-          const biography = Biography.create(text);
-
-          // Assert
-          expect(biography.getBiography).toBe(text);
-        });
-
-        it('create two Biography instances with different value and compare them using "equals" should return false', () => {
-          // Arrange
-
-          // Act
-          const text_1 = 'A person.';
-          const text_2 = 'A nice person.';
-          const biography_1 = Biography.create(text_1);
-          const biography_2 = Biography.create(text_2);
-          const result = biography_1.equals(biography_2);
-
-          // Assert
-          expect(result).toBe(false);
-        });
-
-        it('create two Biography instances with the same value and compare them using "equals" should return true', () => {
-          // Arrange
-
-          // Act
-          const name = 'Doeh';
-          const biography_1 = Biography.create(name);
-          const biography_2 = Biography.create(name);
-          const result = biography_1.equals(biography_2);
-
-          // Assert
-          expect(result).toBe(true);
-        });
+            // Assert
+            expect(result).toBe(true);
+          },
+        );
       });
     });
   });
