@@ -4,51 +4,46 @@ describe('core', () => {
   describe('domain', () => {
     describe('value-objects', () => {
       describe('milliseconds-date', () => {
-        it('should throw an error when trying to create a MillisecondsDate from milliseconds with undefined', () => {
-          // Arrange
+        const validValues = [
+          new Date('1980-8-8'),
+          new Date('1990-1-2'),
+          new Date('1999-5-5'),
+          new Date('1999-10-10'),
+          new Date('1999-12-12'),
+          new Date('2000-01-01'),
+          new Date('2005-01-02'),
+          new Date('2010-04-04'),
+        ];
 
-          // Act
+        test.each([undefined, null])(
+          'should throw an error when trying to create a MillisecondsDate from %p',
+          (invalid) => {
+            // Arrange
 
-          // Assert
-          expect(() =>
-            MillisecondsDate.createFromMilliseconds(undefined),
-          ).toThrowError(InvalidMillisecondsDateError);
-        });
+            // Act
 
-        it('should throw an error when trying to create a MillisecondsDate from milliseconds with null', () => {
-          // Arrange
+            // Assert
+            expect(() => MillisecondsDate.createFromDate(invalid)).toThrowError(
+              InvalidMillisecondsDateError,
+            );
+          },
+        );
 
-          // Act
+        test.each([undefined, null, 0])(
+          'should throw an error when trying to create a MillisecondsDate from %p',
+          (invalid) => {
+            // Arrange
 
-          // Assert
-          expect(() =>
-            MillisecondsDate.createFromMilliseconds(null),
-          ).toThrowError(InvalidMillisecondsDateError);
-        });
+            // Act
 
-        it('should throw an error when trying to create a MillisecondsDate from date with undefined', () => {
-          // Arrange
+            // Assert
+            expect(() =>
+              MillisecondsDate.createFromMilliseconds(invalid),
+            ).toThrowError(InvalidMillisecondsDateError);
+          },
+        );
 
-          // Act
-
-          // Assert
-          expect(() => MillisecondsDate.createFromDate(undefined)).toThrowError(
-            InvalidMillisecondsDateError,
-          );
-        });
-
-        it('should throw an error when trying to create a MillisecondsDate from date with null', () => {
-          // Arrange
-
-          // Act
-
-          // Assert
-          expect(() => MillisecondsDate.createFromDate(null)).toThrowError(
-            InvalidMillisecondsDateError,
-          );
-        });
-
-        it('should create a MillisecondsDate instance with the current date', () => {
+        it('should create a MillisecondsDate with the current date', () => {
           // Arrange
 
           // Act
@@ -65,63 +60,72 @@ describe('core', () => {
           );
         });
 
-        it('should create a MillisecondsDate instance from a date', () => {
-          // Arrange
+        test.each(validValues)(
+          'should to create a MillisecondsDate from the date: %p',
+          (valid) => {
+            // Arrange
 
-          // Act
-          const currentDate = new Date('1999-10-10');
-          const milliseconds = currentDate.getTime();
-          const millisecondsDate = MillisecondsDate.createFromDate(currentDate);
+            // Act
+            const millisecondsDate = MillisecondsDate.createFromDate(valid);
 
-          // Assert
-          expect(millisecondsDate.getMilliseconds).toBe(milliseconds);
-        });
+            // Assert
+            expect(millisecondsDate.getMilliseconds).toBe(valid.getTime());
+          },
+        );
 
-        it('should create a MillisecondsDate instance from milliseconds', () => {
-          // Arrange
+        test.each(validValues)(
+          'should to create a MillisecondsDate from the milliseconds of the date: %p',
+          (valid) => {
+            // Arrange
 
-          // Act
-          const currentDate = new Date('1999-10-10');
-          const milliseconds = currentDate.getTime();
-          const millisecondsDate =
-            MillisecondsDate.createFromMilliseconds(milliseconds);
+            // Act
+            const millisecondsDate = MillisecondsDate.createFromMilliseconds(
+              valid.getTime(),
+            );
 
-          // Assert
-          expect(millisecondsDate.getMilliseconds).toBe(milliseconds);
-        });
+            // Assert
+            expect(millisecondsDate.getMilliseconds).toBe(valid.getTime());
+          },
+        );
 
-        it('create two MillisecondsDate instances with different value and compare them using "equals" should return false', () => {
-          // Arrange
+        test.each([
+          [validValues[0], validValues[1]],
+          [validValues[1], validValues[0]],
+          [validValues[0], validValues[2]],
+          [validValues[2], validValues[0]],
+          [validValues[0], validValues[3]],
+          [validValues[0], validValues[4]],
+        ])(
+          'comparing two MillisecondsDate created from two different values (%p and %p) should return false',
+          (value1, value2) => {
+            // Arrange
 
-          // Act
-          const currentDate_1 = new Date('1999-10-10');
-          const currentDate_2 = new Date('1990-5-5');
-          const millisecondsDate_1 =
-            MillisecondsDate.createFromDate(currentDate_1);
-          const millisecondsDate_2 =
-            MillisecondsDate.createFromDate(currentDate_2);
+            // Act
+            const millisecondsDate_1 = MillisecondsDate.createFromDate(value1);
+            const millisecondsDate_2 = MillisecondsDate.createFromDate(value2);
+            const result = millisecondsDate_1.equals(millisecondsDate_2);
 
-          const result = millisecondsDate_1.equals(millisecondsDate_2);
+            // Assert
+            expect(result).toBe(false);
+          },
+        );
 
-          // Assert
-          expect(result).toBe(false);
-        });
+        test.each(validValues)(
+          'comparing two MillisecondsDate created from the same value (%p) should return true',
+          (value) => {
+            // Arrange
 
-        it('create two MillisecondsDate instances with the same value and compare them using "equals" should return true', () => {
-          // Arrange
+            // Act
+            const millisecondsDate1 = MillisecondsDate.createFromDate(value);
+            const millisecondsDate2 = MillisecondsDate.createFromMilliseconds(
+              value.getTime(),
+            );
+            const result = millisecondsDate1.equals(millisecondsDate2);
 
-          // Act
-          const currentDate = new Date('1999-10-10');
-          const millisecondsDate_1 =
-            MillisecondsDate.createFromDate(currentDate);
-          const millisecondsDate_2 =
-            MillisecondsDate.createFromDate(currentDate);
-
-          const result = millisecondsDate_1.equals(millisecondsDate_2);
-
-          // Assert
-          expect(result).toBe(true);
-        });
+            // Assert
+            expect(result).toBe(true);
+          },
+        );
       });
     });
   });
