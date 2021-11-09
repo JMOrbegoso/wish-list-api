@@ -4,27 +4,34 @@ describe('users', () => {
   describe('domain', () => {
     describe('value-objects', () => {
       describe('is-verified', () => {
-        it('should throw an error when trying to create an IsVerified from undefined', () => {
-          // Arrange
+        const validValues = [true, false];
 
-          // Act
+        test.each([undefined, null])(
+          'should throw an error when trying to create a IsVerified from %p',
+          (invalid) => {
+            // Arrange
 
-          // Assert
-          expect(() => IsVerified.create(undefined)).toThrowError(
-            InvalidIsVerifiedStatus,
-          );
-        });
+            // Act
 
-        it('should throw an error when trying to create an IsVerified from null', () => {
-          // Arrange
+            // Assert
+            expect(() => IsVerified.create(invalid)).toThrowError(
+              InvalidIsVerifiedStatus,
+            );
+          },
+        );
 
-          // Act
+        test.each(validValues)(
+          'should to create a IsVerified from %p',
+          (valid) => {
+            // Arrange
 
-          // Assert
-          expect(() => IsVerified.create(null)).toThrowError(
-            InvalidIsVerifiedStatus,
-          );
-        });
+            // Act
+            const isVerified = IsVerified.create(valid);
+
+            // Assert
+            expect(isVerified.getStatus).toBe(valid);
+          },
+        );
 
         it('should create an IsVerified with verified status', () => {
           // Arrange
@@ -41,26 +48,6 @@ describe('users', () => {
 
           // Act
           const isVerified = IsVerified.notVerified();
-
-          // Assert
-          expect(isVerified.getStatus).toBe(false);
-        });
-
-        it('should create an IsVerified with verified status using the function create', () => {
-          // Arrange
-
-          // Act
-          const isVerified = IsVerified.create(true);
-
-          // Assert
-          expect(isVerified.getStatus).toBe(true);
-        });
-
-        it('should create an IsVerified with not verified status using the function create', () => {
-          // Arrange
-
-          // Act
-          const isVerified = IsVerified.create(false);
 
           // Assert
           expect(isVerified.getStatus).toBe(false);
