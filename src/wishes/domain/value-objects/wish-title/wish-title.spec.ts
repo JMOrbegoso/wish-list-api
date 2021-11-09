@@ -4,99 +4,101 @@ describe('wishes', () => {
   describe('domain', () => {
     describe('value-objects', () => {
       describe('wish-title', () => {
-        it('should throw an error when trying to create a WishTitle from undefined', () => {
-          // Arrange
+        const validValues = [
+          'a'.repeat(WishTitle.MaxLength),
+          '1'.repeat(WishTitle.MaxLength),
+          '_'.repeat(WishTitle.MaxLength),
+          'PC',
+          'Laptop',
+          'Tablet',
+        ];
 
-          // Act
+        test.each([undefined, null, ''])(
+          'should throw an error when trying to create a WishTitle from %p',
+          (invalid) => {
+            // Arrange
 
-          // Assert
-          expect(() => WishTitle.create(undefined)).toThrowError(
-            InvalidWishTitleError,
-          );
-        });
+            // Act
 
-        it('should throw an error when trying to create a WishTitle from null', () => {
-          // Arrange
+            // Assert
+            expect(() => WishTitle.create(invalid)).toThrowError(
+              InvalidWishTitleError,
+            );
+          },
+        );
 
-          // Act
+        test.each([
+          'a'.repeat(WishTitle.MaxLength + 1),
+          '1'.repeat(WishTitle.MaxLength + 1),
+          '_'.repeat(WishTitle.MaxLength + 1),
+          'a'.repeat(WishTitle.MaxLength + 5),
+          '1'.repeat(WishTitle.MaxLength + 5),
+          '_'.repeat(WishTitle.MaxLength + 5),
+          'a'.repeat(WishTitle.MaxLength + 10),
+          '1'.repeat(WishTitle.MaxLength + 10),
+          '_'.repeat(WishTitle.MaxLength + 10),
+        ])(
+          'should throw an error when trying to create a WishTitle from %p (More characters than the limit)',
+          (larger) => {
+            // Arrange
 
-          // Assert
-          expect(() => WishTitle.create(null)).toThrowError(
-            InvalidWishTitleError,
-          );
-        });
+            // Act
 
-        it('should throw an error when trying to create a WishTitle from an empty string', () => {
-          // Arrange
+            // Assert
+            expect(() => WishTitle.create(larger)).toThrowError(
+              WishTitleIsTooLongError,
+            );
+          },
+        );
 
-          // Act
+        test.each(validValues)(
+          'should to create a WishTitle from %p',
+          (valid) => {
+            // Arrange
 
-          // Assert
-          expect(() => WishTitle.create('')).toThrowError(
-            InvalidWishTitleError,
-          );
-        });
+            // Act
+            const wishTitle = WishTitle.create(valid);
 
-        it('should throw an error when trying to create a WishTitle from a string with more characters than the limit', () => {
-          // Arrange
+            // Assert
+            expect(wishTitle.getTitle).toBe(valid);
+          },
+        );
 
-          // Act
-          const invalidTitle = 'a'.repeat(WishTitle.MaxLength + 1);
+        test.each([
+          [validValues[0], validValues[1]],
+          [validValues[1], validValues[0]],
+          [validValues[0], validValues[2]],
+          [validValues[2], validValues[0]],
+          [validValues[0], validValues[3]],
+        ])(
+          'comparing two WishTitle created from two different values (%p and %p) should return false',
+          (text1, text2) => {
+            // Arrange
 
-          // Assert
-          expect(() => WishTitle.create(invalidTitle)).toThrowError(
-            WishTitleIsTooLongError,
-          );
-        });
+            // Act
+            const wishTitle_1 = WishTitle.create(text1);
+            const wishTitle_2 = WishTitle.create(text2);
+            const result = wishTitle_1.equals(wishTitle_2);
 
-        it('should create a WishTitle instance from the largest valid string and should store the value', () => {
-          // Arrange
+            // Assert
+            expect(result).toBe(false);
+          },
+        );
 
-          // Act
-          const largestValidTitle = 'a'.repeat(WishTitle.MaxLength);
-          const wishTitle = WishTitle.create(largestValidTitle);
+        test.each(validValues)(
+          'comparing two WishTitle created from the same value (%p) should return true',
+          (text) => {
+            // Arrange
 
-          // Assert
-          expect(wishTitle.getTitle).toBe(largestValidTitle);
-        });
+            // Act
+            const wishTitle1 = WishTitle.create(text);
+            const wishTitle2 = WishTitle.create(text);
+            const result = wishTitle1.equals(wishTitle2);
 
-        it('should create a WishTitle instance and should store the value', () => {
-          // Arrange
-
-          // Act
-          const title = 'New Laptop';
-          const wishTitle = WishTitle.create(title);
-
-          // Assert
-          expect(wishTitle.getTitle).toBe(title);
-        });
-
-        it('create two WishTitle instances with different value and compare them using "equals" should return false', () => {
-          // Arrange
-
-          // Act
-          const title_1 = 'New Laptop';
-          const title_2 = 'New Tablet';
-          const wishTitle_1 = WishTitle.create(title_1);
-          const wishTitle_2 = WishTitle.create(title_2);
-          const result = wishTitle_1.equals(wishTitle_2);
-
-          // Assert
-          expect(result).toBe(false);
-        });
-
-        it('create two WishTitle instances with the same value and compare them using "equals" should return true', () => {
-          // Arrange
-
-          // Act
-          const title = 'New Laptop';
-          const wishTitle_1 = WishTitle.create(title);
-          const wishTitle_2 = WishTitle.create(title);
-          const result = wishTitle_1.equals(wishTitle_2);
-
-          // Assert
-          expect(result).toBe(true);
-        });
+            // Assert
+            expect(result).toBe(true);
+          },
+        );
       });
     });
   });
