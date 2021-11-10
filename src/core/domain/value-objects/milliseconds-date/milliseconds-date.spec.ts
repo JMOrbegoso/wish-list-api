@@ -61,7 +61,7 @@ describe('core', () => {
         });
 
         test.each(validValues)(
-          'should to create a MillisecondsDate from the date: %p',
+          'should create a MillisecondsDate from the date: %p',
           (valid) => {
             // Arrange
 
@@ -74,7 +74,7 @@ describe('core', () => {
         );
 
         test.each(validValues)(
-          'should to create a MillisecondsDate from the milliseconds of the date: %p',
+          'should create a MillisecondsDate from the milliseconds of the date: %p',
           (valid) => {
             // Arrange
 

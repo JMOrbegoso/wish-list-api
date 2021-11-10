@@ -55,7 +55,7 @@ describe('core', () => {
           },
         );
 
-        test.each(validValues)('should to create a WebUrl from %p', (valid) => {
+        test.each(validValues)('should create a WebUrl from %p', (valid) => {
           // Arrange
 
           // Act

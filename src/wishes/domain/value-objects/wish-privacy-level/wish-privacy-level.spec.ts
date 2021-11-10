@@ -29,7 +29,7 @@ describe('wishes', () => {
         );
 
         test.each(validValues)(
-          'should to create a WishPrivacyLevel from %p',
+          'should create a WishPrivacyLevel from %p',
           (valid) => {
             // Arrange
 

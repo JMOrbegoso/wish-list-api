@@ -105,18 +105,15 @@ describe('users', () => {
           },
         );
 
-        test.each(validValues)(
-          'should to create a Password from %p',
-          (valid) => {
-            // Arrange
+        test.each(validValues)('should create a Password from %p', (valid) => {
+          // Arrange
 
-            // Act
-            const password = Password.create(valid);
+          // Act
+          const password = Password.create(valid);
 
-            // Assert
-            expect(password.getPassword).toBe(valid);
-          },
-        );
+          // Assert
+          expect(password.getPassword).toBe(valid);
+        });
 
         test.each([
           [validValues[0], validValues[1]],

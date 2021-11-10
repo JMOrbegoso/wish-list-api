@@ -54,18 +54,15 @@ describe('users', () => {
           },
         );
 
-        test.each(validValues)(
-          'should to create a LastName from %p',
-          (valid) => {
-            // Arrange
+        test.each(validValues)('should create a LastName from %p', (valid) => {
+          // Arrange
 
-            // Act
-            const lastName = LastName.create(valid);
+          // Act
+          const lastName = LastName.create(valid);
 
-            // Assert
-            expect(lastName.getLastName).toBe(valid);
-          },
-        );
+          // Assert
+          expect(lastName.getLastName).toBe(valid);
+        });
 
         test.each([
           [validValues[0], validValues[1]],

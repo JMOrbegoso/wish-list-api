@@ -55,7 +55,7 @@ describe('wishes', () => {
         );
 
         test.each(validValues)(
-          'should to create a WishDescription from %p',
+          'should create a WishDescription from %p',
           (valid) => {
             // Arrange
 

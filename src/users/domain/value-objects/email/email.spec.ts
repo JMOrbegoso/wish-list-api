@@ -50,7 +50,7 @@ describe('users', () => {
           },
         );
 
-        test.each(validValues)('should to create an Email from %p', (valid) => {
+        test.each(validValues)('should create an Email from %p', (valid) => {
           // Arrange
 
           // Act

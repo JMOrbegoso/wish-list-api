@@ -116,18 +116,15 @@ describe('users', () => {
           },
         );
 
-        test.each(validValues)(
-          'should to create an UserName from %p',
-          (valid) => {
-            // Arrange
+        test.each(validValues)('should create an UserName from %p', (valid) => {
+          // Arrange
 
-            // Act
-            const userName = UserName.create(valid);
+          // Act
+          const userName = UserName.create(valid);
 
-            // Assert
-            expect(userName.getUserName).toBe(valid);
-          },
-        );
+          // Assert
+          expect(userName.getUserName).toBe(valid);
+        });
 
         test.each([
           [validValues[0], validValues[1]],

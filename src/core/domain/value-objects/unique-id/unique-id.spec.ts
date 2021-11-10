@@ -25,18 +25,15 @@ describe('core', () => {
           },
         );
 
-        test.each(validValues)(
-          'should to create an UniqueId from %p',
-          (valid) => {
-            // Arrange
+        test.each(validValues)('should create an UniqueId from %p', (valid) => {
+          // Arrange
 
-            // Act
-            const userName = UniqueId.create(valid);
+          // Act
+          const userName = UniqueId.create(valid);
 
-            // Assert
-            expect(userName.getId).toBe(valid);
-          },
-        );
+          // Assert
+          expect(userName.getId).toBe(valid);
+        });
 
         test.each([
           [validValues[0], validValues[1]],

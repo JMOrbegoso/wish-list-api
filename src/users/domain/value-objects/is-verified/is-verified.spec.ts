@@ -21,7 +21,7 @@ describe('users', () => {
         );
 
         test.each(validValues)(
-          'should to create an IsVerified from %p',
+          'should create an IsVerified from %p',
           (valid) => {
             // Arrange
 

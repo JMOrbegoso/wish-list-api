@@ -21,7 +21,7 @@ describe('users', () => {
         );
 
         test.each(validValues)(
-          'should to create an IsBlocked from %p',
+          'should create an IsBlocked from %p',
           (valid) => {
             // Arrange
 

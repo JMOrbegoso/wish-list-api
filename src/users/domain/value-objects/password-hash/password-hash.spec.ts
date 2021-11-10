@@ -26,7 +26,7 @@ describe('users', () => {
         );
 
         test.each(validValues)(
-          'should to create a PasswordHash from %p',
+          'should create a PasswordHash from %p',
           (valid) => {
             // Arrange
 

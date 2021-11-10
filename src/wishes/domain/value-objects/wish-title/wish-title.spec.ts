@@ -51,18 +51,15 @@ describe('wishes', () => {
           },
         );
 
-        test.each(validValues)(
-          'should to create a WishTitle from %p',
-          (valid) => {
-            // Arrange
+        test.each(validValues)('should create a WishTitle from %p', (valid) => {
+          // Arrange
 
-            // Act
-            const wishTitle = WishTitle.create(valid);
+          // Act
+          const wishTitle = WishTitle.create(valid);
 
-            // Assert
-            expect(wishTitle.getTitle).toBe(valid);
-          },
-        );
+          // Assert
+          expect(wishTitle.getTitle).toBe(valid);
+        });
 
         test.each([
           [validValues[0], validValues[1]],

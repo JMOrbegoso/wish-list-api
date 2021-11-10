@@ -52,18 +52,15 @@ describe('users', () => {
           },
         );
 
-        test.each(validValues)(
-          'should to create a Biography from %p',
-          (valid) => {
-            // Arrange
+        test.each(validValues)('should create a Biography from %p', (valid) => {
+          // Arrange
 
-            // Act
-            const biography = Biography.create(valid);
+          // Act
+          const biography = Biography.create(valid);
 
-            // Assert
-            expect(biography.getBiography).toBe(valid);
-          },
-        );
+          // Assert
+          expect(biography.getBiography).toBe(valid);
+        });
 
         test.each([
           [validValues[0], validValues[1]],

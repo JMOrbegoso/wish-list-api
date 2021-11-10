@@ -28,7 +28,7 @@ describe('wishes', () => {
         );
 
         test.each(validValues)(
-          'should to create a CategoryName from %p',
+          'should create a CategoryName from %p',
           (valid) => {
             // Arrange
 
