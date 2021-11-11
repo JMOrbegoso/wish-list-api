@@ -72,7 +72,7 @@ describe('wishes', () => {
     describe('entities', () => {
       describe('wish', () => {
         test.each(validValues)(
-          'should create a WishStage with [id: %p], [title: %p], [description: %p], [privacyLevel: %p], [createdAt: %p] and [updatedAt: %p], [wisher: %p], [urls: %p], [images: %p], [categories: %p], [stages: %p], [deletedAt: %p] and [completedAt: %p]',
+          'should create a Wish with [id: %p], [title: %p], [description: %p], [privacyLevel: %p], [createdAt: %p], [updatedAt: %p], [wisher: %p], [urls: %p], [images: %p], [categories: %p], [stages: %p], [deletedAt: %p] and [completedAt: %p]',
           (
             uniqueId: MockedObject<UniqueId>,
             title: MockedObject<WishTitle>,
