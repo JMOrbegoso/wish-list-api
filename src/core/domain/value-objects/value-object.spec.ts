@@ -1,115 +1,89 @@
 import { ValueObject } from './value-object';
 
+class Name extends ValueObject<string> {
+  protected validate(value: string): void {
+    if (!value) throw new Error('Invalid name.');
+  }
+
+  static create(value: string): Name {
+    return new Name(value);
+  }
+
+  public get getName(): string {
+    return this.value;
+  }
+}
+
+const validValues = [
+  'John',
+  'Johnny',
+  'Johnny_0',
+  '1John1',
+  '999-a-999',
+  '999999',
+];
+
 describe('core', () => {
   describe('domain', () => {
     describe('value-objects', () => {
       describe('value-object', () => {
-        class NameValueObject extends ValueObject<string> {
-          protected validate(value: string): void {
-            if (!value) throw new Error('Invalid name.');
-          }
+        test.each([undefined, null, ''])(
+          'should throw an error when trying to create a Name from %p',
+          (invalid) => {
+            // Arrange
 
-          static create(value: string): NameValueObject {
-            return new NameValueObject(value);
-          }
+            // Act
 
-          public get getName(): string {
-            return this.value;
-          }
-        }
+            // Assert
+            expect(() => Name.create(invalid)).toThrowError('Invalid name.');
+          },
+        );
 
-        it('should throw an error when trying to create a NameValueObject from undefined', () => {
+        test.each(validValues)('should create a Name from %p', (valid) => {
           // Arrange
 
           // Act
+          const name = Name.create(valid);
 
           // Assert
-          expect(() => NameValueObject.create(undefined)).toThrowError(
-            'Invalid name',
-          );
+          expect(name.getName).toBe(valid);
         });
 
-        it('should throw an error when trying to create a NameValueObject from null', () => {
-          // Arrange
+        test.each([
+          [validValues[0], validValues[1]],
+          [validValues[1], validValues[0]],
+          [validValues[0], validValues[2]],
+          [validValues[2], validValues[0]],
+          [validValues[0], validValues[3]],
+        ])(
+          'comparing two Name created from two different values (%p and %p) should return false',
+          (text1, text2) => {
+            // Arrange
 
-          // Act
+            // Act
+            const name_1 = Name.create(text1);
+            const name_2 = Name.create(text2);
+            const result = name_1.equals(name_2);
 
-          // Assert
-          expect(() => NameValueObject.create(null)).toThrowError(
-            'Invalid name',
-          );
-        });
+            // Assert
+            expect(result).toBe(false);
+          },
+        );
 
-        it('should throw an error when trying to create a NameValueObject from an empty text', () => {
-          // Arrange
+        test.each(validValues)(
+          'comparing two Name created from the same value (%p) should return true',
+          (text) => {
+            // Arrange
 
-          // Act
+            // Act
+            const name1 = Name.create(text);
+            const name2 = Name.create(text);
+            const result = name1.equals(name2);
 
-          // Assert
-          expect(() => NameValueObject.create('')).toThrowError('Invalid name');
-        });
-
-        it('should create a NameValueObject instance and should store the value', () => {
-          // Arrange
-
-          // Act
-          const name = 'John';
-          const nameValueObject = NameValueObject.create(name);
-
-          // Assert
-          expect(nameValueObject.getName).toBe(name);
-        });
-
-        it('create two NameValueObject instances with different value and compare them using "equals" should return false', () => {
-          // Arrange
-
-          // Act
-          const name_1 = 'John';
-          const name_2 = 'Johnny';
-          const nameValueObject_1 = NameValueObject.create(name_1);
-          const nameValueObject_2 = NameValueObject.create(name_2);
-          const result = nameValueObject_1.equals(nameValueObject_2);
-
-          // Assert
-          expect(result).toBe(false);
-        });
-
-        it('compare a NameValueObject instance with undefined using "equals" should return false', () => {
-          // Arrange
-
-          // Act
-          const name = 'John';
-          const nameValueObject = NameValueObject.create(name);
-          const result = nameValueObject.equals(undefined);
-
-          // Assert
-          expect(result).toBe(false);
-        });
-
-        it('compare a NameValueObject instance with null using "equals" should return false', () => {
-          // Arrange
-
-          // Act
-          const name = 'John';
-          const nameValueObject = NameValueObject.create(name);
-          const result = nameValueObject.equals(null);
-
-          // Assert
-          expect(result).toBe(false);
-        });
-
-        it('create two NameValueObject instances with the same value and compare them using "equals" should return true', () => {
-          // Arrange
-
-          // Act
-          const name = 'John';
-          const nameValueObject_1 = NameValueObject.create(name);
-          const nameValueObject_2 = NameValueObject.create(name);
-          const result = nameValueObject_1.equals(nameValueObject_2);
-
-          // Assert
-          expect(result).toBe(true);
-        });
+            // Assert
+            expect(result).toBe(true);
+          },
+        );
       });
     });
   });
