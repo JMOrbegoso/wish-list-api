@@ -1,11 +1,11 @@
 import { IsBlocked, InvalidIsBlockedStatus } from '..';
 
+const validValues = [true, false];
+
 describe('users', () => {
   describe('domain', () => {
     describe('value-objects', () => {
       describe('blocked', () => {
-        const validValues = [true, false];
-
         test.each([undefined, null])(
           'should throw an error when trying to create an IsBlocked from %p',
           (invalid) => {

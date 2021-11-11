@@ -6,20 +6,20 @@ import {
   PasswordIsTooShortError,
 } from '..';
 
+const validValues = [
+  '1A%' + 'a'.repeat(Password.MinLength - 3),
+  '1A%' + 'a'.repeat(Password.MaxLength - 3),
+  'Abcd1*',
+  'aAbBcC%1',
+  'aA$b%B(c)C0',
+  'aA$b%B(c)C1',
+  'aA$b%B(1)[C]',
+];
+
 describe('users', () => {
   describe('domain', () => {
     describe('value-objects', () => {
       describe('password', () => {
-        const validValues = [
-          '1A%' + 'a'.repeat(Password.MinLength - 3),
-          '1A%' + 'a'.repeat(Password.MaxLength - 3),
-          'Abcd1*',
-          'aAbBcC%1',
-          'aA$b%B(c)C0',
-          'aA$b%B(c)C1',
-          'aA$b%B(1)[C]',
-        ];
-
         test.each([undefined, null, ''])(
           'should throw an error when trying to create a Password from %p',
           (invalid) => {

@@ -1,16 +1,16 @@
 import { UniqueId, InvalidUniqueIdError } from '..';
 
+const validValues = [
+  '1',
+  'id',
+  '61872ad79452fa50b7b70f80',
+  '61872ad79452gd41c8c80f81',
+];
+
 describe('core', () => {
   describe('domain', () => {
     describe('value-objects', () => {
       describe('unique-id', () => {
-        const validValues = [
-          '1',
-          'id',
-          '61872ad79452fa50b7b70f80',
-          '61872ad79452gd41c8c80f81',
-        ];
-
         test.each([undefined, null, ''])(
           'should throw an error when trying to create an UniqueId from %p',
           (invalid) => {

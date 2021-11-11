@@ -1,16 +1,16 @@
 import { PasswordHash, InvalidPasswordHashError } from '..';
 
+const validValues = [
+  '$2a$10$Ro0CUfOqk6cXEKf3dyaM7OhSCvnwM9s4wIX9JeLapehKK5YdLxKcm',
+  '$2a$10$Ro0HUfOqk0cDIOf9dyaM7OhSCvnwM9s4wUX1JeLapehKK5YdLxKcm',
+  '$2a$10$Ro0CIfOqk3cXEKf5dyaM7OhSCvnwM9s4wIX9JeLapehKK5YdLxKcn',
+  '$2a$10$Ro0XYfOqk1cXEKf4dyaY7OhSCvnwM9s4wIX9JeDapehKK5YdLxKcm',
+];
+
 describe('users', () => {
   describe('domain', () => {
     describe('value-objects', () => {
       describe('password-hash', () => {
-        const validValues = [
-          '$2a$10$Ro0CUfOqk6cXEKf3dyaM7OhSCvnwM9s4wIX9JeLapehKK5YdLxKcm',
-          '$2a$10$Ro0HUfOqk0cDIOf9dyaM7OhSCvnwM9s4wUX1JeLapehKK5YdLxKcm',
-          '$2a$10$Ro0CIfOqk3cXEKf5dyaM7OhSCvnwM9s4wIX9JeLapehKK5YdLxKcn',
-          '$2a$10$Ro0XYfOqk1cXEKf4dyaY7OhSCvnwM9s4wIX9JeDapehKK5YdLxKcm',
-        ];
-
         test.each([undefined, null, ''])(
           'should throw an error when trying to create a PasswordHash from %p',
           (invalid) => {

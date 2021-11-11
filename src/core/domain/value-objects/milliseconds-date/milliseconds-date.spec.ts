@@ -1,20 +1,20 @@
 import { MillisecondsDate, InvalidMillisecondsDateError } from '..';
 
+const validValues = [
+  new Date('1980-8-8'),
+  new Date('1990-1-2'),
+  new Date('1999-5-5'),
+  new Date('1999-10-10'),
+  new Date('1999-12-12'),
+  new Date('2000-01-01'),
+  new Date('2005-01-02'),
+  new Date('2010-04-04'),
+];
+
 describe('core', () => {
   describe('domain', () => {
     describe('value-objects', () => {
       describe('milliseconds-date', () => {
-        const validValues = [
-          new Date('1980-8-8'),
-          new Date('1990-1-2'),
-          new Date('1999-5-5'),
-          new Date('1999-10-10'),
-          new Date('1999-12-12'),
-          new Date('2000-01-01'),
-          new Date('2005-01-02'),
-          new Date('2010-04-04'),
-        ];
-
         test.each([undefined, null])(
           'should throw an error when trying to create a MillisecondsDate from %p',
           (invalid) => {

@@ -1,23 +1,23 @@
 import { FirstName, InvalidFirstNameError, FirstNameIsTooLongError } from '..';
 
+const validValues = [
+  'a'.repeat(FirstName.MaxLength),
+  '1'.repeat(FirstName.MaxLength),
+  '_'.repeat(FirstName.MaxLength),
+  'John',
+  'Johnny',
+  'Johnny_0',
+  '1John1',
+  '_John-1-Doe_',
+  '_John-Doe_1_',
+  '999-a-999',
+  '999999',
+];
+
 describe('users', () => {
   describe('domain', () => {
     describe('value-objects', () => {
       describe('first-name', () => {
-        const validValues = [
-          'a'.repeat(FirstName.MaxLength),
-          '1'.repeat(FirstName.MaxLength),
-          '_'.repeat(FirstName.MaxLength),
-          'John',
-          'Johnny',
-          'Johnny_0',
-          '1John1',
-          '_John-1-Doe_',
-          '_John-Doe_1_',
-          '999-a-999',
-          '999999',
-        ];
-
         test.each([undefined, null, ''])(
           'should throw an error when trying to create a FirstName from %p',
           (invalid) => {

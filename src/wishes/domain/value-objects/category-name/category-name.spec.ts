@@ -1,18 +1,11 @@
 import { CategoryName, InvalidCategoryNameError } from '..';
 
+const validValues = ['Tech', 'University', 'Travels', 'School', 'Home', 'Tv'];
+
 describe('wishes', () => {
   describe('domain', () => {
     describe('value-objects', () => {
       describe('category-name', () => {
-        const validValues = [
-          'Tech',
-          'University',
-          'Travels',
-          'School',
-          'Home',
-          'Tv',
-        ];
-
         test.each([undefined, null, ''])(
           'should throw an error when trying to create a CategoryName from %p',
           (invalid) => {

@@ -1,11 +1,11 @@
 import { IsVerified, InvalidIsVerifiedStatus } from '..';
 
+const validValues = [true, false];
+
 describe('users', () => {
   describe('domain', () => {
     describe('value-objects', () => {
       describe('is-verified', () => {
-        const validValues = [true, false];
-
         test.each([undefined, null])(
           'should throw an error when trying to create an IsVerified from %p',
           (invalid) => {

@@ -6,31 +6,31 @@ import {
   MalformedUserNameError,
 } from '..';
 
+const validValues = [
+  'a'.repeat(UserName.MinLength),
+  'a'.repeat(UserName.MaxLength),
+  '1'.repeat(UserName.MinLength),
+  '1'.repeat(UserName.MaxLength),
+  '_'.repeat(UserName.MinLength),
+  '_'.repeat(UserName.MaxLength),
+  'JohnDoe',
+  'John_Doe',
+  'Johnny_Doe',
+  'john_doe_0',
+  'JOHNDOE',
+  'John-Doe',
+  'John-Doe_100',
+  '1John1',
+  '_John-1-Doe_',
+  '_John-Doe_1_',
+  '999-a-999',
+  '999999',
+];
+
 describe('users', () => {
   describe('domain', () => {
     describe('value-objects', () => {
       describe('username', () => {
-        const validValues = [
-          'a'.repeat(UserName.MinLength),
-          'a'.repeat(UserName.MaxLength),
-          '1'.repeat(UserName.MinLength),
-          '1'.repeat(UserName.MaxLength),
-          '_'.repeat(UserName.MinLength),
-          '_'.repeat(UserName.MaxLength),
-          'JohnDoe',
-          'John_Doe',
-          'Johnny_Doe',
-          'john_doe_0',
-          'JOHNDOE',
-          'John-Doe',
-          'John-Doe_100',
-          '1John1',
-          '_John-1-Doe_',
-          '_John-Doe_1_',
-          '999-a-999',
-          '999999',
-        ];
-
         test.each([undefined, null, ''])(
           'should throw an error when trying to create an UserName from %p',
           (invalid) => {

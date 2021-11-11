@@ -1,21 +1,21 @@
 import { LastName, InvalidLastNameError, LastNameIsTooLongError } from '..';
 
+const validValues = [
+  'a'.repeat(LastName.MaxLength),
+  '1'.repeat(LastName.MaxLength),
+  '_'.repeat(LastName.MaxLength),
+  'Doe',
+  'Doeh',
+  '_John-1-Doe_',
+  '_John-Doe_1_',
+  '999-a-999',
+  '999999',
+];
+
 describe('users', () => {
   describe('domain', () => {
     describe('value-objects', () => {
       describe('last-name', () => {
-        const validValues = [
-          'a'.repeat(LastName.MaxLength),
-          '1'.repeat(LastName.MaxLength),
-          '_'.repeat(LastName.MaxLength),
-          'Doe',
-          'Doeh',
-          '_John-1-Doe_',
-          '_John-Doe_1_',
-          '999-a-999',
-          '999999',
-        ];
-
         test.each([undefined, null, ''])(
           'should throw an error when trying to create a LastName from %p',
           (invalid) => {

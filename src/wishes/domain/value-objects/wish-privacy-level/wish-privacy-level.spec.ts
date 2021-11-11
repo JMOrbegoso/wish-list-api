@@ -4,16 +4,16 @@ import {
   InvalidWishPrivacyLevelError,
 } from '..';
 
+const validValues = [
+  PrivacyLevel.Public,
+  PrivacyLevel.JustFriends,
+  PrivacyLevel.OnlyMe,
+];
+
 describe('wishes', () => {
   describe('domain', () => {
     describe('value-objects', () => {
       describe('wish-privacy-level', () => {
-        const validValues = [
-          PrivacyLevel.Public,
-          PrivacyLevel.JustFriends,
-          PrivacyLevel.OnlyMe,
-        ];
-
         test.each([undefined, null, -1, 4, 10])(
           'should throw an error when trying to create a WishPrivacyLevel from %p',
           (invalid) => {

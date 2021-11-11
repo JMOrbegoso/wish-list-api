@@ -4,18 +4,18 @@ import {
   WishDescriptionIsTooLongError,
 } from '..';
 
+const validValues = [
+  'a'.repeat(WishDescription.MaxLength),
+  '1'.repeat(WishDescription.MaxLength),
+  '_'.repeat(WishDescription.MaxLength),
+  'A nice wish.',
+  'Nice wish.',
+];
+
 describe('wishes', () => {
   describe('domain', () => {
     describe('value-objects', () => {
       describe('wish-description', () => {
-        const validValues = [
-          'a'.repeat(WishDescription.MaxLength),
-          '1'.repeat(WishDescription.MaxLength),
-          '_'.repeat(WishDescription.MaxLength),
-          'A nice wish.',
-          'Nice wish.',
-        ];
-
         test.each([undefined, null, ''])(
           'should throw an error when trying to create a WishDescription from %p',
           (invalid) => {

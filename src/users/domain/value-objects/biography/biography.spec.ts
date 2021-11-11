@@ -1,19 +1,19 @@
 import { Biography, InvalidBiographyError, BiographyIsTooLongError } from '..';
 
+const validValues = [
+  'a'.repeat(Biography.MaxLength),
+  '1'.repeat(Biography.MaxLength),
+  '_'.repeat(Biography.MaxLength),
+  'A person.',
+  'A nice person.',
+  'A kind person.',
+  'A person 1.',
+];
+
 describe('users', () => {
   describe('domain', () => {
     describe('value-objects', () => {
       describe('biography', () => {
-        const validValues = [
-          'a'.repeat(Biography.MaxLength),
-          '1'.repeat(Biography.MaxLength),
-          '_'.repeat(Biography.MaxLength),
-          'A person.',
-          'A nice person.',
-          'A kind person.',
-          'A person 1.',
-        ];
-
         test.each([undefined, null, ''])(
           'should throw an error when trying to create a Biography from %p',
           (invalid) => {

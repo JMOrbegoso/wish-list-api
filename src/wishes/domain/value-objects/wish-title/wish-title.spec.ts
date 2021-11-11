@@ -1,18 +1,18 @@
 import { WishTitle, InvalidWishTitleError, WishTitleIsTooLongError } from '..';
 
+const validValues = [
+  'a'.repeat(WishTitle.MaxLength),
+  '1'.repeat(WishTitle.MaxLength),
+  '_'.repeat(WishTitle.MaxLength),
+  'PC',
+  'Laptop',
+  'Tablet',
+];
+
 describe('wishes', () => {
   describe('domain', () => {
     describe('value-objects', () => {
       describe('wish-title', () => {
-        const validValues = [
-          'a'.repeat(WishTitle.MaxLength),
-          '1'.repeat(WishTitle.MaxLength),
-          '_'.repeat(WishTitle.MaxLength),
-          'PC',
-          'Laptop',
-          'Tablet',
-        ];
-
         test.each([undefined, null, ''])(
           'should throw an error when trying to create a WishTitle from %p',
           (invalid) => {

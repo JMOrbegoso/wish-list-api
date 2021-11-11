@@ -1,17 +1,17 @@
 import { WebUrl, InvalidWebUrlError, MalformedWebUrlError } from '..';
 
+const validValues = [
+  'https://www.com',
+  'https://a.com',
+  'https://ab.com',
+  'https://example.net',
+  'https://example.com',
+];
+
 describe('core', () => {
   describe('domain', () => {
     describe('value-objects', () => {
       describe('web-url', () => {
-        const validValues = [
-          'https://www.com',
-          'https://a.com',
-          'https://ab.com',
-          'https://example.net',
-          'https://example.com',
-        ];
-
         test.each([undefined, null, ''])(
           'should throw an error when trying to create a WebUrl from %p',
           (invalid) => {

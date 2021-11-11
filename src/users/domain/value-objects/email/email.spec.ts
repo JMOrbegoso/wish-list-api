@@ -1,19 +1,19 @@
 import { Email, InvalidEmailError, MalformedEmailError } from '..';
 
+const validValues = [
+  'John@DOE.com',
+  'John@Doe.com',
+  'John-@Doe.com',
+  'John-5@Doe.com',
+  'John@Do-e.com',
+  'Johnny@Doe.com',
+  'john_100@doe.com',
+];
+
 describe('users', () => {
   describe('domain', () => {
     describe('value-objects', () => {
       describe('email', () => {
-        const validValues = [
-          'John@DOE.com',
-          'John@Doe.com',
-          'John-@Doe.com',
-          'John-5@Doe.com',
-          'John@Do-e.com',
-          'Johnny@Doe.com',
-          'john_100@doe.com',
-        ];
-
         test.each([undefined, null, ''])(
           'should throw an error when trying to create an Email from %p',
           (invalid) => {
