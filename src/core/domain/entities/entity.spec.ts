@@ -1,74 +1,88 @@
+import { mocked } from 'ts-jest/utils';
+import { MockedObject } from 'ts-jest/dist/utils/testing';
 import { Entity } from './entity';
 import { UniqueId } from '../value-objects';
+
+class Product extends Entity {
+  public price: number;
+
+  private constructor(id: UniqueId, price: number) {
+    super(id);
+
+    this.price = price;
+  }
+
+  static create(id: UniqueId, price: number): Product {
+    return new Product(id, price);
+  }
+
+  public get id(): UniqueId {
+    return this._id;
+  }
+}
+
+const validValues = [
+  [
+    mocked<UniqueId>({
+      getId: 'id-0',
+      equals: jest.fn(),
+    } as unknown as UniqueId),
+    0,
+  ],
+  [
+    mocked<UniqueId>({
+      getId: 'id-1',
+      equals: jest.fn(),
+    } as unknown as UniqueId),
+    10,
+  ],
+  [
+    mocked<UniqueId>({
+      getId: 'id-2',
+      equals: jest.fn(),
+    } as unknown as UniqueId),
+    20,
+  ],
+  [
+    mocked<UniqueId>({
+      getId: 'id-3',
+      equals: jest.fn(),
+    } as unknown as UniqueId),
+    30,
+  ],
+];
 
 describe('core', () => {
   describe('domain', () => {
     describe('entities', () => {
       describe('entity', () => {
-        class ProductEntity extends Entity {
-          public price: number;
+        test.each(validValues)(
+          'should create a Product with [id: %p] and [price: %p]',
+          (uniqueId: MockedObject<UniqueId>, price: number) => {
+            // Arrange
 
-          private constructor(id: UniqueId, price: number) {
-            super(id);
+            // Act
+            const product = Product.create(uniqueId, price);
 
-            this.price = price;
-          }
+            // Assert
+            expect(product.id.getId).toBe(uniqueId.getId);
+            expect(product.price).toBe(price);
+          },
+        );
 
-          static create(id: UniqueId, price: number): ProductEntity {
-            return new ProductEntity(id, price);
-          }
+        test.each(validValues)(
+          'comparing two entities should call "equals" method from UniqueId',
+          (uniqueId: MockedObject<UniqueId>, price: number) => {
+            // Arrange
+            const product = Product.create(uniqueId, price);
 
-          public get id(): UniqueId {
-            return this._id;
-          }
-        }
+            // Act
+            product.equals(product);
 
-        it('should create an entity instance and should store the values', () => {
-          // Arrange
-
-          // Act
-          const id = 'id';
-          const uniqueId = UniqueId.create(id);
-          const price = 40;
-          const product = ProductEntity.create(uniqueId, price);
-
-          // Assert
-          expect(product.id.getId).toBe(id);
-          expect(product.price).toBe(price);
-        });
-
-        it('create two entity instances with different id and compare them using "equals" should return false', () => {
-          // Arrange
-
-          // Act
-          const id_1 = 'id_1';
-          const id_2 = 'id_2';
-          const uniqueId_1 = UniqueId.create(id_1);
-          const uniqueId_2 = UniqueId.create(id_2);
-          const price = 40;
-          const product_1 = ProductEntity.create(uniqueId_1, price);
-          const product_2 = ProductEntity.create(uniqueId_2, price);
-          const result = product_1.equals(product_2);
-
-          // Assert
-          expect(result).toBe(false);
-        });
-
-        it('create two entity instances with the same id and compare them using "equals" should return true', () => {
-          // Arrange
-
-          // Act
-          const id = 'id';
-          const uniqueId = UniqueId.create(id);
-          const price_1 = 40;
-          const price_2 = 80;
-          const product_1 = ProductEntity.create(uniqueId, price_1);
-          const product_2 = ProductEntity.create(uniqueId, price_2);
-          const result = product_1.equals(product_2);
-
-          // Assert
-          expect(result).toBe(true);
-        });
+            // Assert
+            expect(uniqueId.equals.mock.calls).toHaveLength(1);
+          },
+        );
       });
     });
   });
