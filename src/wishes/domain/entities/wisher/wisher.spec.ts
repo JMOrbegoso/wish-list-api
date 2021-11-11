@@ -1,51 +1,65 @@
+import { mocked } from 'ts-jest/utils';
+import { MockedObject } from 'ts-jest/dist/utils/testing';
 import { Wisher } from '..';
 import { UniqueId } from '../../../../core/domain/value-objects';
+
+const validValues = [
+  [
+    mocked<UniqueId>({
+      getId: 'id-0',
+      equals: jest.fn(),
+    } as unknown as UniqueId),
+  ],
+  [
+    mocked<UniqueId>({
+      getId: 'id-1',
+      equals: jest.fn(),
+    } as unknown as UniqueId),
+  ],
+  [
+    mocked<UniqueId>({
+      getId: 'id-2',
+      equals: jest.fn(),
+    } as unknown as UniqueId),
+  ],
+  [
+    mocked<UniqueId>({
+      getId: 'id-3',
+      equals: jest.fn(),
+    } as unknown as UniqueId),
+  ],
+];
 
 describe('wishes', () => {
   describe('domain', () => {
     describe('entities', () => {
       describe('wisher', () => {
-        it('should create a Wisher instance and should store the value', () => {
-          // Arrange
+        test.each(validValues)(
+          'should create a Wisher with [id: %p]',
+          (uniqueId: MockedObject<UniqueId>) => {
+            // Arrange
 
-          // Act
-          const id = 'id';
-          const uniqueId = UniqueId.create(id);
-          const wisher = Wisher.create(uniqueId);
+            // Act
+            const wisher = Wisher.create(uniqueId);
 
-          // Assert
-          expect(wisher.id.getId).toBe(id);
-        });
+            // Assert
+            expect(wisher.id.getId).toBe(uniqueId.getId);
+          },
+        );
 
-        it('create two Wisher instances with different ids and compare them using "equals" should return false', () => {
-          // Arrange
+        test.each(validValues)(
+          'comparing two entities should call "equals" method from UniqueId',
+          (uniqueId: MockedObject<UniqueId>) => {
+            // Arrange
+            const wisher = Wisher.create(uniqueId);
 
-          // Act
-          const id_1 = 'id_1';
-          const id_2 = 'id_2';
-          const uniqueId_1 = UniqueId.create(id_1);
-          const uniqueId_2 = UniqueId.create(id_2);
-          const wisher_1 = Wisher.create(uniqueId_1);
-          const wisher_2 = Wisher.create(uniqueId_2);
-          const result = wisher_1.equals(wisher_2);
+            // Act
+            wisher.equals(wisher);
 
-          // Assert
-          expect(result).toBe(false);
-        });
-
-        it('create two Wisher instances with the same value and compare them using "equals" should return true', () => {
-          // Arrange
-
-          // Act
-          const id = 'id';
-          const uniqueId = UniqueId.create(id);
-          const wisher_1 = Wisher.create(uniqueId);
-          const wisher_2 = Wisher.create(uniqueId);
-          const result = wisher_1.equals(wisher_2);
-
-          // Assert
-          expect(result).toBe(true);
-        });
+            // Assert
+            expect(uniqueId.equals.mock.calls).toHaveLength(1);
+          },
+        );
       });
     });
   });
