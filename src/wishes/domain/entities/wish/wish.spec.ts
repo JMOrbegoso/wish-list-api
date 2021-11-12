@@ -269,12 +269,14 @@ describe('wishes', () => {
             expect(wish.imageUrls[0].getUrl).toBe(images[0].getUrl);
             expect(wish.categories[0].getName).toBe(categories[0].getName);
             expect(wish.stages[0].id.getId).toBe(stages[0].id.getId);
-            if (wish.deletedAt)
+
+            if (deletedAt)
               expect(wish.deletedAt.getMilliseconds).toBe(
                 deletedAt.getMilliseconds,
               );
             else expect(wish.deletedAt).toBeNull();
-            if (wish.completedAt)
+
+            if (completedAt)
               expect(wish.completedAt.getMilliseconds).toBe(
                 completedAt.getMilliseconds,
               );
