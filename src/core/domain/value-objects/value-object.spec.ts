@@ -71,6 +71,34 @@ describe('core', () => {
         );
 
         test.each(validValues)(
+          'comparing a Name created from %p and undefined should return false',
+          (text) => {
+            // Arrange
+
+            // Act
+            const name = Name.create(text);
+            const result = name.equals(undefined);
+
+            // Assert
+            expect(result).toBe(false);
+          },
+        );
+
+        test.each(validValues)(
+          'comparing a Name created from %p and an invalid Name should return false',
+          (text) => {
+            // Arrange
+
+            // Act
+            const name = Name.create(text);
+            const result = name.equals({} as unknown as Name);
+
+            // Assert
+            expect(result).toBe(false);
+          },
+        );
+
+        test.each(validValues)(
           'comparing two Name created from the same value (%p) should return true',
           (text) => {
             // Arrange
