@@ -65,6 +65,148 @@ const validValues = [
       getMilliseconds: 1,
     } as unknown as MillisecondsDate),
   ],
+  [
+    mocked<UniqueId>({
+      getId: 'id-0',
+      equals: jest.fn(),
+    } as unknown as UniqueId),
+    mocked<WishTitle>({
+      getTitle: 'title',
+    } as unknown as WishTitle),
+    mocked<WishDescription>({
+      getDescription: 'description',
+    } as unknown as WishDescription),
+    mocked<WishPrivacyLevel>({
+      getPrivacyLevel: PrivacyLevel.Public,
+    } as unknown as WishPrivacyLevel),
+    mocked<MillisecondsDate>({
+      getMilliseconds: 1,
+    } as unknown as MillisecondsDate),
+    mocked<MillisecondsDate>({
+      getMilliseconds: 1,
+    } as unknown as MillisecondsDate),
+    mocked<Wisher>({
+      id: { getId: 'id-0' },
+    } as unknown as Wisher),
+    [
+      mocked<WebUrl>({
+        getUrl: 'https://www.example.com',
+      } as unknown as WebUrl),
+    ],
+    [
+      mocked<WebUrl>({
+        getUrl: 'https://www.example.com/1.jpg',
+      } as unknown as WebUrl),
+    ],
+    [
+      mocked<CategoryName>({
+        getName: 'category name',
+      } as unknown as CategoryName),
+    ],
+    [
+      mocked<WishStage>({
+        id: { getId: 'id-0' },
+      } as unknown as WishStage),
+    ],
+    null,
+    mocked<MillisecondsDate>({
+      getMilliseconds: 1,
+    } as unknown as MillisecondsDate),
+  ],
+  [
+    mocked<UniqueId>({
+      getId: 'id-0',
+      equals: jest.fn(),
+    } as unknown as UniqueId),
+    mocked<WishTitle>({
+      getTitle: 'title',
+    } as unknown as WishTitle),
+    mocked<WishDescription>({
+      getDescription: 'description',
+    } as unknown as WishDescription),
+    mocked<WishPrivacyLevel>({
+      getPrivacyLevel: PrivacyLevel.Public,
+    } as unknown as WishPrivacyLevel),
+    mocked<MillisecondsDate>({
+      getMilliseconds: 1,
+    } as unknown as MillisecondsDate),
+    mocked<MillisecondsDate>({
+      getMilliseconds: 1,
+    } as unknown as MillisecondsDate),
+    mocked<Wisher>({
+      id: { getId: 'id-0' },
+    } as unknown as Wisher),
+    [
+      mocked<WebUrl>({
+        getUrl: 'https://www.example.com',
+      } as unknown as WebUrl),
+    ],
+    [
+      mocked<WebUrl>({
+        getUrl: 'https://www.example.com/1.jpg',
+      } as unknown as WebUrl),
+    ],
+    [
+      mocked<CategoryName>({
+        getName: 'category name',
+      } as unknown as CategoryName),
+    ],
+    [
+      mocked<WishStage>({
+        id: { getId: 'id-0' },
+      } as unknown as WishStage),
+    ],
+    mocked<MillisecondsDate>({
+      getMilliseconds: 1,
+    } as unknown as MillisecondsDate),
+    null,
+  ],
+  [
+    mocked<UniqueId>({
+      getId: 'id-0',
+      equals: jest.fn(),
+    } as unknown as UniqueId),
+    mocked<WishTitle>({
+      getTitle: 'title',
+    } as unknown as WishTitle),
+    mocked<WishDescription>({
+      getDescription: 'description',
+    } as unknown as WishDescription),
+    mocked<WishPrivacyLevel>({
+      getPrivacyLevel: PrivacyLevel.Public,
+    } as unknown as WishPrivacyLevel),
+    mocked<MillisecondsDate>({
+      getMilliseconds: 1,
+    } as unknown as MillisecondsDate),
+    mocked<MillisecondsDate>({
+      getMilliseconds: 1,
+    } as unknown as MillisecondsDate),
+    mocked<Wisher>({
+      id: { getId: 'id-0' },
+    } as unknown as Wisher),
+    [
+      mocked<WebUrl>({
+        getUrl: 'https://www.example.com',
+      } as unknown as WebUrl),
+    ],
+    [
+      mocked<WebUrl>({
+        getUrl: 'https://www.example.com/1.jpg',
+      } as unknown as WebUrl),
+    ],
+    [
+      mocked<CategoryName>({
+        getName: 'category name',
+      } as unknown as CategoryName),
+    ],
+    [
+      mocked<WishStage>({
+        id: { getId: 'id-0' },
+      } as unknown as WishStage),
+    ],
+    null,
+    null,
+  ],
 ];
 
 describe('wishes', () => {
@@ -127,12 +269,16 @@ describe('wishes', () => {
             expect(wish.imageUrls[0].getUrl).toBe(images[0].getUrl);
             expect(wish.categories[0].getName).toBe(categories[0].getName);
             expect(wish.stages[0].id.getId).toBe(stages[0].id.getId);
-            expect(wish.deletedAt.getMilliseconds).toBe(
-              deletedAt.getMilliseconds,
-            );
-            expect(wish.completedAt.getMilliseconds).toBe(
-              completedAt.getMilliseconds,
-            );
+            if (wish.deletedAt)
+              expect(wish.deletedAt.getMilliseconds).toBe(
+                deletedAt.getMilliseconds,
+              );
+            else expect(wish.deletedAt).toBeNull();
+            if (wish.completedAt)
+              expect(wish.completedAt.getMilliseconds).toBe(
+                completedAt.getMilliseconds,
+              );
+            else expect(wish.completedAt).toBeNull();
           },
         );
 
