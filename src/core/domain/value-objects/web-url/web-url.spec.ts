@@ -2,10 +2,22 @@ import { WebUrl, InvalidWebUrlError, MalformedWebUrlError } from '..';
 
 const validValues = [
   'https://www.com',
-  'https://a.com',
   'https://ab.com',
   'https://example.net',
   'https://example.com',
+  'https://www.example.com',
+  'http://www.example.com',
+  'http://blog.example.com',
+  'http://www.example.com/product',
+  'http://www.example.com/products?id=1&page=2',
+  'http://www.example.com#up',
+  'http://255.255.255.255',
+  '255.255.255.255',
+  'www.example.com',
+  'example.com',
+  'http://valid.com/perl.id?key=',
+  'http://web-site.com/cgi-bin/perl.cgi?key1=value1&key2',
+  'http://www.site.com:8008',
 ];
 
 describe('core', () => {
@@ -27,7 +39,6 @@ describe('core', () => {
         );
 
         test.each([
-          'aaa.bbb',
           '        ',
           'aaa bbb',
           'aaaaaaa bbbbbbb',
@@ -40,7 +51,7 @@ describe('core', () => {
           'invalid',
           'httpp://',
           'hhttp://www.example.com',
-          'www.example.com',
+          'httpp://www.example.com',
         ])(
           'should throw an error when trying to create a WebUrl from %p (Malformed)',
           (malformed) => {
