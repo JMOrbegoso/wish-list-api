@@ -1,6 +1,20 @@
-import { CategoryName, InvalidCategoryNameError } from '..';
+import {
+  CategoryName,
+  InvalidCategoryNameError,
+  CategoryNameIsTooLongError,
+} from '..';
 
-const validValues = ['Tech', 'University', 'Travels', 'School', 'Home', 'Tv'];
+const validValues = [
+  'a'.repeat(CategoryName.MaxLength),
+  '1'.repeat(CategoryName.MaxLength),
+  '_'.repeat(CategoryName.MaxLength),
+  'Tech',
+  'University',
+  'Travels',
+  'School',
+  'Home',
+  'Tv',
+];
 
 describe('wishes', () => {
   describe('domain', () => {
@@ -16,6 +30,30 @@ describe('wishes', () => {
             // Assert
             expect(() => CategoryName.create(invalid)).toThrowError(
               InvalidCategoryNameError,
+            );
+          },
+        );
+
+        test.each([
+          'a'.repeat(CategoryName.MaxLength + 1),
+          '1'.repeat(CategoryName.MaxLength + 1),
+          '_'.repeat(CategoryName.MaxLength + 1),
+          'a'.repeat(CategoryName.MaxLength + 5),
+          '1'.repeat(CategoryName.MaxLength + 5),
+          '_'.repeat(CategoryName.MaxLength + 5),
+          'a'.repeat(CategoryName.MaxLength + 10),
+          '1'.repeat(CategoryName.MaxLength + 10),
+          '_'.repeat(CategoryName.MaxLength + 10),
+        ])(
+          'should throw an error when trying to create a CategoryName from %p (More characters than the limit)',
+          (larger) => {
+            // Arrange
+
+            // Act
+
+            // Assert
+            expect(() => CategoryName.create(larger)).toThrowError(
+              CategoryNameIsTooLongError,
             );
           },
         );
