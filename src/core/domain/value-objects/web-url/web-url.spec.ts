@@ -1,86 +1,105 @@
 import { WebUrl, InvalidWebUrlError, MalformedWebUrlError } from '..';
 
+const validValues = [
+  'https://www.com',
+  'https://a.com',
+  'https://ab.com',
+  'https://example.net',
+  'https://example.com',
+];
+
 describe('core', () => {
   describe('domain', () => {
     describe('value-objects', () => {
       describe('web-url', () => {
-        it('should throw an error when trying to create a WebUrl from undefined', () => {
+        test.each([undefined, null, ''])(
+          'should throw an error when trying to create a WebUrl from %p',
+          (invalid) => {
+            // Arrange
+
+            // Act
+
+            // Assert
+            expect(() => WebUrl.create(invalid)).toThrowError(
+              InvalidWebUrlError,
+            );
+          },
+        );
+
+        test.each([
+          'aaa.bbb',
+          '        ',
+          'aaa bbb',
+          'aaaaaaa bbbbbbb',
+          'aaaaaañ',
+          'ññññññ',
+          'aaabbbÄ',
+          'aaabbb,',
+          'aaabbb§',
+          ' ',
+          'invalid',
+          'httpp://',
+          'hhttp://www.example.com',
+          'www.example.com',
+        ])(
+          'should throw an error when trying to create a WebUrl from %p (Malformed)',
+          (malformed) => {
+            // Arrange
+
+            // Act
+
+            // Assert
+            expect(() => WebUrl.create(malformed)).toThrowError(
+              MalformedWebUrlError,
+            );
+          },
+        );
+
+        test.each(validValues)('should create a WebUrl from %p', (valid) => {
           // Arrange
 
           // Act
+          const webUrl = WebUrl.create(valid);
 
           // Assert
-          expect(() => WebUrl.create(undefined)).toThrowError(
-            InvalidWebUrlError,
-          );
+          expect(webUrl.getUrl).toBe(valid);
         });
 
-        it('should throw an error when trying to create a WebUrl from null', () => {
-          // Arrange
+        test.each([
+          [validValues[0], validValues[1]],
+          [validValues[1], validValues[0]],
+          [validValues[0], validValues[2]],
+          [validValues[2], validValues[0]],
+          [validValues[0], validValues[3]],
+        ])(
+          'comparing two WebUrl created from two different values (%p and %p) should return false',
+          (text1, text2) => {
+            // Arrange
 
-          // Act
+            // Act
+            const webUrl_1 = WebUrl.create(text1);
+            const webUrl_2 = WebUrl.create(text2);
+            const result = webUrl_1.equals(webUrl_2);
 
-          // Assert
-          expect(() => WebUrl.create(null)).toThrowError(InvalidWebUrlError);
-        });
+            // Assert
+            expect(result).toBe(false);
+          },
+        );
 
-        it('should throw an error when trying to create a WebUrl from an empty string', () => {
-          // Arrange
+        test.each(validValues)(
+          'comparing two WebUrl created from the same value (%p) should return true',
+          (text) => {
+            // Arrange
 
-          // Act
+            // Act
+            const webUrl1 = WebUrl.create(text);
+            const webUrl2 = WebUrl.create(text);
+            const result = webUrl1.equals(webUrl2);
 
-          // Assert
-          expect(() => WebUrl.create('')).toThrowError(InvalidWebUrlError);
-        });
-
-        it('should throw an error when trying to create a WebUrl from an invalid url', () => {
-          // Arrange
-
-          // Act
-
-          // Assert
-          expect(() => WebUrl.create('invalid')).toThrowError(
-            MalformedWebUrlError,
-          );
-        });
-
-        it('should create a WebUrl instance from a valid url and should store the value', () => {
-          // Arrange
-
-          // Act
-          const url = 'https://example.com';
-          const webUrl = WebUrl.create(url);
-
-          // Assert
-          expect(webUrl.getUrl).toBe(url);
-        });
-
-        it('create two WebUrl instances with different value and compare them using "equals" should return false', () => {
-          // Arrange
-
-          // Act
-          const url_1 = 'https://example.com';
-          const url_2 = 'https://example.net';
-          const webUrl_1 = WebUrl.create(url_1);
-          const webUrl_2 = WebUrl.create(url_2);
-          const result = webUrl_1.equals(webUrl_2);
-
-          // Assert
-          expect(result).toBe(false);
-        });
-
-        it('create two WebUrl instances with the same value and compare them using "equals" should return true', () => {
-          // Arrange
-
-          // Act
-          const name = 'https://example.com';
-          const webUrl_1 = WebUrl.create(name);
-          const webUrl_2 = WebUrl.create(name);
-          const result = webUrl_1.equals(webUrl_2);
-
-          // Assert
-          expect(result).toBe(true);
-        });
+            // Assert
+            expect(result).toBe(true);
+          },
+        );
       });
     });
   });

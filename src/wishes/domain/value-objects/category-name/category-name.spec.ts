@@ -1,79 +1,73 @@
 import { CategoryName, InvalidCategoryNameError } from '..';
 
+const validValues = ['Tech', 'University', 'Travels', 'School', 'Home', 'Tv'];
+
 describe('wishes', () => {
   describe('domain', () => {
     describe('value-objects', () => {
       describe('category-name', () => {
-        it('should throw an error when trying to create a CategoryName from undefined', () => {
-          // Arrange
+        test.each([undefined, null, ''])(
+          'should throw an error when trying to create a CategoryName from %p',
+          (invalid) => {
+            // Arrange
 
-          // Act
+            // Act
 
-          // Assert
-          expect(() => CategoryName.create(undefined)).toThrowError(
-            InvalidCategoryNameError,
-          );
-        });
+            // Assert
+            expect(() => CategoryName.create(invalid)).toThrowError(
+              InvalidCategoryNameError,
+            );
+          },
+        );
 
-        it('should throw an error when trying to create a CategoryName from null', () => {
-          // Arrange
+        test.each(validValues)(
+          'should create a CategoryName from %p',
+          (valid) => {
+            // Arrange
 
-          // Act
+            // Act
+            const categoryName = CategoryName.create(valid);
 
-          // Assert
-          expect(() => CategoryName.create(null)).toThrowError(
-            InvalidCategoryNameError,
-          );
-        });
+            // Assert
+            expect(categoryName.getName).toBe(valid);
+          },
+        );
 
-        it('should throw an error when trying to create a CategoryName from an empty string', () => {
-          // Arrange
+        test.each([
+          [validValues[0], validValues[1]],
+          [validValues[1], validValues[0]],
+          [validValues[0], validValues[2]],
+          [validValues[2], validValues[0]],
+          [validValues[0], validValues[3]],
+        ])(
+          'comparing two CategoryName created from two different values (%p and %p) should return false',
+          (text1, text2) => {
+            // Arrange
 
-          // Act
+            // Act
+            const categoryName_1 = CategoryName.create(text1);
+            const categoryName_2 = CategoryName.create(text2);
+            const result = categoryName_1.equals(categoryName_2);
 
-          // Assert
-          expect(() => CategoryName.create('')).toThrowError(
-            InvalidCategoryNameError,
-          );
-        });
+            // Assert
+            expect(result).toBe(false);
+          },
+        );
 
-        it('should create a CategoryName instance and should store the value', () => {
-          // Arrange
+        test.each(validValues)(
+          'comparing two CategoryName created from the same value (%p) should return true',
+          (text) => {
+            // Arrange
 
-          // Act
-          const name = 'Tech';
-          const categoryName = CategoryName.create(name);
+            // Act
+            const categoryName1 = CategoryName.create(text);
+            const categoryName2 = CategoryName.create(text);
+            const result = categoryName1.equals(categoryName2);
 
-          // Assert
-          expect(categoryName.getName).toBe(name);
-        });
-
-        it('create two CategoryName instances with different value and compare them using "equals" should return false', () => {
-          // Arrange
-
-          // Act
-          const name_1 = 'Tech';
-          const name_2 = 'Future';
-          const categoryName_1 = CategoryName.create(name_1);
-          const categoryName_2 = CategoryName.create(name_2);
-          const result = categoryName_1.equals(categoryName_2);
-
-          // Assert
-          expect(result).toBe(false);
-        });
-
-        it('create two CategoryName instances with the same value and compare them using "equals" should return true', () => {
-          // Arrange
-
-          // Act
-          const name = 'Tech';
-          const categoryName_1 = CategoryName.create(name);
-          const categoryName_2 = CategoryName.create(name);
-          const result = categoryName_1.equals(categoryName_2);
-
-          // Assert
-          expect(result).toBe(true);
-        });
+            // Assert
+            expect(result).toBe(true);
+          },
+        );
       });
     });
   });

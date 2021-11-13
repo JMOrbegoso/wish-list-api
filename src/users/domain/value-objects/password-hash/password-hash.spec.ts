@@ -1,83 +1,78 @@
 import { PasswordHash, InvalidPasswordHashError } from '..';
 
+const validValues = [
+  '$2a$10$Ro0CUfOqk6cXEKf3dyaM7OhSCvnwM9s4wIX9JeLapehKK5YdLxKcm',
+  '$2a$10$Ro0HUfOqk0cDIOf9dyaM7OhSCvnwM9s4wUX1JeLapehKK5YdLxKcm',
+  '$2a$10$Ro0CIfOqk3cXEKf5dyaM7OhSCvnwM9s4wIX9JeLapehKK5YdLxKcn',
+  '$2a$10$Ro0XYfOqk1cXEKf4dyaY7OhSCvnwM9s4wIX9JeDapehKK5YdLxKcm',
+];
+
 describe('users', () => {
   describe('domain', () => {
     describe('value-objects', () => {
       describe('password-hash', () => {
-        it('should throw an error when trying to create a PasswordHash from undefined', () => {
-          // Arrange
+        test.each([undefined, null, ''])(
+          'should throw an error when trying to create a PasswordHash from %p',
+          (invalid) => {
+            // Arrange
 
-          // Act
+            // Act
 
-          // Assert
-          expect(() => PasswordHash.create(undefined)).toThrowError(
-            InvalidPasswordHashError,
-          );
-        });
+            // Assert
+            expect(() => PasswordHash.create(invalid)).toThrowError(
+              InvalidPasswordHashError,
+            );
+          },
+        );
 
-        it('should throw an error when trying to create a PasswordHash from null', () => {
-          // Arrange
+        test.each(validValues)(
+          'should create a PasswordHash from %p',
+          (valid) => {
+            // Arrange
 
-          // Act
+            // Act
+            const passwordHash = PasswordHash.create(valid);
 
-          // Assert
-          expect(() => PasswordHash.create(null)).toThrowError(
-            InvalidPasswordHashError,
-          );
-        });
+            // Assert
+            expect(passwordHash.getPasswordHash).toBe(valid);
+          },
+        );
 
-        it('should throw an error when trying to create a PasswordHash from an empty string', () => {
-          // Arrange
+        test.each([
+          [validValues[0], validValues[1]],
+          [validValues[1], validValues[0]],
+          [validValues[0], validValues[2]],
+          [validValues[2], validValues[0]],
+          [validValues[0], validValues[3]],
+        ])(
+          'comparing two PasswordHash created from two different values (%p and %p) should return false',
+          (text1, text2) => {
+            // Arrange
 
-          // Act
+            // Act
+            const passwordHash_1 = PasswordHash.create(text1);
+            const passwordHash_2 = PasswordHash.create(text2);
+            const result = passwordHash_1.equals(passwordHash_2);
 
-          // Assert
-          expect(() => PasswordHash.create('')).toThrowError(
-            InvalidPasswordHashError,
-          );
-        });
+            // Assert
+            expect(result).toBe(false);
+          },
+        );
 
-        it('should create a PasswordHash instance and should store the value', () => {
-          // Arrange
+        test.each(validValues)(
+          'comparing two PasswordHash created from the same value (%p) should return true',
+          (text) => {
+            // Arrange
 
-          // Act
-          const text =
-            '$2a$10$Ro0CUfOqk6cXEKf3dyaM7OhSCvnwM9s4wIX9JeLapehKK5YdLxKcm';
-          const passwordHash = PasswordHash.create(text);
+            // Act
+            const passwordHash1 = PasswordHash.create(text);
+            const passwordHash2 = PasswordHash.create(text);
+            const result = passwordHash1.equals(passwordHash2);
 
-          // Assert
-          expect(passwordHash.getPasswordHash).toBe(text);
-        });
-
-        it('create two PasswordHash instances with different value and compare them using "equals" should return false', () => {
-          // Arrange
-
-          // Act
-          const text_1 =
-            '$2a$10$Ro0CUfOqk6cXEKf3dyaM7OhSCvnwM9s4wIX9JeLapehKK5YdLxKcm';
-          const text_2 =
-            '$2a$10$Ro0CUfOqk6cXEKf3dyaM7OhSCvnwM9s4wIX9JeLapehKK5YdLxKcn';
-          const passwordHash_1 = PasswordHash.create(text_1);
-          const passwordHash_2 = PasswordHash.create(text_2);
-          const result = passwordHash_1.equals(passwordHash_2);
-
-          // Assert
-          expect(result).toBe(false);
-        });
-
-        it('create two PasswordHash instances with the same value and compare them using "equals" should return true', () => {
-          // Arrange
-
-          // Act
-          const text =
-            '$2a$10$Ro0CUfOqk6cXEKf3dyaM7OhSCvnwM9s4wIX9JeLapehKK5YdLxKcm';
-          const passwordHash_1 = PasswordHash.create(text);
-          const passwordHash_2 = PasswordHash.create(text);
-          const result = passwordHash_1.equals(passwordHash_2);
-
-          // Assert
-          expect(result).toBe(true);
-        });
+            // Assert
+            expect(result).toBe(true);
+          },
+        );
       });
     });
   });

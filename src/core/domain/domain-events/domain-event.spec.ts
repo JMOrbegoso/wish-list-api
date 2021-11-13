@@ -21,9 +21,8 @@ describe('core', () => {
           }
         }
 
-        it('should create an domain event instance and should store the values', () => {
+        it('should create a domain event instance and should store the values', () => {
           // Arrange
-          const creationDate = new Date();
           const id = 'id';
           const uniqueId = UniqueId.create(id);
           const productName = 'product name';
@@ -34,9 +33,8 @@ describe('core', () => {
           // Assert
           expect(domainEvent.id.getId).toBe(uniqueId.getId);
           expect(domainEvent.name).toBe(productName);
-          expect(domainEvent.createdAt.getUTCDate()).toBeCloseTo(
-            creationDate.getUTCDate(),
-          );
+          expect(domainEvent.createdAt).not.toBeUndefined();
+          expect(domainEvent.createdAt).not.toBeNull();
         });
       });
     });
