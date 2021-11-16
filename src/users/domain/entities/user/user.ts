@@ -188,7 +188,7 @@ export class User extends AggregateRoot {
   public get updatedAt(): MillisecondsDate {
     return this._updatedAt;
   }
-  public set updatedAt(updatedAt: MillisecondsDate) {
+  private set updatedAt(updatedAt: MillisecondsDate) {
     this._updatedAt = updatedAt;
   }
 
