@@ -24,8 +24,13 @@ export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
 
   async execute(command: CreateUserCommand): Promise<void> {
     // Generate the email and username properties of the new user first to validate them
+    const id = UniqueId.create(command.id);
     const email = Email.create(command.email);
     const userName = UserName.create(command.userName);
+
+    // Check if the id is in use by other user
+    const userWithSameId = await this.unitOfWork.userRepository.getOne(id);
+    if (userWithSameId) throw new Error('Id is in use.');
 
     // Check if the email is in use by other user
     const userWithSameEmail =
@@ -38,7 +43,6 @@ export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
     if (userWithSameUserName) throw new Error('UserName in use.');
 
     // Generate the properties of the new User
-    const id = UniqueId.create(command.id);
     const passwordHash = PasswordHash.create(command.passwordHash);
     const isVerified = IsVerified.notVerified();
     const isBlocked = IsBlocked.notBlocked();

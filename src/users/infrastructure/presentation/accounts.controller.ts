@@ -54,11 +54,9 @@ export class AccountsController {
   @ApiBadRequestResponse()
   @Post()
   async register(@Body() dto: CreateUserDto): Promise<void> {
-    const id = this.uniqueIdGeneratorService.generateId();
     const passwordHash = this.encryptionService.hashPassword(dto.password);
     const command: CreateUserCommand = Mapper.toCreateUserCommand(
       dto,
-      id,
       passwordHash,
     );
 

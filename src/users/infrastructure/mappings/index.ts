@@ -107,11 +107,10 @@ export class Mapper {
 
   public static toCreateUserCommand(
     dto: CreateUserDto,
-    id: string,
     passwordHash: string,
   ): CreateUserCommand {
     return new CreateUserCommand(
-      id,
+      dto.id,
       dto.email,
       dto.userName,
       passwordHash,

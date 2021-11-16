@@ -179,6 +179,7 @@ describe('users', () => {
         it('should map CreateUserDto to a CreateUserCommand keeping all the property values', () => {
           // Arrange
           const dto = new CreateUserDto();
+          dto.id = id;
           dto.email = email;
           dto.userName = username;
           dto.password = password;
@@ -189,7 +190,7 @@ describe('users', () => {
           dto.profilePicture = null;
 
           // Act
-          const command = Mapper.toCreateUserCommand(dto, id, hash);
+          const command = Mapper.toCreateUserCommand(dto, hash);
 
           // Assert
           expect(command.id).toBe(id);

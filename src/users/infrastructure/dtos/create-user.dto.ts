@@ -10,6 +10,7 @@ import {
   MinLength,
   IsPositive,
   Matches,
+  IsMongoId,
 } from 'class-validator';
 import {
   UserName,
@@ -20,6 +21,16 @@ import {
 } from '../../../users/domain/value-objects';
 
 export class CreateUserDto {
+  @ApiProperty({
+    type: String,
+    required: true,
+    description: 'User id.',
+    example: '61872ad79452fa50b7b70f80',
+  })
+  @IsMongoId()
+  @IsNotEmpty()
+  id: string;
+
   @ApiProperty({
     type: String,
     required: true,
