@@ -190,13 +190,13 @@ describe('users', () => {
           dto.profilePicture = null;
 
           // Act
-          const command = Mapper.toCreateUserCommand(dto, hash);
+          const command = Mapper.toCreateUserCommand(dto);
 
           // Assert
           expect(command.id).toBe(id);
           expect(command.email).toBe(email);
           expect(command.userName).toBe(username);
-          expect(command.passwordHash).toBe(hash);
+          expect(command.password).toBe(password);
           expect(command.firstName).toBe(firstNameText);
           expect(command.lastName).toBe(lastNameText);
           expect(command.birthday).toBe(birthDateMilliseconds);

@@ -21,10 +21,6 @@ import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { CreateUserDto, UpdateUserDto, OutputUserDto } from '../dtos';
 import { Mapper } from '../mappings';
 import {
-  EncryptionService,
-  UniqueIdGeneratorService,
-} from '../../application/services';
-import {
   GetUserByEmailQuery,
   GetUserByIdQuery,
   GetUserByUserNameQuery,
@@ -42,24 +38,14 @@ import {
 @ApiTags('AccountsController')
 @Controller('accounts')
 export class AccountsController {
-  constructor(
-    private commandBus: CommandBus,
-    private queryBus: QueryBus,
-    private encryptionService: EncryptionService,
-    private uniqueIdGeneratorService: UniqueIdGeneratorService,
-  ) {}
+  constructor(private commandBus: CommandBus, private queryBus: QueryBus) {}
 
   @ApiBody({ required: true, type: CreateUserDto })
   @ApiCreatedResponse({ description: 'User created successfully.' })
   @ApiBadRequestResponse()
   @Post()
   async register(@Body() dto: CreateUserDto): Promise<void> {
-    const passwordHash = this.encryptionService.hashPassword(dto.password);
-    const command: CreateUserCommand = Mapper.toCreateUserCommand(
-      dto,
-      passwordHash,
-    );
-
+    const command: CreateUserCommand = Mapper.toCreateUserCommand(dto);
     return await this.commandBus.execute(command);
   }
 

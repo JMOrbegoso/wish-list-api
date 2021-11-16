@@ -17,10 +17,14 @@ import {
   LastName,
   Biography,
 } from '../../../domain/value-objects';
+import { EncryptionService } from '../../services';
 
 @CommandHandler(CreateUserCommand)
 export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
-  constructor(private readonly unitOfWork: UnitOfWork) {}
+  constructor(
+    private readonly unitOfWork: UnitOfWork,
+    private readonly encryptionService: EncryptionService,
+  ) {}
 
   async execute(command: CreateUserCommand): Promise<void> {
     // Generate the email and username properties of the new user first to validate them
@@ -43,7 +47,8 @@ export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
     if (userWithSameUserName) throw new Error('UserName in use.');
 
     // Generate the properties of the new User
-    const passwordHash = PasswordHash.create(command.passwordHash);
+    const hash = this.encryptionService.hashPassword(command.password);
+    const passwordHash = PasswordHash.create(hash);
     const isVerified = IsVerified.notVerified();
     const isBlocked = IsBlocked.notBlocked();
     const firstName = FirstName.create(command.firstName);

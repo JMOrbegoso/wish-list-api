@@ -105,15 +105,12 @@ export class Mapper {
     return dto;
   }
 
-  public static toCreateUserCommand(
-    dto: CreateUserDto,
-    passwordHash: string,
-  ): CreateUserCommand {
+  public static toCreateUserCommand(dto: CreateUserDto): CreateUserCommand {
     return new CreateUserCommand(
       dto.id,
       dto.email,
       dto.userName,
-      passwordHash,
+      dto.password,
       dto.firstName,
       dto.lastName,
       dto.birthday,
