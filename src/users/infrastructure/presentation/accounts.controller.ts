@@ -25,7 +25,10 @@ import {
   UpdateUserDto,
 } from '../dtos';
 import { OutputUserDto } from '../../../users/application/dtos';
-import { Mapper } from '../mappings';
+import {
+  createUserDtoToCreateUserCommand,
+  updateUserDtoToUpdateUserCommand,
+} from '../mappings';
 import {
   GetUserByEmailQuery,
   GetUserByIdQuery,
@@ -87,7 +90,7 @@ export class AccountsController {
   @ApiBadRequestResponse({ description: 'Something went wrong.' })
   @Post()
   async register(@Body() dto: CreateUserDto): Promise<void> {
-    const command: CreateUserCommand = Mapper.toCreateUserCommand(dto);
+    const command: CreateUserCommand = createUserDtoToCreateUserCommand(dto);
     await this.commandBus.execute(command);
   }
 
@@ -102,7 +105,7 @@ export class AccountsController {
   ): Promise<void> {
     if (params.id !== dto.id)
       throw new BadRequestException('Id are different.');
-    const command: UpdateUserCommand = Mapper.toUpdateUserCommand(dto);
+    const command: UpdateUserCommand = updateUserDtoToUpdateUserCommand(dto);
     await this.commandBus.execute(command);
   }
 
