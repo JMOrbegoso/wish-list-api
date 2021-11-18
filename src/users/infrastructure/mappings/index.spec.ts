@@ -124,57 +124,6 @@ describe('users', () => {
         });
       });
 
-      describe('map User to OutputUserDto', () => {
-        it('should map User to OutputUserDto keeping all the property values', () => {
-          // Arrange
-          const uniqueId = UniqueId.create(id);
-          const userEmail = Email.create(email);
-          const userName = UserName.create(username);
-          const passwordHash = PasswordHash.create(hash);
-          const isVerified = IsVerified.create(verificationStatus);
-          const isBlocked = IsBlocked.create(blockedStatus);
-          const firstName = FirstName.create(firstNameText);
-          const lastName = LastName.create(lastNameText);
-          const birthday = MillisecondsDate.createFromDate(birthDate);
-          const creationDate = MillisecondsDate.createFromMilliseconds(
-            creationDateMilliseconds,
-          );
-          const biography = Biography.create(bio);
-
-          const user = User.create(
-            uniqueId,
-            userEmail,
-            userName,
-            passwordHash,
-            isVerified,
-            isBlocked,
-            firstName,
-            lastName,
-            birthday,
-            creationDate,
-            creationDate,
-            biography,
-          );
-
-          // Act
-          const dto = Mapper.toOutputUserDto(user);
-
-          // Assert
-          expect(dto.id).toBe(id);
-          expect(dto.email).toBe(email);
-          expect(dto.userName).toBe(username);
-          expect(dto.isVerified).toBe(verificationStatus);
-          expect(dto.isBlocked).toBe(blockedStatus);
-          expect(dto.firstName).toBe(firstNameText);
-          expect(dto.lastName).toBe(lastNameText);
-          expect(dto.birthday).toBe(birthDateMilliseconds);
-          expect(dto.createdAt).toBe(creationDate.getMilliseconds);
-          expect(dto.updatedAt).toBe(creationDate.getMilliseconds);
-          expect(dto.biography).toBe(bio);
-          expect(dto.deletedAt).toBeUndefined();
-        });
-      });
-
       describe('map CreateUserDto to CreateUserCommand', () => {
         it('should map CreateUserDto to a CreateUserCommand keeping all the property values', () => {
           // Arrange

@@ -1,6 +1,6 @@
 import { User } from '../../domain/entities';
 import { UserEntity } from '../persistence/entities';
-import { CreateUserDto, UpdateUserDto, OutputUserDto } from '../dtos';
+import { CreateUserDto, UpdateUserDto } from '../dtos';
 import {
   CreateUserCommand,
   UpdateUserCommand,
@@ -83,26 +83,6 @@ export class Mapper {
     userEntity.deletedAt = user.deletedAt?.getDate;
 
     return userEntity;
-  }
-
-  public static toOutputUserDto(user: User): OutputUserDto {
-    const dto = new OutputUserDto();
-
-    dto.id = user.id.getId;
-    dto.email = user.email.getEmail;
-    dto.userName = user.userName.getUserName;
-    dto.isVerified = user.isVerified.getStatus;
-    dto.isBlocked = user.isBlocked.getStatus;
-    dto.firstName = user.firstName.getFirstName;
-    dto.lastName = user.lastName.getLastName;
-    dto.birthday = user.birthday.getMilliseconds;
-    dto.createdAt = user.createdAt.getMilliseconds;
-    dto.updatedAt = user.updatedAt.getMilliseconds;
-    dto.biography = user.biography?.getBiography;
-    dto.profilePicture = user.profilePicture?.getUrl;
-    dto.deletedAt = user.deletedAt?.getMilliseconds;
-
-    return dto;
   }
 
   public static toCreateUserCommand(dto: CreateUserDto): CreateUserCommand {

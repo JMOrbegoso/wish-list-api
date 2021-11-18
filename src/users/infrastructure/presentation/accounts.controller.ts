@@ -18,7 +18,8 @@ import {
   ApiBadRequestResponse,
 } from '@nestjs/swagger';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { CreateUserDto, UpdateUserDto, OutputUserDto } from '../dtos';
+import { CreateUserDto, UpdateUserDto } from '../dtos';
+import { OutputUserDto } from '../../../users/application/dtos';
 import { Mapper } from '../mappings';
 import {
   GetUserByEmailQuery,
@@ -44,8 +45,7 @@ export class AccountsController {
   @Get()
   async getAllUsers(): Promise<OutputUserDto[]> {
     const query = new GetUsersQuery();
-    const users = await this.queryBus.execute(query);
-    return users.map((user) => Mapper.toOutputUserDto(user));
+    return await this.queryBus.execute(query);
   }
 
   @ApiOkResponse({ type: OutputUserDto })
@@ -56,7 +56,7 @@ export class AccountsController {
     const query = new GetUserByIdQuery(id);
     const user = await this.queryBus.execute(query);
     if (!user) throw new NotFoundException();
-    return Mapper.toOutputUserDto(user);
+    return user;
   }
 
   @ApiOkResponse({ type: OutputUserDto })
@@ -67,7 +67,7 @@ export class AccountsController {
     const query = new GetUserByEmailQuery(email);
     const user = await this.queryBus.execute(query);
     if (!user) throw new NotFoundException();
-    return Mapper.toOutputUserDto(user);
+    return user;
   }
 
   @ApiOkResponse({ type: OutputUserDto })
@@ -80,7 +80,7 @@ export class AccountsController {
     const query = new GetUserByUserNameQuery(username);
     const user = await this.queryBus.execute(query);
     if (!user) throw new NotFoundException();
-    return Mapper.toOutputUserDto(user);
+    return user;
   }
 
   @ApiBody({ required: true, type: CreateUserDto })
