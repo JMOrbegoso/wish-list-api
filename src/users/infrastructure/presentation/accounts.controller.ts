@@ -17,7 +17,13 @@ import {
   ApiBadRequestResponse,
 } from '@nestjs/swagger';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { CreateUserDto, UserIdDto, UserEmailDto, UpdateUserDto } from '../dtos';
+import {
+  CreateUserDto,
+  UserIdDto,
+  UserEmailDto,
+  UserNameDto,
+  UpdateUserDto,
+} from '../dtos';
 import { OutputUserDto } from '../../../users/application/dtos';
 import { Mapper } from '../mappings';
 import {
@@ -68,11 +74,11 @@ export class AccountsController {
   @ApiOkResponse({ type: OutputUserDto })
   @ApiNotFoundResponse()
   @ApiBadRequestResponse()
-  @Get('username/:username')
+  @Get('username/:userName')
   async getUserByUserName(
-    @Param('username') username: string,
+    @Param() params: UserNameDto,
   ): Promise<OutputUserDto> {
-    const query = new GetUserByUserNameQuery(username);
+    const query = new GetUserByUserNameQuery(params.userName);
     return await this.queryBus.execute(query);
   }
 
