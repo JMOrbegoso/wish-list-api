@@ -17,7 +17,7 @@ import {
   ApiBadRequestResponse,
 } from '@nestjs/swagger';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { CreateUserDto, UpdateUserDto } from '../dtos';
+import { CreateUserDto, UserIdDto, UpdateUserDto } from '../dtos';
 import { OutputUserDto } from '../../../users/application/dtos';
 import { Mapper } from '../mappings';
 import {
@@ -51,8 +51,8 @@ export class AccountsController {
   @ApiNotFoundResponse()
   @ApiBadRequestResponse()
   @Get(':id')
-  async getUserById(@Param('id') id: string): Promise<OutputUserDto> {
-    const query = new GetUserByIdQuery(id);
+  async getUserById(@Param() params: UserIdDto): Promise<OutputUserDto> {
+    const query = new GetUserByIdQuery(params.id);
     return await this.queryBus.execute(query);
   }
 
@@ -91,10 +91,11 @@ export class AccountsController {
   @ApiBadRequestResponse()
   @Patch(':id')
   async update(
-    @Param('id') id: string,
+    @Param() params: UserIdDto,
     @Body() dto: UpdateUserDto,
   ): Promise<void> {
-    if (id !== dto.id) throw new BadRequestException('Id are different.');
+    if (params.id !== dto.id)
+      throw new BadRequestException('Id are different.');
     const command: UpdateUserCommand = Mapper.toUpdateUserCommand(dto);
     await this.commandBus.execute(command);
   }
@@ -103,8 +104,8 @@ export class AccountsController {
   @ApiNotFoundResponse()
   @ApiBadRequestResponse()
   @Patch('block/:id')
-  async blockUser(@Param('id') id: string): Promise<void> {
-    const command = new BlockUserCommand(id);
+  async blockUser(@Param() params: UserIdDto): Promise<void> {
+    const command = new BlockUserCommand(params.id);
     await this.commandBus.execute(command);
   }
 
@@ -112,8 +113,8 @@ export class AccountsController {
   @ApiNotFoundResponse()
   @ApiBadRequestResponse()
   @Patch('unblock/:id')
-  async unblockUser(@Param('id') id: string): Promise<void> {
-    const command = new UnblockUserCommand(id);
+  async unblockUser(@Param() params: UserIdDto): Promise<void> {
+    const command = new UnblockUserCommand(params.id);
     await this.commandBus.execute(command);
   }
 
@@ -121,8 +122,8 @@ export class AccountsController {
   @ApiNotFoundResponse()
   @ApiBadRequestResponse()
   @Delete(':id')
-  async deleteUser(@Param('id') id: string): Promise<void> {
-    const command = new DeleteUserCommand(id);
+  async deleteUser(@Param() params: UserIdDto): Promise<void> {
+    const command = new DeleteUserCommand(params.id);
     await this.commandBus.execute(command);
   }
 
@@ -130,8 +131,8 @@ export class AccountsController {
   @ApiNotFoundResponse()
   @ApiBadRequestResponse()
   @Patch('undelete/:id')
-  async undeleteUser(@Param('id') id: string): Promise<void> {
-    const command = new UndeleteUserCommand(id);
+  async undeleteUser(@Param() params: UserIdDto): Promise<void> {
+    const command = new UndeleteUserCommand(params.id);
     await this.commandBus.execute(command);
   }
 }
