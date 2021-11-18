@@ -51,6 +51,7 @@ export class CreateUserDto {
   @IsString()
   @IsNotEmpty()
   @MaxLength(UserName.MaxLength)
+  @MinLength(UserName.MinLength)
   userName: string;
 
   @ApiProperty({
