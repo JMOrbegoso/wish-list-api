@@ -17,7 +17,7 @@ import {
   ApiBadRequestResponse,
 } from '@nestjs/swagger';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { CreateUserDto, UserIdDto, UpdateUserDto } from '../dtos';
+import { CreateUserDto, UserIdDto, UserEmailDto, UpdateUserDto } from '../dtos';
 import { OutputUserDto } from '../../../users/application/dtos';
 import { Mapper } from '../mappings';
 import {
@@ -60,8 +60,8 @@ export class AccountsController {
   @ApiNotFoundResponse()
   @ApiBadRequestResponse()
   @Get('email/:email')
-  async getUserByEmail(@Param('email') email: string): Promise<OutputUserDto> {
-    const query = new GetUserByEmailQuery(email);
+  async getUserByEmail(@Param() params: UserEmailDto): Promise<OutputUserDto> {
+    const query = new GetUserByEmailQuery(params.email);
     return await this.queryBus.execute(query);
   }
 
