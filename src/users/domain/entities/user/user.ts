@@ -230,6 +230,6 @@ export class User extends AggregateRoot {
   }
 
   public get isDeleted(): boolean {
-    return !this._deletedAt;
+    return !!this._deletedAt;
   }
 }
