@@ -1,5 +1,5 @@
 import { mocked } from 'ts-jest/utils';
-import { Mapper } from '.';
+import { userToOutputUserDto } from '.';
 import { User } from '../../domain/entities';
 
 const validValues = [
@@ -352,14 +352,14 @@ const validValues = [
 describe('users', () => {
   describe('application', () => {
     describe('mappings', () => {
-      describe('map User to OutputUserDto', () => {
+      describe('User to OutputUserDto', () => {
         test.each(validValues)(
           'should map User to OutputUserDto keeping all the property values',
           (user: User) => {
             // Arrange
 
             // Act
-            const dto = Mapper.toOutputUserDto(user);
+            const dto = userToOutputUserDto(user);
 
             // Assert
             expect(dto.id).toBe(user.id.getId);

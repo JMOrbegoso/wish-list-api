@@ -4,7 +4,7 @@ import { UnitOfWork } from '../../../../core/domain/repositories';
 import { User } from '../../../../users/domain/entities';
 import { OutputUserDto } from '../../dtos';
 import { Email } from '../../../../users/domain/value-objects';
-import { Mapper } from '../../mappings';
+import { userToOutputUserDto } from '../../mappings';
 import { GetUserByEmailQuery } from '..';
 
 @QueryHandler(GetUserByEmailQuery)
@@ -22,6 +22,6 @@ export class GetUserByEmailHandler
 
     if (!user) throw new NotFoundException();
 
-    return Mapper.toOutputUserDto(user);
+    return userToOutputUserDto(user);
   }
 }
