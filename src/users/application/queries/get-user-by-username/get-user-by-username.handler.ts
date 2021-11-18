@@ -1,4 +1,5 @@
 import { QueryHandler, IQueryHandler } from '@nestjs/cqrs';
+import { NotFoundException } from '@nestjs/common';
 import { UnitOfWork } from '../../../../core/domain/repositories';
 import { User } from '../../../../users/domain/entities';
 import { OutputUserDto } from '../../dtos';
@@ -18,6 +19,8 @@ export class GetUserByUserNameHandler
     const user: User = await this.unitOfWork.userRepository.getOneByUserName(
       userName,
     );
+
+    if (!user) throw new NotFoundException();
 
     return Mapper.toOutputUserDto(user);
   }

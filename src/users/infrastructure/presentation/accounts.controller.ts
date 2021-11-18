@@ -6,7 +6,6 @@ import {
   Patch,
   Delete,
   Param,
-  NotFoundException,
   BadRequestException,
 } from '@nestjs/common';
 import {
@@ -49,38 +48,32 @@ export class AccountsController {
   }
 
   @ApiOkResponse({ type: OutputUserDto })
+  @ApiNotFoundResponse()
   @ApiBadRequestResponse()
-  @ApiNotFoundResponse({ description: 'User not found.' })
   @Get(':id')
   async getUserById(@Param('id') id: string): Promise<OutputUserDto> {
     const query = new GetUserByIdQuery(id);
-    const user = await this.queryBus.execute(query);
-    if (!user) throw new NotFoundException();
-    return user;
+    return await this.queryBus.execute(query);
   }
 
   @ApiOkResponse({ type: OutputUserDto })
+  @ApiNotFoundResponse()
   @ApiBadRequestResponse()
-  @ApiNotFoundResponse({ description: 'User not found.' })
   @Get('email/:email')
   async getUserByEmail(@Param('email') email: string): Promise<OutputUserDto> {
     const query = new GetUserByEmailQuery(email);
-    const user = await this.queryBus.execute(query);
-    if (!user) throw new NotFoundException();
-    return user;
+    return await this.queryBus.execute(query);
   }
 
   @ApiOkResponse({ type: OutputUserDto })
+  @ApiNotFoundResponse()
   @ApiBadRequestResponse()
-  @ApiNotFoundResponse({ description: 'User not found.' })
   @Get('username/:username')
   async getUserByUserName(
     @Param('username') username: string,
   ): Promise<OutputUserDto> {
     const query = new GetUserByUserNameQuery(username);
-    const user = await this.queryBus.execute(query);
-    if (!user) throw new NotFoundException();
-    return user;
+    return await this.queryBus.execute(query);
   }
 
   @ApiBody({ required: true, type: CreateUserDto })
