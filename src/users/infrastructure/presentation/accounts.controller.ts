@@ -40,15 +40,6 @@ import {
 export class AccountsController {
   constructor(private commandBus: CommandBus, private queryBus: QueryBus) {}
 
-  @ApiBody({ required: true, type: CreateUserDto })
-  @ApiCreatedResponse({ description: 'User created successfully.' })
-  @ApiBadRequestResponse()
-  @Post()
-  async register(@Body() dto: CreateUserDto): Promise<void> {
-    const command: CreateUserCommand = Mapper.toCreateUserCommand(dto);
-    return await this.commandBus.execute(command);
-  }
-
   @ApiOkResponse({ type: [OutputUserDto] })
   @Get()
   async getAllUsers(): Promise<OutputUserDto[]> {
@@ -92,24 +83,32 @@ export class AccountsController {
     return Mapper.toOutputUserDto(user);
   }
 
+  @ApiBody({ required: true, type: CreateUserDto })
+  @ApiCreatedResponse({ description: 'User created successfully.' })
+  @ApiBadRequestResponse()
+  @Post()
+  async register(@Body() dto: CreateUserDto): Promise<void> {
+    const command: CreateUserCommand = Mapper.toCreateUserCommand(dto);
+    await this.commandBus.execute(command);
+  }
+
   @ApiBody({ required: true, type: UpdateUserDto })
   @ApiOkResponse()
+  @ApiNotFoundResponse()
   @ApiBadRequestResponse()
-  @ApiNotFoundResponse({ description: 'User not found.' })
   @Patch(':id')
   async update(
     @Param('id') id: string,
     @Body() dto: UpdateUserDto,
   ): Promise<void> {
-    if (id !== dto.id) throw new BadRequestException('Id are different');
-
+    if (id !== dto.id) throw new BadRequestException('Id are different.');
     const command: UpdateUserCommand = Mapper.toUpdateUserCommand(dto);
-    return await this.commandBus.execute(command);
+    await this.commandBus.execute(command);
   }
 
   @ApiOkResponse()
+  @ApiNotFoundResponse()
   @ApiBadRequestResponse()
-  @ApiNotFoundResponse({ description: 'User not found.' })
   @Patch('block/:id')
   async blockUser(@Param('id') id: string): Promise<void> {
     const command = new BlockUserCommand(id);
@@ -117,8 +116,8 @@ export class AccountsController {
   }
 
   @ApiOkResponse()
+  @ApiNotFoundResponse()
   @ApiBadRequestResponse()
-  @ApiNotFoundResponse({ description: 'User not found.' })
   @Patch('unblock/:id')
   async unblockUser(@Param('id') id: string): Promise<void> {
     const command = new UnblockUserCommand(id);
@@ -126,21 +125,17 @@ export class AccountsController {
   }
 
   @ApiOkResponse()
+  @ApiNotFoundResponse()
   @ApiBadRequestResponse()
-  @ApiNotFoundResponse({ description: 'User not found.' })
   @Delete(':id')
-  async deleteUser(@Param('id') id: string): Promise<Date> {
+  async deleteUser(@Param('id') id: string): Promise<void> {
     const command = new DeleteUserCommand(id);
-    const deletedDate = await this.commandBus.execute(command);
-
-    if (!deletedDate) throw new NotFoundException();
-
-    return deletedDate;
+    await this.commandBus.execute(command);
   }
 
   @ApiOkResponse()
+  @ApiNotFoundResponse()
   @ApiBadRequestResponse()
-  @ApiNotFoundResponse({ description: 'User not found.' })
   @Patch('undelete/:id')
   async undeleteUser(@Param('id') id: string): Promise<void> {
     const command = new UndeleteUserCommand(id);

@@ -1,4 +1,5 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
+import { BadRequestException } from '@nestjs/common';
 import { UnitOfWork } from '../../../../core/domain/repositories';
 import { User } from '../../../domain/entities';
 import { CreateUserCommand } from '..';
@@ -34,17 +35,20 @@ export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
 
     // Check if the id is in use by other user
     const userWithSameId = await this.unitOfWork.userRepository.getOne(id);
-    if (userWithSameId) throw new Error('Id is in use.');
+    if (userWithSameId)
+      throw new BadRequestException('The Id is already in use.');
 
     // Check if the email is in use by other user
     const userWithSameEmail =
       await this.unitOfWork.userRepository.getOneByEmail(email);
-    if (userWithSameEmail) throw new Error('Email in use.');
+    if (userWithSameEmail)
+      throw new BadRequestException('The Email is already in use.');
 
     // Check if the username is in use by other user
     const userWithSameUserName =
       await this.unitOfWork.userRepository.getOneByUserName(userName);
-    if (userWithSameUserName) throw new Error('UserName in use.');
+    if (userWithSameUserName)
+      throw new BadRequestException('The UserName is already in use.');
 
     // Generate the properties of the new User
     const hash = this.encryptionService.hashPassword(command.password);

@@ -1,12 +1,13 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
+import { NotFoundException } from '@nestjs/common';
 import { UnitOfWork } from '../../../../core/domain/repositories';
-import { UpdateUserCommand } from '..';
 import {
   UniqueId,
   MillisecondsDate,
   WebUrl,
 } from '../../../../core/domain/value-objects';
 import { FirstName, LastName, Biography } from '../../../domain/value-objects';
+import { UpdateUserCommand } from '..';
 
 @CommandHandler(UpdateUserCommand)
 export class UpdateUserHandler implements ICommandHandler<UpdateUserCommand> {
@@ -18,7 +19,7 @@ export class UpdateUserHandler implements ICommandHandler<UpdateUserCommand> {
 
     // Check if the email is in use by other user
     const user = await this.unitOfWork.userRepository.getOne(id);
-    if (!user) throw new Error('User not found.');
+    if (!user) throw new NotFoundException('User not found.');
 
     // Generate the properties of the new User
     const firstName = FirstName.create(command.firstName);
