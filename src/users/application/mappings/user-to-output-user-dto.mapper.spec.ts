@@ -374,13 +374,13 @@ describe('users', () => {
             expect(dto.updatedAt).toBe(user.updatedAt.getMilliseconds);
             if (user.biography)
               expect(dto.biography).toBe(user.biography.getBiography);
-            else expect(dto.biography).toBeUndefined();
+            else expect(dto.biography).toBeNull();
             if (user.profilePicture)
               expect(dto.profilePicture).toBe(user.profilePicture.getUrl);
-            else expect(dto.profilePicture).toBeUndefined();
+            else expect(dto.profilePicture).toBeNull();
             if (user.deletedAt)
               expect(dto.deletedAt).toBe(user.deletedAt.getMilliseconds);
-            else expect(dto.deletedAt).toBeUndefined();
+            else expect(dto.deletedAt).toBeNull();
           },
         );
       });
