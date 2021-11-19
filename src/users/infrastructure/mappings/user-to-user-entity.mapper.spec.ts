@@ -142,10 +142,10 @@ const validValues = [
       id: {
         getId: 'id-3',
       },
-      userName: {
+      email: {
         getEmail: 'email3@email.com',
       },
-      email: {
+      userName: {
         getUserName: 'UserName3',
       },
       passwordHash: {

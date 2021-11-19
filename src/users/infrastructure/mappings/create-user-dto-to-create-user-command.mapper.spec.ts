@@ -45,8 +45,8 @@ const validValues = [
   [
     mocked<CreateUserDto>({
       id: 'id-3',
-      userName: 'email3@email.com',
-      email: 'UserName3',
+      email: 'email3@email.com',
+      userName: 'UserName3',
       password: 'hash3',
       firstName: 'FirstName3',
       lastName: 'LastName3',
