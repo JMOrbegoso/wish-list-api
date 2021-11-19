@@ -33,11 +33,13 @@ export class UpdateUserHandler implements ICommandHandler<UpdateUserCommand> {
       : null;
 
     // Update user properties
-    user.firstName = firstName;
-    user.lastName = lastName;
-    user.birthday = birthday;
-    user.biography = biography;
-    user.profilePicture = profilePicture;
+    user.updateProfile(
+      firstName,
+      lastName,
+      birthday,
+      biography,
+      profilePicture,
+    );
 
     // Add the new user to the users repository
     this.unitOfWork.userRepository.update(user);

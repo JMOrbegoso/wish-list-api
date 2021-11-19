@@ -21,7 +21,7 @@ export class UndeleteUserHandler
     if (!user.isDeleted) throw new BadRequestException('User is not deleted.');
 
     // Update the user properties
-    user.deletedAt = null;
+    user.undelete();
 
     // Add the updated user to the users repository
     this.unitOfWork.userRepository.update(user);

@@ -569,7 +569,55 @@ describe('users', () => {
         );
 
         test.each(validValues)(
-          'update a property with the same value should make no changes',
+          'update password of User should change the property value',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            email: MockedObject<Email>,
+            userName: MockedObject<UserName>,
+            passwordHash: MockedObject<PasswordHash>,
+            isVerified: MockedObject<IsVerified>,
+            isBlocked: MockedObject<IsBlocked>,
+            firstName: MockedObject<FirstName>,
+            lastName: MockedObject<LastName>,
+            birthday: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            biography: MockedObject<Biography>,
+            profilePicture: MockedObject<WebUrl>,
+            deletedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+            const user = User.create(
+              uniqueId,
+              email,
+              userName,
+              passwordHash,
+              isVerified,
+              isBlocked,
+              firstName,
+              lastName,
+              birthday,
+              createdAt,
+              updatedAt,
+              biography,
+              profilePicture,
+              deletedAt,
+            );
+            const newPasswordHashText = 'newHash';
+            const newPasswordHash = mocked<PasswordHash>({
+              getPasswordHash: newPasswordHashText,
+            } as unknown as PasswordHash);
+
+            // Act
+            user.updatePasswordHash(newPasswordHash);
+
+            // Assert
+            expect(user.passwordHash.getPasswordHash).toBe(newPasswordHashText);
+          },
+        );
+
+        test.each(validValues)(
+          'verify User should change the property value',
           (
             uniqueId: MockedObject<UniqueId>,
             email: MockedObject<Email>,
@@ -605,169 +653,172 @@ describe('users', () => {
             );
 
             // Act
-            user.email = email;
-            user.userName = userName;
-            user.passwordHash = passwordHash;
-            user.isVerified = isVerified;
-            user.isBlocked = isBlocked;
-            user.firstName = firstName;
-            user.lastName = lastName;
-            user.birthday = birthday;
-            user.biography = biography;
-            user.profilePicture = profilePicture;
-            user.deletedAt = deletedAt;
+            user.verify();
 
             // Assert
-            expect(user.id.getId).toBe(uniqueId.getId);
-            expect(user.email.getEmail).toBe(email.getEmail);
-            expect(user.userName.getUserName).toBe(userName.getUserName);
-            expect(user.passwordHash.getPasswordHash).toBe(
-              passwordHash.getPasswordHash,
-            );
-            expect(user.isVerified.getStatus).toBe(isVerified.getStatus);
-            expect(user.isBlocked.getStatus).toBe(isBlocked.getStatus);
-            expect(user.firstName.getFirstName).toBe(firstName.getFirstName);
-            expect(user.lastName.getLastName).toBe(lastName.getLastName);
-            expect(user.birthday.getMilliseconds).toBe(
-              birthday.getMilliseconds,
-            );
-            expect(user.createdAt.getMilliseconds).toBe(
-              createdAt.getMilliseconds,
-            );
-            expect(user.updatedAt.getMilliseconds).toBe(
-              updatedAt.getMilliseconds,
-            );
-            if (user.biography)
-              expect(user.biography.getBiography).toBe(biography.getBiography);
-            else expect(user.biography).toBeNull();
-            if (user.profilePicture)
-              expect(user.profilePicture.getUrl).toBe(profilePicture.getUrl);
-            else expect(user.profilePicture).toBeNull();
-            if (user.deletedAt)
-              expect(user.deletedAt.getMilliseconds).toBe(
-                deletedAt.getMilliseconds,
-              );
-            else expect(user.deletedAt).toBeNull();
+            expect(user.isVerified.getStatus).toBe(true);
           },
         );
 
         test.each(validValues)(
-          'update a property with a different value should make changes and update updatedAt property',
+          'block User should change the property value',
           (
             uniqueId: MockedObject<UniqueId>,
-            newEmail: MockedObject<Email>,
-            newUserName: MockedObject<UserName>,
-            newPasswordHash: MockedObject<PasswordHash>,
-            newIsVerified: MockedObject<IsVerified>,
-            newIsBlocked: MockedObject<IsBlocked>,
-            newFirstName: MockedObject<FirstName>,
-            newLastName: MockedObject<LastName>,
-            newBirthday: MockedObject<MillisecondsDate>,
+            email: MockedObject<Email>,
+            userName: MockedObject<UserName>,
+            passwordHash: MockedObject<PasswordHash>,
+            isVerified: MockedObject<IsVerified>,
+            isBlocked: MockedObject<IsBlocked>,
+            firstName: MockedObject<FirstName>,
+            lastName: MockedObject<LastName>,
+            birthday: MockedObject<MillisecondsDate>,
             createdAt: MockedObject<MillisecondsDate>,
             updatedAt: MockedObject<MillisecondsDate>,
-            newBiography: MockedObject<Biography>,
-            newProfilePicture: MockedObject<WebUrl>,
-            newDeletedAt: MockedObject<MillisecondsDate>,
+            biography: MockedObject<Biography>,
+            profilePicture: MockedObject<WebUrl>,
+            deletedAt: MockedObject<MillisecondsDate>,
           ) => {
             // Arrange
-            const oldEmail = mocked<Email>({
-              getEmail: 'Old email',
-              equals: jest.fn().mockReturnValue(false),
-            } as unknown as Email);
-            const oldUserName = mocked<UserName>({
-              getUserName: 'Old UserName',
-              equals: jest.fn().mockReturnValue(false),
-            } as unknown as UserName);
-            const oldPasswordHash = mocked<PasswordHash>({
-              getPasswordHash: 'Old hash',
-              equals: jest.fn().mockReturnValue(false),
-            } as unknown as PasswordHash);
-            const oldIsVerified = mocked<IsVerified>({
-              getStatus: false,
-              equals: jest.fn().mockReturnValue(false),
-            } as unknown as IsVerified);
-            const oldIsBlocked = mocked<IsBlocked>({
-              getStatus: true,
-              equals: jest.fn().mockReturnValue(false),
-            } as unknown as IsBlocked);
-            const oldFirstName = mocked<FirstName>({
-              getFirstName: 'Old FirstName',
-              equals: jest.fn().mockReturnValue(false),
-            } as unknown as FirstName);
-            const oldLastName = mocked<LastName>({
-              getLastName: 'Old LastName',
-              equals: jest.fn().mockReturnValue(false),
-            } as unknown as LastName);
-            const oldBirthday = mocked<MillisecondsDate>({
-              getMilliseconds: 1,
-              equals: jest.fn().mockReturnValue(false),
-            } as unknown as MillisecondsDate);
-            const oldCreatedAt = mocked<MillisecondsDate>({
-              getMilliseconds: 2,
-              equals: jest.fn().mockReturnValue(false),
-            } as unknown as MillisecondsDate);
-            const oldBiography = mocked<Biography>({
-              getBiography: 'Old biography.',
-              equals: jest.fn().mockReturnValue(false),
-            } as unknown as Biography);
-            const oldProfilePicture = mocked<WebUrl>({
-              getUrl: 'https://www.example.com/Old.jpg',
-              equals: jest.fn().mockReturnValue(false),
-            } as unknown as WebUrl);
-            const oldDeletedAt = mocked<MillisecondsDate>({
-              getMilliseconds: 4,
-              equals: jest.fn().mockReturnValue(false),
-            } as unknown as MillisecondsDate);
-
             const user = User.create(
               uniqueId,
-              oldEmail,
-              oldUserName,
-              oldPasswordHash,
-              oldIsVerified,
-              oldIsBlocked,
-              oldFirstName,
-              oldLastName,
-              oldBirthday,
-              oldCreatedAt,
+              email,
+              userName,
+              passwordHash,
+              isVerified,
+              isBlocked,
+              firstName,
+              lastName,
+              birthday,
+              createdAt,
               updatedAt,
-              oldBiography,
-              oldProfilePicture,
-              oldDeletedAt,
+              biography,
+              profilePicture,
+              deletedAt,
             );
 
             // Act
-            user.email = newEmail;
-            user.userName = newUserName;
-            user.passwordHash = newPasswordHash;
-            user.isVerified = newIsVerified;
-            user.isBlocked = newIsBlocked;
-            user.firstName = newFirstName;
-            user.lastName = newLastName;
-            user.birthday = newBirthday;
-            user.biography = newBiography;
-            user.profilePicture = newProfilePicture;
-            user.deletedAt = newDeletedAt;
+            user.block();
 
             // Assert
-            expect(user.id.getId).toBe(uniqueId.getId);
-            expect(user.email.getEmail).toBe(newEmail.getEmail);
-            expect(user.userName.getUserName).toBe(newUserName.getUserName);
-            expect(user.passwordHash.getPasswordHash).toBe(
-              newPasswordHash.getPasswordHash,
+            expect(user.isBlocked.getStatus).toBe(true);
+          },
+        );
+
+        test.each(validValues)(
+          'unblock User should change the property value',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            email: MockedObject<Email>,
+            userName: MockedObject<UserName>,
+            passwordHash: MockedObject<PasswordHash>,
+            isVerified: MockedObject<IsVerified>,
+            isBlocked: MockedObject<IsBlocked>,
+            firstName: MockedObject<FirstName>,
+            lastName: MockedObject<LastName>,
+            birthday: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            biography: MockedObject<Biography>,
+            profilePicture: MockedObject<WebUrl>,
+            deletedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+            const user = User.create(
+              uniqueId,
+              email,
+              userName,
+              passwordHash,
+              isVerified,
+              isBlocked,
+              firstName,
+              lastName,
+              birthday,
+              createdAt,
+              updatedAt,
+              biography,
+              profilePicture,
+              deletedAt,
             );
-            expect(user.isVerified.getStatus).toBe(newIsVerified.getStatus);
-            expect(user.isBlocked.getStatus).toBe(newIsBlocked.getStatus);
+
+            // Act
+            user.unblock();
+
+            // Assert
+            expect(user.isBlocked.getStatus).toBe(false);
+          },
+        );
+
+        test.each(validValues)(
+          'update User profile should change the property values',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            email: MockedObject<Email>,
+            userName: MockedObject<UserName>,
+            passwordHash: MockedObject<PasswordHash>,
+            isVerified: MockedObject<IsVerified>,
+            isBlocked: MockedObject<IsBlocked>,
+            firstName: MockedObject<FirstName>,
+            lastName: MockedObject<LastName>,
+            birthday: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            biography: MockedObject<Biography>,
+            profilePicture: MockedObject<WebUrl>,
+            deletedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+            const user = User.create(
+              uniqueId,
+              email,
+              userName,
+              passwordHash,
+              isVerified,
+              isBlocked,
+              firstName,
+              lastName,
+              birthday,
+              createdAt,
+              updatedAt,
+              biography,
+              profilePicture,
+              deletedAt,
+            );
+
+            const newFirstNameText = 'new FirstName';
+            const newFirstName = mocked<FirstName>({
+              getFirstName: newFirstNameText,
+            } as unknown as FirstName);
+            const newLastNameText = 'new LastName';
+            const newLastName = mocked<LastName>({
+              getLastName: newLastNameText,
+            } as unknown as LastName);
+            const newBirthdayMillisecondsDate = new Date(2005, 1, 1).getTime();
+            const newBirthday = mocked<MillisecondsDate>({
+              getMilliseconds: newBirthdayMillisecondsDate,
+            } as unknown as MillisecondsDate);
+            const newBiographyText = 'new Biography';
+            const newBiography = mocked<Biography>({
+              getBiography: newBiographyText,
+            } as unknown as Biography);
+            const newProfilePictureText = 'https://www.example.com/new.jpg';
+            const newProfilePicture = mocked<WebUrl>({
+              getUrl: newProfilePictureText,
+            } as unknown as WebUrl);
+
+            // Act
+            user.updateProfile(
+              newFirstName,
+              newLastName,
+              newBirthday,
+              newBiography,
+              newProfilePicture,
+            );
+
+            // Assert
             expect(user.firstName.getFirstName).toBe(newFirstName.getFirstName);
             expect(user.lastName.getLastName).toBe(newLastName.getLastName);
             expect(user.birthday.getMilliseconds).toBe(
               newBirthday.getMilliseconds,
-            );
-            expect(user.createdAt.getMilliseconds).toBe(
-              createdAt.getMilliseconds,
-            );
-            expect(user.updatedAt.getMilliseconds).not.toBe(
-              updatedAt.getMilliseconds,
             );
             if (newBiography)
               expect(user.biography.getBiography).toBe(
@@ -777,11 +828,165 @@ describe('users', () => {
             if (newProfilePicture)
               expect(user.profilePicture.getUrl).toBe(newProfilePicture.getUrl);
             else expect(user.profilePicture).toBeNull();
-            if (newDeletedAt)
-              expect(user.deletedAt.getMilliseconds).toBe(
-                newDeletedAt.getMilliseconds,
-              );
-            else expect(user.deletedAt).toBeNull();
+          },
+        );
+
+        test.each(validValues)(
+          'update User profile (with nulls) should change the property values',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            email: MockedObject<Email>,
+            userName: MockedObject<UserName>,
+            passwordHash: MockedObject<PasswordHash>,
+            isVerified: MockedObject<IsVerified>,
+            isBlocked: MockedObject<IsBlocked>,
+            firstName: MockedObject<FirstName>,
+            lastName: MockedObject<LastName>,
+            birthday: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            biography: MockedObject<Biography>,
+            profilePicture: MockedObject<WebUrl>,
+            deletedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+            const user = User.create(
+              uniqueId,
+              email,
+              userName,
+              passwordHash,
+              isVerified,
+              isBlocked,
+              firstName,
+              lastName,
+              birthday,
+              createdAt,
+              updatedAt,
+              biography,
+              profilePicture,
+              deletedAt,
+            );
+
+            const newFirstNameText = 'new FirstName';
+            const newFirstName = mocked<FirstName>({
+              getFirstName: newFirstNameText,
+            } as unknown as FirstName);
+            const newLastNameText = 'new LastName';
+            const newLastName = mocked<LastName>({
+              getLastName: newLastNameText,
+            } as unknown as LastName);
+            const newBirthdayMillisecondsDate = new Date(2005, 1, 1).getTime();
+            const newBirthday = mocked<MillisecondsDate>({
+              getMilliseconds: newBirthdayMillisecondsDate,
+            } as unknown as MillisecondsDate);
+
+            // Act
+            user.updateProfile(
+              newFirstName,
+              newLastName,
+              newBirthday,
+              null,
+              null,
+            );
+
+            // Assert
+            expect(user.firstName.getFirstName).toBe(newFirstName.getFirstName);
+            expect(user.lastName.getLastName).toBe(newLastName.getLastName);
+            expect(user.birthday.getMilliseconds).toBe(
+              newBirthday.getMilliseconds,
+            );
+            expect(user.biography).toBeNull();
+            expect(user.profilePicture).toBeNull();
+          },
+        );
+
+        test.each(validValues)(
+          'delete User should change the property value',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            email: MockedObject<Email>,
+            userName: MockedObject<UserName>,
+            passwordHash: MockedObject<PasswordHash>,
+            isVerified: MockedObject<IsVerified>,
+            isBlocked: MockedObject<IsBlocked>,
+            firstName: MockedObject<FirstName>,
+            lastName: MockedObject<LastName>,
+            birthday: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            biography: MockedObject<Biography>,
+            profilePicture: MockedObject<WebUrl>,
+            deletedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+            const user = User.create(
+              uniqueId,
+              email,
+              userName,
+              passwordHash,
+              isVerified,
+              isBlocked,
+              firstName,
+              lastName,
+              birthday,
+              createdAt,
+              updatedAt,
+              biography,
+              profilePicture,
+              deletedAt,
+            );
+
+            // Act
+            user.delete();
+
+            // Assert
+            expect(user.deletedAt).not.toBeNull();
+            expect(user.isDeleted).toBe(true);
+          },
+        );
+
+        test.each(validValues)(
+          'undelete User should change the property value',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            email: MockedObject<Email>,
+            userName: MockedObject<UserName>,
+            passwordHash: MockedObject<PasswordHash>,
+            isVerified: MockedObject<IsVerified>,
+            isBlocked: MockedObject<IsBlocked>,
+            firstName: MockedObject<FirstName>,
+            lastName: MockedObject<LastName>,
+            birthday: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            biography: MockedObject<Biography>,
+            profilePicture: MockedObject<WebUrl>,
+            deletedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+            const user = User.create(
+              uniqueId,
+              email,
+              userName,
+              passwordHash,
+              isVerified,
+              isBlocked,
+              firstName,
+              lastName,
+              birthday,
+              createdAt,
+              updatedAt,
+              biography,
+              profilePicture,
+              deletedAt,
+            );
+
+            // Act
+            user.undelete();
+
+            // Assert
+            expect(user.deletedAt).toBeNull();
+            expect(user.isDeleted).toBe(false);
           },
         );
       });

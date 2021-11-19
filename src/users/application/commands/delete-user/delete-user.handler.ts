@@ -1,10 +1,7 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { UnitOfWork } from '../../../../core/domain/repositories';
-import {
-  UniqueId,
-  MillisecondsDate,
-} from '../../../../core/domain/value-objects';
+import { UniqueId } from '../../../../core/domain/value-objects';
 import { DeleteUserCommand } from '..';
 
 @CommandHandler(DeleteUserCommand)
@@ -23,7 +20,7 @@ export class DeleteUserHandler implements ICommandHandler<DeleteUserCommand> {
       throw new BadRequestException('User is already deleted.');
 
     // Update the user properties
-    user.deletedAt = MillisecondsDate.create();
+    user.delete();
 
     // Add the updated user to the users repository
     this.unitOfWork.userRepository.update(user);
