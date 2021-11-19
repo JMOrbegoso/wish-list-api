@@ -17,9 +17,9 @@ export function userToUserEntity(user: User): UserEntity {
   userEntity.birthday = user.birthday.getDate;
   userEntity.createdAt = user.createdAt.getDate;
   userEntity.updatedAt = user.updatedAt.getDate;
-  userEntity.biography = user.biography?.getBiography;
-  userEntity.profilePicture = user.profilePicture?.getUrl;
-  userEntity.deletedAt = user.deletedAt?.getDate;
+  userEntity.biography = user.biography?.getBiography ?? null;
+  userEntity.profilePicture = user.profilePicture?.getUrl ?? null;
+  userEntity.deletedAt = user.deletedAt?.getDate ?? null;
 
   return userEntity;
 }
