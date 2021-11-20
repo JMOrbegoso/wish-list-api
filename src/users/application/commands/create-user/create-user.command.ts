@@ -7,7 +7,7 @@ export class CreateUserCommand {
     public readonly firstName: string,
     public readonly lastName: string,
     public readonly birthday: number,
-    public readonly biography?: string,
+    public readonly biography: string,
     public readonly profilePicture?: string,
   ) {}
 }

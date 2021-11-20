@@ -59,8 +59,8 @@ export class UserEntity {
   @Property()
   updatedAt: Date;
 
-  @Property({ nullable: true })
-  biography?: string;
+  @Property()
+  biography: string;
 
   @Property({ nullable: true })
   profilePicture?: string;

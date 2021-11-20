@@ -121,7 +121,10 @@ const validValues = [
       getMilliseconds: 3,
       equals: jest.fn().mockReturnValue(true),
     } as unknown as MillisecondsDate),
-    null,
+    mocked<Biography>({
+      getBiography: 'A nice person 1.',
+      equals: jest.fn().mockReturnValue(true),
+    } as unknown as Biography),
     mocked<WebUrl>({
       getUrl: 'https://www.example.com/1.jpg',
       equals: jest.fn().mockReturnValue(true),
@@ -286,7 +289,10 @@ const validValues = [
       getMilliseconds: 3,
       equals: jest.fn().mockReturnValue(true),
     } as unknown as MillisecondsDate),
-    null,
+    mocked<Biography>({
+      getBiography: 'A nice person 4.',
+      equals: jest.fn().mockReturnValue(true),
+    } as unknown as Biography),
     null,
     mocked<MillisecondsDate>({
       getMilliseconds: 4,
@@ -338,7 +344,10 @@ const validValues = [
       getMilliseconds: 3,
       equals: jest.fn().mockReturnValue(true),
     } as unknown as MillisecondsDate),
-    null,
+    mocked<Biography>({
+      getBiography: 'A nice person 5.',
+      equals: jest.fn().mockReturnValue(true),
+    } as unknown as Biography),
     mocked<WebUrl>({
       getUrl: 'https://www.example.com/5.jpg',
       equals: jest.fn().mockReturnValue(true),
@@ -442,7 +451,10 @@ const validValues = [
       getMilliseconds: 3,
       equals: jest.fn().mockReturnValue(true),
     } as unknown as MillisecondsDate),
-    null,
+    mocked<Biography>({
+      getBiography: 'A nice person 7.',
+      equals: jest.fn().mockReturnValue(true),
+    } as unknown as Biography),
     null,
     null,
   ],
@@ -510,9 +522,7 @@ describe('users', () => {
             expect(user.updatedAt.getMilliseconds).toBe(
               updatedAt.getMilliseconds,
             );
-            if (biography)
-              expect(user.biography.getBiography).toBe(biography.getBiography);
-            else expect(user.biography).toBeNull();
+            expect(user.biography.getBiography).toBe(biography.getBiography);
             if (profilePicture)
               expect(user.profilePicture.getUrl).toBe(profilePicture.getUrl);
             else expect(user.profilePicture).toBeNull();
@@ -820,11 +830,7 @@ describe('users', () => {
             expect(user.birthday.getMilliseconds).toBe(
               newBirthday.getMilliseconds,
             );
-            if (newBiography)
-              expect(user.biography.getBiography).toBe(
-                newBiography.getBiography,
-              );
-            else expect(user.biography).toBeNull();
+            expect(user.biography.getBiography).toBe(newBiography.getBiography);
             if (newProfilePicture)
               expect(user.profilePicture.getUrl).toBe(newProfilePicture.getUrl);
             else expect(user.profilePicture).toBeNull();
@@ -879,13 +885,17 @@ describe('users', () => {
             const newBirthday = mocked<MillisecondsDate>({
               getMilliseconds: newBirthdayMillisecondsDate,
             } as unknown as MillisecondsDate);
+            const newBiographyText = 'new Biography';
+            const newBiography = mocked<Biography>({
+              getBiography: newBiographyText,
+            } as unknown as Biography);
 
             // Act
             user.updateProfile(
               newFirstName,
               newLastName,
               newBirthday,
-              null,
+              newBiography,
               null,
             );
 
@@ -895,7 +905,7 @@ describe('users', () => {
             expect(user.birthday.getMilliseconds).toBe(
               newBirthday.getMilliseconds,
             );
-            expect(user.biography).toBeNull();
+            expect(user.biography.getBiography).toBe(newBiography.getBiography);
             expect(user.profilePicture).toBeNull();
           },
         );

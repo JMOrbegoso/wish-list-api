@@ -84,7 +84,9 @@ const validValues = [
       updatedAt: {
         getDate: new Date(2000, 5, 5),
       },
-      biography: null,
+      biography: {
+        getBiography: 'A nice person 1.',
+      },
       profilePicture: {
         getUrl: 'https://www.example.com/1.jpg',
       },
@@ -216,7 +218,9 @@ const validValues = [
       updatedAt: {
         getDate: new Date(2000, 5, 5),
       },
-      biography: null,
+      biography: {
+        getBiography: 'A nice person 4.',
+      },
       profilePicture: null,
       deletedAt: {
         getDate: new Date(2001, 5, 5),
@@ -258,7 +262,9 @@ const validValues = [
       updatedAt: {
         getDate: new Date(2000, 5, 5),
       },
-      biography: null,
+      biography: {
+        getBiography: 'A nice person 5.',
+      },
       profilePicture: {
         getUrl: 'https://www.example.com/5.jpg',
       },
@@ -342,7 +348,9 @@ const validValues = [
       updatedAt: {
         getDate: new Date(2000, 5, 5),
       },
-      biography: null,
+      biography: {
+        getBiography: 'A nice person 7.',
+      },
       profilePicture: null,
       deletedAt: null,
     } as unknown as User),
@@ -381,9 +389,7 @@ describe('users', () => {
             expect(userEntity.birthday).toBe(user.birthday.getDate);
             expect(userEntity.createdAt).toBe(user.createdAt.getDate);
             expect(userEntity.updatedAt).toBe(user.updatedAt.getDate);
-            if (user.biography)
-              expect(userEntity.biography).toBe(user.biography.getBiography);
-            else expect(userEntity.biography).toBeNull();
+            expect(userEntity.biography).toBe(user.biography.getBiography);
             if (user.profilePicture)
               expect(userEntity.profilePicture).toBe(
                 user.profilePicture.getUrl,

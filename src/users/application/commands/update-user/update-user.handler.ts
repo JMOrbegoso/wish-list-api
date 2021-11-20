@@ -25,9 +25,7 @@ export class UpdateUserHandler implements ICommandHandler<UpdateUserCommand> {
     const firstName = FirstName.create(command.firstName);
     const lastName = LastName.create(command.lastName);
     const birthday = MillisecondsDate.createFromMilliseconds(command.birthday);
-    const biography = command.biography
-      ? Biography.create(command.biography)
-      : null;
+    const biography = Biography.create(command.biography);
     const profilePicture = command.profilePicture
       ? WebUrl.create(command.profilePicture)
       : null;

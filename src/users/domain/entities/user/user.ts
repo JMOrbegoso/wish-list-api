@@ -26,7 +26,7 @@ export class User extends AggregateRoot {
   private _birthday: MillisecondsDate;
   private _createdAt: MillisecondsDate;
   private _updatedAt: MillisecondsDate;
-  private _biography?: Biography;
+  private _biography: Biography;
   private _profilePicture?: WebUrl;
   private _deletedAt?: MillisecondsDate;
 
@@ -75,7 +75,7 @@ export class User extends AggregateRoot {
     birthday: MillisecondsDate,
     createdAt: MillisecondsDate,
     updatedAt: MillisecondsDate,
-    biography: Biography = null,
+    biography: Biography,
     profilePicture: WebUrl = null,
     deletedAt: MillisecondsDate = null,
   ): User {
@@ -176,13 +176,13 @@ export class User extends AggregateRoot {
     firstName: FirstName,
     lastName: LastName,
     birthday: MillisecondsDate,
-    biography?: Biography,
+    biography: Biography,
     profilePicture?: WebUrl,
   ): void {
     this._firstName = firstName;
     this._lastName = lastName;
     this._birthday = birthday;
-    this._biography = biography ?? null;
+    this._biography = biography;
     this._profilePicture = profilePicture ?? null;
 
     this._updatedAt = MillisecondsDate.create();

@@ -105,12 +105,12 @@ export class CreateUserDto {
 
   @ApiProperty({
     type: String,
-    required: false,
+    required: true,
     description: 'User biography.',
     example: 'A nice person.',
   })
-  @IsOptional()
   @IsString()
+  @IsNotEmpty()
   @MaxLength(Biography.MaxLength)
   biography: string;
 

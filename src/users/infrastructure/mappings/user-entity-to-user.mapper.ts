@@ -28,9 +28,7 @@ export function userEntityToUser(userEntity: UserEntity): User {
   const birthday = MillisecondsDate.createFromDate(userEntity.birthday);
   const createdAt = MillisecondsDate.createFromDate(userEntity.createdAt);
   const updatedAt = MillisecondsDate.createFromDate(userEntity.updatedAt);
-  const biography = userEntity.biography
-    ? Biography.create(userEntity.biography)
-    : null;
+  const biography = Biography.create(userEntity.biography);
   const profilePicture = userEntity.profilePicture
     ? WebUrl.create(userEntity.profilePicture)
     : null;

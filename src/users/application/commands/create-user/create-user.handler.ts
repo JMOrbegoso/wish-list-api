@@ -59,9 +59,7 @@ export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
     const lastName = LastName.create(command.lastName);
     const birthday = MillisecondsDate.createFromMilliseconds(command.birthday);
     const createdAt = MillisecondsDate.create();
-    const biography = command.biography
-      ? Biography.create(command.biography)
-      : null;
+    const biography = Biography.create(command.biography);
     const profilePicture = command.profilePicture
       ? WebUrl.create(command.profilePicture)
       : null;

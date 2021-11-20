@@ -84,7 +84,9 @@ const validValues = [
       updatedAt: {
         getMilliseconds: 3,
       },
-      biography: null,
+      biography: {
+        getBiography: 'A nice person 1.',
+      },
       profilePicture: {
         getUrl: 'https://www.example.com/1.jpg',
       },
@@ -216,7 +218,9 @@ const validValues = [
       updatedAt: {
         getMilliseconds: 3,
       },
-      biography: null,
+      biography: {
+        getBiography: 'A nice person 4.',
+      },
       profilePicture: null,
       deletedAt: {
         getMilliseconds: 4,
@@ -258,7 +262,9 @@ const validValues = [
       updatedAt: {
         getMilliseconds: 3,
       },
-      biography: null,
+      biography: {
+        getBiography: 'A nice person 5.',
+      },
       profilePicture: {
         getUrl: 'https://www.example.com/5.jpg',
       },
@@ -342,7 +348,9 @@ const validValues = [
       updatedAt: {
         getMilliseconds: 3,
       },
-      biography: null,
+      biography: {
+        getBiography: 'A nice person 7.',
+      },
       profilePicture: null,
       deletedAt: null,
     } as unknown as User),
@@ -372,9 +380,7 @@ describe('users', () => {
             expect(dto.birthday).toBe(user.birthday.getMilliseconds);
             expect(dto.createdAt).toBe(user.createdAt.getMilliseconds);
             expect(dto.updatedAt).toBe(user.updatedAt.getMilliseconds);
-            if (user.biography)
-              expect(dto.biography).toBe(user.biography.getBiography);
-            else expect(dto.biography).toBeNull();
+            expect(dto.biography).toBe(user.biography.getBiography);
             if (user.profilePicture)
               expect(dto.profilePicture).toBe(user.profilePicture.getUrl);
             else expect(dto.profilePicture).toBeNull();
