@@ -121,7 +121,7 @@ describe('users', () => {
             // Assert
             expect(command.id).toBe(dto.id);
             expect(command.email).toBe(dto.email);
-            expect(command.userName).toBe(dto.userName);
+            expect(command.username).toBe(dto.userName);
             expect(command.password).toBe(dto.password);
             expect(command.firstName).toBe(dto.firstName);
             expect(command.lastName).toBe(dto.lastName);

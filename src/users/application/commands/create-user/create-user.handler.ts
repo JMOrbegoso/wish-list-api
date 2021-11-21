@@ -31,7 +31,7 @@ export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
     // Generate the email and username properties of the new user first to validate them
     const id = UniqueId.create(command.id);
     const email = Email.create(command.email);
-    const username = Username.create(command.userName);
+    const username = Username.create(command.username);
 
     // Check if the id is in use by other user
     const userWithSameId = await this.unitOfWork.userRepository.getOne(id);
