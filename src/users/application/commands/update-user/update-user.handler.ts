@@ -14,14 +14,13 @@ export class UpdateUserHandler implements ICommandHandler<UpdateUserCommand> {
   constructor(private readonly unitOfWork: UnitOfWork) {}
 
   async execute(command: UpdateUserCommand): Promise<void> {
-    // Generate the email and username properties of the new user first to validate them
     const id = UniqueId.create(command.id);
 
-    // Check if the email is in use by other user
+    // Get user by id
     const user = await this.unitOfWork.userRepository.getOne(id);
     if (!user) throw new NotFoundException('User not found.');
 
-    // Generate the properties of the new User
+    // Generate the properties of the User
     const firstName = FirstName.create(command.firstName);
     const lastName = LastName.create(command.lastName);
     const birthday = MillisecondsDate.createFromMilliseconds(command.birthday);
