@@ -23,11 +23,13 @@ import {
   UserEmailDto,
   UserNameDto,
   UpdateUserProfileDto,
+  UpdateUserPasswordDto,
 } from '../dtos';
 import { OutputUserDto } from '../../../users/application/dtos';
 import {
   createUserDtoToCreateUserCommand,
   updateUserProfileDtoToUpdateUserProfileCommand,
+  updateUserPasswordDtoToUpdateUserPasswordCommand,
 } from '../mappings';
 import {
   GetUserByEmailQuery,
@@ -42,6 +44,7 @@ import {
   UnblockUserCommand,
   UndeleteUserCommand,
   UpdateUserProfileCommand,
+  UpdateUserPasswordCommand,
 } from '../../application/commands';
 
 @ApiTags('AccountsController')
@@ -107,6 +110,22 @@ export class AccountsController {
       throw new BadRequestException('Id are different.');
     const command: UpdateUserProfileCommand =
       updateUserProfileDtoToUpdateUserProfileCommand(dto);
+    await this.commandBus.execute(command);
+  }
+
+  @ApiBody({ required: true, type: UpdateUserPasswordDto })
+  @ApiOkResponse({ description: 'User updated successfully.' })
+  @ApiNotFoundResponse({ description: 'User not found.' })
+  @ApiBadRequestResponse({ description: 'Something went wrong.' })
+  @Patch('update-password/:id')
+  async updatePassword(
+    @Param() params: UserIdDto,
+    @Body() dto: UpdateUserPasswordDto,
+  ): Promise<void> {
+    if (params.id !== dto.id)
+      throw new BadRequestException('Id are different.');
+    const command: UpdateUserPasswordCommand =
+      updateUserPasswordDtoToUpdateUserPasswordCommand(dto);
     await this.commandBus.execute(command);
   }
 
