@@ -25,7 +25,7 @@ import {
   UpdateUserProfileDto,
   UpdateUserPasswordDto,
 } from '../dtos';
-import { OutputUserDto } from '../../../users/application/dtos';
+import { OutputUserDto } from '../../application/dtos';
 import {
   createUserDtoToCreateUserCommand,
   updateUserProfileDtoToUpdateUserProfileCommand,
@@ -47,9 +47,9 @@ import {
   UpdateUserPasswordCommand,
 } from '../../application/commands';
 
-@ApiTags('AccountsController')
-@Controller('accounts')
-export class AccountsController {
+@ApiTags('UsersController')
+@Controller('users')
+export class UsersController {
   constructor(private commandBus: CommandBus, private queryBus: QueryBus) {}
 
   @ApiOkResponse({ type: [OutputUserDto], description: 'Users found.' })
