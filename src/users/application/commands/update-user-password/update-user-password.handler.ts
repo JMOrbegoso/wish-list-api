@@ -20,7 +20,7 @@ export class UpdateUserPasswordHandler
 
     // Get user by id
     const user = await this.unitOfWork.userRepository.getOne(id);
-    if (!user) throw new NotFoundException('User not found.');
+    if (!user) throw new NotFoundException();
 
     // Generate the new User password hash
     const hash = this.encryptionService.hashPassword(command.password);

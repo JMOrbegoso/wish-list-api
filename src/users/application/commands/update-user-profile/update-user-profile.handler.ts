@@ -20,7 +20,7 @@ export class UpdateUserProfileHandler
 
     // Get user by id
     const user = await this.unitOfWork.userRepository.getOne(id);
-    if (!user) throw new NotFoundException('User not found.');
+    if (!user) throw new NotFoundException();
 
     // Generate the properties of the User
     const firstName = FirstName.create(command.firstName);

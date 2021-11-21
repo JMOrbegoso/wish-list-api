@@ -13,7 +13,7 @@ export class DeleteUserHandler implements ICommandHandler<DeleteUserCommand> {
 
     // Get user by id
     const user = await this.unitOfWork.userRepository.getOne(id);
-    if (!user) throw new NotFoundException('User not found.');
+    if (!user) throw new NotFoundException();
 
     // Check if the user is already deleted
     if (user.isDeleted)
