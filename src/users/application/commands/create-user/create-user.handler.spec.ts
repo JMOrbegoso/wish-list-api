@@ -31,7 +31,7 @@ describe('users', () => {
           const command = mocked<CreateUserCommand>({
             id: 'id-0',
             email: 'email0@email.com',
-            userName: 'UserName0',
+            userName: 'John_Doe_0',
           } as unknown as CreateUserCommand);
 
           const handler = new CreateUserHandler(unitOfWork, encryptionService);
@@ -66,7 +66,7 @@ describe('users', () => {
           const command = mocked<CreateUserCommand>({
             id: 'id-0',
             email: 'email0@email.com',
-            userName: 'UserName0',
+            userName: 'John_Doe_0',
           } as unknown as CreateUserCommand);
 
           const handler = new CreateUserHandler(unitOfWork, encryptionService);
@@ -102,7 +102,7 @@ describe('users', () => {
           const command = mocked<CreateUserCommand>({
             id: 'id-0',
             email: 'email0@email.com',
-            userName: 'UserName0',
+            userName: 'John_Doe_0',
           } as unknown as CreateUserCommand);
 
           const handler = new CreateUserHandler(unitOfWork, encryptionService);
@@ -136,7 +136,7 @@ describe('users', () => {
           const command = mocked<CreateUserCommand>({
             id: 'id-0',
             email: 'email0@email.com',
-            userName: 'UserName0',
+            userName: 'John_Doe_0',
             password: 'password0',
             firstName: 'FirstName0',
             lastName: 'LastName0',

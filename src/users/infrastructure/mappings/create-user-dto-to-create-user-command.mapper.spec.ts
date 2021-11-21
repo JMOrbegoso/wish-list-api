@@ -7,7 +7,7 @@ const validValues = [
     mocked<CreateUserDto>({
       id: 'id-0',
       email: 'email0@email.com',
-      userName: 'UserName0',
+      userName: 'John_Doe_0',
       password: 'password0',
       firstName: 'FirstName0',
       lastName: 'LastName0',
@@ -20,7 +20,7 @@ const validValues = [
     mocked<CreateUserDto>({
       id: 'id-1',
       email: 'email1@email.com',
-      userName: 'UserName1',
+      userName: 'John_Doe_1',
       password: 'hash1',
       firstName: 'FirstName1',
       lastName: 'LastName1',
@@ -33,7 +33,7 @@ const validValues = [
     mocked<CreateUserDto>({
       id: 'id-2',
       email: 'email2@email.com',
-      userName: 'UserName2',
+      userName: 'John_Doe_2',
       password: 'hash2',
       firstName: 'FirstName2',
       lastName: 'LastName2',
@@ -46,7 +46,7 @@ const validValues = [
     mocked<CreateUserDto>({
       id: 'id-3',
       email: 'email3@email.com',
-      userName: 'UserName3',
+      userName: 'John_Doe_3',
       password: 'hash3',
       firstName: 'FirstName3',
       lastName: 'LastName3',
@@ -58,7 +58,7 @@ const validValues = [
     mocked<CreateUserDto>({
       id: 'id-4',
       email: 'email4@email.com',
-      userName: 'UserName4',
+      userName: 'John_Doe_4',
       password: 'hash4',
       firstName: 'FirstName4',
       lastName: 'LastName4',
@@ -71,7 +71,7 @@ const validValues = [
     mocked<CreateUserDto>({
       id: 'id-5',
       email: 'email5@email.com',
-      userName: 'UserName5',
+      userName: 'John_Doe_5',
       password: 'hash5',
       firstName: 'FirstName5',
       lastName: 'LastName5',
@@ -84,7 +84,7 @@ const validValues = [
     mocked<CreateUserDto>({
       id: 'id-6',
       email: 'email6@email.com',
-      userName: 'UserName6',
+      userName: 'John_Doe_6',
       password: 'hash6',
       firstName: 'FirstName6',
       lastName: 'LastName6',
@@ -97,7 +97,7 @@ const validValues = [
     mocked<CreateUserDto>({
       id: 'id-7',
       email: 'email7@email.com',
-      userName: 'UserName7',
+      userName: 'John_Doe_7',
       password: 'hash7',
       firstName: 'FirstName7',
       lastName: 'LastName7',

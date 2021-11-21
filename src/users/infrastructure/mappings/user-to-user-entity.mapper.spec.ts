@@ -12,7 +12,7 @@ const validValues = [
         getEmail: 'email0@email.com',
       },
       userName: {
-        getUsername: 'UserName0',
+        getUsername: 'John_Doe_0',
       },
       passwordHash: {
         getPasswordHash: 'hash0',
@@ -58,7 +58,7 @@ const validValues = [
         getEmail: 'email1@email.com',
       },
       userName: {
-        getUsername: 'UserName1',
+        getUsername: 'John_Doe_1',
       },
       passwordHash: {
         getPasswordHash: 'hash1',
@@ -104,7 +104,7 @@ const validValues = [
         getEmail: 'email2@email.com',
       },
       userName: {
-        getUsername: 'UserName2',
+        getUsername: 'John_Doe_2',
       },
       passwordHash: {
         getPasswordHash: 'hash2',
@@ -148,7 +148,7 @@ const validValues = [
         getEmail: 'email3@email.com',
       },
       userName: {
-        getUsername: 'UserName3',
+        getUsername: 'John_Doe_3',
       },
       passwordHash: {
         getPasswordHash: 'hash3',
@@ -192,7 +192,7 @@ const validValues = [
         getEmail: 'email4@email.com',
       },
       userName: {
-        getUsername: 'UserName4',
+        getUsername: 'John_Doe_4',
       },
       passwordHash: {
         getPasswordHash: 'hash4',
@@ -236,7 +236,7 @@ const validValues = [
         getEmail: 'email5@email.com',
       },
       userName: {
-        getUsername: 'UserName5',
+        getUsername: 'John_Doe_5',
       },
       passwordHash: {
         getPasswordHash: 'hash5',
@@ -280,7 +280,7 @@ const validValues = [
         getEmail: 'email6@email.com',
       },
       userName: {
-        getUsername: 'UserName6',
+        getUsername: 'John_Doe_6',
       },
       passwordHash: {
         getPasswordHash: 'hash6',
@@ -322,7 +322,7 @@ const validValues = [
         getEmail: 'email7@email.com',
       },
       userName: {
-        getUsername: 'UserName7',
+        getUsername: 'John_Doe_7',
       },
       passwordHash: {
         getPasswordHash: 'hash7',

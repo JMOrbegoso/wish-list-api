@@ -28,7 +28,7 @@ const validValues = [
       equals: jest.fn().mockReturnValue(true),
     } as unknown as Email),
     mocked<Username>({
-      getUsername: 'UserName0',
+      getUsername: 'John_Doe_0',
       equals: jest.fn().mockReturnValue(true),
     } as unknown as Username),
     mocked<PasswordHash>({
@@ -86,7 +86,7 @@ const validValues = [
       equals: jest.fn().mockReturnValue(true),
     } as unknown as Email),
     mocked<Username>({
-      getUsername: 'UserName1',
+      getUsername: 'John_Doe_1',
       equals: jest.fn().mockReturnValue(true),
     } as unknown as Username),
     mocked<PasswordHash>({
@@ -144,7 +144,7 @@ const validValues = [
       equals: jest.fn().mockReturnValue(true),
     } as unknown as Email),
     mocked<Username>({
-      getUsername: 'UserName2',
+      getUsername: 'John_Doe_2',
       equals: jest.fn().mockReturnValue(true),
     } as unknown as Username),
     mocked<PasswordHash>({
@@ -199,7 +199,7 @@ const validValues = [
       equals: jest.fn().mockReturnValue(true),
     } as unknown as Email),
     mocked<Username>({
-      getUsername: 'UserName3',
+      getUsername: 'John_Doe_3',
       equals: jest.fn().mockReturnValue(true),
     } as unknown as Username),
     mocked<PasswordHash>({
@@ -254,7 +254,7 @@ const validValues = [
       equals: jest.fn().mockReturnValue(true),
     } as unknown as Email),
     mocked<Username>({
-      getUsername: 'UserName4',
+      getUsername: 'John_Doe_4',
       equals: jest.fn().mockReturnValue(true),
     } as unknown as Username),
     mocked<PasswordHash>({
@@ -309,7 +309,7 @@ const validValues = [
       equals: jest.fn().mockReturnValue(true),
     } as unknown as Email),
     mocked<Username>({
-      getUsername: 'UserName5',
+      getUsername: 'John_Doe_5',
       equals: jest.fn().mockReturnValue(true),
     } as unknown as Username),
     mocked<PasswordHash>({
@@ -364,7 +364,7 @@ const validValues = [
       equals: jest.fn().mockReturnValue(true),
     } as unknown as Email),
     mocked<Username>({
-      getUsername: 'UserName6',
+      getUsername: 'John_Doe_6',
       equals: jest.fn().mockReturnValue(true),
     } as unknown as Username),
     mocked<PasswordHash>({
@@ -416,7 +416,7 @@ const validValues = [
       equals: jest.fn().mockReturnValue(true),
     } as unknown as Email),
     mocked<Username>({
-      getUsername: 'UserName7',
+      getUsername: 'John_Doe_7',
       equals: jest.fn().mockReturnValue(true),
     } as unknown as Username),
     mocked<PasswordHash>({
