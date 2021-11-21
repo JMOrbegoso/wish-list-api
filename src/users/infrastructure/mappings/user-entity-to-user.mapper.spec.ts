@@ -181,8 +181,8 @@ describe('users', () => {
             expect(user.email.getNormalizedEmail).toBe(
               userEntity.normalizedEmail,
             );
-            expect(user.userName.getUsername).toBe(userEntity.userName);
-            expect(user.userName.getNormalizedUsername).toBe(
+            expect(user.username.getUsername).toBe(userEntity.userName);
+            expect(user.username.getNormalizedUsername).toBe(
               userEntity.normalizedUserName,
             );
             expect(user.passwordHash.getPasswordHash).toBe(

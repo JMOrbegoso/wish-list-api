@@ -505,7 +505,7 @@ describe('users', () => {
             // Assert
             expect(user.id.getId).toBe(uniqueId.getId);
             expect(user.email.getEmail).toBe(email.getEmail);
-            expect(user.userName.getUsername).toBe(username.getUsername);
+            expect(user.username.getUsername).toBe(username.getUsername);
             expect(user.passwordHash.getPasswordHash).toBe(
               passwordHash.getPasswordHash,
             );

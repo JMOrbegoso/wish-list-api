@@ -7,8 +7,8 @@ export function userToUserEntity(user: User): UserEntity {
   userEntity.id = user.id.getId;
   userEntity.email = user.email.getEmail;
   userEntity.normalizedEmail = user.email.getNormalizedEmail;
-  userEntity.userName = user.userName.getUsername;
-  userEntity.normalizedUserName = user.userName.getNormalizedUsername;
+  userEntity.userName = user.username.getUsername;
+  userEntity.normalizedUserName = user.username.getNormalizedUsername;
   userEntity.passwordHash = user.passwordHash.getPasswordHash;
   userEntity.isVerified = user.isVerified.getStatus;
   userEntity.isBlocked = user.isBlocked.getStatus;

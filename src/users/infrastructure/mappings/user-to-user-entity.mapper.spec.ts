@@ -11,7 +11,7 @@ const validValues = [
       email: {
         getEmail: 'email0@email.com',
       },
-      userName: {
+      username: {
         getUsername: 'John_Doe_0',
       },
       passwordHash: {
@@ -57,7 +57,7 @@ const validValues = [
       email: {
         getEmail: 'email1@email.com',
       },
-      userName: {
+      username: {
         getUsername: 'John_Doe_1',
       },
       passwordHash: {
@@ -103,7 +103,7 @@ const validValues = [
       email: {
         getEmail: 'email2@email.com',
       },
-      userName: {
+      username: {
         getUsername: 'John_Doe_2',
       },
       passwordHash: {
@@ -147,7 +147,7 @@ const validValues = [
       email: {
         getEmail: 'email3@email.com',
       },
-      userName: {
+      username: {
         getUsername: 'John_Doe_3',
       },
       passwordHash: {
@@ -191,7 +191,7 @@ const validValues = [
       email: {
         getEmail: 'email4@email.com',
       },
-      userName: {
+      username: {
         getUsername: 'John_Doe_4',
       },
       passwordHash: {
@@ -235,7 +235,7 @@ const validValues = [
       email: {
         getEmail: 'email5@email.com',
       },
-      userName: {
+      username: {
         getUsername: 'John_Doe_5',
       },
       passwordHash: {
@@ -279,7 +279,7 @@ const validValues = [
       email: {
         getEmail: 'email6@email.com',
       },
-      userName: {
+      username: {
         getUsername: 'John_Doe_6',
       },
       passwordHash: {
@@ -321,7 +321,7 @@ const validValues = [
       email: {
         getEmail: 'email7@email.com',
       },
-      userName: {
+      username: {
         getUsername: 'John_Doe_7',
       },
       passwordHash: {
@@ -375,9 +375,9 @@ describe('users', () => {
             expect(userEntity.normalizedEmail).toBe(
               user.email.getNormalizedEmail,
             );
-            expect(userEntity.userName).toBe(user.userName.getUsername);
+            expect(userEntity.userName).toBe(user.username.getUsername);
             expect(userEntity.normalizedUserName).toBe(
-              user.userName.getNormalizedUsername,
+              user.username.getNormalizedUsername,
             );
             expect(userEntity.passwordHash).toBe(
               user.passwordHash.getPasswordHash,

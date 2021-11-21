@@ -17,7 +17,7 @@ import {
 
 export class User extends AggregateRoot {
   private _email: Email;
-  private _userName: Username;
+  private _username: Username;
   private _passwordHash: PasswordHash;
   private _isVerified: IsVerified;
   private _isBlocked: IsBlocked;
@@ -49,7 +49,7 @@ export class User extends AggregateRoot {
     super(id);
 
     this._email = email;
-    this._userName = username;
+    this._username = username;
     this._passwordHash = passwordHash;
     this._isVerified = isVerified;
     this._isBlocked = isBlocked;
@@ -105,8 +105,8 @@ export class User extends AggregateRoot {
     return this._email;
   }
 
-  public get userName(): Username {
-    return this._userName;
+  public get username(): Username {
+    return this._username;
   }
 
   public get passwordHash(): PasswordHash {

@@ -11,7 +11,7 @@ const validValues = [
       email: {
         getEmail: 'email0@email.com',
       },
-      userName: {
+      username: {
         getUsername: 'John_Doe_0',
       },
       passwordHash: {
@@ -57,7 +57,7 @@ const validValues = [
       email: {
         getEmail: 'email1@email.com',
       },
-      userName: {
+      username: {
         getUsername: 'John_Doe_1',
       },
       passwordHash: {
@@ -103,7 +103,7 @@ const validValues = [
       email: {
         getEmail: 'email2@email.com',
       },
-      userName: {
+      username: {
         getUsername: 'John_Doe_2',
       },
       passwordHash: {
@@ -147,7 +147,7 @@ const validValues = [
       email: {
         getEmail: 'email3@email.com',
       },
-      userName: {
+      username: {
         getUsername: 'John_Doe_3',
       },
       passwordHash: {
@@ -191,7 +191,7 @@ const validValues = [
       email: {
         getEmail: 'email4@email.com',
       },
-      userName: {
+      username: {
         getUsername: 'John_Doe_4',
       },
       passwordHash: {
@@ -235,7 +235,7 @@ const validValues = [
       email: {
         getEmail: 'email5@email.com',
       },
-      userName: {
+      username: {
         getUsername: 'John_Doe_5',
       },
       passwordHash: {
@@ -279,7 +279,7 @@ const validValues = [
       email: {
         getEmail: 'email6@email.com',
       },
-      userName: {
+      username: {
         getUsername: 'John_Doe_6',
       },
       passwordHash: {
@@ -321,7 +321,7 @@ const validValues = [
       email: {
         getEmail: 'email7@email.com',
       },
-      userName: {
+      username: {
         getUsername: 'John_Doe_7',
       },
       passwordHash: {
@@ -372,7 +372,7 @@ describe('users', () => {
             // Assert
             expect(dto.id).toBe(user.id.getId);
             expect(dto.email).toBe(user.email.getEmail);
-            expect(dto.userName).toBe(user.userName.getUsername);
+            expect(dto.userName).toBe(user.username.getUsername);
             expect(dto.isVerified).toBe(user.isVerified.getStatus);
             expect(dto.isBlocked).toBe(user.isBlocked.getStatus);
             expect(dto.firstName).toBe(user.firstName.getFirstName);
