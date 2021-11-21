@@ -1,4 +1,4 @@
-export class UpdateUserCommand {
+export class UpdateUserProfileCommand {
   constructor(
     public readonly id: string,
     public readonly firstName: string,

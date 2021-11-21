@@ -23,7 +23,7 @@ import {
 import {
   BlockUserHandler,
   CreateUserHandler,
-  UpdateUserHandler,
+  UpdateUserProfileHandler,
   DeleteUserHandler,
   UnblockUserHandler,
   UndeleteUserHandler,
@@ -37,7 +37,7 @@ const queryHandlers = [
 ];
 const commandHandlers = [
   CreateUserHandler,
-  UpdateUserHandler,
+  UpdateUserProfileHandler,
   DeleteUserHandler,
   UndeleteUserHandler,
   BlockUserHandler,

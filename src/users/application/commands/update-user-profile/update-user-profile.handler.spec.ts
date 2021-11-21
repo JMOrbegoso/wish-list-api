@@ -1,14 +1,14 @@
 import { mocked } from 'ts-jest/utils';
 import { NotFoundException } from '@nestjs/common';
 import { UnitOfWork } from '../../../../core/domain/repositories';
-import { UserRepository } from '../../../../users/domain/repositories';
-import { User } from '../../../../users/domain/entities';
-import { UpdateUserHandler, UpdateUserCommand } from '..';
+import { UserRepository } from '../../../domain/repositories';
+import { User } from '../../../domain/entities';
+import { UpdateUserProfileHandler, UpdateUserProfileCommand } from '..';
 
 describe('users', () => {
   describe('application', () => {
     describe('commands', () => {
-      describe('update-user', () => {
+      describe('update-user-profile', () => {
         test('should throw NotFoundException', () => {
           // Arrange
           const unitOfWork = mocked<UnitOfWork>({
@@ -17,11 +17,11 @@ describe('users', () => {
             },
           } as unknown as UnitOfWork);
 
-          const command = mocked<UpdateUserCommand>({
+          const command = mocked<UpdateUserProfileCommand>({
             id: 'id-0',
-          } as unknown as UpdateUserCommand);
+          } as unknown as UpdateUserProfileCommand);
 
-          const handler = new UpdateUserHandler(unitOfWork);
+          const handler = new UpdateUserProfileHandler(unitOfWork);
 
           // Act
 
@@ -89,16 +89,16 @@ describe('users', () => {
             commitChanges: jest.fn(),
           } as unknown as UnitOfWork);
 
-          const command = mocked<UpdateUserCommand>({
+          const command = mocked<UpdateUserProfileCommand>({
             id: 'id-0',
             firstName: 'FirstName0',
             lastName: 'LastName0',
             birthday: 1,
             biography: 'A nice person 0.',
             profilePicture: 'https://www.example.com/0.jpg',
-          } as unknown as UpdateUserCommand);
+          } as unknown as UpdateUserProfileCommand);
 
-          const handler = new UpdateUserHandler(unitOfWork);
+          const handler = new UpdateUserProfileHandler(unitOfWork);
 
           // Act
           await handler.execute(command);

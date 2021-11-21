@@ -1,98 +1,98 @@
 import { mocked } from 'ts-jest/utils';
-import { updateUserDtoToUpdateUserCommand } from '.';
-import { UpdateUserDto } from '../dtos';
+import { updateUserProfileDtoToUpdateUserProfileCommand } from '.';
+import { UpdateUserProfileDto } from '../dtos';
 
 const validValues = [
   [
-    mocked<UpdateUserDto>({
+    mocked<UpdateUserProfileDto>({
       id: 'id-0',
       firstName: 'FirstName0',
       lastName: 'LastName0',
       birthday: 1,
       biography: 'A nice person 0.',
       profilePicture: 'https://www.example.com/0.jpg',
-    } as unknown as UpdateUserDto),
+    } as unknown as UpdateUserProfileDto),
   ],
   [
-    mocked<UpdateUserDto>({
+    mocked<UpdateUserProfileDto>({
       id: 'id-1',
       firstName: 'FirstName1',
       lastName: 'LastName1',
       birthday: 1,
       biography: 'A nice person 1.',
       profilePicture: 'https://www.example.com/1.jpg',
-    } as unknown as UpdateUserDto),
+    } as unknown as UpdateUserProfileDto),
   ],
   [
-    mocked<UpdateUserDto>({
+    mocked<UpdateUserProfileDto>({
       id: 'id-2',
       firstName: 'FirstName2',
       lastName: 'LastName2',
       birthday: 1,
       biography: 'A nice person 2.',
       profilePicture: null,
-    } as unknown as UpdateUserDto),
+    } as unknown as UpdateUserProfileDto),
   ],
   [
-    mocked<UpdateUserDto>({
+    mocked<UpdateUserProfileDto>({
       id: 'id-3',
       firstName: 'FirstName3',
       lastName: 'LastName3',
       birthday: 1,
       biography: 'A nice person 3.',
-    } as unknown as UpdateUserDto),
+    } as unknown as UpdateUserProfileDto),
   ],
   [
-    mocked<UpdateUserDto>({
+    mocked<UpdateUserProfileDto>({
       id: 'id-4',
       firstName: 'FirstName4',
       lastName: 'LastName4',
       birthday: 1,
       biography: 'A nice person 4.',
       profilePicture: null,
-    } as unknown as UpdateUserDto),
+    } as unknown as UpdateUserProfileDto),
   ],
   [
-    mocked<UpdateUserDto>({
+    mocked<UpdateUserProfileDto>({
       id: 'id-5',
       firstName: 'FirstName5',
       lastName: 'LastName5',
       birthday: 1,
       biography: 'A nice person 5.',
       profilePicture: 'https://www.example.com/5.jpg',
-    } as unknown as UpdateUserDto),
+    } as unknown as UpdateUserProfileDto),
   ],
   [
-    mocked<UpdateUserDto>({
+    mocked<UpdateUserProfileDto>({
       id: 'id-6',
       firstName: 'FirstName6',
       lastName: 'LastName6',
       birthday: 1,
       biography: 'A nice person 6.',
       profilePicture: null,
-    } as unknown as UpdateUserDto),
+    } as unknown as UpdateUserProfileDto),
   ],
   [
-    mocked<UpdateUserDto>({
+    mocked<UpdateUserProfileDto>({
       id: 'id-7',
       firstName: 'FirstName7',
       lastName: 'LastName7',
       birthday: 1,
-    } as unknown as UpdateUserDto),
+    } as unknown as UpdateUserProfileDto),
   ],
 ];
 
 describe('users', () => {
   describe('infrastructure', () => {
     describe('mappings', () => {
-      describe('UpdateUserDto to UpdateUserCommand', () => {
+      describe('UpdateUserProfileDto to UpdateUserProfileCommand', () => {
         test.each(validValues)(
-          'should map UpdateUserDto to UpdateUserCommand keeping all the property values',
-          (dto: UpdateUserDto) => {
+          'should map UpdateUserProfileDto to UpdateUserProfileCommand keeping all the property values',
+          (dto: UpdateUserProfileDto) => {
             // Arrange
 
             // Act
-            const command = updateUserDtoToUpdateUserCommand(dto);
+            const command = updateUserProfileDtoToUpdateUserProfileCommand(dto);
 
             // Assert
             expect(command.id).toBe(dto.id);

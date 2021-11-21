@@ -7,13 +7,15 @@ import {
   WebUrl,
 } from '../../../../core/domain/value-objects';
 import { FirstName, LastName, Biography } from '../../../domain/value-objects';
-import { UpdateUserCommand } from '..';
+import { UpdateUserProfileCommand } from '..';
 
-@CommandHandler(UpdateUserCommand)
-export class UpdateUserHandler implements ICommandHandler<UpdateUserCommand> {
+@CommandHandler(UpdateUserProfileCommand)
+export class UpdateUserProfileHandler
+  implements ICommandHandler<UpdateUserProfileCommand>
+{
   constructor(private readonly unitOfWork: UnitOfWork) {}
 
-  async execute(command: UpdateUserCommand): Promise<void> {
+  async execute(command: UpdateUserProfileCommand): Promise<void> {
     const id = UniqueId.create(command.id);
 
     // Get user by id
