@@ -3,6 +3,6 @@ import { CreateUserDto } from '.';
 
 export class UpdateUserProfileDto extends OmitType(CreateUserDto, [
   'email',
-  'userName',
+  'username',
   'password',
 ]) {}

@@ -7,7 +7,7 @@ export function createUserDtoToCreateUserCommand(
   return new CreateUserCommand(
     dto.id,
     dto.email,
-    dto.userName,
+    dto.username,
     dto.password,
     dto.firstName,
     dto.lastName,

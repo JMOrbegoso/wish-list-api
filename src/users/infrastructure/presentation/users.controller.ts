@@ -84,7 +84,7 @@ export class UsersController {
   async getUserByUserName(
     @Param() params: UserNameDto,
   ): Promise<OutputUserDto> {
-    const query = new GetUserByUserNameQuery(params.userName);
+    const query = new GetUserByUserNameQuery(params.username);
     return await this.queryBus.execute(query);
   }
 
