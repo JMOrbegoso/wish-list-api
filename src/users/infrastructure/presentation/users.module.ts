@@ -18,7 +18,7 @@ import {
   GetUsersHandler,
   GetUserByIdHandler,
   GetUserByEmailHandler,
-  GetUserByUserNameHandler,
+  GetUserByUsernameHandler,
 } from '../../application/queries';
 import {
   BlockUserHandler,
@@ -34,7 +34,7 @@ const queryHandlers = [
   GetUsersHandler,
   GetUserByIdHandler,
   GetUserByEmailHandler,
-  GetUserByUserNameHandler,
+  GetUserByUsernameHandler,
 ];
 const commandHandlers = [
   CreateUserHandler,

@@ -2,7 +2,7 @@ import { mocked } from 'ts-jest/utils';
 import { NotFoundException } from '@nestjs/common';
 import { UnitOfWork } from '../../../../core/domain/repositories';
 import { User } from '../../../../users/domain/entities';
-import { GetUserByUserNameHandler, GetUserByUserNameQuery } from '..';
+import { GetUserByUsernameHandler, GetUserByUsernameQuery } from '..';
 
 describe('users', () => {
   describe('application', () => {
@@ -16,11 +16,11 @@ describe('users', () => {
             },
           } as unknown as UnitOfWork);
 
-          const query = mocked<GetUserByUserNameQuery>({
+          const query = mocked<GetUserByUsernameQuery>({
             username: 'JohnDoe',
-          } as unknown as GetUserByUserNameQuery);
+          } as unknown as GetUserByUsernameQuery);
 
-          const handler = new GetUserByUserNameHandler(unitOfWork);
+          const handler = new GetUserByUsernameHandler(unitOfWork);
 
           // Act
 
@@ -83,11 +83,11 @@ describe('users', () => {
             },
           } as unknown as UnitOfWork);
 
-          const query = mocked<GetUserByUserNameQuery>({
+          const query = mocked<GetUserByUsernameQuery>({
             username: 'JohnDoe',
-          } as unknown as GetUserByUserNameQuery);
+          } as unknown as GetUserByUsernameQuery);
 
-          const handler = new GetUserByUserNameHandler(unitOfWork);
+          const handler = new GetUserByUsernameHandler(unitOfWork);
 
           // Act
           const outputUserDto = await handler.execute(query);

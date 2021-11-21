@@ -5,15 +5,15 @@ import { User } from '../../../../users/domain/entities';
 import { OutputUserDto } from '../../dtos';
 import { Username } from '../../../../users/domain/value-objects';
 import { userToOutputUserDto } from '../../mappings';
-import { GetUserByUserNameQuery } from '..';
+import { GetUserByUsernameQuery } from '..';
 
-@QueryHandler(GetUserByUserNameQuery)
-export class GetUserByUserNameHandler
-  implements IQueryHandler<GetUserByUserNameQuery>
+@QueryHandler(GetUserByUsernameQuery)
+export class GetUserByUsernameHandler
+  implements IQueryHandler<GetUserByUsernameQuery>
 {
   constructor(private readonly unitOfWork: UnitOfWork) {}
 
-  async execute(query: GetUserByUserNameQuery): Promise<OutputUserDto> {
+  async execute(query: GetUserByUsernameQuery): Promise<OutputUserDto> {
     const username = Username.create(query.username);
 
     const user: User = await this.unitOfWork.userRepository.getOneByUsername(

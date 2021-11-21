@@ -34,7 +34,7 @@ import {
 import {
   GetUserByEmailQuery,
   GetUserByIdQuery,
-  GetUserByUserNameQuery,
+  GetUserByUsernameQuery,
   GetUsersQuery,
 } from '../../application/queries';
 import {
@@ -84,7 +84,7 @@ export class UsersController {
   async getUserByUserName(
     @Param() params: UserNameDto,
   ): Promise<OutputUserDto> {
-    const query = new GetUserByUserNameQuery(params.username);
+    const query = new GetUserByUsernameQuery(params.username);
     return await this.queryBus.execute(query);
   }
 
