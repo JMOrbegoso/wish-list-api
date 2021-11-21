@@ -1,5 +1,5 @@
-export class InvalidUserNameError extends Error {
+export class InvalidUsernameError extends Error {
   constructor() {
-    super('Invalid UserName.');
+    super('Invalid Username.');
   }
 }

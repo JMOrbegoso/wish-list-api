@@ -8,7 +8,7 @@ import {
 } from '../../../../core/domain/value-objects';
 import {
   Email,
-  UserName,
+  Username,
   PasswordHash,
   IsVerified,
   IsBlocked,
@@ -27,10 +27,10 @@ const validValues = [
       getEmail: 'email0@email.com',
       equals: jest.fn().mockReturnValue(true),
     } as unknown as Email),
-    mocked<UserName>({
-      getUserName: 'UserName0',
+    mocked<Username>({
+      getUsername: 'UserName0',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as UserName),
+    } as unknown as Username),
     mocked<PasswordHash>({
       getPasswordHash: 'hash0',
       equals: jest.fn().mockReturnValue(true),
@@ -85,10 +85,10 @@ const validValues = [
       getEmail: 'email1@email.com',
       equals: jest.fn().mockReturnValue(true),
     } as unknown as Email),
-    mocked<UserName>({
-      getUserName: 'UserName1',
+    mocked<Username>({
+      getUsername: 'UserName1',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as UserName),
+    } as unknown as Username),
     mocked<PasswordHash>({
       getPasswordHash: 'hash1',
       equals: jest.fn().mockReturnValue(true),
@@ -143,10 +143,10 @@ const validValues = [
       getEmail: 'email2@email.com',
       equals: jest.fn().mockReturnValue(true),
     } as unknown as Email),
-    mocked<UserName>({
-      getUserName: 'UserName2',
+    mocked<Username>({
+      getUsername: 'UserName2',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as UserName),
+    } as unknown as Username),
     mocked<PasswordHash>({
       getPasswordHash: 'hash2',
       equals: jest.fn().mockReturnValue(true),
@@ -198,10 +198,10 @@ const validValues = [
       getEmail: 'email3@email.com',
       equals: jest.fn().mockReturnValue(true),
     } as unknown as Email),
-    mocked<UserName>({
-      getUserName: 'UserName3',
+    mocked<Username>({
+      getUsername: 'UserName3',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as UserName),
+    } as unknown as Username),
     mocked<PasswordHash>({
       getPasswordHash: 'hash3',
       equals: jest.fn().mockReturnValue(true),
@@ -253,10 +253,10 @@ const validValues = [
       getEmail: 'email4@email.com',
       equals: jest.fn().mockReturnValue(true),
     } as unknown as Email),
-    mocked<UserName>({
-      getUserName: 'UserName4',
+    mocked<Username>({
+      getUsername: 'UserName4',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as UserName),
+    } as unknown as Username),
     mocked<PasswordHash>({
       getPasswordHash: 'hash4',
       equals: jest.fn().mockReturnValue(true),
@@ -308,10 +308,10 @@ const validValues = [
       getEmail: 'email5@email.com',
       equals: jest.fn().mockReturnValue(true),
     } as unknown as Email),
-    mocked<UserName>({
-      getUserName: 'UserName5',
+    mocked<Username>({
+      getUsername: 'UserName5',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as UserName),
+    } as unknown as Username),
     mocked<PasswordHash>({
       getPasswordHash: 'hash5',
       equals: jest.fn().mockReturnValue(true),
@@ -363,10 +363,10 @@ const validValues = [
       getEmail: 'email6@email.com',
       equals: jest.fn().mockReturnValue(true),
     } as unknown as Email),
-    mocked<UserName>({
-      getUserName: 'UserName6',
+    mocked<Username>({
+      getUsername: 'UserName6',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as UserName),
+    } as unknown as Username),
     mocked<PasswordHash>({
       getPasswordHash: 'hash6',
       equals: jest.fn().mockReturnValue(true),
@@ -415,10 +415,10 @@ const validValues = [
       getEmail: 'email7@email.com',
       equals: jest.fn().mockReturnValue(true),
     } as unknown as Email),
-    mocked<UserName>({
-      getUserName: 'UserName7',
+    mocked<Username>({
+      getUsername: 'UserName7',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as UserName),
+    } as unknown as Username),
     mocked<PasswordHash>({
       getPasswordHash: 'hash7',
       equals: jest.fn().mockReturnValue(true),
@@ -465,11 +465,11 @@ describe('users', () => {
     describe('entities', () => {
       describe('user', () => {
         test.each(validValues)(
-          'should create an User with [id: %p], [email: %p], [userName: %p], [passwordHash: %p], [isVerified: %p], [isBlocked: %p], [firstName: %p], [lastName: %p], [birthday: %p], [createdAt: %p], [updatedAt: %p], [biography: %p], [profilePicture: %p] and [deletedAt: %p]',
+          'should create an User with [id: %p], [email: %p], [username: %p], [passwordHash: %p], [isVerified: %p], [isBlocked: %p], [firstName: %p], [lastName: %p], [birthday: %p], [createdAt: %p], [updatedAt: %p], [biography: %p], [profilePicture: %p] and [deletedAt: %p]',
           (
             uniqueId: MockedObject<UniqueId>,
             email: MockedObject<Email>,
-            userName: MockedObject<UserName>,
+            username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
             isBlocked: MockedObject<IsBlocked>,
@@ -488,7 +488,7 @@ describe('users', () => {
             const user = User.create(
               uniqueId,
               email,
-              userName,
+              username,
               passwordHash,
               isVerified,
               isBlocked,
@@ -505,7 +505,7 @@ describe('users', () => {
             // Assert
             expect(user.id.getId).toBe(uniqueId.getId);
             expect(user.email.getEmail).toBe(email.getEmail);
-            expect(user.userName.getUserName).toBe(userName.getUserName);
+            expect(user.userName.getUsername).toBe(username.getUsername);
             expect(user.passwordHash.getPasswordHash).toBe(
               passwordHash.getPasswordHash,
             );
@@ -539,7 +539,7 @@ describe('users', () => {
           (
             uniqueId: MockedObject<UniqueId>,
             email: MockedObject<Email>,
-            userName: MockedObject<UserName>,
+            username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
             isBlocked: MockedObject<IsBlocked>,
@@ -556,7 +556,7 @@ describe('users', () => {
             const user = User.create(
               uniqueId,
               email,
-              userName,
+              username,
               passwordHash,
               isVerified,
               isBlocked,
@@ -583,7 +583,7 @@ describe('users', () => {
           (
             uniqueId: MockedObject<UniqueId>,
             email: MockedObject<Email>,
-            userName: MockedObject<UserName>,
+            username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
             isBlocked: MockedObject<IsBlocked>,
@@ -600,7 +600,7 @@ describe('users', () => {
             const user = User.create(
               uniqueId,
               email,
-              userName,
+              username,
               passwordHash,
               isVerified,
               isBlocked,
@@ -631,7 +631,7 @@ describe('users', () => {
           (
             uniqueId: MockedObject<UniqueId>,
             email: MockedObject<Email>,
-            userName: MockedObject<UserName>,
+            username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
             isBlocked: MockedObject<IsBlocked>,
@@ -648,7 +648,7 @@ describe('users', () => {
             const user = User.create(
               uniqueId,
               email,
-              userName,
+              username,
               passwordHash,
               isVerified,
               isBlocked,
@@ -675,7 +675,7 @@ describe('users', () => {
           (
             uniqueId: MockedObject<UniqueId>,
             email: MockedObject<Email>,
-            userName: MockedObject<UserName>,
+            username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
             isBlocked: MockedObject<IsBlocked>,
@@ -692,7 +692,7 @@ describe('users', () => {
             const user = User.create(
               uniqueId,
               email,
-              userName,
+              username,
               passwordHash,
               isVerified,
               isBlocked,
@@ -719,7 +719,7 @@ describe('users', () => {
           (
             uniqueId: MockedObject<UniqueId>,
             email: MockedObject<Email>,
-            userName: MockedObject<UserName>,
+            username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
             isBlocked: MockedObject<IsBlocked>,
@@ -736,7 +736,7 @@ describe('users', () => {
             const user = User.create(
               uniqueId,
               email,
-              userName,
+              username,
               passwordHash,
               isVerified,
               isBlocked,
@@ -763,7 +763,7 @@ describe('users', () => {
           (
             uniqueId: MockedObject<UniqueId>,
             email: MockedObject<Email>,
-            userName: MockedObject<UserName>,
+            username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
             isBlocked: MockedObject<IsBlocked>,
@@ -780,7 +780,7 @@ describe('users', () => {
             const user = User.create(
               uniqueId,
               email,
-              userName,
+              username,
               passwordHash,
               isVerified,
               isBlocked,
@@ -842,7 +842,7 @@ describe('users', () => {
           (
             uniqueId: MockedObject<UniqueId>,
             email: MockedObject<Email>,
-            userName: MockedObject<UserName>,
+            username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
             isBlocked: MockedObject<IsBlocked>,
@@ -859,7 +859,7 @@ describe('users', () => {
             const user = User.create(
               uniqueId,
               email,
-              userName,
+              username,
               passwordHash,
               isVerified,
               isBlocked,
@@ -915,7 +915,7 @@ describe('users', () => {
           (
             uniqueId: MockedObject<UniqueId>,
             email: MockedObject<Email>,
-            userName: MockedObject<UserName>,
+            username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
             isBlocked: MockedObject<IsBlocked>,
@@ -932,7 +932,7 @@ describe('users', () => {
             const user = User.create(
               uniqueId,
               email,
-              userName,
+              username,
               passwordHash,
               isVerified,
               isBlocked,
@@ -960,7 +960,7 @@ describe('users', () => {
           (
             uniqueId: MockedObject<UniqueId>,
             email: MockedObject<Email>,
-            userName: MockedObject<UserName>,
+            username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
             isBlocked: MockedObject<IsBlocked>,
@@ -977,7 +977,7 @@ describe('users', () => {
             const user = User.create(
               uniqueId,
               email,
-              userName,
+              username,
               passwordHash,
               isVerified,
               isBlocked,

@@ -12,7 +12,7 @@ describe('users', () => {
           // Arrange
           const unitOfWork = mocked<UnitOfWork>({
             userRepository: {
-              getOneByUserName: jest.fn().mockReturnValue(null),
+              getOneByUsername: jest.fn().mockReturnValue(null),
             },
           } as unknown as UnitOfWork);
 
@@ -40,7 +40,7 @@ describe('users', () => {
               getEmail: 'john@doe.com',
             },
             userName: {
-              getUserName: 'UserName0',
+              getUsername: 'UserName0',
             },
             passwordHash: {
               getPasswordHash: 'hash0',
@@ -79,7 +79,7 @@ describe('users', () => {
 
           const unitOfWork = mocked<UnitOfWork>({
             userRepository: {
-              getOneByUserName: jest.fn().mockReturnValue(user),
+              getOneByUsername: jest.fn().mockReturnValue(user),
             },
           } as unknown as UnitOfWork);
 

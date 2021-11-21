@@ -6,7 +6,7 @@ import { UserRepository } from '../../../domain/repositories';
 import { User } from '../../../domain/entities';
 import { UserEntity } from '../entities';
 import { UniqueId } from '../../../../core/domain/value-objects';
-import { Email, UserName } from '../../../domain/value-objects';
+import { Email, Username } from '../../../domain/value-objects';
 import { userToUserEntity, userEntityToUser } from '../../mappings';
 
 @MikroOrmRepository(UserEntity)
@@ -23,9 +23,9 @@ export class UserRepositoryMongoDb
     return user;
   }
 
-  async getOneByUserName(userName: UserName): Promise<User> {
+  async getOneByUsername(username: Username): Promise<User> {
     const userEntity = await this.findOne({
-      normalizedUserName: userName.getNormalizedUserName,
+      normalizedUserName: username.getNormalizedUsername,
     });
     if (!userEntity) return null;
     const user = userEntityToUser(userEntity);

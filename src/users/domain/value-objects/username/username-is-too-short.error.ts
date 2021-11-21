@@ -1,5 +1,5 @@
-export class UserNameIsTooShortError extends Error {
+export class UsernameIsTooShortError extends Error {
   constructor() {
-    super('UserName is too short.');
+    super('Username is too short.');
   }
 }

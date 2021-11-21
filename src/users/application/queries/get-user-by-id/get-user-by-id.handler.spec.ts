@@ -40,7 +40,7 @@ describe('users', () => {
               getEmail: 'email0@email.com',
             },
             userName: {
-              getUserName: 'UserName0',
+              getUsername: 'UserName0',
             },
             passwordHash: {
               getPasswordHash: 'hash0',

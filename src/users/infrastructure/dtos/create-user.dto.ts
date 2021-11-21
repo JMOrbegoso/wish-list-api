@@ -13,7 +13,7 @@ import {
   IsMongoId,
 } from 'class-validator';
 import {
-  UserName,
+  Username,
   Password,
   FirstName,
   LastName,
@@ -50,8 +50,8 @@ export class CreateUserDto {
   })
   @IsString()
   @IsNotEmpty()
-  @MaxLength(UserName.MaxLength)
-  @MinLength(UserName.MinLength)
+  @MaxLength(Username.MaxLength)
+  @MinLength(Username.MinLength)
   userName: string;
 
   @ApiProperty({

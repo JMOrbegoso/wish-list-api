@@ -17,7 +17,7 @@ export class OutputUserDto {
 
   @ApiProperty({
     type: String,
-    description: 'User UserName.',
+    description: 'User Username.',
     example: 'john_doe',
   })
   userName: string;

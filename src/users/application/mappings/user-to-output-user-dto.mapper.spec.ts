@@ -12,7 +12,7 @@ const validValues = [
         getEmail: 'email0@email.com',
       },
       userName: {
-        getUserName: 'UserName0',
+        getUsername: 'UserName0',
       },
       passwordHash: {
         getPasswordHash: 'hash0',
@@ -58,7 +58,7 @@ const validValues = [
         getEmail: 'email1@email.com',
       },
       userName: {
-        getUserName: 'UserName1',
+        getUsername: 'UserName1',
       },
       passwordHash: {
         getPasswordHash: 'hash1',
@@ -104,7 +104,7 @@ const validValues = [
         getEmail: 'email2@email.com',
       },
       userName: {
-        getUserName: 'UserName2',
+        getUsername: 'UserName2',
       },
       passwordHash: {
         getPasswordHash: 'hash2',
@@ -148,7 +148,7 @@ const validValues = [
         getEmail: 'email3@email.com',
       },
       userName: {
-        getUserName: 'UserName3',
+        getUsername: 'UserName3',
       },
       passwordHash: {
         getPasswordHash: 'hash3',
@@ -192,7 +192,7 @@ const validValues = [
         getEmail: 'email4@email.com',
       },
       userName: {
-        getUserName: 'UserName4',
+        getUsername: 'UserName4',
       },
       passwordHash: {
         getPasswordHash: 'hash4',
@@ -236,7 +236,7 @@ const validValues = [
         getEmail: 'email5@email.com',
       },
       userName: {
-        getUserName: 'UserName5',
+        getUsername: 'UserName5',
       },
       passwordHash: {
         getPasswordHash: 'hash5',
@@ -280,7 +280,7 @@ const validValues = [
         getEmail: 'email6@email.com',
       },
       userName: {
-        getUserName: 'UserName6',
+        getUsername: 'UserName6',
       },
       passwordHash: {
         getPasswordHash: 'hash6',
@@ -322,7 +322,7 @@ const validValues = [
         getEmail: 'email7@email.com',
       },
       userName: {
-        getUserName: 'UserName7',
+        getUsername: 'UserName7',
       },
       passwordHash: {
         getPasswordHash: 'hash7',
@@ -372,7 +372,7 @@ describe('users', () => {
             // Assert
             expect(dto.id).toBe(user.id.getId);
             expect(dto.email).toBe(user.email.getEmail);
-            expect(dto.userName).toBe(user.userName.getUserName);
+            expect(dto.userName).toBe(user.userName.getUsername);
             expect(dto.isVerified).toBe(user.isVerified.getStatus);
             expect(dto.isBlocked).toBe(user.isBlocked.getStatus);
             expect(dto.firstName).toBe(user.firstName.getFirstName);

@@ -79,7 +79,7 @@ describe('users', () => {
           );
         });
 
-        test('should throw BadRequestException because already exist an User with that UserName', () => {
+        test('should throw BadRequestException because already exist an User with that Username', () => {
           // Arrange
           const user = mocked<User>({
             id: {
@@ -95,7 +95,7 @@ describe('users', () => {
             userRepository: {
               getOne: jest.fn().mockReturnValue(null),
               getOneByEmail: jest.fn().mockReturnValue(null),
-              getOneByUserName: jest.fn().mockReturnValue(user),
+              getOneByUsername: jest.fn().mockReturnValue(user),
             },
           } as unknown as UnitOfWork);
 
@@ -124,7 +124,7 @@ describe('users', () => {
           const userRepository = mocked<UserRepository>({
             getOne: jest.fn().mockReturnValue(null),
             getOneByEmail: jest.fn().mockReturnValue(null),
-            getOneByUserName: jest.fn().mockReturnValue(null),
+            getOneByUsername: jest.fn().mockReturnValue(null),
             add: jest.fn(),
           } as unknown as UserRepository);
 

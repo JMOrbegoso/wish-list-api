@@ -6,7 +6,7 @@ import {
 } from '../../../../core/domain/value-objects';
 import {
   Email,
-  UserName,
+  Username,
   PasswordHash,
   IsVerified,
   IsBlocked,
@@ -17,7 +17,7 @@ import {
 
 export class User extends AggregateRoot {
   private _email: Email;
-  private _userName: UserName;
+  private _userName: Username;
   private _passwordHash: PasswordHash;
   private _isVerified: IsVerified;
   private _isBlocked: IsBlocked;
@@ -33,7 +33,7 @@ export class User extends AggregateRoot {
   private constructor(
     id: UniqueId,
     email: Email,
-    userName: UserName,
+    username: Username,
     passwordHash: PasswordHash,
     isVerified: IsVerified,
     isBlocked: IsBlocked,
@@ -49,7 +49,7 @@ export class User extends AggregateRoot {
     super(id);
 
     this._email = email;
-    this._userName = userName;
+    this._userName = username;
     this._passwordHash = passwordHash;
     this._isVerified = isVerified;
     this._isBlocked = isBlocked;
@@ -66,7 +66,7 @@ export class User extends AggregateRoot {
   public static create(
     id: UniqueId,
     email: Email,
-    userName: UserName,
+    username: Username,
     passwordHash: PasswordHash,
     isVerified: IsVerified,
     isBlocked: IsBlocked,
@@ -82,7 +82,7 @@ export class User extends AggregateRoot {
     return new User(
       id,
       email,
-      userName,
+      username,
       passwordHash,
       isVerified,
       isBlocked,
@@ -105,7 +105,7 @@ export class User extends AggregateRoot {
     return this._email;
   }
 
-  public get userName(): UserName {
+  public get userName(): Username {
     return this._userName;
   }
 

@@ -13,13 +13,13 @@ import {
   IsVerified,
   LastName,
   PasswordHash,
-  UserName,
+  Username,
 } from '../../domain/value-objects';
 
 export function userEntityToUser(userEntity: UserEntity): User {
   const id = UniqueId.create(userEntity.id);
   const email = Email.create(userEntity.email);
-  const userName = UserName.create(userEntity.userName);
+  const username = Username.create(userEntity.userName);
   const passwordHash = PasswordHash.create(userEntity.passwordHash);
   const isVerified = IsVerified.create(userEntity.isVerified);
   const isBlocked = IsBlocked.create(userEntity.isBlocked);
@@ -39,7 +39,7 @@ export function userEntityToUser(userEntity: UserEntity): User {
   return User.create(
     id,
     email,
-    userName,
+    username,
     passwordHash,
     isVerified,
     isBlocked,

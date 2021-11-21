@@ -10,7 +10,7 @@ import {
 } from '../../../../core/domain/value-objects';
 import {
   Email,
-  UserName,
+  Username,
   PasswordHash,
   IsVerified,
   IsBlocked,
@@ -31,7 +31,7 @@ export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
     // Generate the email and username properties of the new user first to validate them
     const id = UniqueId.create(command.id);
     const email = Email.create(command.email);
-    const userName = UserName.create(command.userName);
+    const username = Username.create(command.userName);
 
     // Check if the id is in use by other user
     const userWithSameId = await this.unitOfWork.userRepository.getOne(id);
@@ -45,10 +45,10 @@ export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
       throw new BadRequestException('The Email is already in use.');
 
     // Check if the username is in use by other user
-    const userWithSameUserName =
-      await this.unitOfWork.userRepository.getOneByUserName(userName);
-    if (userWithSameUserName)
-      throw new BadRequestException('The UserName is already in use.');
+    const userWithSameUsername =
+      await this.unitOfWork.userRepository.getOneByUsername(username);
+    if (userWithSameUsername)
+      throw new BadRequestException('The Username is already in use.');
 
     // Generate the properties of the new User
     const hash = this.encryptionService.hashPassword(command.password);
@@ -68,7 +68,7 @@ export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
     const user = User.create(
       id,
       email,
-      userName,
+      username,
       passwordHash,
       isVerified,
       isBlocked,
