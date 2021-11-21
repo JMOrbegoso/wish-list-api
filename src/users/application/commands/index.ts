@@ -15,3 +15,6 @@ export * from './block-user/block-user.handler';
 
 export * from './unblock-user/unblock-user.command';
 export * from './unblock-user/unblock-user.handler';
+
+export * from './update-user-password/update-user-password.command';
+export * from './update-user-password/update-user-password.handler';
