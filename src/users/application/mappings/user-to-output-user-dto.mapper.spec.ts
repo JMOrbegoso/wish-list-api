@@ -372,7 +372,7 @@ describe('users', () => {
             // Assert
             expect(dto.id).toBe(user.id.getId);
             expect(dto.email).toBe(user.email.getEmail);
-            expect(dto.userName).toBe(user.username.getUsername);
+            expect(dto.username).toBe(user.username.getUsername);
             expect(dto.isVerified).toBe(user.isVerified.getStatus);
             expect(dto.isBlocked).toBe(user.isBlocked.getStatus);
             expect(dto.firstName).toBe(user.firstName.getFirstName);

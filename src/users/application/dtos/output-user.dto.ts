@@ -20,7 +20,7 @@ export class OutputUserDto {
     description: 'User Username.',
     example: 'john_doe',
   })
-  userName: string;
+  username: string;
 
   @ApiProperty({
     type: Boolean,
