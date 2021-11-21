@@ -21,7 +21,7 @@ import {
   CreateUserDto,
   UserIdDto,
   UserEmailDto,
-  UserNameDto,
+  UsernameDto,
   UpdateUserProfileDto,
   UpdateUserPasswordDto,
 } from '../dtos';
@@ -80,9 +80,9 @@ export class UsersController {
   @ApiOkResponse({ type: OutputUserDto, description: 'User found.' })
   @ApiNotFoundResponse({ description: 'User not found.' })
   @ApiBadRequestResponse({ description: 'Something went wrong.' })
-  @Get('username/:userName')
-  async getUserByUserName(
-    @Param() params: UserNameDto,
+  @Get('username/:username')
+  async getUserByUsername(
+    @Param() params: UsernameDto,
   ): Promise<OutputUserDto> {
     const query = new GetUserByUsernameQuery(params.username);
     return await this.queryBus.execute(query);
