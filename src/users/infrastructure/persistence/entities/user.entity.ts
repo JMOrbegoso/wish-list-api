@@ -29,11 +29,11 @@ export class UserEntity {
 
   @Unique()
   @Property()
-  userName: string;
+  username: string;
 
   @Unique()
   @Property()
-  normalizedUserName: string;
+  normalizedUsername: string;
 
   @Property()
   passwordHash: string;

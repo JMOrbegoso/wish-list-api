@@ -19,7 +19,7 @@ import {
 export function userEntityToUser(userEntity: UserEntity): User {
   const id = UniqueId.create(userEntity.id);
   const email = Email.create(userEntity.email);
-  const username = Username.create(userEntity.userName);
+  const username = Username.create(userEntity.username);
   const passwordHash = PasswordHash.create(userEntity.passwordHash);
   const isVerified = IsVerified.create(userEntity.isVerified);
   const isBlocked = IsBlocked.create(userEntity.isBlocked);

@@ -25,7 +25,7 @@ export class UserRepositoryMongoDb
 
   async getOneByUsername(username: Username): Promise<User> {
     const userEntity = await this.findOne({
-      normalizedUserName: username.getNormalizedUsername,
+      normalizedUsername: username.getNormalizedUsername,
     });
     if (!userEntity) return null;
     const user = userEntityToUser(userEntity);
