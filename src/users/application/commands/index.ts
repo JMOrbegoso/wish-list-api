@@ -18,3 +18,6 @@ export * from './unblock-user/unblock-user.handler';
 
 export * from './update-user-password/update-user-password.command';
 export * from './update-user-password/update-user-password.handler';
+
+export * from './local-login/local-login.command';
+export * from './local-login/local-login.handler';
