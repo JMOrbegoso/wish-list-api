@@ -1,4 +1,5 @@
 import { Controller, Post, HttpCode, UseGuards, Request } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import { AuthGuard } from '@nestjs/passport';
 import {
   ApiBody,
@@ -13,6 +14,8 @@ import { LoginDto } from '../dtos';
 @ApiTags('AuthController')
 @Controller()
 export class AuthController {
+  constructor(private readonly jwtService: JwtService) {}
+
   @ApiBody({ type: LoginDto })
   @ApiOkResponse({
     description: 'User login successfully.',
@@ -26,7 +29,12 @@ export class AuthController {
   @UseGuards(AuthGuard('local'))
   @Post('login')
   @HttpCode(200)
-  localLogin(@Request() req): OutputUserDto {
-    return req.user;
+  login(@Request() req) {
+    const payload = { username: req.user.username, sub: req.user.id };
+    const access_token = this.jwtService.sign(payload);
+
+    return {
+      access_token,
+    };
   }
 }
