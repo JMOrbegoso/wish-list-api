@@ -189,7 +189,7 @@ describe('users', () => {
               userEntity.passwordHash,
             );
             expect(user.isVerified).toBe(userEntity.isVerified);
-            expect(user.isBlocked.getStatus).toBe(userEntity.isBlocked);
+            expect(user.isBlocked).toBe(userEntity.isBlocked);
             expect(user.firstName.getFirstName).toBe(userEntity.firstName);
             expect(user.lastName.getLastName).toBe(userEntity.lastName);
             expect(user.birthday.getMilliseconds).toBe(

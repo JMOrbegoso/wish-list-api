@@ -18,9 +18,7 @@ const validValues = [
         getPasswordHash: 'hash0',
       },
       isVerified: true,
-      isBlocked: {
-        getStatus: false,
-      },
+      isBlocked: false,
       firstName: {
         getFirstName: 'FirstName0',
       },
@@ -62,9 +60,7 @@ const validValues = [
         getPasswordHash: 'hash1',
       },
       isVerified: true,
-      isBlocked: {
-        getStatus: false,
-      },
+      isBlocked: false,
       firstName: {
         getFirstName: 'FirstName1',
       },
@@ -106,9 +102,7 @@ const validValues = [
         getPasswordHash: 'hash2',
       },
       isVerified: true,
-      isBlocked: {
-        getStatus: false,
-      },
+      isBlocked: false,
       firstName: {
         getFirstName: 'FirstName2',
       },
@@ -148,9 +142,7 @@ const validValues = [
         getPasswordHash: 'hash3',
       },
       isVerified: true,
-      isBlocked: {
-        getStatus: false,
-      },
+      isBlocked: false,
       firstName: {
         getFirstName: 'FirstName3',
       },
@@ -190,9 +182,7 @@ const validValues = [
         getPasswordHash: 'hash4',
       },
       isVerified: true,
-      isBlocked: {
-        getStatus: false,
-      },
+      isBlocked: false,
       firstName: {
         getFirstName: 'FirstName4',
       },
@@ -232,9 +222,7 @@ const validValues = [
         getPasswordHash: 'hash5',
       },
       isVerified: true,
-      isBlocked: {
-        getStatus: false,
-      },
+      isBlocked: false,
       firstName: {
         getFirstName: 'FirstName5',
       },
@@ -274,9 +262,7 @@ const validValues = [
         getPasswordHash: 'hash6',
       },
       isVerified: true,
-      isBlocked: {
-        getStatus: false,
-      },
+      isBlocked: false,
       firstName: {
         getFirstName: 'FirstName6',
       },
@@ -314,9 +300,7 @@ const validValues = [
         getPasswordHash: 'hash7',
       },
       isVerified: true,
-      isBlocked: {
-        getStatus: false,
-      },
+      isBlocked: false,
       firstName: {
         getFirstName: 'FirstName7',
       },
@@ -358,7 +342,7 @@ describe('users', () => {
             expect(dto.email).toBe(user.email.getEmail);
             expect(dto.username).toBe(user.username.getUsername);
             expect(dto.isVerified).toBe(user.isVerified);
-            expect(dto.isBlocked).toBe(user.isBlocked.getStatus);
+            expect(dto.isBlocked).toBe(user.isBlocked);
             expect(dto.firstName).toBe(user.firstName.getFirstName);
             expect(dto.lastName).toBe(user.lastName.getLastName);
             expect(dto.birthday).toBe(user.birthday.getMilliseconds);

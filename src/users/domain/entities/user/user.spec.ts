@@ -510,7 +510,7 @@ describe('users', () => {
               passwordHash.getPasswordHash,
             );
             expect(user.isVerified).toBe(isVerified.getStatus);
-            expect(user.isBlocked.getStatus).toBe(isBlocked.getStatus);
+            expect(user.isBlocked).toBe(isBlocked.getStatus);
             expect(user.firstName.getFirstName).toBe(firstName.getFirstName);
             expect(user.lastName.getLastName).toBe(lastName.getLastName);
             expect(user.birthday.getMilliseconds).toBe(
@@ -710,7 +710,7 @@ describe('users', () => {
             user.block();
 
             // Assert
-            expect(user.isBlocked.getStatus).toBe(true);
+            expect(user.isBlocked).toBe(true);
           },
         );
 
@@ -754,7 +754,7 @@ describe('users', () => {
             user.unblock();
 
             // Assert
-            expect(user.isBlocked.getStatus).toBe(false);
+            expect(user.isBlocked).toBe(false);
           },
         );
 

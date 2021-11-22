@@ -117,8 +117,8 @@ export class User extends AggregateRoot {
     return this._isVerified.getStatus;
   }
 
-  public get isBlocked(): IsBlocked {
-    return this._isBlocked;
+  public get isBlocked(): boolean {
+    return this._isBlocked.getStatus;
   }
 
   public get firstName(): FirstName {

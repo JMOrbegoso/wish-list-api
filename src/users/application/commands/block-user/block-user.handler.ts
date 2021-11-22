@@ -16,7 +16,7 @@ export class BlockUserHandler implements ICommandHandler<BlockUserCommand> {
     if (!user) throw new NotFoundException();
 
     // Check if the user is already blocked
-    if (user.isBlocked.getStatus)
+    if (user.isBlocked)
       throw new BadRequestException('User is already blocked.');
 
     // Update the user properties

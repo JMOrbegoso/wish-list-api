@@ -8,7 +8,7 @@ export function userToOutputUserDto(user: User): OutputUserDto {
   dto.email = user.email.getEmail;
   dto.username = user.username.getUsername;
   dto.isVerified = user.isVerified;
-  dto.isBlocked = user.isBlocked.getStatus;
+  dto.isBlocked = user.isBlocked;
   dto.firstName = user.firstName.getFirstName;
   dto.lastName = user.lastName.getLastName;
   dto.birthday = user.birthday.getMilliseconds;

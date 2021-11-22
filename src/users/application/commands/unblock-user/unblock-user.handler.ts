@@ -16,8 +16,7 @@ export class UnblockUserHandler implements ICommandHandler<UnblockUserCommand> {
     if (!user) throw new NotFoundException();
 
     // Check if the user is not blocked
-    if (!user.isBlocked.getStatus)
-      throw new BadRequestException('User is not blocked.');
+    if (!user.isBlocked) throw new BadRequestException('User is not blocked.');
 
     // Update the user properties
     user.unblock();

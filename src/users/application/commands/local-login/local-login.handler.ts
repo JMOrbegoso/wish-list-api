@@ -36,8 +36,7 @@ export class LocalLoginHandler implements ICommandHandler<LocalLoginCommand> {
     if (user.isDeleted) throw new UnauthorizedException('User is deleted.');
 
     // Check if the user was blocked
-    if (user.isBlocked.getStatus)
-      throw new UnauthorizedException('User is blocked.');
+    if (user.isBlocked) throw new UnauthorizedException('User is blocked.');
 
     // Check if the user is verified
     if (!user.isVerified)

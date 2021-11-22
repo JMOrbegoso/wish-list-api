@@ -46,9 +46,7 @@ describe('users', () => {
               getPasswordHash: 'hash0',
             },
             isVerified: true,
-            isBlocked: {
-              getStatus: false,
-            },
+            isBlocked: false,
             firstName: {
               getFirstName: 'FirstName0',
             },
