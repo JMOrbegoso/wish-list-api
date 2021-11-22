@@ -1,9 +1,5 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import {
-  NotFoundException,
-  UnauthorizedException,
-  BadRequestException,
-} from '@nestjs/common';
+import { NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { UnitOfWork } from '../../../../core/domain/repositories';
 import { Username } from '../../../domain/value-objects';
 import { EncryptionService } from '../../services';
