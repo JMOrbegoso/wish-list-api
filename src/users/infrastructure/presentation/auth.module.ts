@@ -11,10 +11,13 @@ import { EncryptionService } from '../../application/services';
 import { EncryptionServiceBcrypt } from '../services';
 import { AuthController } from './auth.controller';
 import { LocalLoginHandler } from '../../../users/application/commands';
-import { LocalLoginPassportStrategy } from '../passport-strategies';
+import {
+  LocalLoginPassportStrategy,
+  JwtPassportStrategy,
+} from '../passport-strategies';
 
 const commandHandlers = [LocalLoginHandler];
-const passportStrategies = [LocalLoginPassportStrategy];
+const passportStrategies = [LocalLoginPassportStrategy, JwtPassportStrategy];
 
 @Module({
   controllers: [AuthController],
