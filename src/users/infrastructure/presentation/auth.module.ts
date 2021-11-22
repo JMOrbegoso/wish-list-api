@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { PassportModule } from '@nestjs/passport';
 import { CqrsModule } from '@nestjs/cqrs';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
+import { JwtModule } from '@nestjs/jwt';
 import { UnitOfWork } from '../../../core/domain/repositories';
 import { UnitOfWorkMongoDb } from '../../../core/infrastructure/repositories';
 import { UserRepositoryMongoDb } from '../persistence/repositories';
@@ -18,10 +19,16 @@ const passportStrategies = [LocalLoginPassportStrategy];
 @Module({
   controllers: [AuthController],
   imports: [
-    PassportModule,
     MikroOrmModule.forFeature([UserEntity]),
     UserRepositoryMongoDb,
     CqrsModule,
+    PassportModule,
+    JwtModule.registerAsync({
+      useFactory: () => ({
+        secret: process.env.JWT_KEY,
+        signOptions: { expiresIn: '60s' },
+      }),
+    }),
   ],
   providers: [
     { provide: UnitOfWork, useClass: UnitOfWorkMongoDb },
