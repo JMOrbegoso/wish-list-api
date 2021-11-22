@@ -17,9 +17,7 @@ const validValues = [
       passwordHash: {
         getPasswordHash: 'hash0',
       },
-      isVerified: {
-        getStatus: true,
-      },
+      isVerified: true,
       isBlocked: {
         getStatus: false,
       },
@@ -63,9 +61,7 @@ const validValues = [
       passwordHash: {
         getPasswordHash: 'hash1',
       },
-      isVerified: {
-        getStatus: true,
-      },
+      isVerified: true,
       isBlocked: {
         getStatus: false,
       },
@@ -109,9 +105,7 @@ const validValues = [
       passwordHash: {
         getPasswordHash: 'hash2',
       },
-      isVerified: {
-        getStatus: true,
-      },
+      isVerified: true,
       isBlocked: {
         getStatus: false,
       },
@@ -153,9 +147,7 @@ const validValues = [
       passwordHash: {
         getPasswordHash: 'hash3',
       },
-      isVerified: {
-        getStatus: true,
-      },
+      isVerified: true,
       isBlocked: {
         getStatus: false,
       },
@@ -197,9 +189,7 @@ const validValues = [
       passwordHash: {
         getPasswordHash: 'hash4',
       },
-      isVerified: {
-        getStatus: true,
-      },
+      isVerified: true,
       isBlocked: {
         getStatus: false,
       },
@@ -241,9 +231,7 @@ const validValues = [
       passwordHash: {
         getPasswordHash: 'hash5',
       },
-      isVerified: {
-        getStatus: true,
-      },
+      isVerified: true,
       isBlocked: {
         getStatus: false,
       },
@@ -285,9 +273,7 @@ const validValues = [
       passwordHash: {
         getPasswordHash: 'hash6',
       },
-      isVerified: {
-        getStatus: true,
-      },
+      isVerified: true,
       isBlocked: {
         getStatus: false,
       },
@@ -327,9 +313,7 @@ const validValues = [
       passwordHash: {
         getPasswordHash: 'hash7',
       },
-      isVerified: {
-        getStatus: true,
-      },
+      isVerified: true,
       isBlocked: {
         getStatus: false,
       },
@@ -373,7 +357,7 @@ describe('users', () => {
             expect(dto.id).toBe(user.id.getId);
             expect(dto.email).toBe(user.email.getEmail);
             expect(dto.username).toBe(user.username.getUsername);
-            expect(dto.isVerified).toBe(user.isVerified.getStatus);
+            expect(dto.isVerified).toBe(user.isVerified);
             expect(dto.isBlocked).toBe(user.isBlocked.getStatus);
             expect(dto.firstName).toBe(user.firstName.getFirstName);
             expect(dto.lastName).toBe(user.lastName.getLastName);

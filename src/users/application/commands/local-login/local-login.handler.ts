@@ -44,7 +44,7 @@ export class LocalLoginHandler implements ICommandHandler<LocalLoginCommand> {
       throw new UnauthorizedException('User is blocked.');
 
     // Check if the user is verified
-    if (!user.isVerified.getStatus)
+    if (!user.isVerified)
       throw new UnauthorizedException('User is not verified.');
 
     return userToOutputUserDto(user);

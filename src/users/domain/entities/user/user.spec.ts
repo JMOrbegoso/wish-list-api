@@ -509,7 +509,7 @@ describe('users', () => {
             expect(user.passwordHash.getPasswordHash).toBe(
               passwordHash.getPasswordHash,
             );
-            expect(user.isVerified.getStatus).toBe(isVerified.getStatus);
+            expect(user.isVerified).toBe(isVerified.getStatus);
             expect(user.isBlocked.getStatus).toBe(isBlocked.getStatus);
             expect(user.firstName.getFirstName).toBe(firstName.getFirstName);
             expect(user.lastName.getLastName).toBe(lastName.getLastName);
@@ -666,7 +666,7 @@ describe('users', () => {
             user.verify();
 
             // Assert
-            expect(user.isVerified.getStatus).toBe(true);
+            expect(user.isVerified).toBe(true);
           },
         );
 

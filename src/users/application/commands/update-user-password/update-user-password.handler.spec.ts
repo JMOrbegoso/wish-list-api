@@ -54,9 +54,7 @@ describe('users', () => {
             passwordHash: {
               getPasswordHash: 'hash0',
             },
-            isVerified: {
-              getStatus: true,
-            },
+            isVerified: true,
             isBlocked: {
               getStatus: false,
             },

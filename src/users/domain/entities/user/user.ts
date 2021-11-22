@@ -113,8 +113,8 @@ export class User extends AggregateRoot {
     return this._passwordHash;
   }
 
-  public get isVerified(): IsVerified {
-    return this._isVerified;
+  public get isVerified(): boolean {
+    return this._isVerified.getStatus;
   }
 
   public get isBlocked(): IsBlocked {
