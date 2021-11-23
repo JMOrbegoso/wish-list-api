@@ -1,4 +1,4 @@
-import { WishTitle, InvalidWishTitleError, WishTitleIsTooLongError } from '..';
+import { InvalidWishTitleError, WishTitle, WishTitleIsTooLongError } from '..';
 
 const validValues = [
   'a'.repeat(WishTitle.MaxLength),

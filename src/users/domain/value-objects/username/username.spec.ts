@@ -1,9 +1,9 @@
 import {
-  Username,
   InvalidUsernameError,
-  UsernameIsTooShortError,
-  UsernameIsTooLongError,
   MalformedUsernameError,
+  Username,
+  UsernameIsTooLongError,
+  UsernameIsTooShortError,
 } from '..';
 
 const validValues = [

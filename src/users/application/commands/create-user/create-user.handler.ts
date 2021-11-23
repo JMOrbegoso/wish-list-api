@@ -4,19 +4,19 @@ import { UnitOfWork } from '../../../../core/domain/repositories';
 import { User } from '../../../domain/entities';
 import { CreateUserCommand } from '..';
 import {
-  UniqueId,
   MillisecondsDate,
+  UniqueId,
   WebUrl,
 } from '../../../../core/domain/value-objects';
 import {
-  Email,
-  Username,
-  PasswordHash,
-  IsVerified,
-  IsBlocked,
-  FirstName,
-  LastName,
   Biography,
+  Email,
+  FirstName,
+  IsBlocked,
+  IsVerified,
+  LastName,
+  PasswordHash,
+  Username,
 } from '../../../domain/value-objects';
 import { EncryptionService } from '../../services';
 

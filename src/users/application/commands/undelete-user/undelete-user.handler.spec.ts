@@ -3,7 +3,7 @@ import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { UnitOfWork } from '../../../../core/domain/repositories';
 import { UserRepository } from '../../../../users/domain/repositories';
 import { User } from '../../../../users/domain/entities';
-import { UndeleteUserHandler, UndeleteUserCommand } from '..';
+import { UndeleteUserCommand, UndeleteUserHandler } from '..';
 
 describe('users', () => {
   describe('application', () => {

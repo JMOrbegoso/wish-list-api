@@ -1,7 +1,7 @@
 import {
-  WishPrivacyLevel,
-  PrivacyLevel,
   InvalidWishPrivacyLevelError,
+  PrivacyLevel,
+  WishPrivacyLevel,
 } from '..';
 
 const validValues = [

@@ -4,7 +4,7 @@ import { UnitOfWork } from '../../../../core/domain/repositories';
 import { UserRepository } from '../../../../users/domain/repositories';
 import { User } from '../../../../users/domain/entities';
 import { EncryptionService } from '../../services';
-import { CreateUserHandler, CreateUserCommand } from '..';
+import { CreateUserCommand, CreateUserHandler } from '..';
 
 describe('users', () => {
   describe('application', () => {

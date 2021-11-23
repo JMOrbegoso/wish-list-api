@@ -3,7 +3,7 @@ import { NotFoundException } from '@nestjs/common';
 import { UnitOfWork } from '../../../../core/domain/repositories';
 import { UserRepository } from '../../../domain/repositories';
 import { User } from '../../../domain/entities';
-import { UpdateUserProfileHandler, UpdateUserProfileCommand } from '..';
+import { UpdateUserProfileCommand, UpdateUserProfileHandler } from '..';
 
 describe('users', () => {
   describe('application', () => {

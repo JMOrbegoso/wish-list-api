@@ -1,5 +1,5 @@
 import { ValueObject } from '../../../../core/domain/value-objects';
-import { InvalidCategoryNameError, CategoryNameIsTooLongError } from '..';
+import { CategoryNameIsTooLongError, InvalidCategoryNameError } from '..';
 
 export class CategoryName extends ValueObject<string> {
   public static readonly MaxLength = 100;

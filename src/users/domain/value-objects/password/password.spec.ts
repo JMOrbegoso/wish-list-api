@@ -1,7 +1,7 @@
 import {
-  Password,
   InvalidPasswordError,
   MalformedPasswordError,
+  Password,
   PasswordIsTooLongError,
   PasswordIsTooShortError,
 } from '..';

@@ -1,18 +1,18 @@
 import { AggregateRoot } from '../../../../core/domain/entities';
 import {
-  UniqueId,
   MillisecondsDate,
+  UniqueId,
   WebUrl,
 } from '../../../../core/domain/value-objects';
 import {
-  Email,
-  Username,
-  PasswordHash,
-  IsVerified,
-  IsBlocked,
-  FirstName,
-  LastName,
   Biography,
+  Email,
+  FirstName,
+  IsBlocked,
+  IsVerified,
+  LastName,
+  PasswordHash,
+  Username,
 } from '../../value-objects';
 
 export class User extends AggregateRoot {

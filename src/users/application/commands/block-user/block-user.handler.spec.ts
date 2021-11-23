@@ -3,7 +3,7 @@ import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { UnitOfWork } from '../../../../core/domain/repositories';
 import { UserRepository } from '../../../../users/domain/repositories';
 import { User } from '../../../../users/domain/entities';
-import { BlockUserHandler, BlockUserCommand } from '..';
+import { BlockUserCommand, BlockUserHandler } from '..';
 
 describe('users', () => {
   describe('application', () => {

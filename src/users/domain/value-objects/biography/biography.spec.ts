@@ -1,4 +1,4 @@
-import { Biography, InvalidBiographyError, BiographyIsTooLongError } from '..';
+import { Biography, BiographyIsTooLongError, InvalidBiographyError } from '..';
 
 const validValues = [
   'a'.repeat(Biography.MaxLength),

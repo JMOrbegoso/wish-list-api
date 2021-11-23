@@ -1,4 +1,4 @@
-import { IsBlocked, InvalidIsBlockedStatus } from '..';
+import { InvalidIsBlockedStatus, IsBlocked } from '..';
 
 const validValues = [true, false];
 

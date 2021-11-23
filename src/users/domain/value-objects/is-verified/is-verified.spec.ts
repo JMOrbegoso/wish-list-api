@@ -1,4 +1,4 @@
-import { IsVerified, InvalidIsVerifiedStatus } from '..';
+import { InvalidIsVerifiedStatus, IsVerified } from '..';
 
 const validValues = [true, false];
 

@@ -15,19 +15,19 @@ import {
 } from '../services';
 import { UsersController } from './users.controller';
 import {
-  GetUsersHandler,
-  GetUserByIdHandler,
   GetUserByEmailHandler,
+  GetUserByIdHandler,
   GetUserByUsernameHandler,
+  GetUsersHandler,
 } from '../../application/queries';
 import {
   BlockUserHandler,
   CreateUserHandler,
-  UpdateUserProfileHandler,
-  UpdateUserPasswordHandler,
   DeleteUserHandler,
   UnblockUserHandler,
   UndeleteUserHandler,
+  UpdateUserPasswordHandler,
+  UpdateUserProfileHandler,
 } from '../../application/commands';
 
 const queryHandlers = [

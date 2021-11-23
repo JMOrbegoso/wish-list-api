@@ -2,11 +2,11 @@ import { mocked } from 'ts-jest/utils';
 import { MockedObject } from 'ts-jest/dist/utils/testing';
 import { WishStage } from '..';
 import {
-  UniqueId,
   MillisecondsDate,
+  UniqueId,
   WebUrl,
 } from '../../../../core/domain/value-objects';
-import { WishTitle, WishDescription } from '../../value-objects';
+import { WishDescription, WishTitle } from '../../value-objects';
 
 const validValues = [
   [

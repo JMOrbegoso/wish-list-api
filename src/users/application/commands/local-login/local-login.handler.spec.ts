@@ -3,7 +3,7 @@ import { NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { UnitOfWork } from '../../../../core/domain/repositories';
 import { User } from '../../../domain/entities';
 import { EncryptionService } from '../../services';
-import { LocalLoginHandler, LocalLoginCommand } from '..';
+import { LocalLoginCommand, LocalLoginHandler } from '..';
 
 describe('users', () => {
   describe('application', () => {

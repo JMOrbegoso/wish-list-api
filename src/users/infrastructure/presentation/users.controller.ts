@@ -1,35 +1,35 @@
 import {
-  Controller,
-  Body,
-  Post,
-  Get,
-  Patch,
-  Delete,
-  Param,
   BadRequestException,
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
 } from '@nestjs/common';
 import {
+  ApiBadRequestResponse,
   ApiBody,
-  ApiTags,
-  ApiOkResponse,
   ApiCreatedResponse,
   ApiNotFoundResponse,
-  ApiBadRequestResponse,
+  ApiOkResponse,
+  ApiTags,
 } from '@nestjs/swagger';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import {
   CreateUserDto,
-  UserIdDto,
-  UserEmailDto,
-  UsernameDto,
-  UpdateUserProfileDto,
   UpdateUserPasswordDto,
+  UpdateUserProfileDto,
+  UserEmailDto,
+  UserIdDto,
+  UsernameDto,
 } from '../dtos';
 import { OutputUserDto } from '../../application/dtos';
 import {
   createUserDtoToCreateUserCommand,
-  updateUserProfileDtoToUpdateUserProfileCommand,
   updateUserPasswordDtoToUpdateUserPasswordCommand,
+  updateUserProfileDtoToUpdateUserProfileCommand,
 } from '../mappings';
 import {
   GetUserByEmailQuery,
@@ -43,8 +43,8 @@ import {
   DeleteUserCommand,
   UnblockUserCommand,
   UndeleteUserCommand,
-  UpdateUserProfileCommand,
   UpdateUserPasswordCommand,
+  UpdateUserProfileCommand,
 } from '../../application/commands';
 
 @ApiTags('UsersController')

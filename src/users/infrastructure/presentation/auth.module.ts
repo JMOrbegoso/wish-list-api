@@ -12,8 +12,8 @@ import { EncryptionServiceBcrypt } from '../services';
 import { AuthController } from './auth.controller';
 import { LocalLoginHandler } from '../../../users/application/commands';
 import {
-  LocalLoginPassportStrategy,
   JwtPassportStrategy,
+  LocalLoginPassportStrategy,
 } from '../passport-strategies';
 
 const commandHandlers = [LocalLoginHandler];

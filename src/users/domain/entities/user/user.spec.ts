@@ -2,19 +2,19 @@ import { mocked } from 'ts-jest/utils';
 import { MockedObject } from 'ts-jest/dist/utils/testing';
 import { User } from '..';
 import {
-  UniqueId,
   MillisecondsDate,
+  UniqueId,
   WebUrl,
 } from '../../../../core/domain/value-objects';
 import {
-  Email,
-  Username,
-  PasswordHash,
-  IsVerified,
-  IsBlocked,
-  FirstName,
-  LastName,
   Biography,
+  Email,
+  FirstName,
+  IsBlocked,
+  IsVerified,
+  LastName,
+  PasswordHash,
+  Username,
 } from '../../value-objects';
 
 const validValues = [

@@ -1,4 +1,4 @@
-import { WebUrl, InvalidWebUrlError, MalformedWebUrlError } from '..';
+import { InvalidWebUrlError, MalformedWebUrlError, WebUrl } from '..';
 
 const validValues = [
   'https://www.com',

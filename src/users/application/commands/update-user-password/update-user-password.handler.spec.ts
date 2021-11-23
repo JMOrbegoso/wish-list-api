@@ -4,7 +4,7 @@ import { UnitOfWork } from '../../../../core/domain/repositories';
 import { UserRepository } from '../../../domain/repositories';
 import { User } from '../../../domain/entities';
 import { EncryptionService } from '../../services';
-import { UpdateUserPasswordHandler, UpdateUserPasswordCommand } from '..';
+import { UpdateUserPasswordCommand, UpdateUserPasswordHandler } from '..';
 
 describe('users', () => {
   describe('application', () => {

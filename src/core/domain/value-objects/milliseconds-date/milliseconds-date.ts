@@ -1,4 +1,4 @@
-import { ValueObject, InvalidMillisecondsDateError } from '..';
+import { InvalidMillisecondsDateError, ValueObject } from '..';
 
 export class MillisecondsDate extends ValueObject<number> {
   protected validate(value: number): void {
