@@ -29,10 +29,10 @@ describe('core', () => {
           // Arrange
 
           // Act
-          const userName = UniqueId.create(valid);
+          const uniqueId = UniqueId.create(valid);
 
           // Assert
-          expect(userName.getId).toBe(valid);
+          expect(uniqueId.getId).toBe(valid);
         });
 
         test.each([
@@ -47,9 +47,9 @@ describe('core', () => {
             // Arrange
 
             // Act
-            const userName_1 = UniqueId.create(text1);
-            const userName_2 = UniqueId.create(text2);
-            const result = userName_1.equals(userName_2);
+            const uniqueId1 = UniqueId.create(text1);
+            const uniqueId2 = UniqueId.create(text2);
+            const result = uniqueId1.equals(uniqueId2);
 
             // Assert
             expect(result).toBe(false);
@@ -62,9 +62,9 @@ describe('core', () => {
             // Arrange
 
             // Act
-            const userName1 = UniqueId.create(text);
-            const userName2 = UniqueId.create(text);
-            const result = userName1.equals(userName2);
+            const uniqueId1 = UniqueId.create(text);
+            const uniqueId2 = UniqueId.create(text);
+            const result = uniqueId1.equals(uniqueId2);
 
             // Assert
             expect(result).toBe(true);

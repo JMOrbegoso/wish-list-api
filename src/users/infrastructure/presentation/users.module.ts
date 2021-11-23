@@ -8,22 +8,23 @@ import { UserEntity } from '../persistence/entities';
 import {
   EncryptionService,
   UniqueIdGeneratorService,
-} from '../../../users/application/services';
+} from '../../application/services';
 import {
   EncryptionServiceBcrypt,
   UniqueIdGeneratorServiceMongoDb,
 } from '../services';
-import { AccountsController } from './accounts.controller';
+import { UsersController } from './users.controller';
 import {
   GetUsersHandler,
   GetUserByIdHandler,
   GetUserByEmailHandler,
-  GetUserByUserNameHandler,
-} from '../../../users/application/queries';
+  GetUserByUsernameHandler,
+} from '../../application/queries';
 import {
   BlockUserHandler,
   CreateUserHandler,
-  UpdateUserHandler,
+  UpdateUserProfileHandler,
+  UpdateUserPasswordHandler,
   DeleteUserHandler,
   UnblockUserHandler,
   UndeleteUserHandler,
@@ -33,11 +34,12 @@ const queryHandlers = [
   GetUsersHandler,
   GetUserByIdHandler,
   GetUserByEmailHandler,
-  GetUserByUserNameHandler,
+  GetUserByUsernameHandler,
 ];
 const commandHandlers = [
   CreateUserHandler,
-  UpdateUserHandler,
+  UpdateUserProfileHandler,
+  UpdateUserPasswordHandler,
   DeleteUserHandler,
   UndeleteUserHandler,
   BlockUserHandler,
@@ -45,7 +47,7 @@ const commandHandlers = [
 ];
 
 @Module({
-  controllers: [AccountsController],
+  controllers: [UsersController],
   imports: [
     MikroOrmModule.forFeature([UserEntity]),
     UserRepositoryMongoDb,
@@ -62,4 +64,4 @@ const commandHandlers = [
     ...commandHandlers,
   ],
 })
-export class AccountsModule {}
+export class UsersModule {}

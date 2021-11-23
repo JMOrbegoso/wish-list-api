@@ -1,7 +1,8 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
+import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { UnitOfWork } from '../../../../core/domain/repositories';
-import { UndeleteUserCommand } from '..';
 import { UniqueId } from '../../../../core/domain/value-objects';
+import { UndeleteUserCommand } from '..';
 
 @CommandHandler(UndeleteUserCommand)
 export class UndeleteUserHandler
@@ -14,13 +15,13 @@ export class UndeleteUserHandler
 
     // Get user by id
     const user = await this.unitOfWork.userRepository.getOne(id);
-    if (!user) return null;
+    if (!user) throw new NotFoundException();
 
     // Check if the user is not deleted
-    if (!user.deletedAt) return;
+    if (!user.isDeleted) throw new BadRequestException('User is not deleted.');
 
     // Update the user properties
-    user.deletedAt = null;
+    user.undelete();
 
     // Add the updated user to the users repository
     this.unitOfWork.userRepository.update(user);

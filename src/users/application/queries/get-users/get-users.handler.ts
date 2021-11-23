@@ -1,15 +1,19 @@
 import { QueryHandler, IQueryHandler } from '@nestjs/cqrs';
 import { UnitOfWork } from '../../../../core/domain/repositories';
 import { User } from '../../../../users/domain/entities';
+import { OutputUserDto } from '../../dtos';
+import { userToOutputUserDto } from '../../mappings';
 import { GetUsersQuery } from '..';
 
 @QueryHandler(GetUsersQuery)
 export class GetUsersHandler implements IQueryHandler<GetUsersQuery> {
   constructor(private readonly unitOfWork: UnitOfWork) {}
 
-  async execute(query: GetUsersQuery): Promise<User[]> {
+  async execute(query: GetUsersQuery): Promise<OutputUserDto[]> {
     const {} = query;
 
-    return await this.unitOfWork.userRepository.getAll();
+    const users: User[] = await this.unitOfWork.userRepository.getAll();
+
+    return users.map((user) => userToOutputUserDto(user));
   }
 }

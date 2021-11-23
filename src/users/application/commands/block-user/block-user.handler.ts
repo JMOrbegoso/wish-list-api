@@ -1,8 +1,8 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
+import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { UnitOfWork } from '../../../../core/domain/repositories';
-import { BlockUserCommand } from '..';
 import { UniqueId } from '../../../../core/domain/value-objects';
-import { IsBlocked } from '../../../../users/domain/value-objects';
+import { BlockUserCommand } from '..';
 
 @CommandHandler(BlockUserCommand)
 export class BlockUserHandler implements ICommandHandler<BlockUserCommand> {
@@ -13,13 +13,14 @@ export class BlockUserHandler implements ICommandHandler<BlockUserCommand> {
 
     // Get user by id
     const user = await this.unitOfWork.userRepository.getOne(id);
-    if (!user) return null;
+    if (!user) throw new NotFoundException();
 
     // Check if the user is already blocked
-    if (user.isBlocked.getStatus) return;
+    if (user.isBlocked)
+      throw new BadRequestException('User is already blocked.');
 
     // Update the user properties
-    user.isBlocked = IsBlocked.blocked();
+    user.block();
 
     // Add the updated user to the users repository
     this.unitOfWork.userRepository.update(user);

@@ -29,11 +29,11 @@ export class UserEntity {
 
   @Unique()
   @Property()
-  userName: string;
+  username: string;
 
   @Unique()
   @Property()
-  normalizedUserName: string;
+  normalizedUsername: string;
 
   @Property()
   passwordHash: string;
@@ -59,8 +59,8 @@ export class UserEntity {
   @Property()
   updatedAt: Date;
 
-  @Property({ nullable: true })
-  biography?: string;
+  @Property()
+  biography: string;
 
   @Property({ nullable: true })
   profilePicture?: string;

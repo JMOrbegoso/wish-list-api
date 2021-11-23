@@ -1,18 +1,27 @@
 import { QueryHandler, IQueryHandler } from '@nestjs/cqrs';
+import { NotFoundException } from '@nestjs/common';
 import { UnitOfWork } from '../../../../core/domain/repositories';
 import { User } from '../../../../users/domain/entities';
-import { GetUserByUserNameQuery } from '..';
-import { UserName } from '../../../../users/domain/value-objects';
+import { OutputUserDto } from '../../dtos';
+import { Username } from '../../../../users/domain/value-objects';
+import { userToOutputUserDto } from '../../mappings';
+import { GetUserByUsernameQuery } from '..';
 
-@QueryHandler(GetUserByUserNameQuery)
-export class GetUserByUserNameHandler
-  implements IQueryHandler<GetUserByUserNameQuery>
+@QueryHandler(GetUserByUsernameQuery)
+export class GetUserByUsernameHandler
+  implements IQueryHandler<GetUserByUsernameQuery>
 {
   constructor(private readonly unitOfWork: UnitOfWork) {}
 
-  async execute(query: GetUserByUserNameQuery): Promise<User> {
-    const userName = UserName.create(query.username);
+  async execute(query: GetUserByUsernameQuery): Promise<OutputUserDto> {
+    const username = Username.create(query.username);
 
-    return await this.unitOfWork.userRepository.getOneByUserName(userName);
+    const user: User = await this.unitOfWork.userRepository.getOneByUsername(
+      username,
+    );
+
+    if (!user) throw new NotFoundException();
+
+    return userToOutputUserDto(user);
   }
 }

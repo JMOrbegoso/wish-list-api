@@ -10,9 +10,10 @@ import {
   MinLength,
   IsPositive,
   Matches,
+  IsMongoId,
 } from 'class-validator';
 import {
-  UserName,
+  Username,
   Password,
   FirstName,
   LastName,
@@ -20,6 +21,16 @@ import {
 } from '../../../users/domain/value-objects';
 
 export class CreateUserDto {
+  @ApiProperty({
+    type: String,
+    required: true,
+    description: 'User id.',
+    example: '61872ad79452fa50b7b70f80',
+  })
+  @IsMongoId()
+  @IsNotEmpty()
+  id: string;
+
   @ApiProperty({
     type: String,
     required: true,
@@ -39,8 +50,9 @@ export class CreateUserDto {
   })
   @IsString()
   @IsNotEmpty()
-  @MaxLength(UserName.MaxLength)
-  userName: string;
+  @MaxLength(Username.MaxLength)
+  @MinLength(Username.MinLength)
+  username: string;
 
   @ApiProperty({
     type: String,
@@ -93,12 +105,12 @@ export class CreateUserDto {
 
   @ApiProperty({
     type: String,
-    required: false,
+    required: true,
     description: 'User biography.',
     example: 'A nice person.',
   })
-  @IsOptional()
   @IsString()
+  @IsNotEmpty()
   @MaxLength(Biography.MaxLength)
   biography: string;
 

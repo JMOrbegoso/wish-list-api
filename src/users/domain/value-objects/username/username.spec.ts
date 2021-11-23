@@ -1,18 +1,18 @@
 import {
-  UserName,
-  InvalidUserNameError,
-  UserNameIsTooShortError,
-  UserNameIsTooLongError,
-  MalformedUserNameError,
+  Username,
+  InvalidUsernameError,
+  UsernameIsTooShortError,
+  UsernameIsTooLongError,
+  MalformedUsernameError,
 } from '..';
 
 const validValues = [
-  'a'.repeat(UserName.MinLength),
-  'a'.repeat(UserName.MaxLength),
-  '1'.repeat(UserName.MinLength),
-  '1'.repeat(UserName.MaxLength),
-  '_'.repeat(UserName.MinLength),
-  '_'.repeat(UserName.MaxLength),
+  'a'.repeat(Username.MinLength),
+  'a'.repeat(Username.MaxLength),
+  '1'.repeat(Username.MinLength),
+  '1'.repeat(Username.MaxLength),
+  '_'.repeat(Username.MinLength),
+  '_'.repeat(Username.MaxLength),
   'JohnDoe',
   'John_Doe',
   'Johnny_Doe',
@@ -32,62 +32,62 @@ describe('users', () => {
     describe('value-objects', () => {
       describe('username', () => {
         test.each([undefined, null, ''])(
-          'should throw an error when trying to create an UserName from %p',
+          'should throw an error when trying to create an Username from %p',
           (invalid) => {
             // Arrange
 
             // Act
 
             // Assert
-            expect(() => UserName.create(invalid)).toThrowError(
-              InvalidUserNameError,
+            expect(() => Username.create(invalid)).toThrowError(
+              InvalidUsernameError,
             );
           },
         );
 
         test.each([
-          'a'.repeat(UserName.MinLength - 1),
-          '1'.repeat(UserName.MinLength - 1),
-          'a'.repeat(UserName.MinLength - 3),
-          '1'.repeat(UserName.MinLength - 3),
+          'a'.repeat(Username.MinLength - 1),
+          '1'.repeat(Username.MinLength - 1),
+          'a'.repeat(Username.MinLength - 3),
+          '1'.repeat(Username.MinLength - 3),
           'AA',
           'AAA',
           'ABCDE',
           '11111',
         ])(
-          'should throw an error when trying to create an UserName from %p (Less characters than the limit)',
+          'should throw an error when trying to create an Username from %p (Less characters than the limit)',
           (shorter) => {
             // Arrange
 
             // Act
 
             // Assert
-            expect(() => UserName.create(shorter)).toThrowError(
-              UserNameIsTooShortError,
+            expect(() => Username.create(shorter)).toThrowError(
+              UsernameIsTooShortError,
             );
           },
         );
 
         test.each([
-          'a'.repeat(UserName.MaxLength + 1),
-          '1'.repeat(UserName.MaxLength + 1),
-          '_'.repeat(UserName.MaxLength + 1),
-          'a'.repeat(UserName.MaxLength + 5),
-          '1'.repeat(UserName.MaxLength + 5),
-          '_'.repeat(UserName.MaxLength + 5),
-          'a'.repeat(UserName.MaxLength + 10),
-          '1'.repeat(UserName.MaxLength + 10),
-          '_'.repeat(UserName.MaxLength + 10),
+          'a'.repeat(Username.MaxLength + 1),
+          '1'.repeat(Username.MaxLength + 1),
+          '_'.repeat(Username.MaxLength + 1),
+          'a'.repeat(Username.MaxLength + 5),
+          '1'.repeat(Username.MaxLength + 5),
+          '_'.repeat(Username.MaxLength + 5),
+          'a'.repeat(Username.MaxLength + 10),
+          '1'.repeat(Username.MaxLength + 10),
+          '_'.repeat(Username.MaxLength + 10),
         ])(
-          'should throw an error when trying to create an UserName from %p (More characters than the limit)',
+          'should throw an error when trying to create an Username from %p (More characters than the limit)',
           (larger) => {
             // Arrange
 
             // Act
 
             // Assert
-            expect(() => UserName.create(larger)).toThrowError(
-              UserNameIsTooLongError,
+            expect(() => Username.create(larger)).toThrowError(
+              UsernameIsTooLongError,
             );
           },
         );
@@ -103,27 +103,27 @@ describe('users', () => {
           'aaabbb,',
           'aaabbb§',
         ])(
-          'should throw an error when trying to create an UserName from %p (Malformed)',
+          'should throw an error when trying to create an Username from %p (Malformed)',
           (malformed) => {
             // Arrange
 
             // Act
 
             // Assert
-            expect(() => UserName.create(malformed)).toThrowError(
-              MalformedUserNameError,
+            expect(() => Username.create(malformed)).toThrowError(
+              MalformedUsernameError,
             );
           },
         );
 
-        test.each(validValues)('should create an UserName from %p', (valid) => {
+        test.each(validValues)('should create an Username from %p', (valid) => {
           // Arrange
 
           // Act
-          const userName = UserName.create(valid);
+          const username = Username.create(valid);
 
           // Assert
-          expect(userName.getUserName).toBe(valid);
+          expect(username.getUsername).toBe(valid);
         });
 
         test.each([
@@ -133,14 +133,14 @@ describe('users', () => {
           [validValues[2], validValues[0]],
           [validValues[0], validValues[3]],
         ])(
-          'comparing two UserName created from two different values (%p and %p) should return false',
+          'comparing two Username created from two different values (%p and %p) should return false',
           (text1, text2) => {
             // Arrange
 
             // Act
-            const userName_1 = UserName.create(text1);
-            const userName_2 = UserName.create(text2);
-            const result = userName_1.equals(userName_2);
+            const username1 = Username.create(text1);
+            const username2 = Username.create(text2);
+            const result = username1.equals(username2);
 
             // Assert
             expect(result).toBe(false);
@@ -148,14 +148,14 @@ describe('users', () => {
         );
 
         test.each(validValues)(
-          'comparing two UserName created from the same value (%p) should return true',
+          'comparing two Username created from the same value (%p) should return true',
           (text) => {
             // Arrange
 
             // Act
-            const userName1 = UserName.create(text);
-            const userName2 = UserName.create(text);
-            const result = userName1.equals(userName2);
+            const username1 = Username.create(text);
+            const username2 = Username.create(text);
+            const result = username1.equals(username2);
 
             // Assert
             expect(result).toBe(true);
