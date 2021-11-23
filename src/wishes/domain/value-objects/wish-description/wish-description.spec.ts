@@ -1,6 +1,6 @@
 import {
-  WishDescription,
   InvalidWishDescriptionError,
+  WishDescription,
   WishDescriptionIsTooLongError,
 } from '..';
 

@@ -1,8 +1,8 @@
 import {
   InvalidUsernameError,
-  UsernameIsTooShortError,
-  UsernameIsTooLongError,
   MalformedUsernameError,
+  UsernameIsTooLongError,
+  UsernameIsTooShortError,
 } from '..';
 import { ValueObject } from '../../../../core/domain/value-objects';
 import { normalizeString } from '../../../../core/helpers';

@@ -1,23 +1,23 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
-  IsString,
-  IsNumber,
   IsEmail,
-  IsUrl,
+  IsMongoId,
   IsNotEmpty,
+  IsNumber,
   IsOptional,
+  IsPositive,
+  IsString,
+  IsUrl,
+  Matches,
   MaxLength,
   MinLength,
-  IsPositive,
-  Matches,
-  IsMongoId,
 } from 'class-validator';
 import {
-  Username,
-  Password,
+  Biography,
   FirstName,
   LastName,
-  Biography,
+  Password,
+  Username,
 } from '../../../users/domain/value-objects';
 
 export class CreateUserDto {

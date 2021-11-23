@@ -1,36 +1,32 @@
 import {
-  Controller,
-  Body,
-  Post,
-  Get,
-  Patch,
-  Delete,
-  Param,
   BadRequestException,
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
 } from '@nestjs/common';
-import {
-  ApiBody,
-  ApiTags,
-  ApiOkResponse,
-  ApiCreatedResponse,
-  ApiNotFoundResponse,
-  ApiBadRequestResponse,
-} from '@nestjs/swagger';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import {
-  CreateUserDto,
-  UserIdDto,
-  UserEmailDto,
-  UsernameDto,
-  UpdateUserProfileDto,
-  UpdateUserPasswordDto,
-} from '../dtos';
-import { OutputUserDto } from '../../application/dtos';
+  ApiBadRequestResponse,
+  ApiBody,
+  ApiCreatedResponse,
+  ApiNotFoundResponse,
+  ApiOkResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import {
-  createUserDtoToCreateUserCommand,
-  updateUserProfileDtoToUpdateUserProfileCommand,
-  updateUserPasswordDtoToUpdateUserPasswordCommand,
-} from '../mappings';
+  BlockUserCommand,
+  CreateUserCommand,
+  DeleteUserCommand,
+  UnblockUserCommand,
+  UndeleteUserCommand,
+  UpdateUserPasswordCommand,
+  UpdateUserProfileCommand,
+} from '../../application/commands';
+import { OutputUserDto } from '../../application/dtos';
 import {
   GetUserByEmailQuery,
   GetUserByIdQuery,
@@ -38,14 +34,18 @@ import {
   GetUsersQuery,
 } from '../../application/queries';
 import {
-  BlockUserCommand,
-  CreateUserCommand,
-  DeleteUserCommand,
-  UnblockUserCommand,
-  UndeleteUserCommand,
-  UpdateUserProfileCommand,
-  UpdateUserPasswordCommand,
-} from '../../application/commands';
+  CreateUserDto,
+  UpdateUserPasswordDto,
+  UpdateUserProfileDto,
+  UserEmailDto,
+  UserIdDto,
+  UsernameDto,
+} from '../dtos';
+import {
+  createUserDtoToCreateUserCommand,
+  updateUserPasswordDtoToUpdateUserPasswordCommand,
+  updateUserProfileDtoToUpdateUserProfileCommand,
+} from '../mappings';
 
 @ApiTags('UsersController')
 @Controller('users')

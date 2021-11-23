@@ -1,4 +1,4 @@
-import { UniqueId, InvalidUniqueIdError } from '..';
+import { InvalidUniqueIdError, UniqueId } from '..';
 
 const validValues = [
   '1',

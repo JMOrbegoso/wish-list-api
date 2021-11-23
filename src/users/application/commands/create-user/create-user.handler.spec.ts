@@ -1,10 +1,10 @@
-import { mocked } from 'ts-jest/utils';
 import { BadRequestException } from '@nestjs/common';
+import { mocked } from 'ts-jest/utils';
+import { CreateUserCommand, CreateUserHandler } from '..';
 import { UnitOfWork } from '../../../../core/domain/repositories';
-import { UserRepository } from '../../../../users/domain/repositories';
 import { User } from '../../../../users/domain/entities';
+import { UserRepository } from '../../../../users/domain/repositories';
 import { EncryptionService } from '../../services';
-import { CreateUserHandler, CreateUserCommand } from '..';
 
 describe('users', () => {
   describe('application', () => {

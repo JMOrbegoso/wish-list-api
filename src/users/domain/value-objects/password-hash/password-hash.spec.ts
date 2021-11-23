@@ -1,4 +1,4 @@
-import { PasswordHash, InvalidPasswordHashError } from '..';
+import { InvalidPasswordHashError, PasswordHash } from '..';
 
 const validValues = [
   '$2a$10$Ro0CUfOqk6cXEKf3dyaM7OhSCvnwM9s4wIX9JeLapehKK5YdLxKcm',

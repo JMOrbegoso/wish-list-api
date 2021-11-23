@@ -1,6 +1,6 @@
 import { mocked } from 'ts-jest/utils';
-import { updateUserProfileDtoToUpdateUserProfileCommand } from '.';
 import { UpdateUserProfileDto } from '../dtos';
+import { updateUserProfileDtoToUpdateUserProfileCommand } from '.';
 
 const validValues = [
   [

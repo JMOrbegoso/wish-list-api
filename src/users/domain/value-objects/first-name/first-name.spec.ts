@@ -1,4 +1,4 @@
-import { FirstName, InvalidFirstNameError, FirstNameIsTooLongError } from '..';
+import { FirstName, FirstNameIsTooLongError, InvalidFirstNameError } from '..';
 
 const validValues = [
   'a'.repeat(FirstName.MaxLength),

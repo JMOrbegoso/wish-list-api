@@ -1,5 +1,5 @@
-import { CreateUserDto } from '../dtos';
 import { CreateUserCommand } from '../../../users/application/commands';
+import { CreateUserDto } from '../dtos';
 
 export function createUserDtoToCreateUserCommand(
   dto: CreateUserDto,

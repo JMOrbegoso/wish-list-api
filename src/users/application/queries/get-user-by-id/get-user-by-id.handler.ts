@@ -1,11 +1,11 @@
-import { QueryHandler, IQueryHandler } from '@nestjs/cqrs';
 import { NotFoundException } from '@nestjs/common';
+import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
+import { GetUserByIdQuery } from '..';
 import { UnitOfWork } from '../../../../core/domain/repositories';
+import { UniqueId } from '../../../../core/domain/value-objects';
 import { User } from '../../../../users/domain/entities';
 import { OutputUserDto } from '../../dtos';
-import { UniqueId } from '../../../../core/domain/value-objects';
 import { userToOutputUserDto } from '../../mappings';
-import { GetUserByIdQuery } from '..';
 
 @QueryHandler(GetUserByIdQuery)
 export class GetUserByIdHandler implements IQueryHandler<GetUserByIdQuery> {

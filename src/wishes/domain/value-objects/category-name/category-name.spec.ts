@@ -1,7 +1,7 @@
 import {
   CategoryName,
-  InvalidCategoryNameError,
   CategoryNameIsTooLongError,
+  InvalidCategoryNameError,
 } from '..';
 
 const validValues = [

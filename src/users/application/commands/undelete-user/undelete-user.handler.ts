@@ -1,8 +1,8 @@
-import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { BadRequestException, NotFoundException } from '@nestjs/common';
+import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
+import { UndeleteUserCommand } from '..';
 import { UnitOfWork } from '../../../../core/domain/repositories';
 import { UniqueId } from '../../../../core/domain/value-objects';
-import { UndeleteUserCommand } from '..';
 
 @CommandHandler(UndeleteUserCommand)
 export class UndeleteUserHandler

@@ -1,34 +1,34 @@
+import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
-import { MikroOrmModule } from '@mikro-orm/nestjs';
-import { UserRepositoryMongoDb } from '../persistence/repositories';
 import { UnitOfWork } from '../../../core/domain/repositories';
 import { UnitOfWorkMongoDb } from '../../../core/infrastructure/repositories';
-import { UserEntity } from '../persistence/entities';
+import {
+  BlockUserHandler,
+  CreateUserHandler,
+  DeleteUserHandler,
+  UnblockUserHandler,
+  UndeleteUserHandler,
+  UpdateUserPasswordHandler,
+  UpdateUserProfileHandler,
+} from '../../application/commands';
+import {
+  GetUserByEmailHandler,
+  GetUserByIdHandler,
+  GetUserByUsernameHandler,
+  GetUsersHandler,
+} from '../../application/queries';
 import {
   EncryptionService,
   UniqueIdGeneratorService,
 } from '../../application/services';
+import { UserEntity } from '../persistence/entities';
+import { UserRepositoryMongoDb } from '../persistence/repositories';
 import {
   EncryptionServiceBcrypt,
   UniqueIdGeneratorServiceMongoDb,
 } from '../services';
 import { UsersController } from './users.controller';
-import {
-  GetUsersHandler,
-  GetUserByIdHandler,
-  GetUserByEmailHandler,
-  GetUserByUsernameHandler,
-} from '../../application/queries';
-import {
-  BlockUserHandler,
-  CreateUserHandler,
-  UpdateUserProfileHandler,
-  UpdateUserPasswordHandler,
-  DeleteUserHandler,
-  UnblockUserHandler,
-  UndeleteUserHandler,
-} from '../../application/commands';
 
 const queryHandlers = [
   GetUsersHandler,

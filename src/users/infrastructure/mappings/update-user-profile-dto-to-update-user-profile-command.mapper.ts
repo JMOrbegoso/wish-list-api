@@ -1,5 +1,5 @@
-import { UpdateUserProfileDto } from '../dtos';
 import { UpdateUserProfileCommand } from '../../application/commands';
+import { UpdateUserProfileDto } from '../dtos';
 
 export function updateUserProfileDtoToUpdateUserProfileCommand(
   dto: UpdateUserProfileDto,

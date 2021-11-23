@@ -1,4 +1,4 @@
-import { MillisecondsDate, InvalidMillisecondsDateError } from '..';
+import { InvalidMillisecondsDateError, MillisecondsDate } from '..';
 
 const validValues = [
   new Date('1980-8-8'),

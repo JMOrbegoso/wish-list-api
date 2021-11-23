@@ -1,4 +1,4 @@
-import { ValueObject, InvalidUniqueIdError } from '..';
+import { InvalidUniqueIdError, ValueObject } from '..';
 
 export class UniqueId extends ValueObject<string> {
   protected validate(value: string): void {

@@ -1,6 +1,6 @@
 import { mocked } from 'ts-jest/utils';
-import { userEntityToUser } from '.';
 import { UserEntity } from '../persistence/entities';
+import { userEntityToUser } from '.';
 
 const validValues = [
   [

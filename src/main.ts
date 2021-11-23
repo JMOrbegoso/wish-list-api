@@ -1,9 +1,9 @@
-import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
+import { NestFactory } from '@nestjs/core';
 import { SwaggerModule } from '@nestjs/swagger';
 import { config as initDotenv } from 'dotenv';
-import { swaggerConfig } from './swagger.config';
 import { AppModule } from './app.module';
+import { swaggerConfig } from './swagger.config';
 
 async function bootstrap(): Promise<void> {
   // Initialize environment variables

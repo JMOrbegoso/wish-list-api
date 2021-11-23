@@ -1,4 +1,4 @@
-import { ValueObject, InvalidWebUrlError, MalformedWebUrlError } from '..';
+import { InvalidWebUrlError, MalformedWebUrlError, ValueObject } from '..';
 
 export class WebUrl extends ValueObject<string> {
   public static readonly Regex =

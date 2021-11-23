@@ -1,9 +1,9 @@
-import { mocked } from 'ts-jest/utils';
 import { NotFoundException } from '@nestjs/common';
+import { mocked } from 'ts-jest/utils';
+import { UpdateUserProfileCommand, UpdateUserProfileHandler } from '..';
 import { UnitOfWork } from '../../../../core/domain/repositories';
-import { UserRepository } from '../../../domain/repositories';
 import { User } from '../../../domain/entities';
-import { UpdateUserProfileHandler, UpdateUserProfileCommand } from '..';
+import { UserRepository } from '../../../domain/repositories';
 
 describe('users', () => {
   describe('application', () => {

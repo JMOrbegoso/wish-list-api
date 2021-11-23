@@ -1,9 +1,9 @@
-import { mocked } from 'ts-jest/utils';
 import { BadRequestException, NotFoundException } from '@nestjs/common';
+import { mocked } from 'ts-jest/utils';
+import { UnblockUserCommand, UnblockUserHandler } from '..';
 import { UnitOfWork } from '../../../../core/domain/repositories';
-import { UserRepository } from '../../../../users/domain/repositories';
 import { User } from '../../../../users/domain/entities';
-import { UnblockUserHandler, UnblockUserCommand } from '..';
+import { UserRepository } from '../../../../users/domain/repositories';
 
 describe('users', () => {
   describe('application', () => {

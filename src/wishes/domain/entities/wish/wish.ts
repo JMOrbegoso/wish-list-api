@@ -1,15 +1,15 @@
+import { WishStage, Wisher } from '..';
 import { AggregateRoot } from '../../../../core/domain/entities';
 import {
-  UniqueId,
   MillisecondsDate,
+  UniqueId,
   WebUrl,
 } from '../../../../core/domain/value-objects';
-import { WishStage, Wisher } from '..';
 import {
-  WishTitle,
+  CategoryName,
   WishDescription,
   WishPrivacyLevel,
-  CategoryName,
+  WishTitle,
 } from '../../value-objects';
 
 export class Wish extends AggregateRoot {

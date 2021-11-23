@@ -1,13 +1,13 @@
-import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { NotFoundException } from '@nestjs/common';
+import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
+import { UpdateUserProfileCommand } from '..';
 import { UnitOfWork } from '../../../../core/domain/repositories';
 import {
-  UniqueId,
   MillisecondsDate,
+  UniqueId,
   WebUrl,
 } from '../../../../core/domain/value-objects';
-import { FirstName, LastName, Biography } from '../../../domain/value-objects';
-import { UpdateUserProfileCommand } from '..';
+import { Biography, FirstName, LastName } from '../../../domain/value-objects';
 
 @CommandHandler(UpdateUserProfileCommand)
 export class UpdateUserProfileHandler

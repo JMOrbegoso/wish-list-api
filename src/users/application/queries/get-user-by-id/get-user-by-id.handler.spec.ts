@@ -1,8 +1,8 @@
-import { mocked } from 'ts-jest/utils';
 import { NotFoundException } from '@nestjs/common';
+import { mocked } from 'ts-jest/utils';
+import { GetUserByIdHandler, GetUserByIdQuery } from '..';
 import { UnitOfWork } from '../../../../core/domain/repositories';
 import { User } from '../../../../users/domain/entities';
-import { GetUserByIdHandler, GetUserByIdQuery } from '..';
 
 describe('users', () => {
   describe('application', () => {
