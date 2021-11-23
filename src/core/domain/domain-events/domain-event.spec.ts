@@ -1,5 +1,5 @@
-import { DomainEvent } from './domain-event';
 import { UniqueId } from '../value-objects';
+import { DomainEvent } from './domain-event';
 
 describe('core', () => {
   describe('domain', () => {

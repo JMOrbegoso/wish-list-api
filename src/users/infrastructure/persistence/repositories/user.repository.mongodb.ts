@@ -2,12 +2,12 @@ import {
   EntityRepository,
   Repository as MikroOrmRepository,
 } from '@mikro-orm/core';
-import { UserRepository } from '../../../domain/repositories';
-import { User } from '../../../domain/entities';
-import { UserEntity } from '../entities';
 import { UniqueId } from '../../../../core/domain/value-objects';
+import { User } from '../../../domain/entities';
+import { UserRepository } from '../../../domain/repositories';
 import { Email, Username } from '../../../domain/value-objects';
 import { userEntityToUser, userToUserEntity } from '../../mappings';
+import { UserEntity } from '../entities';
 
 @MikroOrmRepository(UserEntity)
 export class UserRepositoryMongoDb

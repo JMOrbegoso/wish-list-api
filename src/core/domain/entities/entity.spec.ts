@@ -1,7 +1,7 @@
-import { mocked } from 'ts-jest/utils';
 import { MockedObject } from 'ts-jest/dist/utils/testing';
-import { Entity } from './entity';
+import { mocked } from 'ts-jest/utils';
 import { UniqueId } from '../value-objects';
+import { Entity } from './entity';
 
 class Product extends Entity {
   public price: number;

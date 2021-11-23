@@ -1,10 +1,10 @@
+import { WishStage, Wisher } from '..';
 import { AggregateRoot } from '../../../../core/domain/entities';
 import {
   MillisecondsDate,
   UniqueId,
   WebUrl,
 } from '../../../../core/domain/value-objects';
-import { WishStage, Wisher } from '..';
 import {
   CategoryName,
   WishDescription,

@@ -1,7 +1,7 @@
 import { mocked } from 'ts-jest/utils';
+import { GetUsersHandler, GetUsersQuery } from '..';
 import { UnitOfWork } from '../../../../core/domain/repositories';
 import { User } from '../../../../users/domain/entities';
-import { GetUsersHandler, GetUsersQuery } from '..';
 
 describe('users', () => {
   describe('application', () => {

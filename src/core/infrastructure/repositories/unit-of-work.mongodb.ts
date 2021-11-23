@@ -1,8 +1,8 @@
-import { Injectable } from '@nestjs/common';
 import { MikroORM, UnitOfWork as MikroOrmUnitOfWork } from '@mikro-orm/core';
-import { UnitOfWork } from '../../domain/repositories';
-import { UserEntity } from '../../../users/infrastructure/persistence/entities';
+import { Injectable } from '@nestjs/common';
 import { UserRepository } from '../../../users/domain/repositories';
+import { UserEntity } from '../../../users/infrastructure/persistence/entities';
+import { UnitOfWork } from '../../domain/repositories';
 
 @Injectable()
 export class UnitOfWorkMongoDb

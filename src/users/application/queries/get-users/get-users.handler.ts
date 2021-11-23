@@ -1,9 +1,9 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
+import { GetUsersQuery } from '..';
 import { UnitOfWork } from '../../../../core/domain/repositories';
 import { User } from '../../../../users/domain/entities';
 import { OutputUserDto } from '../../dtos';
 import { userToOutputUserDto } from '../../mappings';
-import { GetUsersQuery } from '..';
 
 @QueryHandler(GetUsersQuery)
 export class GetUsersHandler implements IQueryHandler<GetUsersQuery> {

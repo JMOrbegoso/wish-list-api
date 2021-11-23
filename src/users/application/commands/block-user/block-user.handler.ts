@@ -1,8 +1,8 @@
-import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { BadRequestException, NotFoundException } from '@nestjs/common';
+import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
+import { BlockUserCommand } from '..';
 import { UnitOfWork } from '../../../../core/domain/repositories';
 import { UniqueId } from '../../../../core/domain/value-objects';
-import { BlockUserCommand } from '..';
 
 @CommandHandler(BlockUserCommand)
 export class BlockUserHandler implements ICommandHandler<BlockUserCommand> {

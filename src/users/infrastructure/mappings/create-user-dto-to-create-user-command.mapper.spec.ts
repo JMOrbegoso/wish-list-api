@@ -1,6 +1,6 @@
 import { mocked } from 'ts-jest/utils';
-import { createUserDtoToCreateUserCommand } from '.';
 import { CreateUserDto } from '../dtos';
+import { createUserDtoToCreateUserCommand } from '.';
 
 const validValues = [
   [

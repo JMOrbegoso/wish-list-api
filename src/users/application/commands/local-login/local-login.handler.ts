@@ -1,11 +1,11 @@
-import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
+import { LocalLoginCommand } from '..';
 import { UnitOfWork } from '../../../../core/domain/repositories';
 import { Username } from '../../../domain/value-objects';
-import { EncryptionService } from '../../services';
 import { OutputUserDto } from '../../dtos';
 import { userToOutputUserDto } from '../../mappings';
-import { LocalLoginCommand } from '..';
+import { EncryptionService } from '../../services';
 
 @CommandHandler(LocalLoginCommand)
 export class LocalLoginHandler implements ICommandHandler<LocalLoginCommand> {

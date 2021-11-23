@@ -1,6 +1,6 @@
 import { Options as MikroOrmOptions } from '@mikro-orm/core';
-import { Logger } from '@nestjs/common';
 import { MongoHighlighter } from '@mikro-orm/mongo-highlighter';
+import { Logger } from '@nestjs/common';
 
 const logger = new Logger('MikroORM');
 

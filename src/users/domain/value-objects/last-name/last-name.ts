@@ -1,5 +1,5 @@
-import { ValueObject } from '../../../../core/domain/value-objects';
 import { InvalidLastNameError, LastNameIsTooLongError } from '..';
+import { ValueObject } from '../../../../core/domain/value-objects';
 
 export class LastName extends ValueObject<string> {
   public static readonly MaxLength = 100;

@@ -1,5 +1,5 @@
-import { ValueObject } from '../../../../core/domain/value-objects';
 import { InvalidIsVerifiedStatus } from '..';
+import { ValueObject } from '../../../../core/domain/value-objects';
 
 export class IsVerified extends ValueObject<boolean> {
   static verified(): IsVerified {

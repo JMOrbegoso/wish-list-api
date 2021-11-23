@@ -1,5 +1,5 @@
-import { mocked } from 'ts-jest/utils';
 import { MockedObject } from 'ts-jest/dist/utils/testing';
+import { mocked } from 'ts-jest/utils';
 import { WishStage } from '..';
 import {
   MillisecondsDate,

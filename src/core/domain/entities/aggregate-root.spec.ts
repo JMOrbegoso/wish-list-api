@@ -1,8 +1,8 @@
-import { mocked } from 'ts-jest/utils';
 import { MockedObject } from 'ts-jest/dist/utils/testing';
-import { AggregateRoot } from '.';
+import { mocked } from 'ts-jest/utils';
 import { DomainEvent } from '../domain-events';
 import { UniqueId } from '../value-objects';
+import { AggregateRoot } from '.';
 
 class Order extends AggregateRoot {
   public price: number;

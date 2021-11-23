@@ -1,10 +1,10 @@
-import { mocked } from 'ts-jest/utils';
 import { NotFoundException } from '@nestjs/common';
-import { UnitOfWork } from '../../../../core/domain/repositories';
-import { UserRepository } from '../../../domain/repositories';
-import { User } from '../../../domain/entities';
-import { EncryptionService } from '../../services';
+import { mocked } from 'ts-jest/utils';
 import { UpdateUserPasswordCommand, UpdateUserPasswordHandler } from '..';
+import { UnitOfWork } from '../../../../core/domain/repositories';
+import { User } from '../../../domain/entities';
+import { UserRepository } from '../../../domain/repositories';
+import { EncryptionService } from '../../services';
 
 describe('users', () => {
   describe('application', () => {

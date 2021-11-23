@@ -7,6 +7,7 @@ module.exports = {
   plugins: ['@typescript-eslint/eslint-plugin'],
   extends: [
     'plugin:@typescript-eslint/recommended',
+    'plugin:import/recommended',
     'plugin:prettier/recommended',
   ],
   root: true,
@@ -34,6 +35,27 @@ module.exports = {
     '@typescript-eslint/naming-convention': [
       'error',
       { selector: 'typeLike', format: ['PascalCase'] },
+    ],
+    'import/no-unresolved': ['off'],
+    'import/order': [
+      'warn',
+      {
+        groups: [
+          'builtin',
+          'external',
+          'internal',
+          'parent',
+          'sibling',
+          'index',
+          'object',
+          'type',
+        ],
+        'newlines-between': 'never',
+        alphabetize: {
+          order: 'asc',
+          caseInsensitive: true,
+        },
+      },
     ],
   },
 };

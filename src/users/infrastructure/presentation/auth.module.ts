@@ -1,20 +1,20 @@
-import { Module } from '@nestjs/common';
-import { PassportModule } from '@nestjs/passport';
-import { CqrsModule } from '@nestjs/cqrs';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
+import { Module } from '@nestjs/common';
+import { CqrsModule } from '@nestjs/cqrs';
 import { JwtModule } from '@nestjs/jwt';
+import { PassportModule } from '@nestjs/passport';
 import { UnitOfWork } from '../../../core/domain/repositories';
 import { UnitOfWorkMongoDb } from '../../../core/infrastructure/repositories';
-import { UserRepositoryMongoDb } from '../persistence/repositories';
-import { UserEntity } from '../persistence/entities';
-import { EncryptionService } from '../../application/services';
-import { EncryptionServiceBcrypt } from '../services';
-import { AuthController } from './auth.controller';
 import { LocalLoginHandler } from '../../../users/application/commands';
+import { EncryptionService } from '../../application/services';
 import {
   JwtPassportStrategy,
   LocalLoginPassportStrategy,
 } from '../passport-strategies';
+import { UserEntity } from '../persistence/entities';
+import { UserRepositoryMongoDb } from '../persistence/repositories';
+import { EncryptionServiceBcrypt } from '../services';
+import { AuthController } from './auth.controller';
 
 const commandHandlers = [LocalLoginHandler];
 const passportStrategies = [LocalLoginPassportStrategy, JwtPassportStrategy];

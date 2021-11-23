@@ -1,13 +1,13 @@
-import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { BadRequestException } from '@nestjs/common';
-import { UnitOfWork } from '../../../../core/domain/repositories';
-import { User } from '../../../domain/entities';
+import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { CreateUserCommand } from '..';
+import { UnitOfWork } from '../../../../core/domain/repositories';
 import {
   MillisecondsDate,
   UniqueId,
   WebUrl,
 } from '../../../../core/domain/value-objects';
+import { User } from '../../../domain/entities';
 import {
   Biography,
   Email,

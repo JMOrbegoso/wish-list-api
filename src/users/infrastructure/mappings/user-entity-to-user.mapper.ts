@@ -1,10 +1,9 @@
-import { User } from '../../domain/entities';
-import { UserEntity } from '../persistence/entities';
 import {
   MillisecondsDate,
   UniqueId,
   WebUrl,
 } from '../../../core/domain/value-objects';
+import { User } from '../../domain/entities';
 import {
   Biography,
   Email,
@@ -15,6 +14,7 @@ import {
   PasswordHash,
   Username,
 } from '../../domain/value-objects';
+import { UserEntity } from '../persistence/entities';
 
 export function userEntityToUser(userEntity: UserEntity): User {
   const id = UniqueId.create(userEntity.id);
