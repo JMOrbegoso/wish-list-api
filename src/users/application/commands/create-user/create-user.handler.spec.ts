@@ -2,7 +2,6 @@ import { BadRequestException } from '@nestjs/common';
 import { mocked } from 'ts-jest/utils';
 import { CreateUserCommand, CreateUserHandler } from '..';
 import { UnitOfWork } from '../../../../core/domain/repositories';
-import { User } from '../../../../users/domain/entities';
 import { UserRepository } from '../../../../users/domain/repositories';
 import { EncryptionService } from '../../services';
 
@@ -10,103 +9,14 @@ describe('users', () => {
   describe('application', () => {
     describe('commands', () => {
       describe('create-user', () => {
-        test('should throw BadRequestException because already exist an User with that Id', () => {
+        test('should throw BadRequestException because already exist an User with that Id, Email or Username', () => {
           // Arrange
-          const user = mocked<User>({
-            id: {
-              getId: 'id-0',
-            },
-          } as unknown as User);
-
           const encryptionService = mocked<EncryptionService>(
             {} as unknown as EncryptionService,
           );
 
           const userRepository = mocked<UserRepository>({
-            getOne: jest.fn().mockReturnValue(user),
-          } as unknown as UserRepository);
-
-          const unitOfWork = mocked<UnitOfWork>({
-            userRepository: userRepository,
-          } as unknown as UnitOfWork);
-
-          const command = mocked<CreateUserCommand>({
-            id: 'id-0',
-            email: 'email0@email.com',
-            username: 'John_Doe_0',
-          } as unknown as CreateUserCommand);
-
-          const handler = new CreateUserHandler(
-            unitOfWork,
-            userRepository,
-            encryptionService,
-          );
-
-          // Act
-
-          // Assert
-          return expect(handler.execute(command)).rejects.toThrowError(
-            BadRequestException,
-          );
-        });
-
-        test('should throw BadRequestException because already exist an User with that Email', () => {
-          // Arrange
-          const user = mocked<User>({
-            id: {
-              getId: 'id-0',
-            },
-          } as unknown as User);
-
-          const encryptionService = mocked<EncryptionService>(
-            {} as unknown as EncryptionService,
-          );
-
-          const userRepository = mocked<UserRepository>({
-            getOne: jest.fn().mockReturnValue(null),
-            getOneByEmail: jest.fn().mockReturnValue(user),
-          } as unknown as UserRepository);
-
-          const unitOfWork = mocked<UnitOfWork>({
-            userRepository: userRepository,
-          } as unknown as UnitOfWork);
-
-          const command = mocked<CreateUserCommand>({
-            id: 'id-0',
-            email: 'email0@email.com',
-            username: 'John_Doe_0',
-          } as unknown as CreateUserCommand);
-
-          const handler = new CreateUserHandler(
-            unitOfWork,
-            userRepository,
-            encryptionService,
-          );
-
-          // Act
-
-          // Assert
-          return expect(handler.execute(command)).rejects.toThrowError(
-            BadRequestException,
-          );
-        });
-
-        test('should throw BadRequestException because already exist an User with that Username', () => {
-          // Arrange
-          const user = mocked<User>({
-            id: {
-              getId: 'id-0',
-            },
-          } as unknown as User);
-
-          const encryptionService = mocked<EncryptionService>(
-            {} as unknown as EncryptionService,
-          );
-
-          const userRepository = mocked<UserRepository>({
-            getOne: jest.fn().mockReturnValue(null),
-            getOneByEmail: jest.fn().mockReturnValue(null),
-            getOneByUsername: jest.fn().mockReturnValue(user),
+            userExists: jest.fn().mockReturnValue(true),
           } as unknown as UserRepository);
 
           const unitOfWork = mocked<UnitOfWork>({
@@ -140,9 +50,7 @@ describe('users', () => {
           } as unknown as EncryptionService);
 
           const userRepository = mocked<UserRepository>({
-            getOne: jest.fn().mockReturnValue(null),
-            getOneByEmail: jest.fn().mockReturnValue(null),
-            getOneByUsername: jest.fn().mockReturnValue(null),
+            userExists: jest.fn().mockReturnValue(false),
             add: jest.fn(),
           } as unknown as UserRepository);
 

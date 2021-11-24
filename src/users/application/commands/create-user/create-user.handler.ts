@@ -36,21 +36,13 @@ export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
     const username = Username.create(command.username);
 
     // Check if the id is in use by other user
-    const userWithSameId = await this.userRepository.getOne(id);
-    if (userWithSameId)
-      throw new BadRequestException('The Id is already in use.');
-
-    // Check if the email is in use by other user
-    const userWithSameEmail = await this.userRepository.getOneByEmail(email);
-    if (userWithSameEmail)
-      throw new BadRequestException('The Email is already in use.');
-
-    // Check if the username is in use by other user
-    const userWithSameUsername = await this.userRepository.getOneByUsername(
+    const userExists = await this.userRepository.userExists(
+      id,
+      email,
       username,
     );
-    if (userWithSameUsername)
-      throw new BadRequestException('The Username is already in use.');
+    if (userExists)
+      throw new BadRequestException('Id, Email or Username already in use.');
 
     // Generate the properties of the new User
     const hash = this.encryptionService.hashPassword(command.password);
