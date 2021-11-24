@@ -3,16 +3,20 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { DeleteUserCommand } from '..';
 import { UnitOfWork } from '../../../../core/domain/repositories';
 import { UniqueId } from '../../../../core/domain/value-objects';
+import { UserRepository } from '../../../../users/domain/repositories';
 
 @CommandHandler(DeleteUserCommand)
 export class DeleteUserHandler implements ICommandHandler<DeleteUserCommand> {
-  constructor(private readonly unitOfWork: UnitOfWork) {}
+  constructor(
+    private readonly unitOfWork: UnitOfWork,
+    private readonly userRepository: UserRepository,
+  ) {}
 
   async execute(command: DeleteUserCommand): Promise<void> {
     const id = UniqueId.create(command.id);
 
     // Get user by id
-    const user = await this.unitOfWork.userRepository.getOne(id);
+    const user = await this.userRepository.getOne(id);
     if (!user) throw new NotFoundException();
 
     // Check if the user is already deleted
@@ -23,7 +27,7 @@ export class DeleteUserHandler implements ICommandHandler<DeleteUserCommand> {
     user.delete();
 
     // Add the updated user to the users repository
-    this.unitOfWork.userRepository.update(user);
+    this.userRepository.update(user);
 
     // Save changes using Unit of Work
     await this.unitOfWork.commitChanges();

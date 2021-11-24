@@ -7,19 +7,23 @@ import {
   UniqueId,
   WebUrl,
 } from '../../../../core/domain/value-objects';
+import { UserRepository } from '../../../../users/domain/repositories';
 import { Biography, FirstName, LastName } from '../../../domain/value-objects';
 
 @CommandHandler(UpdateUserProfileCommand)
 export class UpdateUserProfileHandler
   implements ICommandHandler<UpdateUserProfileCommand>
 {
-  constructor(private readonly unitOfWork: UnitOfWork) {}
+  constructor(
+    private readonly unitOfWork: UnitOfWork,
+    private readonly userRepository: UserRepository,
+  ) {}
 
   async execute(command: UpdateUserProfileCommand): Promise<void> {
     const id = UniqueId.create(command.id);
 
     // Get user by id
-    const user = await this.unitOfWork.userRepository.getOne(id);
+    const user = await this.userRepository.getOne(id);
     if (!user) throw new NotFoundException();
 
     // Generate the properties of the User
@@ -41,7 +45,7 @@ export class UpdateUserProfileHandler
     );
 
     // Add the new user to the users repository
-    this.unitOfWork.userRepository.update(user);
+    this.userRepository.update(user);
 
     // Save changes using Unit of Work
     await this.unitOfWork.commitChanges();

@@ -22,10 +22,12 @@ describe('users', () => {
             {} as unknown as EncryptionService,
           );
 
+          const userRepository = mocked<UserRepository>({
+            getOne: jest.fn().mockReturnValue(user),
+          } as unknown as UserRepository);
+
           const unitOfWork = mocked<UnitOfWork>({
-            userRepository: {
-              getOne: jest.fn().mockReturnValue(user),
-            },
+            userRepository: userRepository,
           } as unknown as UnitOfWork);
 
           const command = mocked<CreateUserCommand>({
@@ -34,7 +36,11 @@ describe('users', () => {
             username: 'John_Doe_0',
           } as unknown as CreateUserCommand);
 
-          const handler = new CreateUserHandler(unitOfWork, encryptionService);
+          const handler = new CreateUserHandler(
+            unitOfWork,
+            userRepository,
+            encryptionService,
+          );
 
           // Act
 
@@ -56,11 +62,13 @@ describe('users', () => {
             {} as unknown as EncryptionService,
           );
 
+          const userRepository = mocked<UserRepository>({
+            getOne: jest.fn().mockReturnValue(null),
+            getOneByEmail: jest.fn().mockReturnValue(user),
+          } as unknown as UserRepository);
+
           const unitOfWork = mocked<UnitOfWork>({
-            userRepository: {
-              getOne: jest.fn().mockReturnValue(null),
-              getOneByEmail: jest.fn().mockReturnValue(user),
-            },
+            userRepository: userRepository,
           } as unknown as UnitOfWork);
 
           const command = mocked<CreateUserCommand>({
@@ -69,7 +77,11 @@ describe('users', () => {
             username: 'John_Doe_0',
           } as unknown as CreateUserCommand);
 
-          const handler = new CreateUserHandler(unitOfWork, encryptionService);
+          const handler = new CreateUserHandler(
+            unitOfWork,
+            userRepository,
+            encryptionService,
+          );
 
           // Act
 
@@ -91,12 +103,14 @@ describe('users', () => {
             {} as unknown as EncryptionService,
           );
 
+          const userRepository = mocked<UserRepository>({
+            getOne: jest.fn().mockReturnValue(null),
+            getOneByEmail: jest.fn().mockReturnValue(null),
+            getOneByUsername: jest.fn().mockReturnValue(user),
+          } as unknown as UserRepository);
+
           const unitOfWork = mocked<UnitOfWork>({
-            userRepository: {
-              getOne: jest.fn().mockReturnValue(null),
-              getOneByEmail: jest.fn().mockReturnValue(null),
-              getOneByUsername: jest.fn().mockReturnValue(user),
-            },
+            userRepository: userRepository,
           } as unknown as UnitOfWork);
 
           const command = mocked<CreateUserCommand>({
@@ -105,7 +119,11 @@ describe('users', () => {
             username: 'John_Doe_0',
           } as unknown as CreateUserCommand);
 
-          const handler = new CreateUserHandler(unitOfWork, encryptionService);
+          const handler = new CreateUserHandler(
+            unitOfWork,
+            userRepository,
+            encryptionService,
+          );
 
           // Act
 
@@ -145,7 +163,11 @@ describe('users', () => {
             profilePicture: 'https://www.example.com/0.jpg',
           } as unknown as CreateUserCommand);
 
-          const handler = new CreateUserHandler(unitOfWork, encryptionService);
+          const handler = new CreateUserHandler(
+            unitOfWork,
+            userRepository,
+            encryptionService,
+          );
 
           // Act
           await handler.execute(command);

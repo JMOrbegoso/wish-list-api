@@ -1,8 +1,8 @@
 import { NotFoundException } from '@nestjs/common';
 import { mocked } from 'ts-jest/utils';
 import { GetUserByEmailHandler, GetUserByEmailQuery } from '..';
-import { UnitOfWork } from '../../../../core/domain/repositories';
 import { User } from '../../../../users/domain/entities';
+import { UserRepository } from '../../../../users/domain/repositories';
 
 describe('users', () => {
   describe('application', () => {
@@ -10,17 +10,15 @@ describe('users', () => {
       describe('get-user-by-email', () => {
         test('should throw NotFoundException', () => {
           // Arrange
-          const unitOfWork = mocked<UnitOfWork>({
-            userRepository: {
-              getOneByEmail: jest.fn().mockReturnValue(null),
-            },
-          } as unknown as UnitOfWork);
+          const userRepository = mocked<UserRepository>({
+            getOneByEmail: jest.fn().mockReturnValue(null),
+          } as unknown as UserRepository);
 
           const query = mocked<GetUserByEmailQuery>({
             email: 'john@doe.com',
           } as unknown as GetUserByEmailQuery);
 
-          const handler = new GetUserByEmailHandler(unitOfWork);
+          const handler = new GetUserByEmailHandler(userRepository);
 
           // Act
 
@@ -73,17 +71,15 @@ describe('users', () => {
             },
           } as unknown as User);
 
-          const unitOfWork = mocked<UnitOfWork>({
-            userRepository: {
-              getOneByEmail: jest.fn().mockReturnValue(user),
-            },
-          } as unknown as UnitOfWork);
+          const userRepository = mocked<UserRepository>({
+            getOneByEmail: jest.fn().mockReturnValue(user),
+          } as unknown as UserRepository);
 
           const query = mocked<GetUserByEmailQuery>({
             email: 'john@doe.com',
           } as unknown as GetUserByEmailQuery);
 
-          const handler = new GetUserByEmailHandler(unitOfWork);
+          const handler = new GetUserByEmailHandler(userRepository);
 
           // Act
           const outputUserDto = await handler.execute(query);

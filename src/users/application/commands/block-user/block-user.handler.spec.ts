@@ -11,17 +11,19 @@ describe('users', () => {
       describe('block-user', () => {
         test('should throw NotFoundException', () => {
           // Arrange
+          const userRepository = mocked<UserRepository>({
+            getOne: jest.fn().mockReturnValue(null),
+          } as unknown as UserRepository);
+
           const unitOfWork = mocked<UnitOfWork>({
-            userRepository: {
-              getOne: jest.fn().mockReturnValue(null),
-            },
+            userRepository: userRepository,
           } as unknown as UnitOfWork);
 
           const command = mocked<BlockUserCommand>({
             id: 'id-0',
           } as unknown as BlockUserCommand);
 
-          const handler = new BlockUserHandler(unitOfWork);
+          const handler = new BlockUserHandler(unitOfWork, userRepository);
 
           // Act
 
@@ -74,17 +76,19 @@ describe('users', () => {
             },
           } as unknown as User);
 
+          const userRepository = mocked<UserRepository>({
+            getOne: jest.fn().mockReturnValue(user),
+          } as unknown as UserRepository);
+
           const unitOfWork = mocked<UnitOfWork>({
-            userRepository: {
-              getOne: jest.fn().mockReturnValue(user),
-            },
+            userRepository: userRepository,
           } as unknown as UnitOfWork);
 
           const command = mocked<BlockUserCommand>({
             id: 'id-0',
           } as unknown as BlockUserCommand);
 
-          const handler = new BlockUserHandler(unitOfWork);
+          const handler = new BlockUserHandler(unitOfWork, userRepository);
 
           // Act
 
@@ -152,7 +156,7 @@ describe('users', () => {
             id: 'id-0',
           } as unknown as BlockUserCommand);
 
-          const handler = new BlockUserHandler(unitOfWork);
+          const handler = new BlockUserHandler(unitOfWork, userRepository);
 
           // Act
           await handler.execute(command);

@@ -1,8 +1,8 @@
 import { NotFoundException } from '@nestjs/common';
 import { mocked } from 'ts-jest/utils';
 import { GetUserByUsernameHandler, GetUserByUsernameQuery } from '..';
-import { UnitOfWork } from '../../../../core/domain/repositories';
 import { User } from '../../../../users/domain/entities';
+import { UserRepository } from '../../../../users/domain/repositories';
 
 describe('users', () => {
   describe('application', () => {
@@ -10,17 +10,15 @@ describe('users', () => {
       describe('get-user-by-username', () => {
         test('should throw NotFoundException', () => {
           // Arrange
-          const unitOfWork = mocked<UnitOfWork>({
-            userRepository: {
-              getOneByUsername: jest.fn().mockReturnValue(null),
-            },
-          } as unknown as UnitOfWork);
+          const userRepository = mocked<UserRepository>({
+            getOneByUsername: jest.fn().mockReturnValue(null),
+          } as unknown as UserRepository);
 
           const query = mocked<GetUserByUsernameQuery>({
             username: 'JohnDoe',
           } as unknown as GetUserByUsernameQuery);
 
-          const handler = new GetUserByUsernameHandler(unitOfWork);
+          const handler = new GetUserByUsernameHandler(userRepository);
 
           // Act
 
@@ -73,17 +71,15 @@ describe('users', () => {
             },
           } as unknown as User);
 
-          const unitOfWork = mocked<UnitOfWork>({
-            userRepository: {
-              getOneByUsername: jest.fn().mockReturnValue(user),
-            },
-          } as unknown as UnitOfWork);
+          const userRepository = mocked<UserRepository>({
+            getOneByUsername: jest.fn().mockReturnValue(user),
+          } as unknown as UserRepository);
 
           const query = mocked<GetUserByUsernameQuery>({
             username: 'JohnDoe',
           } as unknown as GetUserByUsernameQuery);
 
-          const handler = new GetUserByUsernameHandler(unitOfWork);
+          const handler = new GetUserByUsernameHandler(userRepository);
 
           // Act
           const outputUserDto = await handler.execute(query);

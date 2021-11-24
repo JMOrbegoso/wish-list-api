@@ -3,6 +3,7 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { UpdateUserPasswordCommand } from '..';
 import { UnitOfWork } from '../../../../core/domain/repositories';
 import { UniqueId } from '../../../../core/domain/value-objects';
+import { UserRepository } from '../../../../users/domain/repositories';
 import { PasswordHash } from '../../../domain/value-objects';
 import { EncryptionService } from '../../services';
 
@@ -12,6 +13,7 @@ export class UpdateUserPasswordHandler
 {
   constructor(
     private readonly unitOfWork: UnitOfWork,
+    private readonly userRepository: UserRepository,
     private readonly encryptionService: EncryptionService,
   ) {}
 
@@ -19,7 +21,7 @@ export class UpdateUserPasswordHandler
     const id = UniqueId.create(command.id);
 
     // Get user by id
-    const user = await this.unitOfWork.userRepository.getOne(id);
+    const user = await this.userRepository.getOne(id);
     if (!user) throw new NotFoundException();
 
     // Generate the new User password hash
@@ -30,7 +32,7 @@ export class UpdateUserPasswordHandler
     user.updatePasswordHash(passwordHash);
 
     // Add the new user to the users repository
-    this.unitOfWork.userRepository.update(user);
+    this.userRepository.update(user);
 
     // Save changes using Unit of Work
     await this.unitOfWork.commitChanges();

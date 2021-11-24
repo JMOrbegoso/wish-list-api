@@ -7,6 +7,7 @@ import {
   UniqueId,
   WebUrl,
 } from '../../../../core/domain/value-objects';
+import { UserRepository } from '../../../../users/domain/repositories';
 import { User } from '../../../domain/entities';
 import {
   Biography,
@@ -24,6 +25,7 @@ import { EncryptionService } from '../../services';
 export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
   constructor(
     private readonly unitOfWork: UnitOfWork,
+    private readonly userRepository: UserRepository,
     private readonly encryptionService: EncryptionService,
   ) {}
 
@@ -34,19 +36,19 @@ export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
     const username = Username.create(command.username);
 
     // Check if the id is in use by other user
-    const userWithSameId = await this.unitOfWork.userRepository.getOne(id);
+    const userWithSameId = await this.userRepository.getOne(id);
     if (userWithSameId)
       throw new BadRequestException('The Id is already in use.');
 
     // Check if the email is in use by other user
-    const userWithSameEmail =
-      await this.unitOfWork.userRepository.getOneByEmail(email);
+    const userWithSameEmail = await this.userRepository.getOneByEmail(email);
     if (userWithSameEmail)
       throw new BadRequestException('The Email is already in use.');
 
     // Check if the username is in use by other user
-    const userWithSameUsername =
-      await this.unitOfWork.userRepository.getOneByUsername(username);
+    const userWithSameUsername = await this.userRepository.getOneByUsername(
+      username,
+    );
     if (userWithSameUsername)
       throw new BadRequestException('The Username is already in use.');
 
@@ -83,7 +85,7 @@ export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
     );
 
     // Add the new user to the users repository
-    this.unitOfWork.userRepository.add(user);
+    this.userRepository.add(user);
 
     // Save changes using Unit of Work
     await this.unitOfWork.commitChanges();

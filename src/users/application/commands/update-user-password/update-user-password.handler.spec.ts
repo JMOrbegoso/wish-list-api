@@ -12,10 +12,12 @@ describe('users', () => {
       describe('update-user-password', () => {
         test('should throw NotFoundException', () => {
           // Arrange
+          const userRepository = mocked<UserRepository>({
+            getOne: jest.fn().mockReturnValue(null),
+          } as unknown as UserRepository);
+
           const unitOfWork = mocked<UnitOfWork>({
-            userRepository: {
-              getOne: jest.fn().mockReturnValue(null),
-            },
+            userRepository: userRepository,
           } as unknown as UnitOfWork);
 
           const encryptionService = mocked<EncryptionService>(
@@ -28,6 +30,7 @@ describe('users', () => {
 
           const handler = new UpdateUserPasswordHandler(
             unitOfWork,
+            userRepository,
             encryptionService,
           );
 
@@ -108,6 +111,7 @@ describe('users', () => {
 
           const handler = new UpdateUserPasswordHandler(
             unitOfWork,
+            userRepository,
             encryptionService,
           );
 
