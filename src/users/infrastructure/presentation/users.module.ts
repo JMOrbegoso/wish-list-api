@@ -22,6 +22,7 @@ import {
   EncryptionService,
   UniqueIdGeneratorService,
 } from '../../application/services';
+import { UserRepository } from '../../domain/repositories/user.repository';
 import { UserEntity } from '../persistence/entities';
 import { UserRepositoryMongoDb } from '../persistence/repositories';
 import {
@@ -48,12 +49,9 @@ const commandHandlers = [
 
 @Module({
   controllers: [UsersController],
-  imports: [
-    MikroOrmModule.forFeature([UserEntity]),
-    UserRepositoryMongoDb,
-    CqrsModule,
-  ],
+  imports: [MikroOrmModule.forFeature([UserEntity]), CqrsModule],
   providers: [
+    { provide: UserRepository, useClass: UserRepositoryMongoDb },
     { provide: UnitOfWork, useClass: UnitOfWorkMongoDb },
     { provide: EncryptionService, useClass: EncryptionServiceBcrypt },
     {

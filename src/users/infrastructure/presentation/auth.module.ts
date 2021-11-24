@@ -6,6 +6,7 @@ import { PassportModule } from '@nestjs/passport';
 import { UnitOfWork } from '../../../core/domain/repositories';
 import { UnitOfWorkMongoDb } from '../../../core/infrastructure/repositories';
 import { LocalLoginHandler } from '../../../users/application/commands';
+import { UserRepository } from '../../../users/domain/repositories';
 import { EncryptionService } from '../../application/services';
 import {
   JwtPassportStrategy,
@@ -23,7 +24,6 @@ const passportStrategies = [LocalLoginPassportStrategy, JwtPassportStrategy];
   controllers: [AuthController],
   imports: [
     MikroOrmModule.forFeature([UserEntity]),
-    UserRepositoryMongoDb,
     CqrsModule,
     PassportModule,
     JwtModule.registerAsync({
@@ -34,6 +34,7 @@ const passportStrategies = [LocalLoginPassportStrategy, JwtPassportStrategy];
     }),
   ],
   providers: [
+    { provide: UserRepository, useClass: UserRepositoryMongoDb },
     { provide: UnitOfWork, useClass: UnitOfWorkMongoDb },
     { provide: EncryptionService, useClass: EncryptionServiceBcrypt },
     ...commandHandlers,
