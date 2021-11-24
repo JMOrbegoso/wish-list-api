@@ -15,7 +15,7 @@ export class UserRepositoryMongoDb
   extends EntityRepository<UserEntity>
   implements UserRepository
 {
-  constructor(private readonly orm: MikroORM) {
+  constructor(orm: MikroORM) {
     super(orm.em, UserEntity);
   }
 
