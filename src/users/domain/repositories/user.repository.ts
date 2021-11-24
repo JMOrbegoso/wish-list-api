@@ -4,6 +4,12 @@ import { User } from '../entities';
 import { Email, Username } from '../value-objects';
 
 export abstract class UserRepository implements Repository<User> {
+  abstract userExists(
+    id: UniqueId,
+    email: Email,
+    username: Username,
+  ): Promise<boolean>;
+
   abstract getOneByEmail(email: Email): Promise<User>;
 
   abstract getOneByUsername(username: Username): Promise<User>;

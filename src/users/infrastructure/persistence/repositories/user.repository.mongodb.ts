@@ -3,6 +3,7 @@ import {
   MikroORM,
   Repository as MikroOrmRepository,
 } from '@mikro-orm/core';
+import { Query } from '@mikro-orm/core/typings';
 import { UniqueId } from '../../../../core/domain/value-objects';
 import { User } from '../../../domain/entities';
 import { UserRepository } from '../../../domain/repositories';
@@ -17,6 +18,25 @@ export class UserRepositoryMongoDb
 {
   constructor(orm: MikroORM) {
     super(orm.em, UserEntity);
+  }
+
+  async userExists(
+    id: UniqueId,
+    email: Email,
+    username: Username,
+  ): Promise<boolean> {
+    const queries: Query<UserEntity>[] = [];
+
+    if (id) queries.push({ id: id.getId });
+    if (email) queries.push({ normalizedEmail: email.getNormalizedEmail });
+    if (username)
+      queries.push({ normalizedUsername: username.getNormalizedUsername });
+
+    const count = await this.count({
+      $or: queries,
+    });
+
+    return count > 0;
   }
 
   async getOneByEmail(email: Email): Promise<User> {
