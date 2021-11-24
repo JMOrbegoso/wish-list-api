@@ -1,8 +1,8 @@
 import { NotFoundException } from '@nestjs/common';
 import { mocked } from 'ts-jest/utils';
 import { GetUserByIdHandler, GetUserByIdQuery } from '..';
-import { UnitOfWork } from '../../../../core/domain/repositories';
 import { User } from '../../../../users/domain/entities';
+import { UserRepository } from '../../../../users/domain/repositories';
 
 describe('users', () => {
   describe('application', () => {
@@ -10,17 +10,15 @@ describe('users', () => {
       describe('get-user-by-id', () => {
         test('should throw NotFoundException', () => {
           // Arrange
-          const unitOfWork = mocked<UnitOfWork>({
-            userRepository: {
-              getOne: jest.fn().mockReturnValue(null),
-            },
-          } as unknown as UnitOfWork);
+          const userRepository = mocked<UserRepository>({
+            getOne: jest.fn().mockReturnValue(null),
+          } as unknown as UserRepository);
 
           const query = mocked<GetUserByIdQuery>({
             id: 1,
           } as unknown as GetUserByIdQuery);
 
-          const handler = new GetUserByIdHandler(unitOfWork);
+          const handler = new GetUserByIdHandler(userRepository);
 
           // Act
 
@@ -73,17 +71,15 @@ describe('users', () => {
             },
           } as unknown as User);
 
-          const unitOfWork = mocked<UnitOfWork>({
-            userRepository: {
-              getOne: jest.fn().mockReturnValue(user),
-            },
-          } as unknown as UnitOfWork);
+          const userRepository = mocked<UserRepository>({
+            getOne: jest.fn().mockReturnValue(user),
+          } as unknown as UserRepository);
 
           const query = mocked<GetUserByIdQuery>({
             id: 1,
           } as unknown as GetUserByIdQuery);
 
-          const handler = new GetUserByIdHandler(unitOfWork);
+          const handler = new GetUserByIdHandler(userRepository);
 
           // Act
           const outputUserDto = await handler.execute(query);

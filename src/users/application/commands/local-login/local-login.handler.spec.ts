@@ -1,7 +1,7 @@
 import { NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { mocked } from 'ts-jest/utils';
 import { LocalLoginCommand, LocalLoginHandler } from '..';
-import { UnitOfWork } from '../../../../core/domain/repositories';
+import { UserRepository } from '../../../../users/domain/repositories';
 import { User } from '../../../domain/entities';
 import { EncryptionService } from '../../services';
 
@@ -11,11 +11,9 @@ describe('users', () => {
       describe('local-login', () => {
         test('should throw NotFoundException', () => {
           // Arrange
-          const unitOfWork = mocked<UnitOfWork>({
-            userRepository: {
-              getOneByUsername: jest.fn().mockReturnValue(null),
-            },
-          } as unknown as UnitOfWork);
+          const userRepository = mocked<UserRepository>({
+            getOneByUsername: jest.fn().mockReturnValue(null),
+          } as unknown as UserRepository);
 
           const encryptionService = mocked<EncryptionService>(
             {} as unknown as EncryptionService,
@@ -25,7 +23,10 @@ describe('users', () => {
             username: 'john_doe',
           } as unknown as LocalLoginCommand);
 
-          const handler = new LocalLoginHandler(unitOfWork, encryptionService);
+          const handler = new LocalLoginHandler(
+            userRepository,
+            encryptionService,
+          );
 
           // Act
 
@@ -76,11 +77,9 @@ describe('users', () => {
             deletedAt: null,
           } as unknown as User);
 
-          const unitOfWork = mocked<UnitOfWork>({
-            userRepository: {
-              getOneByUsername: jest.fn().mockReturnValue(user),
-            },
-          } as unknown as UnitOfWork);
+          const userRepository = mocked<UserRepository>({
+            getOneByUsername: jest.fn().mockReturnValue(user),
+          } as unknown as UserRepository);
 
           const encryptionService = mocked<EncryptionService>({
             passwordMatch: jest.fn().mockReturnValue(false),
@@ -90,7 +89,10 @@ describe('users', () => {
             username: 'john_doe',
           } as unknown as LocalLoginCommand);
 
-          const handler = new LocalLoginHandler(unitOfWork, encryptionService);
+          const handler = new LocalLoginHandler(
+            userRepository,
+            encryptionService,
+          );
 
           // Act
 
@@ -144,11 +146,9 @@ describe('users', () => {
             isDeleted: true,
           } as unknown as User);
 
-          const unitOfWork = mocked<UnitOfWork>({
-            userRepository: {
-              getOneByUsername: jest.fn().mockReturnValue(user),
-            },
-          } as unknown as UnitOfWork);
+          const userRepository = mocked<UserRepository>({
+            getOneByUsername: jest.fn().mockReturnValue(user),
+          } as unknown as UserRepository);
 
           const encryptionService = mocked<EncryptionService>({
             passwordMatch: jest.fn().mockReturnValue(true),
@@ -158,7 +158,10 @@ describe('users', () => {
             username: 'john_doe',
           } as unknown as LocalLoginCommand);
 
-          const handler = new LocalLoginHandler(unitOfWork, encryptionService);
+          const handler = new LocalLoginHandler(
+            userRepository,
+            encryptionService,
+          );
 
           // Act
 
@@ -210,11 +213,9 @@ describe('users', () => {
             isDeleted: false,
           } as unknown as User);
 
-          const unitOfWork = mocked<UnitOfWork>({
-            userRepository: {
-              getOneByUsername: jest.fn().mockReturnValue(user),
-            },
-          } as unknown as UnitOfWork);
+          const userRepository = mocked<UserRepository>({
+            getOneByUsername: jest.fn().mockReturnValue(user),
+          } as unknown as UserRepository);
 
           const encryptionService = mocked<EncryptionService>({
             passwordMatch: jest.fn().mockReturnValue(true),
@@ -224,7 +225,10 @@ describe('users', () => {
             username: 'john_doe',
           } as unknown as LocalLoginCommand);
 
-          const handler = new LocalLoginHandler(unitOfWork, encryptionService);
+          const handler = new LocalLoginHandler(
+            userRepository,
+            encryptionService,
+          );
 
           // Act
 
@@ -276,11 +280,9 @@ describe('users', () => {
             isDeleted: false,
           } as unknown as User);
 
-          const unitOfWork = mocked<UnitOfWork>({
-            userRepository: {
-              getOneByUsername: jest.fn().mockReturnValue(user),
-            },
-          } as unknown as UnitOfWork);
+          const userRepository = mocked<UserRepository>({
+            getOneByUsername: jest.fn().mockReturnValue(user),
+          } as unknown as UserRepository);
 
           const encryptionService = mocked<EncryptionService>({
             passwordMatch: jest.fn().mockReturnValue(true),
@@ -290,7 +292,10 @@ describe('users', () => {
             username: 'john_doe',
           } as unknown as LocalLoginCommand);
 
-          const handler = new LocalLoginHandler(unitOfWork, encryptionService);
+          const handler = new LocalLoginHandler(
+            userRepository,
+            encryptionService,
+          );
 
           // Act
 
@@ -342,11 +347,9 @@ describe('users', () => {
             isDeleted: false,
           } as unknown as User);
 
-          const unitOfWork = mocked<UnitOfWork>({
-            userRepository: {
-              getOneByUsername: jest.fn().mockReturnValue(user),
-            },
-          } as unknown as UnitOfWork);
+          const userRepository = mocked<UserRepository>({
+            getOneByUsername: jest.fn().mockReturnValue(user),
+          } as unknown as UserRepository);
 
           const encryptionService = mocked<EncryptionService>({
             passwordMatch: jest.fn().mockReturnValue(true),
@@ -356,7 +359,10 @@ describe('users', () => {
             username: 'john_doe',
           } as unknown as LocalLoginCommand);
 
-          const handler = new LocalLoginHandler(unitOfWork, encryptionService);
+          const handler = new LocalLoginHandler(
+            userRepository,
+            encryptionService,
+          );
 
           // Act
           const outputUserDto = await handler.execute(command);

@@ -1,5 +1,6 @@
 import {
   EntityRepository,
+  MikroORM,
   Repository as MikroOrmRepository,
 } from '@mikro-orm/core';
 import { UniqueId } from '../../../../core/domain/value-objects';
@@ -14,6 +15,10 @@ export class UserRepositoryMongoDb
   extends EntityRepository<UserEntity>
   implements UserRepository
 {
+  constructor(private readonly orm: MikroORM) {
+    super(orm.em, UserEntity);
+  }
+
   async getOneByEmail(email: Email): Promise<User> {
     const userEntity = await this.findOne({
       normalizedEmail: email.getNormalizedEmail,

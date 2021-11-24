@@ -11,17 +11,19 @@ describe('users', () => {
       describe('delete-user', () => {
         test('should throw NotFoundException', () => {
           // Arrange
+          const userRepository = mocked<UserRepository>({
+            getOne: jest.fn().mockReturnValue(null),
+          } as unknown as UserRepository);
+
           const unitOfWork = mocked<UnitOfWork>({
-            userRepository: {
-              getOne: jest.fn().mockReturnValue(null),
-            },
+            userRepository: userRepository,
           } as unknown as UnitOfWork);
 
           const command = mocked<DeleteUserCommand>({
             id: 'id-0',
           } as unknown as DeleteUserCommand);
 
-          const handler = new DeleteUserHandler(unitOfWork);
+          const handler = new DeleteUserHandler(unitOfWork, userRepository);
 
           // Act
 
@@ -75,17 +77,19 @@ describe('users', () => {
             isDeleted: true,
           } as unknown as User);
 
+          const userRepository = mocked<UserRepository>({
+            getOne: jest.fn().mockReturnValue(user),
+          } as unknown as UserRepository);
+
           const unitOfWork = mocked<UnitOfWork>({
-            userRepository: {
-              getOne: jest.fn().mockReturnValue(user),
-            },
+            userRepository: userRepository,
           } as unknown as UnitOfWork);
 
           const command = mocked<DeleteUserCommand>({
             id: 'id-0',
           } as unknown as DeleteUserCommand);
 
-          const handler = new DeleteUserHandler(unitOfWork);
+          const handler = new DeleteUserHandler(unitOfWork, userRepository);
 
           // Act
 
@@ -152,7 +156,7 @@ describe('users', () => {
             id: 'id-0',
           } as unknown as DeleteUserCommand);
 
-          const handler = new DeleteUserHandler(unitOfWork);
+          const handler = new DeleteUserHandler(unitOfWork, userRepository);
 
           // Act
           await handler.execute(command);

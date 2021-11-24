@@ -1,7 +1,7 @@
 import { NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { LocalLoginCommand } from '..';
-import { UnitOfWork } from '../../../../core/domain/repositories';
+import { UserRepository } from '../../../../users/domain/repositories';
 import { Username } from '../../../domain/value-objects';
 import { OutputUserDto } from '../../dtos';
 import { userToOutputUserDto } from '../../mappings';
@@ -10,7 +10,7 @@ import { EncryptionService } from '../../services';
 @CommandHandler(LocalLoginCommand)
 export class LocalLoginHandler implements ICommandHandler<LocalLoginCommand> {
   constructor(
-    private readonly unitOfWork: UnitOfWork,
+    private readonly userRepository: UserRepository,
     private readonly encryptionService: EncryptionService,
   ) {}
 
@@ -18,9 +18,7 @@ export class LocalLoginHandler implements ICommandHandler<LocalLoginCommand> {
     const username = Username.create(command.username);
 
     // Get user by Username
-    const user = await this.unitOfWork.userRepository.getOneByUsername(
-      username,
-    );
+    const user = await this.userRepository.getOneByUsername(username);
     if (!user) throw new NotFoundException();
 
     // Check if the passwords match
