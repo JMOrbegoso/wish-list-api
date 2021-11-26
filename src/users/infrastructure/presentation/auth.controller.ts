@@ -1,5 +1,4 @@
 import { Controller, HttpCode, Post, Request, UseGuards } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
 import { AuthGuard } from '@nestjs/passport';
 import {
   ApiBody,
@@ -10,11 +9,12 @@ import {
 } from '@nestjs/swagger';
 import { OutputUserDto } from '../../../users/application/dtos';
 import { LoginDto } from '../dtos';
+import { AuthService } from './auth.service';
 
 @ApiTags('AuthController')
 @Controller()
 export class AuthController {
-  constructor(private readonly jwtService: JwtService) {}
+  constructor(private readonly authService: AuthService) {}
 
   @ApiBody({ type: LoginDto })
   @ApiOkResponse({
@@ -29,12 +29,7 @@ export class AuthController {
   @UseGuards(AuthGuard('local'))
   @Post('login')
   @HttpCode(200)
-  login(@Request() req) {
-    const payload = { username: req.user.username, sub: req.user.id };
-    const access_token = this.jwtService.sign(payload);
-
-    return {
-      access_token,
-    };
+  async login(@Request() req) {
+    return await this.authService.login(req.user.id);
   }
 }

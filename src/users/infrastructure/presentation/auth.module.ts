@@ -16,6 +16,7 @@ import { UserEntity } from '../persistence/entities';
 import { UserRepositoryMongoDb } from '../persistence/repositories';
 import { EncryptionServiceBcrypt } from '../services';
 import { AuthController } from './auth.controller';
+import { AuthService } from './auth.service';
 
 const commandHandlers = [LocalLoginHandler];
 const passportStrategies = [LocalLoginPassportStrategy, JwtPassportStrategy];
@@ -34,6 +35,7 @@ const passportStrategies = [LocalLoginPassportStrategy, JwtPassportStrategy];
     }),
   ],
   providers: [
+    AuthService,
     { provide: UserRepository, useClass: UserRepositoryMongoDb },
     { provide: UnitOfWork, useClass: UnitOfWorkMongoDb },
     { provide: EncryptionService, useClass: EncryptionServiceBcrypt },
