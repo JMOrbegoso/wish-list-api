@@ -15,7 +15,6 @@ import {
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { RealIP } from 'nestjs-real-ip';
-import { OutputUserDto } from '../../../users/application/dtos';
 import { AuthTokensDto, LoginDto, RefreshTokenDto } from '../dtos';
 import { AuthService } from './auth.service';
 
@@ -27,7 +26,7 @@ export class AuthController {
   @ApiBody({ type: LoginDto })
   @ApiOkResponse({
     description: 'User login successfully.',
-    type: OutputUserDto,
+    type: AuthTokensDto,
   })
   @ApiNotFoundResponse({ description: 'User not found.' })
   @ApiUnauthorizedResponse({
@@ -43,13 +42,10 @@ export class AuthController {
 
   @ApiBody({ required: true, type: RefreshTokenDto })
   @ApiOkResponse({
-    description: 'User login successfully.',
-    type: OutputUserDto,
+    description: 'Auth tokens successfully refreshed.',
+    type: AuthTokensDto,
   })
-  @ApiUnauthorizedResponse({
-    description:
-      'User is deleted, blocked, not verified or the password is incorrect.',
-  })
+  @ApiUnauthorizedResponse({ description: 'Refresh token is invalid.' })
   @Post('refresh')
   @HttpCode(200)
   async refresh(
