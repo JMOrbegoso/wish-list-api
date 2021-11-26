@@ -7,3 +7,4 @@ export * from './update-user-password.dto';
 export * from './login.dto';
 export * from './auth-tokens.dto';
 export * from './access-token.dto';
+export * from './refresh-token.dto';
