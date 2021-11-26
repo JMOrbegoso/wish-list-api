@@ -7,6 +7,7 @@ import {
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
+import { RealIP } from 'nestjs-real-ip';
 import { OutputUserDto } from '../../../users/application/dtos';
 import { AuthTokensDto, LoginDto } from '../dtos';
 import { AuthService } from './auth.service';
@@ -29,7 +30,7 @@ export class AuthController {
   @UseGuards(AuthGuard('local'))
   @Post('login')
   @HttpCode(200)
-  async login(@Request() req): Promise<AuthTokensDto> {
-    return await this.authService.login(req.user.id);
+  async login(@Request() req, @RealIP() ipAddress): Promise<AuthTokensDto> {
+    return await this.authService.generateAuthTokens(req.user.id, ipAddress);
   }
 }

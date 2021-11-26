@@ -7,14 +7,23 @@ import { UnitOfWork } from '../../../core/domain/repositories';
 import { UnitOfWorkMongoDb } from '../../../core/infrastructure/repositories';
 import { LocalLoginHandler } from '../../../users/application/commands';
 import { UserRepository } from '../../../users/domain/repositories';
-import { EncryptionService } from '../../application/services';
+import {
+  EncryptionService,
+  UniqueIdGeneratorService,
+} from '../../application/services';
 import {
   JwtPassportStrategy,
   LocalLoginPassportStrategy,
 } from '../passport-strategies';
 import { UserEntity } from '../persistence/entities';
-import { UserRepositoryMongoDb } from '../persistence/repositories';
-import { EncryptionServiceBcrypt } from '../services';
+import {
+  RefreshTokenRepositoryMongoDb,
+  UserRepositoryMongoDb,
+} from '../persistence/repositories';
+import {
+  EncryptionServiceBcrypt,
+  UniqueIdGeneratorServiceMongoDb,
+} from '../services';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 
@@ -37,8 +46,13 @@ const passportStrategies = [LocalLoginPassportStrategy, JwtPassportStrategy];
   providers: [
     AuthService,
     { provide: UserRepository, useClass: UserRepositoryMongoDb },
+    RefreshTokenRepositoryMongoDb,
     { provide: UnitOfWork, useClass: UnitOfWorkMongoDb },
     { provide: EncryptionService, useClass: EncryptionServiceBcrypt },
+    {
+      provide: UniqueIdGeneratorService,
+      useClass: UniqueIdGeneratorServiceMongoDb,
+    },
     ...commandHandlers,
     ...passportStrategies,
   ],
