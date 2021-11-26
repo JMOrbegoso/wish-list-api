@@ -39,11 +39,17 @@ export class AuthService {
     );
     if (!refreshToken) throw new UnauthorizedException();
 
-    // Check if the refresh token is valid
-    //if (!refreshToken.isValid)
-    // TODO: Revoke all the refresh tokens of the User and Ip
-
     const userId = refreshToken.userId;
+
+    // Check if the refresh token is valid
+    if (!refreshToken.isValid) {
+      if (refreshToken.wasReplaced || refreshToken.isRevoked) {
+        await this.refreshTokenRepository.revokeValidTokensByUserId(userId);
+        await this.refreshTokenRepository.revokeValidTokensByIp(ip);
+        await this.unitOfWork.commitChanges();
+      }
+      throw new UnauthorizedException();
+    }
 
     const newRefreshTokenId = this.generateRefreshToken(userId, ip);
 
