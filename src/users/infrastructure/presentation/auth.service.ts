@@ -19,8 +19,10 @@ export class AuthService {
     userId: string,
     ip: string,
   ): Promise<AuthTokensDto> {
-    const access_token = await this.generateAccessToken(userId);
-    const refresh_token = await this.generateRefreshToken(userId, ip);
+    const access_token = this.generateAccessToken(userId);
+    const refresh_token = this.generateRefreshToken(userId, ip);
+
+    await this.unitOfWork.commitChanges();
 
     return {
       access_token,
@@ -28,23 +30,15 @@ export class AuthService {
     };
   }
 
-  private async generateAccessToken(userId: string): Promise<string> {
+  private generateAccessToken(userId: string): string {
     const payload = { sub: userId };
-    return await this.jwtService.signAsync(payload);
+    return this.jwtService.sign(payload);
   }
 
-  private async generateRefreshToken(
-    userId: string,
-    ip: string,
-  ): Promise<string> {
+  private generateRefreshToken(userId: string, ip: string): string {
     const id = this.uniqueIdGeneratorService.generateId();
-
     const refreshToken = RefreshTokenEntity.create(id, userId, ip);
-
     this.refreshTokenRepository.add(refreshToken);
-
-    await this.unitOfWork.commitChanges();
-
     return id;
   }
 }
