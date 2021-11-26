@@ -19,6 +19,10 @@ export class RefreshTokenRepositoryMongoDb extends EntityRepository<RefreshToken
     return await this.find({ userId });
   }
 
+  async getAllByIp(ip: string): Promise<RefreshTokenEntity[]> {
+    return await this.find({ ip });
+  }
+
   async getOne(id: string): Promise<RefreshTokenEntity> {
     const refreshToken = await this.findOne(id);
     if (!refreshToken) return null;
@@ -37,6 +41,11 @@ export class RefreshTokenRepositoryMongoDb extends EntityRepository<RefreshToken
 
   async revokeValidTokensByUserId(userId: string): Promise<void> {
     const refreshTokens = await this.find({ userId });
+    refreshTokens.filter((rt) => rt.isValid).forEach((rt) => rt.revoke());
+  }
+
+  async revokeValidTokensByIp(ip: string): Promise<void> {
+    const refreshTokens = await this.find({ ip });
     refreshTokens.filter((rt) => rt.isValid).forEach((rt) => rt.revoke());
   }
 }
