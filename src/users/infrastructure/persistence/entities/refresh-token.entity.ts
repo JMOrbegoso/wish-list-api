@@ -9,7 +9,7 @@ import { ObjectId } from '@mikro-orm/mongodb';
 @Entity({ collection: 'refresh-tokens' })
 export class RefreshTokenEntity {
   @Property({ persist: false })
-  public static readonly Duration = 14 * 24 * 60 * 60; // 14 days
+  public static readonly Duration = 14 * 24 * 60 * 60 * 1000; // 14 days in milliseconds
 
   @PrimaryKey()
   _id: ObjectId;
