@@ -8,7 +8,7 @@ import {
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { OutputUserDto } from '../../../users/application/dtos';
-import { LoginDto } from '../dtos';
+import { AuthTokensDto, LoginDto } from '../dtos';
 import { AuthService } from './auth.service';
 
 @ApiTags('AuthController')
@@ -29,7 +29,7 @@ export class AuthController {
   @UseGuards(AuthGuard('local'))
   @Post('login')
   @HttpCode(200)
-  async login(@Request() req) {
+  async login(@Request() req): Promise<AuthTokensDto> {
     return await this.authService.login(req.user.id);
   }
 }
