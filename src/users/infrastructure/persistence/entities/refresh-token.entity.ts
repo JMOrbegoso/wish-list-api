@@ -33,7 +33,7 @@ export class RefreshTokenEntity {
 
   @Property({ persist: false })
   get isExpired(): boolean {
-    return this.expireAt > new Date();
+    return new Date() > this.expireAt;
   }
 
   @Property()
