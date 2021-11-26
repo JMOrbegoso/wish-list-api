@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { IsMongoId, IsNotEmpty } from 'class-validator';
 
 export class AuthTokensDto {
   @ApiProperty({
@@ -14,7 +15,9 @@ export class AuthTokensDto {
     type: String,
     required: true,
     description: 'Refresh Token',
-    example: '123e4567-e89b-12d3-a456-426614174000',
+    example: '61a0f44512c57626e239724a',
   })
+  @IsMongoId()
+  @IsNotEmpty()
   refresh_token: string;
 }
