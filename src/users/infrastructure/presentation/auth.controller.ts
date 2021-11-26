@@ -1,4 +1,11 @@
-import { Controller, HttpCode, Post, Request, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  HttpCode,
+  Post,
+  Request,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import {
   ApiBody,
@@ -9,7 +16,7 @@ import {
 } from '@nestjs/swagger';
 import { RealIP } from 'nestjs-real-ip';
 import { OutputUserDto } from '../../../users/application/dtos';
-import { AuthTokensDto, LoginDto } from '../dtos';
+import { AuthTokensDto, LoginDto, RefreshTokenDto } from '../dtos';
 import { AuthService } from './auth.service';
 
 @ApiTags('AuthController')
@@ -32,5 +39,26 @@ export class AuthController {
   @HttpCode(200)
   async login(@Request() req, @RealIP() ipAddress): Promise<AuthTokensDto> {
     return await this.authService.generateAuthTokens(req.user.id, ipAddress);
+  }
+
+  @ApiBody({ required: true, type: RefreshTokenDto })
+  @ApiOkResponse({
+    description: 'User login successfully.',
+    type: OutputUserDto,
+  })
+  @ApiUnauthorizedResponse({
+    description:
+      'User is deleted, blocked, not verified or the password is incorrect.',
+  })
+  @Post('refresh')
+  @HttpCode(200)
+  async refresh(
+    @Body() dto: RefreshTokenDto,
+    @RealIP() ipAddress,
+  ): Promise<AuthTokensDto> {
+    return await this.authService.refreshAccessToken(
+      dto.refresh_token,
+      ipAddress,
+    );
   }
 }

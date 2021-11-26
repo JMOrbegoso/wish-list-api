@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UnitOfWork } from '../../../core/domain/repositories';
 import { UniqueIdGeneratorService } from '../../../users/application/services';
@@ -27,6 +27,35 @@ export class AuthService {
     return {
       access_token,
       refresh_token,
+    };
+  }
+
+  public async refreshAccessToken(
+    refresh_token: string,
+    ip: string,
+  ): Promise<AuthTokensDto> {
+    const refreshToken = await this.refreshTokenRepository.getOne(
+      refresh_token,
+    );
+    if (!refreshToken) throw new UnauthorizedException();
+
+    // Check if the refresh token is valid
+    //if (!refreshToken.isValid)
+    // TODO: Revoke all the refresh tokens of the User and Ip
+
+    const userId = refreshToken.userId;
+
+    const newRefreshTokenId = this.generateRefreshToken(userId, ip);
+
+    refreshToken.replace(newRefreshTokenId);
+
+    const access_token = this.generateAccessToken(refresh_token);
+
+    await this.unitOfWork.commitChanges();
+
+    return {
+      access_token,
+      refresh_token: newRefreshTokenId,
     };
   }
 
