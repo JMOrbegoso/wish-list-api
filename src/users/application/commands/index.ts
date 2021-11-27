@@ -21,3 +21,6 @@ export * from './update-user-password/update-user-password.handler';
 
 export * from './local-login/local-login.command';
 export * from './local-login/local-login.handler';
+
+export * from './verify-user/verify-user.command';
+export * from './verify-user/verify-user.handler';
