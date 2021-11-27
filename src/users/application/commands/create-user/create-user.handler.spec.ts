@@ -3,7 +3,11 @@ import { mocked } from 'ts-jest/utils';
 import { CreateUserCommand, CreateUserHandler } from '..';
 import { UnitOfWork } from '../../../../core/domain/repositories';
 import { UserRepository } from '../../../../users/domain/repositories';
-import { EncryptionService } from '../../services';
+import {
+  EmailSenderService,
+  EncryptionService,
+  UniqueIdGeneratorService,
+} from '../../services';
 
 describe('users', () => {
   describe('application', () => {
@@ -13,6 +17,14 @@ describe('users', () => {
           // Arrange
           const encryptionService = mocked<EncryptionService>(
             {} as unknown as EncryptionService,
+          );
+
+          const uniqueIdGeneratorService = mocked<UniqueIdGeneratorService>(
+            {} as unknown as UniqueIdGeneratorService,
+          );
+
+          const emailSenderService = mocked<EmailSenderService>(
+            {} as unknown as EmailSenderService,
           );
 
           const userRepository = mocked<UserRepository>({
@@ -33,6 +45,8 @@ describe('users', () => {
             unitOfWork,
             userRepository,
             encryptionService,
+            uniqueIdGeneratorService,
+            emailSenderService,
           );
 
           // Act
@@ -43,11 +57,19 @@ describe('users', () => {
           );
         });
 
-        test('should call the method hashPassword of the EncryptionService, call the add method of the UserRepository and the commitChanges method of the UnitOfWork', async () => {
+        test('should call the method hashPassword from EncryptionService, the method add from the UserRepository, the method commitChanges from the UnitOfWork, the method generateId from UniqueIdGeneratorService and the method send from EmailSenderService', async () => {
           // Arrange
           const encryptionService = mocked<EncryptionService>({
             hashPassword: jest.fn().mockReturnValue('password hashed'),
           } as unknown as EncryptionService);
+
+          const uniqueIdGeneratorService = mocked<UniqueIdGeneratorService>({
+            generateId: jest.fn().mockReturnValue('id-0'),
+          } as unknown as UniqueIdGeneratorService);
+
+          const emailSenderService = mocked<EmailSenderService>({
+            send: jest.fn(),
+          } as unknown as EmailSenderService);
 
           const userRepository = mocked<UserRepository>({
             userExists: jest.fn().mockReturnValue(false),
@@ -75,6 +97,8 @@ describe('users', () => {
             unitOfWork,
             userRepository,
             encryptionService,
+            uniqueIdGeneratorService,
+            emailSenderService,
           );
 
           // Act
@@ -84,6 +108,10 @@ describe('users', () => {
           expect(encryptionService.hashPassword.mock.calls).toHaveLength(1);
           expect(userRepository.add.mock.calls).toHaveLength(1);
           expect(unitOfWork.commitChanges.mock.calls).toHaveLength(1);
+          expect(uniqueIdGeneratorService.generateId.mock.calls).toHaveLength(
+            1,
+          );
+          expect(emailSenderService.send.mock.calls).toHaveLength(1);
         });
       });
     });

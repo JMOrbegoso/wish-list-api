@@ -8,7 +8,7 @@ import {
   WebUrl,
 } from '../../../../core/domain/value-objects';
 import { UserRepository } from '../../../../users/domain/repositories';
-import { User } from '../../../domain/entities';
+import { User, VerificationCode } from '../../../domain/entities';
 import {
   Biography,
   Email,
@@ -19,7 +19,11 @@ import {
   PasswordHash,
   Username,
 } from '../../../domain/value-objects';
-import { EncryptionService } from '../../services';
+import {
+  EmailSenderService,
+  EncryptionService,
+  UniqueIdGeneratorService,
+} from '../../services';
 
 @CommandHandler(CreateUserCommand)
 export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
@@ -27,6 +31,8 @@ export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
     private readonly unitOfWork: UnitOfWork,
     private readonly userRepository: UserRepository,
     private readonly encryptionService: EncryptionService,
+    private readonly uniqueIdGeneratorService: UniqueIdGeneratorService,
+    private readonly emailSenderService: EmailSenderService,
   ) {}
 
   async execute(command: CreateUserCommand): Promise<void> {
@@ -58,6 +64,12 @@ export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
       ? WebUrl.create(command.profilePicture)
       : null;
 
+    // Generate the verfication code
+    const verificationCodeId = UniqueId.create(
+      this.uniqueIdGeneratorService.generateId(),
+    );
+    const verificationCode = VerificationCode.create(verificationCodeId);
+
     // Create the new user
     const user = User.create(
       id,
@@ -65,6 +77,7 @@ export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
       username,
       passwordHash,
       isVerified,
+      verificationCode,
       isBlocked,
       firstName,
       lastName,
@@ -81,5 +94,13 @@ export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
 
     // Save changes using Unit of Work
     await this.unitOfWork.commitChanges();
+
+    // Send an account confirmation code the user email
+    await this.emailSenderService.send(
+      '',
+      user.email.getEmail,
+      'Confirm Account',
+      `your code is ${user.verificationCode}`,
+    );
   }
 }
