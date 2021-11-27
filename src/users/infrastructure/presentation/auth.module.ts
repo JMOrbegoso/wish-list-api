@@ -5,7 +5,10 @@ import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { UnitOfWork } from '../../../core/domain/repositories';
 import { UnitOfWorkMongoDb } from '../../../core/infrastructure/repositories';
-import { LocalLoginHandler } from '../../../users/application/commands';
+import {
+  LocalLoginHandler,
+  VerifyUserHandler,
+} from '../../../users/application/commands';
 import { UserRepository } from '../../../users/domain/repositories';
 import {
   EncryptionService,
@@ -27,7 +30,7 @@ import {
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 
-const commandHandlers = [LocalLoginHandler];
+const commandHandlers = [LocalLoginHandler, VerifyUserHandler];
 const passportStrategies = [LocalLoginPassportStrategy, JwtPassportStrategy];
 
 @Module({

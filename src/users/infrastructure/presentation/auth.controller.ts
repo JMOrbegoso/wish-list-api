@@ -1,13 +1,17 @@
 import {
   Body,
   Controller,
+  Get,
   HttpCode,
   Post,
+  Query,
   Request,
   UseGuards,
 } from '@nestjs/common';
+import { CommandBus } from '@nestjs/cqrs';
 import { AuthGuard } from '@nestjs/passport';
 import {
+  ApiBadRequestResponse,
   ApiBody,
   ApiNotFoundResponse,
   ApiOkResponse,
@@ -15,13 +19,17 @@ import {
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { RealIP } from 'nestjs-real-ip';
+import { VerifyUserCommand } from 'src/users/application/commands';
 import { AuthTokensDto, LoginDto, RefreshTokenDto } from '../dtos';
 import { AuthService } from './auth.service';
 
 @ApiTags('AuthController')
 @Controller()
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private commandBus: CommandBus,
+  ) {}
 
   @ApiBody({ type: LoginDto })
   @ApiOkResponse({
@@ -56,5 +64,14 @@ export class AuthController {
       dto.refresh_token,
       ipAddress,
     );
+  }
+
+  @ApiOkResponse({ description: 'User verified successfully.' })
+  @ApiNotFoundResponse({ description: 'User not found.' })
+  @ApiBadRequestResponse({ description: 'Something went wrong.' })
+  @Get('verify')
+  async verify(@Query('code') code: string): Promise<void> {
+    const command = new VerifyUserCommand(code);
+    await this.commandBus.execute(command);
   }
 }
