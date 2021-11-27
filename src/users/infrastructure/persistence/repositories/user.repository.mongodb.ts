@@ -5,7 +5,7 @@ import {
 } from '@mikro-orm/core';
 import { Query } from '@mikro-orm/core/typings';
 import { UniqueId } from '../../../../core/domain/value-objects';
-import { User } from '../../../domain/entities';
+import { User, VerificationCode } from '../../../domain/entities';
 import { UserRepository } from '../../../domain/repositories';
 import { Email, Username } from '../../../domain/value-objects';
 import { userEntityToUser, userToUserEntity } from '../../mappings';
@@ -18,6 +18,17 @@ export class UserRepositoryMongoDb
 {
   constructor(orm: MikroORM) {
     super(orm.em, UserEntity);
+  }
+
+  async getOneByVerificationCode(
+    verificationCode: VerificationCode,
+  ): Promise<User> {
+    const userEntity = await this.findOne({
+      verificationCode: verificationCode.id.getId,
+    });
+    if (!userEntity) return null;
+    const user = userEntityToUser(userEntity);
+    return user;
   }
 
   async userExists(

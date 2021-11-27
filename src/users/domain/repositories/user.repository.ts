@@ -1,6 +1,6 @@
 import { Repository } from '../../../core/domain/repositories';
 import { UniqueId } from '../../../core/domain/value-objects';
-import { User } from '../entities';
+import { User, VerificationCode } from '../entities';
 import { Email, Username } from '../value-objects';
 
 export abstract class UserRepository implements Repository<User> {
@@ -9,6 +9,10 @@ export abstract class UserRepository implements Repository<User> {
     email: Email,
     username: Username,
   ): Promise<boolean>;
+
+  abstract getOneByVerificationCode(
+    verificationCode: VerificationCode,
+  ): Promise<User>;
 
   abstract getOneByEmail(email: Email): Promise<User>;
 
