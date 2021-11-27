@@ -12,6 +12,7 @@ const validValues = [
       normalizedUsername: 'john_doe_0',
       passwordHash: 'password0',
       isVerified: true,
+      verificationCode: 'verification-code-00',
       isBlocked: true,
       firstName: 'FirstName0',
       lastName: 'LastName0',
@@ -32,6 +33,7 @@ const validValues = [
       normalizedUsername: 'john_doe_1',
       passwordHash: 'hash1',
       isVerified: true,
+      verificationCode: 'verification-code-01',
       isBlocked: false,
       firstName: 'FirstName1',
       lastName: 'LastName1',
@@ -52,6 +54,7 @@ const validValues = [
       normalizedUsername: 'john_doe_2',
       passwordHash: 'hash2',
       isVerified: false,
+      verificationCode: 'verification-code-02',
       isBlocked: true,
       firstName: 'FirstName2',
       lastName: 'LastName2',
@@ -72,6 +75,7 @@ const validValues = [
       normalizedUsername: 'john_doe_3',
       passwordHash: 'hash3',
       isVerified: false,
+      verificationCode: 'verification-code-03',
       isBlocked: false,
       firstName: 'FirstName3',
       lastName: 'LastName3',
@@ -92,6 +96,7 @@ const validValues = [
       normalizedUsername: 'john_doe_4',
       passwordHash: 'hash4',
       isVerified: false,
+      verificationCode: 'verification-code-04',
       isBlocked: true,
       firstName: 'FirstName4',
       lastName: 'LastName4',
@@ -112,6 +117,7 @@ const validValues = [
       normalizedUsername: 'john_doe_5',
       passwordHash: 'hash5',
       isVerified: true,
+      verificationCode: 'verification-code-05',
       isBlocked: false,
       firstName: 'FirstName5',
       lastName: 'lastname5',
@@ -132,6 +138,7 @@ const validValues = [
       normalizedUsername: 'john_doe_6',
       passwordHash: 'hash6',
       isVerified: true,
+      verificationCode: 'verification-code-06',
       isBlocked: true,
       firstName: 'FirstName6',
       lastName: 'lastname6',
@@ -152,6 +159,7 @@ const validValues = [
       normalizedUsername: 'john_doe_7',
       passwordHash: 'hash7',
       isVerified: false,
+      verificationCode: 'verification-code-07',
       isBlocked: false,
       firstName: 'FirstName7',
       lastName: 'LastName7',
@@ -189,6 +197,7 @@ describe('users', () => {
               userEntity.passwordHash,
             );
             expect(user.isVerified).toBe(userEntity.isVerified);
+            expect(user.verificationCode).toBe(userEntity.verificationCode);
             expect(user.isBlocked).toBe(userEntity.isBlocked);
             expect(user.firstName.getFirstName).toBe(userEntity.firstName);
             expect(user.lastName.getLastName).toBe(userEntity.lastName);

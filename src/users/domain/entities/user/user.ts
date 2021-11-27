@@ -1,3 +1,4 @@
+import { VerificationCode } from '..';
 import { AggregateRoot } from '../../../../core/domain/entities';
 import {
   MillisecondsDate,
@@ -20,6 +21,7 @@ export class User extends AggregateRoot {
   private _username: Username;
   private _passwordHash: PasswordHash;
   private _isVerified: IsVerified;
+  private _verificationCode: VerificationCode;
   private _isBlocked: IsBlocked;
   private _firstName: FirstName;
   private _lastName: LastName;
@@ -36,6 +38,7 @@ export class User extends AggregateRoot {
     username: Username,
     passwordHash: PasswordHash,
     isVerified: IsVerified,
+    verificationCode: VerificationCode,
     isBlocked: IsBlocked,
     firstName: FirstName,
     lastName: LastName,
@@ -52,6 +55,7 @@ export class User extends AggregateRoot {
     this._username = username;
     this._passwordHash = passwordHash;
     this._isVerified = isVerified;
+    this._verificationCode = verificationCode;
     this._isBlocked = isBlocked;
     this._firstName = firstName;
     this._lastName = lastName;
@@ -69,6 +73,7 @@ export class User extends AggregateRoot {
     username: Username,
     passwordHash: PasswordHash,
     isVerified: IsVerified,
+    verificationCode: VerificationCode,
     isBlocked: IsBlocked,
     firstName: FirstName,
     lastName: LastName,
@@ -85,6 +90,7 @@ export class User extends AggregateRoot {
       username,
       passwordHash,
       isVerified,
+      verificationCode,
       isBlocked,
       firstName,
       lastName,
@@ -115,6 +121,10 @@ export class User extends AggregateRoot {
 
   public get isVerified(): boolean {
     return this._isVerified.getStatus;
+  }
+
+  public get verificationCode(): string {
+    return this._verificationCode.id.getId;
   }
 
   public get isBlocked(): boolean {

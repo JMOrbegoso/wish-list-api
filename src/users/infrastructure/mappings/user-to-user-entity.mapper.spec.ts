@@ -18,6 +18,7 @@ const validValues = [
         getPasswordHash: 'hash0',
       },
       isVerified: true,
+      verificationCode: 'verification-code-00',
       isBlocked: false,
       firstName: {
         getFirstName: 'FirstName0',
@@ -60,6 +61,7 @@ const validValues = [
         getPasswordHash: 'hash1',
       },
       isVerified: true,
+      verificationCode: 'verification-code-01',
       isBlocked: false,
       firstName: {
         getFirstName: 'FirstName1',
@@ -102,6 +104,7 @@ const validValues = [
         getPasswordHash: 'hash2',
       },
       isVerified: true,
+      verificationCode: 'verification-code-02',
       isBlocked: false,
       firstName: {
         getFirstName: 'FirstName2',
@@ -142,6 +145,7 @@ const validValues = [
         getPasswordHash: 'hash3',
       },
       isVerified: true,
+      verificationCode: 'verification-code-03',
       isBlocked: false,
       firstName: {
         getFirstName: 'FirstName3',
@@ -182,6 +186,7 @@ const validValues = [
         getPasswordHash: 'hash4',
       },
       isVerified: true,
+      verificationCode: 'verification-code-04',
       isBlocked: false,
       firstName: {
         getFirstName: 'FirstName4',
@@ -222,6 +227,7 @@ const validValues = [
         getPasswordHash: 'hash5',
       },
       isVerified: true,
+      verificationCode: 'verification-code-05',
       isBlocked: false,
       firstName: {
         getFirstName: 'FirstName5',
@@ -262,6 +268,7 @@ const validValues = [
         getPasswordHash: 'hash6',
       },
       isVerified: true,
+      verificationCode: 'verification-code-06',
       isBlocked: false,
       firstName: {
         getFirstName: 'FirstName6',
@@ -300,6 +307,7 @@ const validValues = [
         getPasswordHash: 'hash7',
       },
       isVerified: true,
+      verificationCode: 'verification-code-07',
       isBlocked: false,
       firstName: {
         getFirstName: 'FirstName7',
@@ -351,6 +359,7 @@ describe('users', () => {
               user.passwordHash.getPasswordHash,
             );
             expect(userEntity.isVerified).toBe(user.isVerified);
+            expect(userEntity.verificationCode).toBe(user.verificationCode);
             expect(userEntity.isBlocked).toBe(user.isBlocked);
             expect(userEntity.firstName).toBe(user.firstName.getFirstName);
             expect(userEntity.lastName).toBe(user.lastName.getLastName);

@@ -11,6 +11,7 @@ export function userToUserEntity(user: User): UserEntity {
   userEntity.normalizedUsername = user.username.getNormalizedUsername;
   userEntity.passwordHash = user.passwordHash.getPasswordHash;
   userEntity.isVerified = user.isVerified;
+  userEntity.verificationCode = user.verificationCode;
   userEntity.isBlocked = user.isBlocked;
   userEntity.firstName = user.firstName.getFirstName;
   userEntity.lastName = user.lastName.getLastName;
