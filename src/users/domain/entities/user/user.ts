@@ -13,6 +13,7 @@ import {
   IsVerified,
   LastName,
   PasswordHash,
+  Role,
   Username,
 } from '../../value-objects';
 
@@ -29,6 +30,7 @@ export class User extends AggregateRoot {
   private _createdAt: MillisecondsDate;
   private _updatedAt: MillisecondsDate;
   private _biography: Biography;
+  private _roles: Role[];
   private _profilePicture?: WebUrl;
   private _deletedAt?: MillisecondsDate;
 
@@ -46,6 +48,7 @@ export class User extends AggregateRoot {
     createdAt: MillisecondsDate,
     updatedAt: MillisecondsDate,
     biography: Biography,
+    roles: Role[],
     profilePicture?: WebUrl,
     deletedAt?: MillisecondsDate,
   ) {
@@ -63,6 +66,7 @@ export class User extends AggregateRoot {
     this._createdAt = createdAt;
     this._updatedAt = updatedAt;
     this._biography = biography;
+    this._roles = roles;
     this._profilePicture = profilePicture;
     this._deletedAt = deletedAt;
   }
@@ -81,6 +85,7 @@ export class User extends AggregateRoot {
     createdAt: MillisecondsDate,
     updatedAt: MillisecondsDate,
     biography: Biography,
+    roles: Role[] = [],
     profilePicture: WebUrl = null,
     deletedAt: MillisecondsDate = null,
   ): User {
@@ -98,6 +103,7 @@ export class User extends AggregateRoot {
       createdAt,
       updatedAt,
       biography,
+      roles,
       profilePicture,
       deletedAt,
     );
@@ -203,5 +209,17 @@ export class User extends AggregateRoot {
   }
   public undelete(): void {
     this._deletedAt = null;
+  }
+
+  public get roles(): string[] {
+    return this._roles.map((r) => r.getRole);
+  }
+
+  public addRole(role: Role): void {
+    if (!this._roles.some((r) => r.equals(role))) this._roles.push(role);
+  }
+
+  public removeRole(role: Role): void {
+    this._roles = this._roles.filter((r) => !r.equals(role));
   }
 }

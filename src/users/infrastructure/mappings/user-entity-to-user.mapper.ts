@@ -12,6 +12,7 @@ import {
   IsVerified,
   LastName,
   PasswordHash,
+  Role,
   Username,
 } from '../../domain/value-objects';
 import { UserEntity } from '../persistence/entities';
@@ -37,6 +38,7 @@ export function userEntityToUser(userEntity: UserEntity): User {
   const deletedAt = userEntity.deletedAt
     ? MillisecondsDate.createFromDate(userEntity.deletedAt)
     : null;
+  const roles = userEntity.roles.map((r) => Role.create(r));
 
   return User.create(
     id,
@@ -52,6 +54,7 @@ export function userEntityToUser(userEntity: UserEntity): User {
     createdAt,
     updatedAt,
     biography,
+    roles,
     profilePicture,
     deletedAt,
   );

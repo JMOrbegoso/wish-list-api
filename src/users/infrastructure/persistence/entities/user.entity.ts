@@ -70,4 +70,7 @@ export class UserEntity {
 
   @Property({ nullable: true })
   deletedAt?: Date;
+
+  @Property()
+  roles: string[];
 }

@@ -22,6 +22,7 @@ const validValues = [
       biography: 'A nice person 0.',
       profilePicture: 'https://www.example.com/0.jpg',
       deletedAt: new Date(2000, 5, 5),
+      roles: ['Admin'],
     } as unknown as UserEntity),
   ],
   [
@@ -43,6 +44,7 @@ const validValues = [
       biography: 'A nice person 1.',
       profilePicture: 'https://www.example.com/1.jpg',
       deletedAt: new Date(2000, 5, 5),
+      roles: ['Moderator'],
     } as unknown as UserEntity),
   ],
   [
@@ -64,6 +66,7 @@ const validValues = [
       biography: 'A nice person 2.',
       profilePicture: null,
       deletedAt: new Date(2000, 5, 5),
+      roles: ['Admin', 'Moderator'],
     } as unknown as UserEntity),
   ],
   [
@@ -85,6 +88,7 @@ const validValues = [
       biography: 'A nice person 3.',
       profilePicture: null,
       deletedAt: new Date(2000, 5, 5),
+      roles: ['Basic'],
     } as unknown as UserEntity),
   ],
   [
@@ -106,6 +110,7 @@ const validValues = [
       biography: 'A nice person 4.',
       profilePicture: null,
       deletedAt: new Date(2000, 5, 5),
+      roles: ['Admin', 'Moderator', 'Basic'],
     } as unknown as UserEntity),
   ],
   [
@@ -127,6 +132,7 @@ const validValues = [
       biography: 'A nice person 5.',
       profilePicture: 'https://www.example.com/5.jpg',
       deletedAt: new Date(2000, 5, 5),
+      roles: [],
     } as unknown as UserEntity),
   ],
   [
@@ -148,6 +154,7 @@ const validValues = [
       biography: 'A nice person 6.',
       profilePicture: null,
       deletedAt: new Date(2000, 5, 5),
+      roles: ['Admin'],
     } as unknown as UserEntity),
   ],
   [
@@ -167,6 +174,7 @@ const validValues = [
       createdAt: new Date(1995, 5, 5),
       updatedAt: new Date(1990, 5, 5),
       biography: 'A nice person 7.',
+      roles: ['Admin'],
     } as unknown as UserEntity),
   ],
 ];
@@ -221,6 +229,9 @@ describe('users', () => {
                 new Date(userEntity.deletedAt).getTime(),
               );
             else expect(user.deletedAt).toBeNull();
+            for (let i = 0; i < userEntity.roles.length; i++) {
+              expect(user.roles[i]).toBe(userEntity.roles[i]);
+            }
           },
         );
       });

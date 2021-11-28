@@ -1,4 +1,5 @@
 import { mocked } from 'ts-jest/utils';
+import { Role } from '../../../users/domain/value-objects';
 import { User } from '../../domain/entities';
 import { userToUserEntity } from '.';
 
@@ -38,6 +39,7 @@ const validValues = [
       biography: {
         getBiography: 'A nice person 0.',
       },
+      roles: [mocked<Role>({ getRole: 'Admin' } as unknown as Role)],
       profilePicture: {
         getUrl: 'https://www.example.com/0.jpg',
       },
@@ -81,6 +83,10 @@ const validValues = [
       biography: {
         getBiography: 'A nice person 1.',
       },
+      roles: [
+        mocked<Role>({ getRole: 'Admin' } as unknown as Role),
+        mocked<Role>({ getRole: 'Moderator' } as unknown as Role),
+      ],
       profilePicture: {
         getUrl: 'https://www.example.com/1.jpg',
       },
@@ -124,6 +130,10 @@ const validValues = [
       biography: {
         getBiography: 'A nice person 2.',
       },
+      roles: [
+        mocked<Role>({ getRole: 'Admin' } as unknown as Role),
+        mocked<Role>({ getRole: 'Moderator' } as unknown as Role),
+      ],
       profilePicture: null,
       deletedAt: {
         getDate: new Date(2001, 5, 5),
@@ -165,6 +175,10 @@ const validValues = [
       biography: {
         getBiography: 'A nice person 3.',
       },
+      roles: [
+        mocked<Role>({ getRole: 'Admin' } as unknown as Role),
+        mocked<Role>({ getRole: 'Moderator' } as unknown as Role),
+      ],
       profilePicture: {
         getUrl: 'https://www.example.com/3.jpg',
       },
@@ -206,6 +220,10 @@ const validValues = [
       biography: {
         getBiography: 'A nice person 4.',
       },
+      roles: [
+        mocked<Role>({ getRole: 'Admin' } as unknown as Role),
+        mocked<Role>({ getRole: 'Moderator' } as unknown as Role),
+      ],
       profilePicture: null,
       deletedAt: {
         getDate: new Date(2001, 5, 5),
@@ -247,6 +265,10 @@ const validValues = [
       biography: {
         getBiography: 'A nice person 5.',
       },
+      roles: [
+        mocked<Role>({ getRole: 'Admin' } as unknown as Role),
+        mocked<Role>({ getRole: 'Moderator' } as unknown as Role),
+      ],
       profilePicture: {
         getUrl: 'https://www.example.com/5.jpg',
       },
@@ -288,6 +310,11 @@ const validValues = [
       biography: {
         getBiography: 'A nice person 6.',
       },
+      roles: [
+        mocked<Role>({ getRole: 'Admin' } as unknown as Role),
+        mocked<Role>({ getRole: 'Moderator' } as unknown as Role),
+        mocked<Role>({ getRole: 'Basic' } as unknown as Role),
+      ],
       profilePicture: null,
       deletedAt: null,
     } as unknown as User),
@@ -327,6 +354,7 @@ const validValues = [
       biography: {
         getBiography: 'A nice person 7.',
       },
+      roles: [],
       profilePicture: null,
       deletedAt: null,
     } as unknown as User),
@@ -375,6 +403,9 @@ describe('users', () => {
             if (user.deletedAt)
               expect(userEntity.deletedAt).toBe(user.deletedAt.getDate);
             else expect(userEntity.deletedAt).toBeNull();
+            for (let i = 0; i < user.roles.length; i++) {
+              expect(userEntity.roles[i]).toBe(user.roles[i]);
+            }
           },
         );
       });
