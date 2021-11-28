@@ -19,7 +19,7 @@ import {
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { RealIP } from 'nestjs-real-ip';
-import { VerifyUserCommand } from 'src/users/application/commands';
+import { VerifyUserCommand } from '../../../users/application/commands';
 import { AuthTokensDto, LoginDto, RefreshTokenDto } from '../dtos';
 import { AuthService } from './auth.service';
 
