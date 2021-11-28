@@ -112,6 +112,9 @@ describe('users', () => {
             1,
           );
           expect(emailSenderService.send.mock.calls).toHaveLength(1);
+
+          expect(userRepository.add.mock.calls[0][0].roles.length).toBe(1);
+          expect(userRepository.add.mock.calls[0][0].roles[0]).toBe('Basic');
         });
       });
     });

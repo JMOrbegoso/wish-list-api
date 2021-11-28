@@ -17,6 +17,7 @@ import {
   IsVerified,
   LastName,
   PasswordHash,
+  Role,
   Username,
 } from '../../../domain/value-objects';
 import {
@@ -63,6 +64,7 @@ export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
     const profilePicture = command.profilePicture
       ? WebUrl.create(command.profilePicture)
       : null;
+    const roles = [Role.basic()];
 
     // Generate the verfication code
     const verificationCodeId = UniqueId.create(
@@ -85,6 +87,7 @@ export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
       createdAt,
       createdAt,
       biography,
+      roles,
       profilePicture,
       null,
     );
