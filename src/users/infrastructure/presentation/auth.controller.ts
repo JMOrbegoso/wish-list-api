@@ -45,7 +45,7 @@ export class AuthController {
   @Post('login')
   @HttpCode(200)
   async login(@Request() req, @RealIP() ipAddress): Promise<AuthTokensDto> {
-    return await this.authService.generateAuthTokens(req.user.id, ipAddress);
+    return await this.authService.generateAuthTokens(req.user, ipAddress);
   }
 
   @ApiBody({ required: true, type: RefreshTokenDto })
