@@ -34,3 +34,6 @@ export * from './password/invalid-password.error';
 export * from './password/password-is-too-short.error';
 export * from './password/password-is-too-long.error';
 export * from './password/malformed-password.error';
+
+export * from './role/role';
+export * from './role/invalid-role.error';
