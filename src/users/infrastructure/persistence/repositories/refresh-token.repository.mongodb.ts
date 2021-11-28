@@ -3,6 +3,7 @@ import {
   MikroORM,
   Repository as MikroOrmRepository,
 } from '@mikro-orm/core';
+import { UniqueId } from '../../../../core/domain/value-objects';
 import { RefreshTokenEntity } from '../entities';
 
 @MikroOrmRepository(RefreshTokenEntity)
@@ -39,8 +40,8 @@ export class RefreshTokenRepositoryMongoDb extends EntityRepository<RefreshToken
     refreshToken.replace(newRefreshTokenId);
   }
 
-  async revokeValidTokensByUserId(userId: string): Promise<void> {
-    const refreshTokens = await this.find({ userId });
+  async revokeValidTokensByUserId(id: UniqueId): Promise<void> {
+    const refreshTokens = await this.find({ userId: id.getId });
     refreshTokens.filter((rt) => rt.isValid).forEach((rt) => rt.revoke());
   }
 
