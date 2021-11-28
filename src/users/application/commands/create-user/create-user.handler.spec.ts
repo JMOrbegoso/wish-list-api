@@ -64,7 +64,7 @@ describe('users', () => {
           } as unknown as EncryptionService);
 
           const uniqueIdGeneratorService = mocked<UniqueIdGeneratorService>({
-            generateId: jest.fn().mockReturnValue('id-0'),
+            generateId: jest.fn().mockReturnValue('verification-code-id'),
           } as unknown as UniqueIdGeneratorService);
 
           const emailSenderService = mocked<EmailSenderService>({
@@ -113,8 +113,45 @@ describe('users', () => {
           );
           expect(emailSenderService.send.mock.calls).toHaveLength(1);
 
+          expect(userRepository.add.mock.calls[0][0].id.getId).toBe(command.id);
+          expect(userRepository.add.mock.calls[0][0].email.getEmail).toBe(
+            command.email,
+          );
+          expect(userRepository.add.mock.calls[0][0].username.getUsername).toBe(
+            command.username,
+          );
+          expect(
+            userRepository.add.mock.calls[0][0].passwordHash.getPasswordHash,
+          ).toBe('password hashed');
+          expect(userRepository.add.mock.calls[0][0].isVerified).toBe(false);
+          expect(userRepository.add.mock.calls[0][0].verificationCode).toBe(
+            'verification-code-id',
+          );
+          expect(userRepository.add.mock.calls[0][0].isBlocked).toBe(false);
+          expect(
+            userRepository.add.mock.calls[0][0].firstName.getFirstName,
+          ).toBe(command.firstName);
+          expect(userRepository.add.mock.calls[0][0].lastName.getLastName).toBe(
+            command.lastName,
+          );
+          expect(
+            userRepository.add.mock.calls[0][0].birthday.getMilliseconds,
+          ).toBe(command.birthday);
+          expect(
+            userRepository.add.mock.calls[0][0].createdAt.getMilliseconds,
+          ).not.toBeNull();
+          expect(
+            userRepository.add.mock.calls[0][0].updatedAt.getMilliseconds,
+          ).not.toBeNull();
+          expect(
+            userRepository.add.mock.calls[0][0].biography.getBiography,
+          ).toBe(command.biography);
           expect(userRepository.add.mock.calls[0][0].roles.length).toBe(1);
           expect(userRepository.add.mock.calls[0][0].roles[0]).toBe('Basic');
+          expect(
+            userRepository.add.mock.calls[0][0].profilePicture.getUrl,
+          ).toBe(command.profilePicture);
+          expect(userRepository.add.mock.calls[0][0].deletedAt).toBeNull();
         });
       });
     });
