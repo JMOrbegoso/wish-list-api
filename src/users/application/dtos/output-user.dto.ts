@@ -79,6 +79,13 @@ export class OutputUserDto {
   biography: string;
 
   @ApiProperty({
+    type: [String],
+    description: 'User roles.',
+    example: ['Admin', 'Moderator'],
+  })
+  roles: string[];
+
+  @ApiProperty({
     type: String,
     description: 'User profile picture url.',
     example: 'https://www.example.com',

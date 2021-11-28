@@ -15,6 +15,7 @@ export function userToOutputUserDto(user: User): OutputUserDto {
   dto.createdAt = user.createdAt.getMilliseconds;
   dto.updatedAt = user.updatedAt.getMilliseconds;
   dto.biography = user.biography.getBiography;
+  dto.roles = user.roles;
   dto.profilePicture = user.profilePicture?.getUrl ?? null;
   dto.deletedAt = user.deletedAt?.getMilliseconds ?? null;
 
