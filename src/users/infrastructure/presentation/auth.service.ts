@@ -31,11 +31,11 @@ export class AuthService {
   }
 
   public async refreshAccessToken(
-    refresh_token: string,
+    refreshTokenToUse: string,
     ip: string,
   ): Promise<AuthTokensDto> {
     const refreshToken = await this.refreshTokenRepository.getOne(
-      refresh_token,
+      refreshTokenToUse,
     );
     if (!refreshToken) throw new UnauthorizedException();
 
@@ -51,17 +51,15 @@ export class AuthService {
       throw new UnauthorizedException();
     }
 
-    const newRefreshTokenId = this.generateRefreshToken(userId, ip);
-
-    refreshToken.replace(newRefreshTokenId);
-
-    const access_token = this.generateAccessToken(refresh_token);
-
+    const refresh_token = this.generateRefreshToken(userId, ip);
+    refreshToken.replace(refresh_token);
     await this.unitOfWork.commitChanges();
+
+    const access_token = this.generateAccessToken(userId);
 
     return {
       access_token,
-      refresh_token: newRefreshTokenId,
+      refresh_token,
     };
   }
 
