@@ -46,7 +46,7 @@ export class User extends AggregateRoot {
     createdAt: MillisecondsDate,
     updatedAt: MillisecondsDate,
     biography: Biography,
-    profilePicture: WebUrl,
+    profilePicture?: WebUrl,
     deletedAt?: MillisecondsDate,
   ) {
     super(id);
