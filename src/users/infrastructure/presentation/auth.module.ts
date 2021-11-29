@@ -15,6 +15,7 @@ import {
 } from '../../../users/domain/repositories';
 import {
   EncryptionService,
+  TokenService,
   UniqueIdGeneratorService,
 } from '../../application/services';
 import {
@@ -28,6 +29,7 @@ import {
 } from '../persistence/repositories';
 import {
   EncryptionServiceBcrypt,
+  TokenServiceJwt,
   UniqueIdGeneratorServiceMongoDb,
 } from '../services';
 import { AuthController } from './auth.controller';
@@ -61,6 +63,10 @@ const passportStrategies = [LocalLoginPassportStrategy, JwtPassportStrategy];
     {
       provide: UniqueIdGeneratorService,
       useClass: UniqueIdGeneratorServiceMongoDb,
+    },
+    {
+      provide: TokenService,
+      useClass: TokenServiceJwt,
     },
     ...commandHandlers,
     ...passportStrategies,
