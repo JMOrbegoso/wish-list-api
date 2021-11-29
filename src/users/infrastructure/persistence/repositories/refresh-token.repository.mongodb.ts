@@ -4,49 +4,69 @@ import {
   Repository as MikroOrmRepository,
 } from '@mikro-orm/core';
 import { UniqueId } from '../../../../core/domain/value-objects';
+import { RefreshToken } from '../../../../users/domain/entities';
+import { RefreshTokenRepository } from '../../../../users/domain/repositories';
+import { Ip } from '../../../../users/domain/value-objects';
+import {
+  refreshTokenEntityToRefreshToken,
+  refreshTokenToRefreshTokenEntity,
+} from '../../mappings';
 import { RefreshTokenEntity } from '../entities';
 
 @MikroOrmRepository(RefreshTokenEntity)
-export class RefreshTokenRepositoryMongoDb extends EntityRepository<RefreshTokenEntity> {
+export class RefreshTokenRepositoryMongoDb
+  extends EntityRepository<RefreshTokenEntity>
+  implements RefreshTokenRepository
+{
   constructor(orm: MikroORM) {
     super(orm.em, RefreshTokenEntity);
   }
 
-  async getAll(): Promise<RefreshTokenEntity[]> {
-    return await this.findAll();
+  async getAll(): Promise<RefreshToken[]> {
+    const refreshTokenEntities = await this.findAll();
+    const refreshTokens = refreshTokenEntities.map((rt) =>
+      refreshTokenEntityToRefreshToken(rt),
+    );
+    return refreshTokens;
   }
 
-  async getAllByUserId(userId: string): Promise<RefreshTokenEntity[]> {
-    return await this.find({ userId });
+  async getAllByUserId(userId: UniqueId): Promise<RefreshToken[]> {
+    const refreshTokenEntities = await this.find({ userId: userId.getId });
+    const refreshTokens = refreshTokenEntities.map((rt) =>
+      refreshTokenEntityToRefreshToken(rt),
+    );
+    return refreshTokens;
   }
 
-  async getAllByIp(ip: string): Promise<RefreshTokenEntity[]> {
-    return await this.find({ ip });
+  async getAllByIp(ip: Ip): Promise<RefreshToken[]> {
+    const refreshTokenEntities = await this.find({ ip: ip.getIp });
+    const refreshTokens = refreshTokenEntities.map((rt) =>
+      refreshTokenEntityToRefreshToken(rt),
+    );
+    return refreshTokens;
   }
 
-  async getOne(id: string): Promise<RefreshTokenEntity> {
-    const refreshToken = await this.findOne(id);
-    if (!refreshToken) return null;
+  async getOne(id: UniqueId): Promise<RefreshToken> {
+    const refreshTokenEntity = await this.findOne(id.getId);
+    if (!refreshTokenEntity) return null;
+    const refreshToken = refreshTokenEntityToRefreshToken(refreshTokenEntity);
     return refreshToken;
   }
 
-  add(refreshToken: RefreshTokenEntity): void {
-    const entityToPersist = this.create(refreshToken);
+  add(refreshToken: RefreshToken): void {
+    const refreshTokenEntity = refreshTokenToRefreshTokenEntity(refreshToken);
+    const entityToPersist = this.create(refreshTokenEntity);
     this.persist(entityToPersist);
   }
 
-  replaceToken(id: string, newRefreshTokenId: string): void {
-    const refreshToken = this.getReference(id);
-    refreshToken.replace(newRefreshTokenId);
+  update(refreshToken: RefreshToken): void {
+    const refreshTokenEntity = refreshTokenToRefreshTokenEntity(refreshToken);
+    const refreshTokenFromDb = this.getReference(refreshToken.id.getId);
+    this.assign(refreshTokenFromDb, refreshTokenEntity);
   }
 
-  async revokeValidTokensByUserId(id: UniqueId): Promise<void> {
-    const refreshTokens = await this.find({ userId: id.getId });
-    refreshTokens.filter((rt) => rt.isValid).forEach((rt) => rt.revoke());
-  }
-
-  async revokeValidTokensByIp(ip: string): Promise<void> {
-    const refreshTokens = await this.find({ ip });
-    refreshTokens.filter((rt) => rt.isValid).forEach((rt) => rt.revoke());
+  delete(id: UniqueId): void {
+    const refreshTokenFromDb = this.getReference(id.getId);
+    this.remove(refreshTokenFromDb);
   }
 }
