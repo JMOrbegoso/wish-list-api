@@ -44,8 +44,7 @@ export class GenerateAuthTokensHandler
   }
 
   private generateRefreshToken(userId: UniqueId, ip: Ip): string {
-    const id = this.uniqueIdGeneratorService.generateId();
-    const uniqueId = UniqueId.create(id);
+    const uniqueId = this.uniqueIdGeneratorService.generateId();
 
     const refreshToken = RefreshToken.create(
       uniqueId,
@@ -55,6 +54,6 @@ export class GenerateAuthTokensHandler
       ip,
     );
     this.refreshTokenRepository.add(refreshToken);
-    return id;
+    return uniqueId.getId;
   }
 }

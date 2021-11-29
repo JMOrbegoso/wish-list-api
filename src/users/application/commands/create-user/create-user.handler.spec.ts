@@ -2,6 +2,7 @@ import { BadRequestException } from '@nestjs/common';
 import { mocked } from 'ts-jest/utils';
 import { CreateUserCommand, CreateUserHandler } from '..';
 import { UnitOfWork } from '../../../../core/domain/repositories';
+import { UniqueId } from '../../../../core/domain/value-objects';
 import { UserRepository } from '../../../../users/domain/repositories';
 import {
   EmailSenderService,
@@ -63,8 +64,12 @@ describe('users', () => {
             hashPassword: jest.fn().mockReturnValue('password hashed'),
           } as unknown as EncryptionService);
 
+          const uniqueId = mocked<UniqueId>({
+            getId: 'verification-code-id',
+          } as unknown as UniqueId);
+
           const uniqueIdGeneratorService = mocked<UniqueIdGeneratorService>({
-            generateId: jest.fn().mockReturnValue('verification-code-id'),
+            generateId: jest.fn().mockReturnValue(uniqueId),
           } as unknown as UniqueIdGeneratorService);
 
           const emailSenderService = mocked<EmailSenderService>({

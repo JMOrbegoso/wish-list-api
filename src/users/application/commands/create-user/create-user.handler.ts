@@ -67,9 +67,7 @@ export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
     const roles = [Role.basic()];
 
     // Generate the verfication code
-    const verificationCodeId = UniqueId.create(
-      this.uniqueIdGeneratorService.generateId(),
-    );
+    const verificationCodeId = this.uniqueIdGeneratorService.generateId();
     const verificationCode = VerificationCode.create(verificationCodeId);
 
     // Create the new user

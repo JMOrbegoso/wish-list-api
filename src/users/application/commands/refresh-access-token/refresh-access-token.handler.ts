@@ -72,7 +72,7 @@ export class RefreshAccessTokenHandler
     const access_token = this.generateAccessToken(user);
 
     const newRefreshToken = RefreshToken.create(
-      UniqueId.create(this.uniqueIdGeneratorService.generateId()),
+      this.uniqueIdGeneratorService.generateId(),
       refreshTokenToUse.userId,
       MillisecondsDate.create(),
       SecondsDuration.twoWeeks(),
