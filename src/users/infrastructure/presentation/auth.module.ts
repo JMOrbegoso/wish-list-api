@@ -9,7 +9,10 @@ import {
   LocalLoginHandler,
   VerifyUserHandler,
 } from '../../../users/application/commands';
-import { UserRepository } from '../../../users/domain/repositories';
+import {
+  RefreshTokenRepository,
+  UserRepository,
+} from '../../../users/domain/repositories';
 import {
   EncryptionService,
   UniqueIdGeneratorService,
@@ -49,7 +52,10 @@ const passportStrategies = [LocalLoginPassportStrategy, JwtPassportStrategy];
   providers: [
     AuthService,
     { provide: UserRepository, useClass: UserRepositoryMongoDb },
-    RefreshTokenRepositoryMongoDb,
+    {
+      provide: RefreshTokenRepository,
+      useClass: RefreshTokenRepositoryMongoDb,
+    },
     { provide: UnitOfWork, useClass: UnitOfWorkMongoDb },
     { provide: EncryptionService, useClass: EncryptionServiceBcrypt },
     {

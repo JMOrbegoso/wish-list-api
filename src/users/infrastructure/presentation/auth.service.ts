@@ -5,10 +5,12 @@ import { UniqueId } from '../../../core/domain/value-objects';
 import { OutputUserDto } from '../../../users/application/dtos';
 import { userToOutputUserDto } from '../../../users/application/mappings';
 import { UniqueIdGeneratorService } from '../../../users/application/services';
-import { UserRepository } from '../../../users/domain/repositories';
+import {
+  RefreshTokenRepository,
+  UserRepository,
+} from '../../../users/domain/repositories';
 import { AuthTokensDto } from '../dtos';
 import { RefreshTokenEntity } from '../persistence/entities';
-import { RefreshTokenRepositoryMongoDb } from '../persistence/repositories';
 
 @Injectable()
 export class AuthService {
@@ -16,7 +18,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
     private readonly uniqueIdGeneratorService: UniqueIdGeneratorService,
     private readonly userRepository: UserRepository,
-    private readonly refreshTokenRepository: RefreshTokenRepositoryMongoDb,
+    private readonly refreshTokenRepository: RefreshTokenRepository,
     private readonly unitOfWork: UnitOfWork,
   ) {}
 
