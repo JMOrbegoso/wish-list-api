@@ -30,12 +30,12 @@ export class RefreshTokenEntity {
   @Property()
   ip!: string;
 
-  @Property()
+  @Property({ nullable: true })
   replacedAt?: Date;
 
-  @Property()
+  @Property({ nullable: true })
   replacedBy?: string;
 
-  @Property()
+  @Property({ nullable: true })
   revokedAt?: Date;
 }
