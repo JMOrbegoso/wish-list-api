@@ -1,6 +1,14 @@
-import { PickType } from '@nestjs/swagger';
-import { AuthTokensDto } from '.';
+import { ApiProperty } from '@nestjs/swagger';
+import { IsMongoId, IsNotEmpty } from 'class-validator';
 
-export class RefreshTokenDto extends PickType(AuthTokensDto, [
-  'refresh_token',
-]) {}
+export class RefreshTokenDto {
+  @ApiProperty({
+    type: String,
+    required: true,
+    description: 'Refresh Token',
+    example: '61a0f44512c57626e239724a',
+  })
+  @IsMongoId()
+  @IsNotEmpty()
+  refresh_token: string;
+}
