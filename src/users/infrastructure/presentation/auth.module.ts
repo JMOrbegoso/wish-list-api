@@ -35,7 +35,6 @@ import {
   UniqueIdGeneratorServiceMongoDb,
 } from '../services';
 import { AuthController } from './auth.controller';
-import { AuthService } from './auth.service';
 
 const commandHandlers = [
   GenerateAuthTokensHandler,
@@ -59,7 +58,6 @@ const passportStrategies = [LocalLoginPassportStrategy, JwtPassportStrategy];
     }),
   ],
   providers: [
-    AuthService,
     { provide: UserRepository, useClass: UserRepositoryMongoDb },
     {
       provide: RefreshTokenRepository,

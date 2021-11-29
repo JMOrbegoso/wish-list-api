@@ -26,15 +26,11 @@ import {
 } from '../../../users/application/commands';
 import { AuthTokensDto } from '../../../users/application/dtos';
 import { LoginDto, RefreshTokenDto } from '../dtos';
-import { AuthService } from './auth.service';
 
 @ApiTags('AuthController')
 @Controller()
 export class AuthController {
-  constructor(
-    private readonly authService: AuthService,
-    private commandBus: CommandBus,
-  ) {}
+  constructor(private commandBus: CommandBus) {}
 
   @ApiBody({ type: LoginDto })
   @ApiOkResponse({
