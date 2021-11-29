@@ -6,6 +6,7 @@ import { PassportModule } from '@nestjs/passport';
 import { UnitOfWork } from '../../../core/domain/repositories';
 import { UnitOfWorkMongoDb } from '../../../core/infrastructure/repositories';
 import {
+  GenerateAuthTokensHandler,
   LocalLoginHandler,
   RefreshAccessTokenHandler,
   VerifyUserHandler,
@@ -37,6 +38,7 @@ import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 
 const commandHandlers = [
+  GenerateAuthTokensHandler,
   LocalLoginHandler,
   RefreshAccessTokenHandler,
   VerifyUserHandler,

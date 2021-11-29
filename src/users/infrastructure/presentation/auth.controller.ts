@@ -20,6 +20,7 @@ import {
 } from '@nestjs/swagger';
 import { RealIP } from 'nestjs-real-ip';
 import {
+  GenerateAuthTokensCommand,
   RefreshAccessTokenCommand,
   VerifyUserCommand,
 } from '../../../users/application/commands';
@@ -48,8 +49,12 @@ export class AuthController {
   @UseGuards(AuthGuard('local'))
   @Post('login')
   @HttpCode(200)
-  async login(@Request() req, @RealIP() ipAddress): Promise<AuthTokensDto> {
-    return await this.authService.generateAuthTokens(req.user, ipAddress);
+  async login(
+    @Request() req,
+    @RealIP() ipAddress: string,
+  ): Promise<AuthTokensDto> {
+    const command = new GenerateAuthTokensCommand(req.user, ipAddress);
+    return await this.commandBus.execute(command);
   }
 
   @ApiBody({ required: true, type: RefreshTokenDto })

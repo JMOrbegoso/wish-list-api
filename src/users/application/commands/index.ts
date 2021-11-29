@@ -27,3 +27,6 @@ export * from './verify-user/verify-user.handler';
 
 export * from './refresh-access-token/refresh-access-token.command';
 export * from './refresh-access-token/refresh-access-token.handler';
+
+export * from './generate-auth-tokens/generate-auth-tokens.command';
+export * from './generate-auth-tokens/generate-auth-tokens.handler';
