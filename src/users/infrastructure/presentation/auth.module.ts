@@ -7,6 +7,7 @@ import { UnitOfWork } from '../../../core/domain/repositories';
 import { UnitOfWorkMongoDb } from '../../../core/infrastructure/repositories';
 import {
   LocalLoginHandler,
+  RefreshAccessTokenHandler,
   VerifyUserHandler,
 } from '../../../users/application/commands';
 import {
@@ -35,7 +36,11 @@ import {
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 
-const commandHandlers = [LocalLoginHandler, VerifyUserHandler];
+const commandHandlers = [
+  LocalLoginHandler,
+  RefreshAccessTokenHandler,
+  VerifyUserHandler,
+];
 const passportStrategies = [LocalLoginPassportStrategy, JwtPassportStrategy];
 
 @Module({

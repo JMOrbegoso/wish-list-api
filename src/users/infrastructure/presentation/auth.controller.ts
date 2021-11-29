@@ -19,7 +19,10 @@ import {
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { RealIP } from 'nestjs-real-ip';
-import { VerifyUserCommand } from '../../../users/application/commands';
+import {
+  RefreshAccessTokenCommand,
+  VerifyUserCommand,
+} from '../../../users/application/commands';
 import { AuthTokensDto } from '../../../users/application/dtos';
 import { LoginDto, RefreshTokenDto } from '../dtos';
 import { AuthService } from './auth.service';
@@ -59,12 +62,10 @@ export class AuthController {
   @HttpCode(200)
   async refresh(
     @Body() dto: RefreshTokenDto,
-    @RealIP() ipAddress,
+    @RealIP() ipAddress: string,
   ): Promise<AuthTokensDto> {
-    return await this.authService.refreshAccessToken(
-      dto.refresh_token,
-      ipAddress,
-    );
+    const command = new RefreshAccessTokenCommand(dto.refresh_token, ipAddress);
+    return await this.commandBus.execute(command);
   }
 
   @ApiOkResponse({ description: 'User verified successfully.' })
