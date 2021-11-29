@@ -1,8 +1,8 @@
 import { NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { mocked } from 'ts-jest/utils';
 import { LocalLoginCommand, LocalLoginHandler } from '..';
-import { UserRepository } from '../../../../users/domain/repositories';
 import { User } from '../../../domain/entities';
+import { UserRepository } from '../../../domain/repositories';
 import { EncryptionService } from '../../services';
 
 describe('users', () => {

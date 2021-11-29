@@ -1,6 +1,6 @@
 import { mocked } from 'ts-jest/utils';
-import { Role } from '../../../users/domain/value-objects';
 import { User } from '../../domain/entities';
+import { Role } from '../../domain/value-objects';
 import { userToOutputUserDto } from '.';
 
 const validValues = [

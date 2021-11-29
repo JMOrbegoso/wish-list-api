@@ -2,8 +2,8 @@ import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { mocked } from 'ts-jest/utils';
 import { BlockUserCommand, BlockUserHandler } from '..';
 import { UnitOfWork } from '../../../../core/domain/repositories';
-import { User } from '../../../../users/domain/entities';
-import { UserRepository } from '../../../../users/domain/repositories';
+import { User } from '../../../domain/entities';
+import { UserRepository } from '../../../domain/repositories';
 
 describe('users', () => {
   describe('application', () => {

@@ -3,8 +3,8 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { VerifyUserCommand } from '..';
 import { UnitOfWork } from '../../../../core/domain/repositories';
 import { UniqueId } from '../../../../core/domain/value-objects';
-import { VerificationCode } from '../../../../users/domain/entities';
-import { UserRepository } from '../../../../users/domain/repositories';
+import { VerificationCode } from '../../../domain/entities';
+import { UserRepository } from '../../../domain/repositories';
 
 @CommandHandler(VerifyUserCommand)
 export class VerifyUserHandler implements ICommandHandler<VerifyUserCommand> {

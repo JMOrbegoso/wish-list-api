@@ -10,16 +10,16 @@ import {
   LocalLoginHandler,
   RefreshAccessTokenHandler,
   VerifyUserHandler,
-} from '../../../users/application/commands';
-import {
-  RefreshTokenRepository,
-  UserRepository,
-} from '../../../users/domain/repositories';
+} from '../../application/commands';
 import {
   EncryptionService,
   TokenService,
   UniqueIdGeneratorService,
 } from '../../application/services';
+import {
+  RefreshTokenRepository,
+  UserRepository,
+} from '../../domain/repositories';
 import {
   JwtPassportStrategy,
   LocalLoginPassportStrategy,

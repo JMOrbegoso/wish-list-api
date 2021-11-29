@@ -23,8 +23,8 @@ import {
   GenerateAuthTokensCommand,
   RefreshAccessTokenCommand,
   VerifyUserCommand,
-} from '../../../users/application/commands';
-import { AuthTokensDto } from '../../../users/application/dtos';
+} from '../../application/commands';
+import { AuthTokensDto } from '../../application/dtos';
 import { LoginDto, RefreshTokenDto } from '../dtos';
 
 @ApiTags('AuthController')

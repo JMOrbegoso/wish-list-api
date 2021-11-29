@@ -7,7 +7,7 @@ import {
   UniqueId,
   WebUrl,
 } from '../../../../core/domain/value-objects';
-import { UserRepository } from '../../../../users/domain/repositories';
+import { UserRepository } from '../../../domain/repositories';
 import { Biography, FirstName, LastName } from '../../../domain/value-objects';
 
 @CommandHandler(UpdateUserProfileCommand)

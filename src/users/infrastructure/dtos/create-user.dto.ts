@@ -18,7 +18,7 @@ import {
   LastName,
   Password,
   Username,
-} from '../../../users/domain/value-objects';
+} from '../../domain/value-objects';
 
 export class CreateUserDto {
   @ApiProperty({

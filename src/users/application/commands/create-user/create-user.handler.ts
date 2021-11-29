@@ -7,8 +7,8 @@ import {
   UniqueId,
   WebUrl,
 } from '../../../../core/domain/value-objects';
-import { UserRepository } from '../../../../users/domain/repositories';
 import { User, VerificationCode } from '../../../domain/entities';
+import { UserRepository } from '../../../domain/repositories';
 import {
   Biography,
   Email,

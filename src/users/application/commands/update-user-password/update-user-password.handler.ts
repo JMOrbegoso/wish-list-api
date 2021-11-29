@@ -3,7 +3,7 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { UpdateUserPasswordCommand } from '..';
 import { UnitOfWork } from '../../../../core/domain/repositories';
 import { UniqueId } from '../../../../core/domain/value-objects';
-import { UserRepository } from '../../../../users/domain/repositories';
+import { UserRepository } from '../../../domain/repositories';
 import { PasswordHash } from '../../../domain/value-objects';
 import { EncryptionService } from '../../services';
 

@@ -1,7 +1,7 @@
 import { NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { LocalLoginCommand } from '..';
-import { UserRepository } from '../../../../users/domain/repositories';
+import { UserRepository } from '../../../domain/repositories';
 import { Username } from '../../../domain/value-objects';
 import { OutputUserDto } from '../../dtos';
 import { userToOutputUserDto } from '../../mappings';

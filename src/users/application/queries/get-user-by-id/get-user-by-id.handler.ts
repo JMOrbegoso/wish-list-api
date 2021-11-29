@@ -2,8 +2,8 @@ import { NotFoundException } from '@nestjs/common';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetUserByIdQuery } from '..';
 import { UniqueId } from '../../../../core/domain/value-objects';
-import { User } from '../../../../users/domain/entities';
-import { UserRepository } from '../../../../users/domain/repositories';
+import { User } from '../../../domain/entities';
+import { UserRepository } from '../../../domain/repositories';
 import { OutputUserDto } from '../../dtos';
 import { userToOutputUserDto } from '../../mappings';
 

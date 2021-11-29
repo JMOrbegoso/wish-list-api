@@ -4,9 +4,9 @@ import {
   Repository as MikroOrmRepository,
 } from '@mikro-orm/core';
 import { UniqueId } from '../../../../core/domain/value-objects';
-import { RefreshToken } from '../../../../users/domain/entities';
-import { RefreshTokenRepository } from '../../../../users/domain/repositories';
-import { Ip } from '../../../../users/domain/value-objects';
+import { RefreshToken } from '../../../domain/entities';
+import { RefreshTokenRepository } from '../../../domain/repositories';
+import { Ip } from '../../../domain/value-objects';
 import {
   refreshTokenEntityToRefreshToken,
   refreshTokenToRefreshTokenEntity,

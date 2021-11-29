@@ -1,7 +1,7 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetUsersQuery } from '..';
-import { User } from '../../../../users/domain/entities';
-import { UserRepository } from '../../../../users/domain/repositories';
+import { User } from '../../../domain/entities';
+import { UserRepository } from '../../../domain/repositories';
 import { OutputUserDto } from '../../dtos';
 import { userToOutputUserDto } from '../../mappings';
 
