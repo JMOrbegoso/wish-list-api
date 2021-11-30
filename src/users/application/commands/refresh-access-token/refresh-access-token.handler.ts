@@ -71,24 +71,19 @@ export class RefreshAccessTokenHandler
 
     const access_token = this.generateAccessToken(user);
 
-    const newRefreshToken = RefreshToken.create(
-      this.uniqueIdGeneratorService.generateId(),
+    const newRefreshTokenId = this.generateRefreshToken(
       refreshTokenToUse.userId,
-      MillisecondsDate.create(),
-      SecondsDuration.twoWeeks(),
       ip,
     );
 
-    this.refreshTokenRepository.add(newRefreshToken);
-
-    refreshTokenToUse.replace(newRefreshToken.id);
+    refreshTokenToUse.replace(newRefreshTokenId);
     this.refreshTokenRepository.update(refreshTokenToUse);
 
     await this.unitOfWork.commitChanges();
 
     return {
       access_token,
-      refresh_token: newRefreshToken.id.getId,
+      refresh_token: newRefreshTokenId.getId,
     };
   }
 
@@ -98,5 +93,19 @@ export class RefreshAccessTokenHandler
     const { id, ...body } = outputUserDto;
     const payload = { sub: id, ...body };
     return this.tokenService.signPayload(payload);
+  }
+
+  private generateRefreshToken(userId: UniqueId, ip: Ip): UniqueId {
+    const uniqueId = this.uniqueIdGeneratorService.generateId();
+
+    const refreshToken = RefreshToken.create(
+      uniqueId,
+      userId,
+      MillisecondsDate.create(),
+      SecondsDuration.twoWeeks(),
+      ip,
+    );
+    this.refreshTokenRepository.add(refreshToken);
+    return uniqueId;
   }
 }
