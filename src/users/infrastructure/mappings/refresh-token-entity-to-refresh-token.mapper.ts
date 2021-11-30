@@ -26,9 +26,9 @@ export function refreshTokenEntityToRefreshToken(
   return RefreshToken.create(
     id,
     userId,
+    ip,
     createdAt,
     secondsDuration,
-    ip,
     replacedAt,
     replacedBy,
     revokedAt,

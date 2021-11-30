@@ -150,9 +150,9 @@ describe('users', () => {
             const refreshToken = RefreshToken.create(
               id,
               userId,
+              ip,
               createdAt,
               secondsDuration,
-              ip,
               replacedAt,
               replacedBy,
               revokedAt,
@@ -201,9 +201,9 @@ describe('users', () => {
             const refreshToken = RefreshToken.create(
               id,
               userId,
+              ip,
               createdAt,
               secondsDuration,
-              ip,
               replacedAt,
               replacedBy,
               revokedAt,
@@ -233,9 +233,9 @@ describe('users', () => {
             const refreshToken = RefreshToken.create(
               id,
               userId,
+              ip,
               createdAt,
               secondsDuration,
-              ip,
               replacedAt,
               replacedBy,
               revokedAt,
@@ -271,9 +271,9 @@ describe('users', () => {
             const refreshToken = RefreshToken.create(
               id,
               userId,
+              ip,
               createdAt,
               secondsDuration,
-              ip,
               replacedAt,
               replacedBy,
               revokedAt,

@@ -2,16 +2,12 @@ import { NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { LocalLoginCommand } from '..';
 import { UnitOfWork } from '../../../../core/domain/repositories';
-import {
-  MillisecondsDate,
-  UniqueId,
-} from '../../../../core/domain/value-objects';
 import { RefreshToken, User } from '../../../domain/entities';
 import {
   RefreshTokenRepository,
   UserRepository,
 } from '../../../domain/repositories';
-import { Ip, SecondsDuration, Username } from '../../../domain/value-objects';
+import { Ip, Username } from '../../../domain/value-objects';
 import { AuthTokensDto } from '../../dtos';
 import { userToOutputUserDto } from '../../mappings';
 import {
@@ -61,15 +57,20 @@ export class LocalLoginHandler implements ICommandHandler<LocalLoginCommand> {
     // Generate the access token
     const access_token = this.generateAccessToken(user);
 
-    // Generate the refresh token
-    const newRefreshTokenId = this.generateRefreshToken(user.id, ip);
+    // Generate the new refresh token
+    const newRefreshToken = RefreshToken.create(
+      this.uniqueIdGeneratorService.generateId(),
+      user.id,
+      ip,
+    );
+    this.refreshTokenRepository.add(newRefreshToken);
 
     // Save changes in persistence
     await this.unitOfWork.commitChanges();
 
     return {
       access_token,
-      refresh_token: newRefreshTokenId.getId,
+      refresh_token: newRefreshToken.id.getId,
     };
   }
 
@@ -79,19 +80,5 @@ export class LocalLoginHandler implements ICommandHandler<LocalLoginCommand> {
     const { id, ...body } = outputUserDto;
     const payload = { sub: id, ...body };
     return this.tokenService.signPayload(payload);
-  }
-
-  private generateRefreshToken(userId: UniqueId, ip: Ip): UniqueId {
-    const uniqueId = this.uniqueIdGeneratorService.generateId();
-
-    const refreshToken = RefreshToken.create(
-      uniqueId,
-      userId,
-      MillisecondsDate.create(),
-      SecondsDuration.twoWeeks(),
-      ip,
-    );
-    this.refreshTokenRepository.add(refreshToken);
-    return uniqueId;
   }
 }

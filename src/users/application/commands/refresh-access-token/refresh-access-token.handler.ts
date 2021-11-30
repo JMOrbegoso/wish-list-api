@@ -2,16 +2,13 @@ import { UnauthorizedException } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { RefreshAccessTokenCommand } from '..';
 import { UnitOfWork } from '../../../../core/domain/repositories';
-import {
-  MillisecondsDate,
-  UniqueId,
-} from '../../../../core/domain/value-objects';
+import { UniqueId } from '../../../../core/domain/value-objects';
 import { RefreshToken, User } from '../../../domain/entities';
 import {
   RefreshTokenRepository,
   UserRepository,
 } from '../../../domain/repositories';
-import { Ip, SecondsDuration } from '../../../domain/value-objects';
+import { Ip } from '../../../domain/value-objects';
 import { AuthTokensDto } from '../../dtos';
 import { userToOutputUserDto } from '../../mappings';
 import { TokenService, UniqueIdGeneratorService } from '../../services';
@@ -69,21 +66,27 @@ export class RefreshAccessTokenHandler
 
     if (!refreshTokenToUse.isValid) throw new UnauthorizedException();
 
+    // Generate the access token
     const access_token = this.generateAccessToken(user);
 
-    const newRefreshTokenId = this.generateRefreshToken(
+    // Generate the new refresh token
+    const newRefreshToken = RefreshToken.create(
+      this.uniqueIdGeneratorService.generateId(),
       refreshTokenToUse.userId,
       ip,
     );
+    this.refreshTokenRepository.add(newRefreshToken);
 
-    refreshTokenToUse.replace(newRefreshTokenId);
+    // replace the origin refresh token
+    refreshTokenToUse.replace(newRefreshToken.id);
     this.refreshTokenRepository.update(refreshTokenToUse);
 
+    // Save changes in persistence
     await this.unitOfWork.commitChanges();
 
     return {
       access_token,
-      refresh_token: newRefreshTokenId.getId,
+      refresh_token: newRefreshToken.id.getId,
     };
   }
 
@@ -93,19 +96,5 @@ export class RefreshAccessTokenHandler
     const { id, ...body } = outputUserDto;
     const payload = { sub: id, ...body };
     return this.tokenService.signPayload(payload);
-  }
-
-  private generateRefreshToken(userId: UniqueId, ip: Ip): UniqueId {
-    const uniqueId = this.uniqueIdGeneratorService.generateId();
-
-    const refreshToken = RefreshToken.create(
-      uniqueId,
-      userId,
-      MillisecondsDate.create(),
-      SecondsDuration.twoWeeks(),
-      ip,
-    );
-    this.refreshTokenRepository.add(refreshToken);
-    return uniqueId;
   }
 }

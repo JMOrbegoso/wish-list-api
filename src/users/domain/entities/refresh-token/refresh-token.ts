@@ -6,6 +6,8 @@ import {
 import { Ip, SecondsDuration } from '../../value-objects';
 
 export class RefreshToken extends AggregateRoot {
+  public static readonly defaultDuration = SecondsDuration.twoWeeks();
+
   private _userId: UniqueId;
   private _createdAt: MillisecondsDate;
   private _secondsDuration: SecondsDuration;
@@ -38,9 +40,9 @@ export class RefreshToken extends AggregateRoot {
   public static create(
     id: UniqueId,
     userId: UniqueId,
-    createdAt: MillisecondsDate,
-    secondsDuration: SecondsDuration,
     ip: Ip,
+    createdAt: MillisecondsDate = MillisecondsDate.create(),
+    secondsDuration: SecondsDuration = RefreshToken.defaultDuration,
     replacedAt: MillisecondsDate = null,
     replacedBy: UniqueId = null,
     revokedAt: MillisecondsDate = null,
