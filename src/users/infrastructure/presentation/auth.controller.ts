@@ -1,15 +1,5 @@
-import {
-  Body,
-  Controller,
-  Get,
-  HttpCode,
-  Post,
-  Query,
-  Request,
-  UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, Post, Query } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
-import { AuthGuard } from '@nestjs/passport';
 import {
   ApiBadRequestResponse,
   ApiBody,
@@ -20,7 +10,7 @@ import {
 } from '@nestjs/swagger';
 import { RealIP } from 'nestjs-real-ip';
 import {
-  GenerateAuthTokensCommand,
+  LocalLoginCommand,
   RefreshAccessTokenCommand,
   VerifyUserCommand,
 } from '../../application/commands';
@@ -42,14 +32,17 @@ export class AuthController {
     description:
       'User is deleted, blocked, not verified or the password is incorrect.',
   })
-  @UseGuards(AuthGuard('local'))
   @Post('login')
   @HttpCode(200)
   async login(
-    @Request() req,
+    @Body() dto: LoginDto,
     @RealIP() ipAddress: string,
   ): Promise<AuthTokensDto> {
-    const command = new GenerateAuthTokensCommand(req.user, ipAddress);
+    const command = new LocalLoginCommand(
+      dto.username,
+      dto.password,
+      ipAddress,
+    );
     return await this.commandBus.execute(command);
   }
 

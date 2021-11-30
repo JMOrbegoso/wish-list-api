@@ -1,9 +1,19 @@
 import { NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { mocked } from 'ts-jest/utils';
 import { LocalLoginCommand, LocalLoginHandler } from '..';
+import { UnitOfWork } from '../../../../core/domain/repositories';
+import { UniqueId } from '../../../../core/domain/value-objects';
 import { User } from '../../../domain/entities';
-import { UserRepository } from '../../../domain/repositories';
-import { EncryptionService } from '../../services';
+import {
+  RefreshTokenRepository,
+  UserRepository,
+} from '../../../domain/repositories';
+import { InvalidIpError } from '../../../domain/value-objects';
+import {
+  EncryptionService,
+  TokenService,
+  UniqueIdGeneratorService,
+} from '../../services';
 
 describe('users', () => {
   describe('application', () => {
@@ -15,8 +25,22 @@ describe('users', () => {
             getOneByUsername: jest.fn().mockReturnValue(null),
           } as unknown as UserRepository);
 
+          const refreshTokenRepository = mocked<RefreshTokenRepository>(
+            {} as unknown as RefreshTokenRepository,
+          );
+
+          const unitOfWork = mocked<UnitOfWork>({} as unknown as UnitOfWork);
+
           const encryptionService = mocked<EncryptionService>(
             {} as unknown as EncryptionService,
+          );
+
+          const tokenService = mocked<TokenService>(
+            {} as unknown as TokenService,
+          );
+
+          const uniqueIdGeneratorService = mocked<UniqueIdGeneratorService>(
+            {} as unknown as UniqueIdGeneratorService,
           );
 
           const command = mocked<LocalLoginCommand>({
@@ -25,7 +49,57 @@ describe('users', () => {
 
           const handler = new LocalLoginHandler(
             userRepository,
+            refreshTokenRepository,
+            unitOfWork,
             encryptionService,
+            tokenService,
+            uniqueIdGeneratorService,
+          );
+
+          // Act
+
+          // Assert
+          return expect(handler.execute(command)).rejects.toThrowError(
+            InvalidIpError,
+          );
+        });
+
+        test('should throw NotFoundException', () => {
+          // Arrange
+          const userRepository = mocked<UserRepository>({
+            getOneByUsername: jest.fn().mockReturnValue(null),
+          } as unknown as UserRepository);
+
+          const refreshTokenRepository = mocked<RefreshTokenRepository>(
+            {} as unknown as RefreshTokenRepository,
+          );
+
+          const unitOfWork = mocked<UnitOfWork>({} as unknown as UnitOfWork);
+
+          const encryptionService = mocked<EncryptionService>(
+            {} as unknown as EncryptionService,
+          );
+
+          const tokenService = mocked<TokenService>(
+            {} as unknown as TokenService,
+          );
+
+          const uniqueIdGeneratorService = mocked<UniqueIdGeneratorService>(
+            {} as unknown as UniqueIdGeneratorService,
+          );
+
+          const command = mocked<LocalLoginCommand>({
+            username: 'john_doe',
+            ipAddress: '192.168.1.1',
+          } as unknown as LocalLoginCommand);
+
+          const handler = new LocalLoginHandler(
+            userRepository,
+            refreshTokenRepository,
+            unitOfWork,
+            encryptionService,
+            tokenService,
+            uniqueIdGeneratorService,
           );
 
           // Act
@@ -81,17 +155,36 @@ describe('users', () => {
             getOneByUsername: jest.fn().mockReturnValue(user),
           } as unknown as UserRepository);
 
+          const refreshTokenRepository = mocked<RefreshTokenRepository>(
+            {} as unknown as RefreshTokenRepository,
+          );
+
+          const unitOfWork = mocked<UnitOfWork>({} as unknown as UnitOfWork);
+
           const encryptionService = mocked<EncryptionService>({
             passwordMatch: jest.fn().mockReturnValue(false),
           } as unknown as EncryptionService);
 
+          const tokenService = mocked<TokenService>(
+            {} as unknown as TokenService,
+          );
+
+          const uniqueIdGeneratorService = mocked<UniqueIdGeneratorService>(
+            {} as unknown as UniqueIdGeneratorService,
+          );
+
           const command = mocked<LocalLoginCommand>({
             username: 'john_doe',
+            ipAddress: '192.168.1.1',
           } as unknown as LocalLoginCommand);
 
           const handler = new LocalLoginHandler(
             userRepository,
+            refreshTokenRepository,
+            unitOfWork,
             encryptionService,
+            tokenService,
+            uniqueIdGeneratorService,
           );
 
           // Act
@@ -150,17 +243,36 @@ describe('users', () => {
             getOneByUsername: jest.fn().mockReturnValue(user),
           } as unknown as UserRepository);
 
+          const refreshTokenRepository = mocked<RefreshTokenRepository>(
+            {} as unknown as RefreshTokenRepository,
+          );
+
+          const unitOfWork = mocked<UnitOfWork>({} as unknown as UnitOfWork);
+
           const encryptionService = mocked<EncryptionService>({
             passwordMatch: jest.fn().mockReturnValue(true),
           } as unknown as EncryptionService);
 
+          const tokenService = mocked<TokenService>(
+            {} as unknown as TokenService,
+          );
+
+          const uniqueIdGeneratorService = mocked<UniqueIdGeneratorService>(
+            {} as unknown as UniqueIdGeneratorService,
+          );
+
           const command = mocked<LocalLoginCommand>({
             username: 'john_doe',
+            ipAddress: '192.168.1.1',
           } as unknown as LocalLoginCommand);
 
           const handler = new LocalLoginHandler(
             userRepository,
+            refreshTokenRepository,
+            unitOfWork,
             encryptionService,
+            tokenService,
+            uniqueIdGeneratorService,
           );
 
           // Act
@@ -217,17 +329,36 @@ describe('users', () => {
             getOneByUsername: jest.fn().mockReturnValue(user),
           } as unknown as UserRepository);
 
+          const refreshTokenRepository = mocked<RefreshTokenRepository>(
+            {} as unknown as RefreshTokenRepository,
+          );
+
+          const unitOfWork = mocked<UnitOfWork>({} as unknown as UnitOfWork);
+
           const encryptionService = mocked<EncryptionService>({
             passwordMatch: jest.fn().mockReturnValue(true),
           } as unknown as EncryptionService);
 
+          const tokenService = mocked<TokenService>(
+            {} as unknown as TokenService,
+          );
+
+          const uniqueIdGeneratorService = mocked<UniqueIdGeneratorService>(
+            {} as unknown as UniqueIdGeneratorService,
+          );
+
           const command = mocked<LocalLoginCommand>({
             username: 'john_doe',
+            ipAddress: '192.168.1.1',
           } as unknown as LocalLoginCommand);
 
           const handler = new LocalLoginHandler(
             userRepository,
+            refreshTokenRepository,
+            unitOfWork,
             encryptionService,
+            tokenService,
+            uniqueIdGeneratorService,
           );
 
           // Act
@@ -284,17 +415,36 @@ describe('users', () => {
             getOneByUsername: jest.fn().mockReturnValue(user),
           } as unknown as UserRepository);
 
+          const refreshTokenRepository = mocked<RefreshTokenRepository>(
+            {} as unknown as RefreshTokenRepository,
+          );
+
+          const unitOfWork = mocked<UnitOfWork>({} as unknown as UnitOfWork);
+
           const encryptionService = mocked<EncryptionService>({
             passwordMatch: jest.fn().mockReturnValue(true),
           } as unknown as EncryptionService);
 
+          const tokenService = mocked<TokenService>(
+            {} as unknown as TokenService,
+          );
+
+          const uniqueIdGeneratorService = mocked<UniqueIdGeneratorService>(
+            {} as unknown as UniqueIdGeneratorService,
+          );
+
           const command = mocked<LocalLoginCommand>({
             username: 'john_doe',
+            ipAddress: '192.168.1.1',
           } as unknown as LocalLoginCommand);
 
           const handler = new LocalLoginHandler(
             userRepository,
+            refreshTokenRepository,
+            unitOfWork,
             encryptionService,
+            tokenService,
+            uniqueIdGeneratorService,
           );
 
           // Act
@@ -305,7 +455,7 @@ describe('users', () => {
           );
         });
 
-        test('should return the user', async () => {
+        test('should return the auth tokens', async () => {
           // Arrange
           const user = mocked<User>({
             id: {
@@ -351,24 +501,57 @@ describe('users', () => {
             getOneByUsername: jest.fn().mockReturnValue(user),
           } as unknown as UserRepository);
 
+          const refreshTokenRepository = mocked<RefreshTokenRepository>({
+            add: jest.fn(),
+          } as unknown as RefreshTokenRepository);
+
+          const unitOfWork = mocked<UnitOfWork>({
+            commitChanges: jest.fn(),
+          } as unknown as UnitOfWork);
+
           const encryptionService = mocked<EncryptionService>({
             passwordMatch: jest.fn().mockReturnValue(true),
           } as unknown as EncryptionService);
 
+          const tokenService = mocked<TokenService>({
+            signPayload: jest.fn().mockReturnValue('access-token'),
+          } as unknown as TokenService);
+
+          const uniqueId = mocked<UniqueId>({
+            getId: 'id-0',
+          } as unknown as UniqueId);
+
+          const uniqueIdGeneratorService = mocked<UniqueIdGeneratorService>({
+            generateId: jest.fn().mockRejectedValue(uniqueId),
+          } as unknown as UniqueIdGeneratorService);
+
           const command = mocked<LocalLoginCommand>({
             username: 'john_doe',
+            ipAddress: '192.168.1.1',
           } as unknown as LocalLoginCommand);
 
           const handler = new LocalLoginHandler(
             userRepository,
+            refreshTokenRepository,
+            unitOfWork,
             encryptionService,
+            tokenService,
+            uniqueIdGeneratorService,
           );
 
           // Act
-          const outputUserDto = await handler.execute(command);
+          const authTokens = await handler.execute(command);
 
           // Assert
-          expect(outputUserDto.id).toBe(user.id.getId);
+          expect(tokenService.signPayload.mock.calls).toHaveLength(1);
+          expect(uniqueIdGeneratorService.generateId.mock.calls).toHaveLength(
+            1,
+          );
+          expect(refreshTokenRepository.add.mock.calls).toHaveLength(1);
+          expect(unitOfWork.commitChanges.mock.calls).toHaveLength(1);
+
+          expect(authTokens.access_token).toBe('access-token');
+          expect(authTokens.refresh_token).not.toBeNull();
         });
       });
     });

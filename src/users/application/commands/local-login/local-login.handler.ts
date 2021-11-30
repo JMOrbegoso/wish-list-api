@@ -1,21 +1,39 @@
 import { NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { LocalLoginCommand } from '..';
-import { UserRepository } from '../../../domain/repositories';
-import { Username } from '../../../domain/value-objects';
-import { OutputUserDto } from '../../dtos';
+import { UnitOfWork } from '../../../../core/domain/repositories';
+import {
+  MillisecondsDate,
+  UniqueId,
+} from '../../../../core/domain/value-objects';
+import { RefreshToken, User } from '../../../domain/entities';
+import {
+  RefreshTokenRepository,
+  UserRepository,
+} from '../../../domain/repositories';
+import { Ip, SecondsDuration, Username } from '../../../domain/value-objects';
+import { AuthTokensDto } from '../../dtos';
 import { userToOutputUserDto } from '../../mappings';
-import { EncryptionService } from '../../services';
+import {
+  EncryptionService,
+  TokenService,
+  UniqueIdGeneratorService,
+} from '../../services';
 
 @CommandHandler(LocalLoginCommand)
 export class LocalLoginHandler implements ICommandHandler<LocalLoginCommand> {
   constructor(
     private readonly userRepository: UserRepository,
+    private readonly refreshTokenRepository: RefreshTokenRepository,
+    private readonly unitOfWork: UnitOfWork,
     private readonly encryptionService: EncryptionService,
+    private readonly tokenService: TokenService,
+    private readonly uniqueIdGeneratorService: UniqueIdGeneratorService,
   ) {}
 
-  async execute(command: LocalLoginCommand): Promise<OutputUserDto> {
+  async execute(command: LocalLoginCommand): Promise<AuthTokensDto> {
     const username = Username.create(command.username);
+    const ip = Ip.create(command.ipAddress);
 
     // Get user by Username
     const user = await this.userRepository.getOneByUsername(username);
@@ -40,6 +58,40 @@ export class LocalLoginHandler implements ICommandHandler<LocalLoginCommand> {
     if (!user.isVerified)
       throw new UnauthorizedException('User is not verified.');
 
-    return userToOutputUserDto(user);
+    // Generate the access token
+    const access_token = this.generateAccessToken(user);
+
+    // Generate the refresh token
+    const newRefreshTokenId = this.generateRefreshToken(user.id, ip);
+
+    // Save changes in persistence
+    await this.unitOfWork.commitChanges();
+
+    return {
+      access_token,
+      refresh_token: newRefreshTokenId.getId,
+    };
+  }
+
+  private generateAccessToken(user: User): string {
+    const outputUserDto = userToOutputUserDto(user);
+
+    const { id, ...body } = outputUserDto;
+    const payload = { sub: id, ...body };
+    return this.tokenService.signPayload(payload);
+  }
+
+  private generateRefreshToken(userId: UniqueId, ip: Ip): UniqueId {
+    const uniqueId = this.uniqueIdGeneratorService.generateId();
+
+    const refreshToken = RefreshToken.create(
+      uniqueId,
+      userId,
+      MillisecondsDate.create(),
+      SecondsDuration.twoWeeks(),
+      ip,
+    );
+    this.refreshTokenRepository.add(refreshToken);
+    return uniqueId;
   }
 }

@@ -6,7 +6,6 @@ import { PassportModule } from '@nestjs/passport';
 import { UnitOfWork } from '../../../core/domain/repositories';
 import { UnitOfWorkMongoDb } from '../../../core/infrastructure/repositories';
 import {
-  GenerateAuthTokensHandler,
   LocalLoginHandler,
   RefreshAccessTokenHandler,
   VerifyUserHandler,
@@ -20,10 +19,7 @@ import {
   RefreshTokenRepository,
   UserRepository,
 } from '../../domain/repositories';
-import {
-  JwtPassportStrategy,
-  LocalLoginPassportStrategy,
-} from '../passport-strategies';
+import { JwtPassportStrategy } from '../passport-strategies';
 import { UserEntity } from '../persistence/entities';
 import {
   RefreshTokenRepositoryMongoDb,
@@ -37,12 +33,11 @@ import {
 import { AuthController } from './auth.controller';
 
 const commandHandlers = [
-  GenerateAuthTokensHandler,
   LocalLoginHandler,
   RefreshAccessTokenHandler,
   VerifyUserHandler,
 ];
-const passportStrategies = [LocalLoginPassportStrategy, JwtPassportStrategy];
+const passportStrategies = [JwtPassportStrategy];
 
 @Module({
   controllers: [AuthController],
