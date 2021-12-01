@@ -34,3 +34,13 @@ export * from './password/invalid-password.error';
 export * from './password/password-is-too-short.error';
 export * from './password/password-is-too-long.error';
 export * from './password/malformed-password.error';
+
+export * from './role/role';
+export * from './role/invalid-role.error';
+
+export * from './seconds-duration/seconds-duration';
+export * from './seconds-duration/invalid-seconds-duration.error';
+export * from './seconds-duration/seconds-duration-is-too-long.error';
+
+export * from './ip-address/ip-address';
+export * from './ip-address/invalid-ip-address.error';

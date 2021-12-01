@@ -12,6 +12,7 @@ const validValues = [
       normalizedUsername: 'john_doe_0',
       passwordHash: 'password0',
       isVerified: true,
+      verificationCode: 'verification-code-00',
       isBlocked: true,
       firstName: 'FirstName0',
       lastName: 'LastName0',
@@ -21,6 +22,7 @@ const validValues = [
       biography: 'A nice person 0.',
       profilePicture: 'https://www.example.com/0.jpg',
       deletedAt: new Date(2000, 5, 5),
+      roles: ['Admin'],
     } as unknown as UserEntity),
   ],
   [
@@ -32,6 +34,7 @@ const validValues = [
       normalizedUsername: 'john_doe_1',
       passwordHash: 'hash1',
       isVerified: true,
+      verificationCode: 'verification-code-01',
       isBlocked: false,
       firstName: 'FirstName1',
       lastName: 'LastName1',
@@ -41,6 +44,7 @@ const validValues = [
       biography: 'A nice person 1.',
       profilePicture: 'https://www.example.com/1.jpg',
       deletedAt: new Date(2000, 5, 5),
+      roles: ['Moderator'],
     } as unknown as UserEntity),
   ],
   [
@@ -52,6 +56,7 @@ const validValues = [
       normalizedUsername: 'john_doe_2',
       passwordHash: 'hash2',
       isVerified: false,
+      verificationCode: 'verification-code-02',
       isBlocked: true,
       firstName: 'FirstName2',
       lastName: 'LastName2',
@@ -61,6 +66,7 @@ const validValues = [
       biography: 'A nice person 2.',
       profilePicture: null,
       deletedAt: new Date(2000, 5, 5),
+      roles: ['Admin', 'Moderator'],
     } as unknown as UserEntity),
   ],
   [
@@ -72,6 +78,7 @@ const validValues = [
       normalizedUsername: 'john_doe_3',
       passwordHash: 'hash3',
       isVerified: false,
+      verificationCode: 'verification-code-03',
       isBlocked: false,
       firstName: 'FirstName3',
       lastName: 'LastName3',
@@ -81,6 +88,7 @@ const validValues = [
       biography: 'A nice person 3.',
       profilePicture: null,
       deletedAt: new Date(2000, 5, 5),
+      roles: ['Basic'],
     } as unknown as UserEntity),
   ],
   [
@@ -92,6 +100,7 @@ const validValues = [
       normalizedUsername: 'john_doe_4',
       passwordHash: 'hash4',
       isVerified: false,
+      verificationCode: 'verification-code-04',
       isBlocked: true,
       firstName: 'FirstName4',
       lastName: 'LastName4',
@@ -101,6 +110,7 @@ const validValues = [
       biography: 'A nice person 4.',
       profilePicture: null,
       deletedAt: new Date(2000, 5, 5),
+      roles: ['Admin', 'Moderator', 'Basic'],
     } as unknown as UserEntity),
   ],
   [
@@ -112,6 +122,7 @@ const validValues = [
       normalizedUsername: 'john_doe_5',
       passwordHash: 'hash5',
       isVerified: true,
+      verificationCode: 'verification-code-05',
       isBlocked: false,
       firstName: 'FirstName5',
       lastName: 'lastname5',
@@ -121,6 +132,7 @@ const validValues = [
       biography: 'A nice person 5.',
       profilePicture: 'https://www.example.com/5.jpg',
       deletedAt: new Date(2000, 5, 5),
+      roles: [],
     } as unknown as UserEntity),
   ],
   [
@@ -132,6 +144,7 @@ const validValues = [
       normalizedUsername: 'john_doe_6',
       passwordHash: 'hash6',
       isVerified: true,
+      verificationCode: 'verification-code-06',
       isBlocked: true,
       firstName: 'FirstName6',
       lastName: 'lastname6',
@@ -141,6 +154,7 @@ const validValues = [
       biography: 'A nice person 6.',
       profilePicture: null,
       deletedAt: new Date(2000, 5, 5),
+      roles: ['Admin'],
     } as unknown as UserEntity),
   ],
   [
@@ -152,6 +166,7 @@ const validValues = [
       normalizedUsername: 'john_doe_7',
       passwordHash: 'hash7',
       isVerified: false,
+      verificationCode: 'verification-code-07',
       isBlocked: false,
       firstName: 'FirstName7',
       lastName: 'LastName7',
@@ -159,6 +174,7 @@ const validValues = [
       createdAt: new Date(1995, 5, 5),
       updatedAt: new Date(1990, 5, 5),
       biography: 'A nice person 7.',
+      roles: ['Admin'],
     } as unknown as UserEntity),
   ],
 ];
@@ -189,6 +205,7 @@ describe('users', () => {
               userEntity.passwordHash,
             );
             expect(user.isVerified).toBe(userEntity.isVerified);
+            expect(user.verificationCode).toBe(userEntity.verificationCode);
             expect(user.isBlocked).toBe(userEntity.isBlocked);
             expect(user.firstName.getFirstName).toBe(userEntity.firstName);
             expect(user.lastName.getLastName).toBe(userEntity.lastName);
@@ -212,6 +229,9 @@ describe('users', () => {
                 new Date(userEntity.deletedAt).getTime(),
               );
             else expect(user.deletedAt).toBeNull();
+            for (let i = 0; i < userEntity.roles.length; i++) {
+              expect(user.roles[i]).toBe(userEntity.roles[i]);
+            }
           },
         );
       });

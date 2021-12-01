@@ -3,7 +3,7 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { UnblockUserCommand } from '..';
 import { UnitOfWork } from '../../../../core/domain/repositories';
 import { UniqueId } from '../../../../core/domain/value-objects';
-import { UserRepository } from '../../../../users/domain/repositories';
+import { UserRepository } from '../../../domain/repositories';
 
 @CommandHandler(UnblockUserCommand)
 export class UnblockUserHandler implements ICommandHandler<UnblockUserCommand> {

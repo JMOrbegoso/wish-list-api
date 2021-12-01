@@ -1,3 +1,4 @@
+import { VerificationCode } from '..';
 import { AggregateRoot } from '../../../../core/domain/entities';
 import {
   MillisecondsDate,
@@ -12,6 +13,7 @@ import {
   IsVerified,
   LastName,
   PasswordHash,
+  Role,
   Username,
 } from '../../value-objects';
 
@@ -20,6 +22,7 @@ export class User extends AggregateRoot {
   private _username: Username;
   private _passwordHash: PasswordHash;
   private _isVerified: IsVerified;
+  private _verificationCode: VerificationCode;
   private _isBlocked: IsBlocked;
   private _firstName: FirstName;
   private _lastName: LastName;
@@ -27,6 +30,7 @@ export class User extends AggregateRoot {
   private _createdAt: MillisecondsDate;
   private _updatedAt: MillisecondsDate;
   private _biography: Biography;
+  private _roles: Role[];
   private _profilePicture?: WebUrl;
   private _deletedAt?: MillisecondsDate;
 
@@ -36,6 +40,7 @@ export class User extends AggregateRoot {
     username: Username,
     passwordHash: PasswordHash,
     isVerified: IsVerified,
+    verificationCode: VerificationCode,
     isBlocked: IsBlocked,
     firstName: FirstName,
     lastName: LastName,
@@ -43,7 +48,8 @@ export class User extends AggregateRoot {
     createdAt: MillisecondsDate,
     updatedAt: MillisecondsDate,
     biography: Biography,
-    profilePicture: WebUrl,
+    roles: Role[],
+    profilePicture?: WebUrl,
     deletedAt?: MillisecondsDate,
   ) {
     super(id);
@@ -52,6 +58,7 @@ export class User extends AggregateRoot {
     this._username = username;
     this._passwordHash = passwordHash;
     this._isVerified = isVerified;
+    this._verificationCode = verificationCode;
     this._isBlocked = isBlocked;
     this._firstName = firstName;
     this._lastName = lastName;
@@ -59,6 +66,7 @@ export class User extends AggregateRoot {
     this._createdAt = createdAt;
     this._updatedAt = updatedAt;
     this._biography = biography;
+    this._roles = roles;
     this._profilePicture = profilePicture;
     this._deletedAt = deletedAt;
   }
@@ -69,6 +77,7 @@ export class User extends AggregateRoot {
     username: Username,
     passwordHash: PasswordHash,
     isVerified: IsVerified,
+    verificationCode: VerificationCode,
     isBlocked: IsBlocked,
     firstName: FirstName,
     lastName: LastName,
@@ -76,6 +85,7 @@ export class User extends AggregateRoot {
     createdAt: MillisecondsDate,
     updatedAt: MillisecondsDate,
     biography: Biography,
+    roles: Role[] = [],
     profilePicture: WebUrl = null,
     deletedAt: MillisecondsDate = null,
   ): User {
@@ -85,6 +95,7 @@ export class User extends AggregateRoot {
       username,
       passwordHash,
       isVerified,
+      verificationCode,
       isBlocked,
       firstName,
       lastName,
@@ -92,6 +103,7 @@ export class User extends AggregateRoot {
       createdAt,
       updatedAt,
       biography,
+      roles,
       profilePicture,
       deletedAt,
     );
@@ -115,6 +127,10 @@ export class User extends AggregateRoot {
 
   public get isVerified(): boolean {
     return this._isVerified.getStatus;
+  }
+
+  public get verificationCode(): string {
+    return this._verificationCode.id.getId;
   }
 
   public get isBlocked(): boolean {
@@ -193,5 +209,17 @@ export class User extends AggregateRoot {
   }
   public undelete(): void {
     this._deletedAt = null;
+  }
+
+  public get roles(): string[] {
+    return this._roles.map((r) => r.getRole);
+  }
+
+  public addRole(role: Role): void {
+    if (!this._roles.some((r) => r.equals(role))) this._roles.push(role);
+  }
+
+  public removeRole(role: Role): void {
+    this._roles = this._roles.filter((r) => !r.equals(role));
   }
 }

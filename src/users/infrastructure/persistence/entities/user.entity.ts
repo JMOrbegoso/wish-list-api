@@ -42,6 +42,9 @@ export class UserEntity {
   isVerified: boolean;
 
   @Property()
+  verificationCode: string;
+
+  @Property()
   isBlocked: boolean;
 
   @Property()
@@ -67,4 +70,7 @@ export class UserEntity {
 
   @Property({ nullable: true })
   deletedAt?: Date;
+
+  @Property()
+  roles: string[];
 }

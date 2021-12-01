@@ -5,20 +5,39 @@ import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { UnitOfWork } from '../../../core/domain/repositories';
 import { UnitOfWorkMongoDb } from '../../../core/infrastructure/repositories';
-import { LocalLoginHandler } from '../../../users/application/commands';
-import { UserRepository } from '../../../users/domain/repositories';
-import { EncryptionService } from '../../application/services';
 import {
-  JwtPassportStrategy,
-  LocalLoginPassportStrategy,
-} from '../passport-strategies';
+  LocalLoginHandler,
+  RefreshAccessTokenHandler,
+  VerifyUserHandler,
+} from '../../application/commands';
+import {
+  EncryptionService,
+  TokenService,
+  UniqueIdGeneratorService,
+} from '../../application/services';
+import {
+  RefreshTokenRepository,
+  UserRepository,
+} from '../../domain/repositories';
+import { JwtPassportStrategy } from '../passport-strategies';
 import { UserEntity } from '../persistence/entities';
-import { UserRepositoryMongoDb } from '../persistence/repositories';
-import { EncryptionServiceBcrypt } from '../services';
+import {
+  RefreshTokenRepositoryMongoDb,
+  UserRepositoryMongoDb,
+} from '../persistence/repositories';
+import {
+  EncryptionServiceBcrypt,
+  TokenServiceJwt,
+  UniqueIdGeneratorServiceMongoDb,
+} from '../services';
 import { AuthController } from './auth.controller';
 
-const commandHandlers = [LocalLoginHandler];
-const passportStrategies = [LocalLoginPassportStrategy, JwtPassportStrategy];
+const commandHandlers = [
+  LocalLoginHandler,
+  RefreshAccessTokenHandler,
+  VerifyUserHandler,
+];
+const passportStrategies = [JwtPassportStrategy];
 
 @Module({
   controllers: [AuthController],
@@ -35,8 +54,20 @@ const passportStrategies = [LocalLoginPassportStrategy, JwtPassportStrategy];
   ],
   providers: [
     { provide: UserRepository, useClass: UserRepositoryMongoDb },
+    {
+      provide: RefreshTokenRepository,
+      useClass: RefreshTokenRepositoryMongoDb,
+    },
     { provide: UnitOfWork, useClass: UnitOfWorkMongoDb },
     { provide: EncryptionService, useClass: EncryptionServiceBcrypt },
+    {
+      provide: UniqueIdGeneratorService,
+      useClass: UniqueIdGeneratorServiceMongoDb,
+    },
+    {
+      provide: TokenService,
+      useClass: TokenServiceJwt,
+    },
     ...commandHandlers,
     ...passportStrategies,
   ],

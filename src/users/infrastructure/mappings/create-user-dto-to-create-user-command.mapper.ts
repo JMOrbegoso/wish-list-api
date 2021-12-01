@@ -1,4 +1,4 @@
-import { CreateUserCommand } from '../../../users/application/commands';
+import { CreateUserCommand } from '../../application/commands';
 import { CreateUserDto } from '../dtos';
 
 export function createUserDtoToCreateUserCommand(

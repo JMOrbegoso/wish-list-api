@@ -3,7 +3,7 @@ import {
   UniqueId,
   WebUrl,
 } from '../../../core/domain/value-objects';
-import { User } from '../../domain/entities';
+import { User, VerificationCode } from '../../domain/entities';
 import {
   Biography,
   Email,
@@ -12,6 +12,7 @@ import {
   IsVerified,
   LastName,
   PasswordHash,
+  Role,
   Username,
 } from '../../domain/value-objects';
 import { UserEntity } from '../persistence/entities';
@@ -22,6 +23,8 @@ export function userEntityToUser(userEntity: UserEntity): User {
   const username = Username.create(userEntity.username);
   const passwordHash = PasswordHash.create(userEntity.passwordHash);
   const isVerified = IsVerified.create(userEntity.isVerified);
+  const verificationCodeId = UniqueId.create(userEntity.verificationCode);
+  const verificationCode = VerificationCode.create(verificationCodeId);
   const isBlocked = IsBlocked.create(userEntity.isBlocked);
   const firstName = FirstName.create(userEntity.firstName);
   const lastName = LastName.create(userEntity.lastName);
@@ -35,6 +38,7 @@ export function userEntityToUser(userEntity: UserEntity): User {
   const deletedAt = userEntity.deletedAt
     ? MillisecondsDate.createFromDate(userEntity.deletedAt)
     : null;
+  const roles = userEntity.roles.map((r) => Role.create(r));
 
   return User.create(
     id,
@@ -42,6 +46,7 @@ export function userEntityToUser(userEntity: UserEntity): User {
     username,
     passwordHash,
     isVerified,
+    verificationCode,
     isBlocked,
     firstName,
     lastName,
@@ -49,6 +54,7 @@ export function userEntityToUser(userEntity: UserEntity): User {
     createdAt,
     updatedAt,
     biography,
+    roles,
     profilePicture,
     deletedAt,
   );

@@ -1,6 +1,6 @@
 import { MockedObject } from 'ts-jest/dist/utils/testing';
 import { mocked } from 'ts-jest/utils';
-import { User } from '..';
+import { User, VerificationCode } from '..';
 import {
   MillisecondsDate,
   UniqueId,
@@ -14,6 +14,7 @@ import {
   IsVerified,
   LastName,
   PasswordHash,
+  Role,
   Username,
 } from '../../value-objects';
 
@@ -39,6 +40,10 @@ const validValues = [
       getStatus: true,
       equals: jest.fn().mockReturnValue(true),
     } as unknown as IsVerified),
+    mocked<VerificationCode>({
+      getStatus: true,
+      equals: jest.fn().mockReturnValue(true),
+    } as unknown as VerificationCode),
     mocked<IsBlocked>({
       getStatus: false,
       equals: jest.fn().mockReturnValue(true),
@@ -67,6 +72,7 @@ const validValues = [
       getBiography: 'A nice person 0.',
       equals: jest.fn().mockReturnValue(true),
     } as unknown as Biography),
+    mocked<Role[]>({} as unknown as Role[]),
     mocked<WebUrl>({
       getUrl: 'https://www.example.com/0.jpg',
       equals: jest.fn().mockReturnValue(true),
@@ -97,6 +103,10 @@ const validValues = [
       getStatus: true,
       equals: jest.fn().mockReturnValue(true),
     } as unknown as IsVerified),
+    mocked<VerificationCode>({
+      getStatus: true,
+      equals: jest.fn().mockReturnValue(true),
+    } as unknown as VerificationCode),
     mocked<IsBlocked>({
       getStatus: false,
       equals: jest.fn().mockReturnValue(true),
@@ -125,6 +135,7 @@ const validValues = [
       getBiography: 'A nice person 1.',
       equals: jest.fn().mockReturnValue(true),
     } as unknown as Biography),
+    mocked<Role[]>({} as unknown as Role[]),
     mocked<WebUrl>({
       getUrl: 'https://www.example.com/1.jpg',
       equals: jest.fn().mockReturnValue(true),
@@ -155,6 +166,10 @@ const validValues = [
       getStatus: true,
       equals: jest.fn().mockReturnValue(true),
     } as unknown as IsVerified),
+    mocked<VerificationCode>({
+      getStatus: true,
+      equals: jest.fn().mockReturnValue(true),
+    } as unknown as VerificationCode),
     mocked<IsBlocked>({
       getStatus: false,
       equals: jest.fn().mockReturnValue(true),
@@ -183,6 +198,7 @@ const validValues = [
       getBiography: 'A nice person 2.',
       equals: jest.fn().mockReturnValue(true),
     } as unknown as Biography),
+    mocked<Role[]>({} as unknown as Role[]),
     null,
     mocked<MillisecondsDate>({
       getMilliseconds: 4,
@@ -210,6 +226,10 @@ const validValues = [
       getStatus: true,
       equals: jest.fn().mockReturnValue(true),
     } as unknown as IsVerified),
+    mocked<VerificationCode>({
+      getStatus: true,
+      equals: jest.fn().mockReturnValue(true),
+    } as unknown as VerificationCode),
     mocked<IsBlocked>({
       getStatus: false,
       equals: jest.fn().mockReturnValue(true),
@@ -238,6 +258,7 @@ const validValues = [
       getBiography: 'A nice person 3.',
       equals: jest.fn().mockReturnValue(true),
     } as unknown as Biography),
+    mocked<Role[]>({} as unknown as Role[]),
     mocked<WebUrl>({
       getUrl: 'https://www.example.com/3.jpg',
       equals: jest.fn().mockReturnValue(true),
@@ -265,6 +286,10 @@ const validValues = [
       getStatus: true,
       equals: jest.fn().mockReturnValue(true),
     } as unknown as IsVerified),
+    mocked<VerificationCode>({
+      getStatus: true,
+      equals: jest.fn().mockReturnValue(true),
+    } as unknown as VerificationCode),
     mocked<IsBlocked>({
       getStatus: false,
       equals: jest.fn().mockReturnValue(true),
@@ -293,6 +318,7 @@ const validValues = [
       getBiography: 'A nice person 4.',
       equals: jest.fn().mockReturnValue(true),
     } as unknown as Biography),
+    mocked<Role[]>({} as unknown as Role[]),
     null,
     mocked<MillisecondsDate>({
       getMilliseconds: 4,
@@ -320,6 +346,10 @@ const validValues = [
       getStatus: true,
       equals: jest.fn().mockReturnValue(true),
     } as unknown as IsVerified),
+    mocked<VerificationCode>({
+      getStatus: true,
+      equals: jest.fn().mockReturnValue(true),
+    } as unknown as VerificationCode),
     mocked<IsBlocked>({
       getStatus: false,
       equals: jest.fn().mockReturnValue(true),
@@ -348,6 +378,7 @@ const validValues = [
       getBiography: 'A nice person 5.',
       equals: jest.fn().mockReturnValue(true),
     } as unknown as Biography),
+    mocked<Role[]>({} as unknown as Role[]),
     mocked<WebUrl>({
       getUrl: 'https://www.example.com/5.jpg',
       equals: jest.fn().mockReturnValue(true),
@@ -375,6 +406,10 @@ const validValues = [
       getStatus: true,
       equals: jest.fn().mockReturnValue(true),
     } as unknown as IsVerified),
+    mocked<VerificationCode>({
+      getStatus: true,
+      equals: jest.fn().mockReturnValue(true),
+    } as unknown as VerificationCode),
     mocked<IsBlocked>({
       getStatus: false,
       equals: jest.fn().mockReturnValue(true),
@@ -403,6 +438,7 @@ const validValues = [
       getBiography: 'A nice person 6.',
       equals: jest.fn().mockReturnValue(true),
     } as unknown as Biography),
+    mocked<Role[]>({} as unknown as Role[]),
     null,
     null,
   ],
@@ -427,6 +463,10 @@ const validValues = [
       getStatus: true,
       equals: jest.fn().mockReturnValue(true),
     } as unknown as IsVerified),
+    mocked<VerificationCode>({
+      getStatus: true,
+      equals: jest.fn().mockReturnValue(true),
+    } as unknown as VerificationCode),
     mocked<IsBlocked>({
       getStatus: false,
       equals: jest.fn().mockReturnValue(true),
@@ -455,6 +495,7 @@ const validValues = [
       getBiography: 'A nice person 7.',
       equals: jest.fn().mockReturnValue(true),
     } as unknown as Biography),
+    mocked<Role[]>({} as unknown as Role[]),
     null,
     null,
   ],
@@ -465,13 +506,14 @@ describe('users', () => {
     describe('entities', () => {
       describe('user', () => {
         test.each(validValues)(
-          'should create an User with [id: %p], [email: %p], [username: %p], [passwordHash: %p], [isVerified: %p], [isBlocked: %p], [firstName: %p], [lastName: %p], [birthday: %p], [createdAt: %p], [updatedAt: %p], [biography: %p], [profilePicture: %p] and [deletedAt: %p]',
+          'should create an User with [id: %p], [email: %p], [username: %p], [passwordHash: %p], [isVerified: %p], [isBlocked: %p], [firstName: %p], [lastName: %p], [birthday: %p], [createdAt: %p], [updatedAt: %p], [biography: %p], [roles: %p], [profilePicture: %p] and [deletedAt: %p]',
           (
             uniqueId: MockedObject<UniqueId>,
             email: MockedObject<Email>,
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
+            verificationCode: MockedObject<VerificationCode>,
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -479,6 +521,7 @@ describe('users', () => {
             createdAt: MockedObject<MillisecondsDate>,
             updatedAt: MockedObject<MillisecondsDate>,
             biography: MockedObject<Biography>,
+            roles: MockedObject<Role[]>,
             profilePicture: MockedObject<WebUrl>,
             deletedAt: MockedObject<MillisecondsDate>,
           ) => {
@@ -491,6 +534,7 @@ describe('users', () => {
               username,
               passwordHash,
               isVerified,
+              verificationCode,
               isBlocked,
               firstName,
               lastName,
@@ -498,6 +542,7 @@ describe('users', () => {
               createdAt,
               updatedAt,
               biography,
+              roles,
               profilePicture,
               deletedAt,
             );
@@ -531,6 +576,9 @@ describe('users', () => {
                 deletedAt.getMilliseconds,
               );
             else expect(user.deletedAt).toBeNull();
+            for (let i = 0; i < roles.length; i++) {
+              expect(user.roles[i]).toBe(roles[i]);
+            }
           },
         );
 
@@ -542,6 +590,7 @@ describe('users', () => {
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
+            verificationCode: MockedObject<VerificationCode>,
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -549,6 +598,7 @@ describe('users', () => {
             createdAt: MockedObject<MillisecondsDate>,
             updatedAt: MockedObject<MillisecondsDate>,
             biography: MockedObject<Biography>,
+            roles: MockedObject<Role[]>,
             profilePicture: MockedObject<WebUrl>,
             deletedAt: MockedObject<MillisecondsDate>,
           ) => {
@@ -559,6 +609,7 @@ describe('users', () => {
               username,
               passwordHash,
               isVerified,
+              verificationCode,
               isBlocked,
               firstName,
               lastName,
@@ -566,6 +617,7 @@ describe('users', () => {
               createdAt,
               updatedAt,
               biography,
+              roles,
               profilePicture,
               deletedAt,
             );
@@ -586,6 +638,7 @@ describe('users', () => {
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
+            verificationCode: MockedObject<VerificationCode>,
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -593,6 +646,7 @@ describe('users', () => {
             createdAt: MockedObject<MillisecondsDate>,
             updatedAt: MockedObject<MillisecondsDate>,
             biography: MockedObject<Biography>,
+            roles: MockedObject<Role[]>,
             profilePicture: MockedObject<WebUrl>,
             deletedAt: MockedObject<MillisecondsDate>,
           ) => {
@@ -603,6 +657,7 @@ describe('users', () => {
               username,
               passwordHash,
               isVerified,
+              verificationCode,
               isBlocked,
               firstName,
               lastName,
@@ -610,6 +665,7 @@ describe('users', () => {
               createdAt,
               updatedAt,
               biography,
+              roles,
               profilePicture,
               deletedAt,
             );
@@ -634,6 +690,7 @@ describe('users', () => {
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
+            verificationCode: MockedObject<VerificationCode>,
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -641,6 +698,7 @@ describe('users', () => {
             createdAt: MockedObject<MillisecondsDate>,
             updatedAt: MockedObject<MillisecondsDate>,
             biography: MockedObject<Biography>,
+            roles: MockedObject<Role[]>,
             profilePicture: MockedObject<WebUrl>,
             deletedAt: MockedObject<MillisecondsDate>,
           ) => {
@@ -651,6 +709,7 @@ describe('users', () => {
               username,
               passwordHash,
               isVerified,
+              verificationCode,
               isBlocked,
               firstName,
               lastName,
@@ -658,6 +717,7 @@ describe('users', () => {
               createdAt,
               updatedAt,
               biography,
+              roles,
               profilePicture,
               deletedAt,
             );
@@ -678,6 +738,7 @@ describe('users', () => {
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
+            verificationCode: MockedObject<VerificationCode>,
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -685,6 +746,7 @@ describe('users', () => {
             createdAt: MockedObject<MillisecondsDate>,
             updatedAt: MockedObject<MillisecondsDate>,
             biography: MockedObject<Biography>,
+            roles: MockedObject<Role[]>,
             profilePicture: MockedObject<WebUrl>,
             deletedAt: MockedObject<MillisecondsDate>,
           ) => {
@@ -695,6 +757,7 @@ describe('users', () => {
               username,
               passwordHash,
               isVerified,
+              verificationCode,
               isBlocked,
               firstName,
               lastName,
@@ -702,6 +765,7 @@ describe('users', () => {
               createdAt,
               updatedAt,
               biography,
+              roles,
               profilePicture,
               deletedAt,
             );
@@ -722,6 +786,7 @@ describe('users', () => {
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
+            verificationCode: MockedObject<VerificationCode>,
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -729,6 +794,7 @@ describe('users', () => {
             createdAt: MockedObject<MillisecondsDate>,
             updatedAt: MockedObject<MillisecondsDate>,
             biography: MockedObject<Biography>,
+            roles: MockedObject<Role[]>,
             profilePicture: MockedObject<WebUrl>,
             deletedAt: MockedObject<MillisecondsDate>,
           ) => {
@@ -739,6 +805,7 @@ describe('users', () => {
               username,
               passwordHash,
               isVerified,
+              verificationCode,
               isBlocked,
               firstName,
               lastName,
@@ -746,6 +813,7 @@ describe('users', () => {
               createdAt,
               updatedAt,
               biography,
+              roles,
               profilePicture,
               deletedAt,
             );
@@ -766,6 +834,7 @@ describe('users', () => {
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
+            verificationCode: MockedObject<VerificationCode>,
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -773,6 +842,7 @@ describe('users', () => {
             createdAt: MockedObject<MillisecondsDate>,
             updatedAt: MockedObject<MillisecondsDate>,
             biography: MockedObject<Biography>,
+            roles: MockedObject<Role[]>,
             profilePicture: MockedObject<WebUrl>,
             deletedAt: MockedObject<MillisecondsDate>,
           ) => {
@@ -783,6 +853,7 @@ describe('users', () => {
               username,
               passwordHash,
               isVerified,
+              verificationCode,
               isBlocked,
               firstName,
               lastName,
@@ -790,6 +861,7 @@ describe('users', () => {
               createdAt,
               updatedAt,
               biography,
+              roles,
               profilePicture,
               deletedAt,
             );
@@ -845,6 +917,7 @@ describe('users', () => {
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
+            verificationCode: MockedObject<VerificationCode>,
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -852,6 +925,7 @@ describe('users', () => {
             createdAt: MockedObject<MillisecondsDate>,
             updatedAt: MockedObject<MillisecondsDate>,
             biography: MockedObject<Biography>,
+            roles: MockedObject<Role[]>,
             profilePicture: MockedObject<WebUrl>,
             deletedAt: MockedObject<MillisecondsDate>,
           ) => {
@@ -862,6 +936,7 @@ describe('users', () => {
               username,
               passwordHash,
               isVerified,
+              verificationCode,
               isBlocked,
               firstName,
               lastName,
@@ -869,6 +944,7 @@ describe('users', () => {
               createdAt,
               updatedAt,
               biography,
+              roles,
               profilePicture,
               deletedAt,
             );
@@ -918,6 +994,7 @@ describe('users', () => {
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
+            verificationCode: MockedObject<VerificationCode>,
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -925,6 +1002,7 @@ describe('users', () => {
             createdAt: MockedObject<MillisecondsDate>,
             updatedAt: MockedObject<MillisecondsDate>,
             biography: MockedObject<Biography>,
+            roles: MockedObject<Role[]>,
             profilePicture: MockedObject<WebUrl>,
             deletedAt: MockedObject<MillisecondsDate>,
           ) => {
@@ -935,6 +1013,7 @@ describe('users', () => {
               username,
               passwordHash,
               isVerified,
+              verificationCode,
               isBlocked,
               firstName,
               lastName,
@@ -942,6 +1021,7 @@ describe('users', () => {
               createdAt,
               updatedAt,
               biography,
+              roles,
               profilePicture,
               deletedAt,
             );
@@ -963,6 +1043,7 @@ describe('users', () => {
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
+            verificationCode: MockedObject<VerificationCode>,
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -970,6 +1051,7 @@ describe('users', () => {
             createdAt: MockedObject<MillisecondsDate>,
             updatedAt: MockedObject<MillisecondsDate>,
             biography: MockedObject<Biography>,
+            roles: MockedObject<Role[]>,
             profilePicture: MockedObject<WebUrl>,
             deletedAt: MockedObject<MillisecondsDate>,
           ) => {
@@ -980,6 +1062,7 @@ describe('users', () => {
               username,
               passwordHash,
               isVerified,
+              verificationCode,
               isBlocked,
               firstName,
               lastName,
@@ -987,6 +1070,7 @@ describe('users', () => {
               createdAt,
               updatedAt,
               biography,
+              roles,
               profilePicture,
               deletedAt,
             );
@@ -997,6 +1081,300 @@ describe('users', () => {
             // Assert
             expect(user.deletedAt).toBeNull();
             expect(user.isDeleted).toBe(false);
+          },
+        );
+
+        test.each(validValues)(
+          'add role to a User who already has that role',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            email: MockedObject<Email>,
+            username: MockedObject<Username>,
+            passwordHash: MockedObject<PasswordHash>,
+            isVerified: MockedObject<IsVerified>,
+            verificationCode: MockedObject<VerificationCode>,
+            isBlocked: MockedObject<IsBlocked>,
+            firstName: MockedObject<FirstName>,
+            lastName: MockedObject<LastName>,
+            birthday: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            biography: MockedObject<Biography>,
+            roles: MockedObject<Role[]>,
+            profilePicture: MockedObject<WebUrl>,
+            deletedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+            const customRoles = [
+              mocked<Role>({
+                getRole: 'Admin',
+                equals: jest.fn().mockReturnValue(true),
+              } as unknown as Role),
+            ];
+            const roleToAdd = mocked<Role>({
+              getRole: 'Admin',
+            } as unknown as Role);
+            const user = User.create(
+              uniqueId,
+              email,
+              username,
+              passwordHash,
+              isVerified,
+              verificationCode,
+              isBlocked,
+              firstName,
+              lastName,
+              birthday,
+              createdAt,
+              updatedAt,
+              biography,
+              customRoles,
+              profilePicture,
+              deletedAt,
+            );
+
+            // Act
+            user.addRole(roleToAdd);
+
+            // Assert
+            expect(user.roles.length).toBe(1);
+            expect(user.roles[0]).toBe('Admin');
+          },
+        );
+
+        test.each(validValues)(
+          'add role to a User who has not that role',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            email: MockedObject<Email>,
+            username: MockedObject<Username>,
+            passwordHash: MockedObject<PasswordHash>,
+            isVerified: MockedObject<IsVerified>,
+            verificationCode: MockedObject<VerificationCode>,
+            isBlocked: MockedObject<IsBlocked>,
+            firstName: MockedObject<FirstName>,
+            lastName: MockedObject<LastName>,
+            birthday: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            biography: MockedObject<Biography>,
+            roles: MockedObject<Role[]>,
+            profilePicture: MockedObject<WebUrl>,
+            deletedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+            const customRoles = [
+              mocked<Role>({
+                getRole: 'Admin',
+                equals: jest.fn().mockReturnValue(false),
+              } as unknown as Role),
+            ];
+            const roleToAdd = mocked<Role>({
+              getRole: 'Moderator',
+            } as unknown as Role);
+            const user = User.create(
+              uniqueId,
+              email,
+              username,
+              passwordHash,
+              isVerified,
+              verificationCode,
+              isBlocked,
+              firstName,
+              lastName,
+              birthday,
+              createdAt,
+              updatedAt,
+              biography,
+              customRoles,
+              profilePicture,
+              deletedAt,
+            );
+
+            // Act
+            user.addRole(roleToAdd);
+
+            // Assert
+            expect(user.roles.length).toBe(2);
+            expect(user.roles[0]).toBe('Admin');
+            expect(user.roles[1]).toBe('Moderator');
+          },
+        );
+
+        test.each(validValues)(
+          'remove role from an User who has not that role',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            email: MockedObject<Email>,
+            username: MockedObject<Username>,
+            passwordHash: MockedObject<PasswordHash>,
+            isVerified: MockedObject<IsVerified>,
+            verificationCode: MockedObject<VerificationCode>,
+            isBlocked: MockedObject<IsBlocked>,
+            firstName: MockedObject<FirstName>,
+            lastName: MockedObject<LastName>,
+            birthday: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            biography: MockedObject<Biography>,
+            roles: MockedObject<Role[]>,
+            profilePicture: MockedObject<WebUrl>,
+            deletedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+            const customRoles = [
+              mocked<Role>({
+                getRole: 'Admin',
+                equals: jest.fn().mockReturnValue(false),
+              } as unknown as Role),
+            ];
+            const roleToRemove = mocked<Role>({
+              getRole: 'Moderator',
+            } as unknown as Role);
+            const user = User.create(
+              uniqueId,
+              email,
+              username,
+              passwordHash,
+              isVerified,
+              verificationCode,
+              isBlocked,
+              firstName,
+              lastName,
+              birthday,
+              createdAt,
+              updatedAt,
+              biography,
+              customRoles,
+              profilePicture,
+              deletedAt,
+            );
+
+            // Act
+            user.removeRole(roleToRemove);
+
+            // Assert
+            expect(user.roles.length).toBe(1);
+            expect(user.roles[0]).toBe('Admin');
+          },
+        );
+
+        test.each(validValues)(
+          'remove role from an User who has that role',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            email: MockedObject<Email>,
+            username: MockedObject<Username>,
+            passwordHash: MockedObject<PasswordHash>,
+            isVerified: MockedObject<IsVerified>,
+            verificationCode: MockedObject<VerificationCode>,
+            isBlocked: MockedObject<IsBlocked>,
+            firstName: MockedObject<FirstName>,
+            lastName: MockedObject<LastName>,
+            birthday: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            biography: MockedObject<Biography>,
+            roles: MockedObject<Role[]>,
+            profilePicture: MockedObject<WebUrl>,
+            deletedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+            const customRoles = [
+              mocked<Role>({
+                getRole: 'Admin',
+                equals: jest.fn().mockReturnValue(true),
+              } as unknown as Role),
+            ];
+            const roleToRemove = mocked<Role>({
+              getRole: 'Admin',
+            } as unknown as Role);
+            const user = User.create(
+              uniqueId,
+              email,
+              username,
+              passwordHash,
+              isVerified,
+              verificationCode,
+              isBlocked,
+              firstName,
+              lastName,
+              birthday,
+              createdAt,
+              updatedAt,
+              biography,
+              customRoles,
+              profilePicture,
+              deletedAt,
+            );
+
+            // Act
+            user.removeRole(roleToRemove);
+
+            // Assert
+            expect(user.roles.length).toBe(0);
+          },
+        );
+
+        test.each(validValues)(
+          'remove role from an User who has that role',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            email: MockedObject<Email>,
+            username: MockedObject<Username>,
+            passwordHash: MockedObject<PasswordHash>,
+            isVerified: MockedObject<IsVerified>,
+            verificationCode: MockedObject<VerificationCode>,
+            isBlocked: MockedObject<IsBlocked>,
+            firstName: MockedObject<FirstName>,
+            lastName: MockedObject<LastName>,
+            birthday: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            biography: MockedObject<Biography>,
+            roles: MockedObject<Role[]>,
+            profilePicture: MockedObject<WebUrl>,
+            deletedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+            const customRoles = [
+              mocked<Role>({
+                getRole: 'Admin',
+                equals: jest.fn().mockReturnValue(true),
+              } as unknown as Role),
+              mocked<Role>({
+                getRole: 'Moderator',
+                equals: jest.fn().mockReturnValue(false),
+              } as unknown as Role),
+            ];
+            const roleToRemove = mocked<Role>({
+              getRole: 'Admin',
+            } as unknown as Role);
+            const user = User.create(
+              uniqueId,
+              email,
+              username,
+              passwordHash,
+              isVerified,
+              verificationCode,
+              isBlocked,
+              firstName,
+              lastName,
+              birthday,
+              createdAt,
+              updatedAt,
+              biography,
+              customRoles,
+              profilePicture,
+              deletedAt,
+            );
+
+            // Act
+            user.removeRole(roleToRemove);
+
+            // Assert
+            expect(user.roles.length).toBe(1);
+            expect(user.roles[0]).toBe('Moderator');
           },
         );
       });
