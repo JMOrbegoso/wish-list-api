@@ -98,7 +98,6 @@ export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
 
     // Send an account confirmation code the user email
     await this.emailSenderService.send(
-      '',
       user.email.getEmail,
       'Confirm Account',
       `your code is ${user.verificationCode}`,
