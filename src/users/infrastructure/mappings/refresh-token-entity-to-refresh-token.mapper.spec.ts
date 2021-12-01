@@ -9,7 +9,7 @@ const validValues = [
       userId: 'user-id-0',
       createdAt: new Date(2021, 5, 5),
       duration: 100,
-      ip: '192.168.0.1',
+      ipAddress: '192.168.0.1',
       replacedAt: null,
       replacedBy: null,
       revokedAt: null,
@@ -21,7 +21,7 @@ const validValues = [
       userId: 'user-id-0',
       createdAt: new Date(2021, 5, 5),
       duration: 100,
-      ip: '192.168.0.1',
+      ipAddress: '192.168.0.1',
       replacedAt: null,
       replacedBy: null,
       revokedAt: new Date(2021, 5, 5),
@@ -33,7 +33,7 @@ const validValues = [
       userId: 'user-id-0',
       createdAt: new Date(2021, 5, 5),
       duration: 100,
-      ip: '192.168.0.1',
+      ipAddress: '192.168.0.1',
       replacedAt: new Date(2021, 5, 5),
       replacedBy: 'id-1',
       revokedAt: null,
@@ -45,7 +45,7 @@ const validValues = [
       userId: 'user-id-0',
       createdAt: new Date(2021, 5, 5),
       duration: 100,
-      ip: '192.168.0.1',
+      ipAddress: '192.168.0.1',
       replacedAt: new Date(2021, 5, 5),
       replacedBy: 'id-1',
       revokedAt: new Date(2021, 5, 5),
@@ -74,7 +74,7 @@ describe('users', () => {
               refreshTokenEntity.createdAt.getTime(),
             );
             expect(refreshToken.duration).toBe(refreshTokenEntity.duration);
-            expect(refreshToken.ip).toBe(refreshTokenEntity.ip);
+            expect(refreshToken.ipAddress).toBe(refreshTokenEntity.ipAddress);
             if (refreshTokenEntity.replacedAt)
               expect(refreshToken.replacedAt.getMilliseconds).toBe(
                 refreshTokenEntity.replacedAt.getTime(),

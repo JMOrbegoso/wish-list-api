@@ -42,5 +42,5 @@ export * from './seconds-duration/seconds-duration';
 export * from './seconds-duration/invalid-seconds-duration.error';
 export * from './seconds-duration/seconds-duration-is-too-long.error';
 
-export * from './ip/ip';
-export * from './ip/invalid-ip.error';
+export * from './ip-address/ip-address';
+export * from './ip-address/invalid-ip-address.error';

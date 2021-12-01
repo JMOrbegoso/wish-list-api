@@ -1,6 +1,6 @@
 import { MillisecondsDate, UniqueId } from '../../../core/domain/value-objects';
 import { RefreshToken } from '../../domain/entities';
-import { Ip, SecondsDuration } from '../../domain/value-objects';
+import { IpAddress, SecondsDuration } from '../../domain/value-objects';
 import { RefreshTokenEntity } from '../persistence/entities';
 
 export function refreshTokenEntityToRefreshToken(
@@ -12,7 +12,7 @@ export function refreshTokenEntityToRefreshToken(
     refreshTokenEntity.createdAt,
   );
   const secondsDuration = SecondsDuration.create(refreshTokenEntity.duration);
-  const ip = Ip.create(refreshTokenEntity.ip);
+  const ipAddress = IpAddress.create(refreshTokenEntity.ipAddress);
   const replacedAt = refreshTokenEntity.replacedAt
     ? MillisecondsDate.createFromDate(refreshTokenEntity.replacedAt)
     : null;
@@ -26,7 +26,7 @@ export function refreshTokenEntityToRefreshToken(
   return RefreshToken.create(
     id,
     userId,
-    ip,
+    ipAddress,
     createdAt,
     secondsDuration,
     replacedAt,

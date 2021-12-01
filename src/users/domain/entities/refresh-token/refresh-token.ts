@@ -3,7 +3,7 @@ import {
   MillisecondsDate,
   UniqueId,
 } from '../../../../core/domain/value-objects';
-import { Ip, SecondsDuration } from '../../value-objects';
+import { IpAddress, SecondsDuration } from '../../value-objects';
 
 export class RefreshToken extends AggregateRoot {
   public static readonly defaultDuration = SecondsDuration.twoWeeks();
@@ -11,7 +11,7 @@ export class RefreshToken extends AggregateRoot {
   private _userId: UniqueId;
   private _createdAt: MillisecondsDate;
   private _secondsDuration: SecondsDuration;
-  private _ip: Ip;
+  private _ipAddress: IpAddress;
   private _replacedAt?: MillisecondsDate;
   private _replacedBy?: UniqueId;
   private _revokedAt?: MillisecondsDate;
@@ -21,7 +21,7 @@ export class RefreshToken extends AggregateRoot {
     userId: UniqueId,
     createdAt: MillisecondsDate,
     secondsDuration: SecondsDuration,
-    ip: Ip,
+    ipAddress: IpAddress,
     replacedAt?: MillisecondsDate,
     replacedBy?: UniqueId,
     revokedAt?: MillisecondsDate,
@@ -31,7 +31,7 @@ export class RefreshToken extends AggregateRoot {
     this._userId = userId;
     this._createdAt = createdAt;
     this._secondsDuration = secondsDuration;
-    this._ip = ip;
+    this._ipAddress = ipAddress;
     this._replacedAt = replacedAt;
     this._replacedBy = replacedBy;
     this._revokedAt = revokedAt;
@@ -40,7 +40,7 @@ export class RefreshToken extends AggregateRoot {
   public static create(
     id: UniqueId,
     userId: UniqueId,
-    ip: Ip,
+    ipAddress: IpAddress,
     createdAt: MillisecondsDate = MillisecondsDate.create(),
     secondsDuration: SecondsDuration = RefreshToken.defaultDuration,
     replacedAt: MillisecondsDate = null,
@@ -52,7 +52,7 @@ export class RefreshToken extends AggregateRoot {
       userId,
       createdAt,
       secondsDuration,
-      ip,
+      ipAddress,
       replacedAt,
       replacedBy,
       revokedAt,
@@ -85,8 +85,8 @@ export class RefreshToken extends AggregateRoot {
     return new Date() > this.expireAt.getDate;
   }
 
-  public get ip(): string {
-    return this._ip.getIp;
+  public get ipAddress(): string {
+    return this._ipAddress.getIpAddress;
   }
 
   public get replacedAt(): MillisecondsDate {

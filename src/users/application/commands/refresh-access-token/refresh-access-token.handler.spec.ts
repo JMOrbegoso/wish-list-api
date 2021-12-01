@@ -194,7 +194,7 @@ describe('users', () => {
             getAllByUserId: jest
               .fn()
               .mockReturnValue([validRefreshTokenToRevoke, usedRefreshToken]),
-            getAllByIp: jest
+            getAllByIpAddress: jest
               .fn()
               .mockReturnValue([validRefreshTokenToRevoke, usedRefreshToken]),
             update: jest.fn(),
@@ -278,7 +278,7 @@ describe('users', () => {
             getAllByUserId: jest
               .fn()
               .mockReturnValue([validRefreshTokenToRevoke, usedRefreshToken]),
-            getAllByIp: jest
+            getAllByIpAddress: jest
               .fn()
               .mockReturnValue([validRefreshTokenToRevoke, usedRefreshToken]),
             update: jest.fn(),

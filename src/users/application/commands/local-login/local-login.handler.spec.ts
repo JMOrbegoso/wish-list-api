@@ -8,7 +8,7 @@ import {
   RefreshTokenRepository,
   UserRepository,
 } from '../../../domain/repositories';
-import { InvalidIpError } from '../../../domain/value-objects';
+import { InvalidIpAddressError } from '../../../domain/value-objects';
 import {
   EncryptionService,
   TokenService,
@@ -60,7 +60,7 @@ describe('users', () => {
 
           // Assert
           return expect(handler.execute(command)).rejects.toThrowError(
-            InvalidIpError,
+            InvalidIpAddressError,
           );
         });
 

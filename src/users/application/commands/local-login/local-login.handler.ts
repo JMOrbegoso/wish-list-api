@@ -7,7 +7,7 @@ import {
   RefreshTokenRepository,
   UserRepository,
 } from '../../../domain/repositories';
-import { Ip, Username } from '../../../domain/value-objects';
+import { IpAddress, Username } from '../../../domain/value-objects';
 import { AuthTokensDto } from '../../dtos';
 import { userToOutputUserDto } from '../../mappings';
 import {
@@ -29,7 +29,7 @@ export class LocalLoginHandler implements ICommandHandler<LocalLoginCommand> {
 
   async execute(command: LocalLoginCommand): Promise<AuthTokensDto> {
     const username = Username.create(command.username);
-    const ip = Ip.create(command.ipAddress);
+    const ipAddress = IpAddress.create(command.ipAddress);
 
     // Get user by Username
     const user = await this.userRepository.getOneByUsername(username);
@@ -61,7 +61,7 @@ export class LocalLoginHandler implements ICommandHandler<LocalLoginCommand> {
     const newRefreshToken = RefreshToken.create(
       this.uniqueIdGeneratorService.generateId(),
       user.id,
-      ip,
+      ipAddress,
     );
     this.refreshTokenRepository.add(newRefreshToken);
 

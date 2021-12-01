@@ -28,7 +28,7 @@ export class RefreshTokenEntity {
   duration!: number;
 
   @Property()
-  ip!: string;
+  ipAddress!: string;
 
   @Property({ nullable: true })
   replacedAt?: Date;

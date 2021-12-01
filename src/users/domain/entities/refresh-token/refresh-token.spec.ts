@@ -5,7 +5,7 @@ import {
   MillisecondsDate,
   UniqueId,
 } from '../../../../core/domain/value-objects';
-import { Ip, SecondsDuration } from '../../value-objects';
+import { IpAddress, SecondsDuration } from '../../value-objects';
 
 const validValues = [
   [
@@ -25,10 +25,10 @@ const validValues = [
       getDuration: 4,
       equals: jest.fn().mockReturnValue(true),
     } as unknown as SecondsDuration),
-    mocked<Ip>({
-      getIp: '192.168.1.1',
+    mocked<IpAddress>({
+      getIpAddress: '192.168.1.1',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as Ip),
+    } as unknown as IpAddress),
     mocked<MillisecondsDate>({
       getMilliseconds: 1,
       equals: jest.fn().mockReturnValue(true),
@@ -59,10 +59,10 @@ const validValues = [
       getDuration: 4,
       equals: jest.fn().mockReturnValue(true),
     } as unknown as SecondsDuration),
-    mocked<Ip>({
-      getIp: '192.168.1.1',
+    mocked<IpAddress>({
+      getIpAddress: '192.168.1.1',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as Ip),
+    } as unknown as IpAddress),
     null,
     mocked<MillisecondsDate>({
       getMilliseconds: 2,
@@ -90,10 +90,10 @@ const validValues = [
       getDuration: 4,
       equals: jest.fn().mockReturnValue(true),
     } as unknown as SecondsDuration),
-    mocked<Ip>({
-      getIp: '192.168.1.1',
+    mocked<IpAddress>({
+      getIpAddress: '192.168.1.1',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as Ip),
+    } as unknown as IpAddress),
     null,
     null,
     mocked<MillisecondsDate>({
@@ -118,10 +118,10 @@ const validValues = [
       getDuration: 4,
       equals: jest.fn().mockReturnValue(true),
     } as unknown as SecondsDuration),
-    mocked<Ip>({
-      getIp: '192.168.1.1',
+    mocked<IpAddress>({
+      getIpAddress: '192.168.1.1',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as Ip),
+    } as unknown as IpAddress),
     null,
     null,
     null,
@@ -133,13 +133,13 @@ describe('users', () => {
     describe('entities', () => {
       describe('refresh-token', () => {
         test.each(validValues)(
-          'should create an RefreshToken with [id: %p], [userId: %p], [createdAt: %p], [secondsDuration: %p], [ip: %p], [replacedAt: %p], [replacedBy: %p], [revokedAt: %p]',
+          'should create an RefreshToken with [id: %p], [userId: %p], [createdAt: %p], [secondsDuration: %p], [ipAddress: %p], [replacedAt: %p], [replacedBy: %p], [revokedAt: %p]',
           (
             id: MockedObject<UniqueId>,
             userId: MockedObject<UniqueId>,
             createdAt: MockedObject<MillisecondsDate>,
             secondsDuration: MockedObject<SecondsDuration>,
-            ip: MockedObject<Ip>,
+            ipAddress: MockedObject<IpAddress>,
             replacedAt: MockedObject<MillisecondsDate>,
             replacedBy: MockedObject<UniqueId>,
             revokedAt: MockedObject<MillisecondsDate>,
@@ -150,7 +150,7 @@ describe('users', () => {
             const refreshToken = RefreshToken.create(
               id,
               userId,
-              ip,
+              ipAddress,
               createdAt,
               secondsDuration,
               replacedAt,
@@ -165,7 +165,7 @@ describe('users', () => {
               createdAt.getMilliseconds,
             );
             expect(refreshToken.duration).toBe(secondsDuration.getDuration);
-            expect(refreshToken.ip).toBe(ip.getIp);
+            expect(refreshToken.ipAddress).toBe(ipAddress.getIpAddress);
 
             if (replacedAt)
               expect(refreshToken.replacedAt.getMilliseconds).toBe(
@@ -192,7 +192,7 @@ describe('users', () => {
             userId: MockedObject<UniqueId>,
             createdAt: MockedObject<MillisecondsDate>,
             secondsDuration: MockedObject<SecondsDuration>,
-            ip: MockedObject<Ip>,
+            ipAddress: MockedObject<IpAddress>,
             replacedAt: MockedObject<MillisecondsDate>,
             replacedBy: MockedObject<UniqueId>,
             revokedAt: MockedObject<MillisecondsDate>,
@@ -201,7 +201,7 @@ describe('users', () => {
             const refreshToken = RefreshToken.create(
               id,
               userId,
-              ip,
+              ipAddress,
               createdAt,
               secondsDuration,
               replacedAt,
@@ -224,7 +224,7 @@ describe('users', () => {
             userId: MockedObject<UniqueId>,
             createdAt: MockedObject<MillisecondsDate>,
             secondsDuration: MockedObject<SecondsDuration>,
-            ip: MockedObject<Ip>,
+            ipAddress: MockedObject<IpAddress>,
             replacedAt: MockedObject<MillisecondsDate>,
             replacedBy: MockedObject<UniqueId>,
             revokedAt: MockedObject<MillisecondsDate>,
@@ -233,7 +233,7 @@ describe('users', () => {
             const refreshToken = RefreshToken.create(
               id,
               userId,
-              ip,
+              ipAddress,
               createdAt,
               secondsDuration,
               replacedAt,
@@ -262,7 +262,7 @@ describe('users', () => {
             userId: MockedObject<UniqueId>,
             createdAt: MockedObject<MillisecondsDate>,
             secondsDuration: MockedObject<SecondsDuration>,
-            ip: MockedObject<Ip>,
+            ipAddress: MockedObject<IpAddress>,
             replacedAt: MockedObject<MillisecondsDate>,
             replacedBy: MockedObject<UniqueId>,
             revokedAt: MockedObject<MillisecondsDate>,
@@ -271,7 +271,7 @@ describe('users', () => {
             const refreshToken = RefreshToken.create(
               id,
               userId,
-              ip,
+              ipAddress,
               createdAt,
               secondsDuration,
               replacedAt,

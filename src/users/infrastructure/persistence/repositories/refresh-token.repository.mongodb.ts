@@ -6,7 +6,7 @@ import {
 import { UniqueId } from '../../../../core/domain/value-objects';
 import { RefreshToken } from '../../../domain/entities';
 import { RefreshTokenRepository } from '../../../domain/repositories';
-import { Ip } from '../../../domain/value-objects';
+import { IpAddress } from '../../../domain/value-objects';
 import {
   refreshTokenEntityToRefreshToken,
   refreshTokenToRefreshTokenEntity,
@@ -38,8 +38,10 @@ export class RefreshTokenRepositoryMongoDb
     return refreshTokens;
   }
 
-  async getAllByIp(ip: Ip): Promise<RefreshToken[]> {
-    const refreshTokenEntities = await this.find({ ip: ip.getIp });
+  async getAllByIpAddress(ipAddress: IpAddress): Promise<RefreshToken[]> {
+    const refreshTokenEntities = await this.find({
+      ipAddress: ipAddress.getIpAddress,
+    });
     const refreshTokens = refreshTokenEntities.map((rt) =>
       refreshTokenEntityToRefreshToken(rt),
     );

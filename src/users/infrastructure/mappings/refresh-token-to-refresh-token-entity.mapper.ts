@@ -10,7 +10,7 @@ export function refreshTokenToRefreshTokenEntity(
   refreshTokenEntity.userId = refreshToken.userId.getId;
   refreshTokenEntity.createdAt = refreshToken.createdAt.getDate;
   refreshTokenEntity.duration = refreshToken.duration;
-  refreshTokenEntity.ip = refreshToken.ip;
+  refreshTokenEntity.ipAddress = refreshToken.ipAddress;
   refreshTokenEntity.replacedAt = refreshToken?.replacedAt?.getDate ?? null;
   refreshTokenEntity.replacedBy = refreshToken?.replacedBy?.getId ?? null;
   refreshTokenEntity.revokedAt = refreshToken?.revokedAt?.getDate ?? null;

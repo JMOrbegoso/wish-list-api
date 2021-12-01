@@ -1,7 +1,7 @@
 import { Repository } from '../../../core/domain/repositories';
 import { UniqueId } from '../../../core/domain/value-objects';
 import { RefreshToken } from '../entities';
-import { Ip } from '../value-objects';
+import { IpAddress } from '../value-objects';
 
 export abstract class RefreshTokenRepository
   implements Repository<RefreshToken>
@@ -10,7 +10,7 @@ export abstract class RefreshTokenRepository
 
   abstract getAllByUserId(userId: UniqueId): Promise<RefreshToken[]>;
 
-  abstract getAllByIp(ip: Ip): Promise<RefreshToken[]>;
+  abstract getAllByIpAddress(ipAddress: IpAddress): Promise<RefreshToken[]>;
 
   abstract getOne(id: UniqueId): Promise<RefreshToken>;
 
