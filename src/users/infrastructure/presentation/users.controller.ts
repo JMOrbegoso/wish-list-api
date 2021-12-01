@@ -33,6 +33,7 @@ import {
   GetUserByUsernameQuery,
   GetUsersQuery,
 } from '../../application/queries';
+import { Role } from '../../domain/value-objects';
 import {
   CreateUserDto,
   UpdateUserPasswordDto,
@@ -46,6 +47,7 @@ import {
   updateUserPasswordDtoToUpdateUserPasswordCommand,
   updateUserProfileDtoToUpdateUserProfileCommand,
 } from '../mappings';
+import { AuthJwtBearer } from './decorators';
 
 @ApiTags('UsersController')
 @Controller('users')
@@ -101,6 +103,7 @@ export class UsersController {
   @ApiOkResponse({ description: 'User updated successfully.' })
   @ApiNotFoundResponse({ description: 'User not found.' })
   @ApiBadRequestResponse({ description: 'Something went wrong.' })
+  @AuthJwtBearer()
   @Patch(':id')
   async update(
     @Param() params: UserIdDto,
@@ -117,6 +120,7 @@ export class UsersController {
   @ApiOkResponse({ description: 'User updated successfully.' })
   @ApiNotFoundResponse({ description: 'User not found.' })
   @ApiBadRequestResponse({ description: 'Something went wrong.' })
+  @AuthJwtBearer()
   @Patch('update-password/:id')
   async updatePassword(
     @Param() params: UserIdDto,
@@ -132,6 +136,7 @@ export class UsersController {
   @ApiOkResponse({ description: 'User blocked successfully.' })
   @ApiNotFoundResponse({ description: 'User not found.' })
   @ApiBadRequestResponse({ description: 'Something went wrong.' })
+  @AuthJwtBearer([Role.admin(), Role.moderator()])
   @Patch('block/:id')
   async blockUser(@Param() params: UserIdDto): Promise<void> {
     const command = new BlockUserCommand(params.id);
@@ -141,6 +146,7 @@ export class UsersController {
   @ApiOkResponse({ description: 'User unblocked successfully.' })
   @ApiNotFoundResponse({ description: 'User not found.' })
   @ApiBadRequestResponse({ description: 'Something went wrong.' })
+  @AuthJwtBearer([Role.admin(), Role.moderator()])
   @Patch('unblock/:id')
   async unblockUser(@Param() params: UserIdDto): Promise<void> {
     const command = new UnblockUserCommand(params.id);
@@ -150,6 +156,7 @@ export class UsersController {
   @ApiOkResponse({ description: 'User deleted successfully.' })
   @ApiNotFoundResponse({ description: 'User not found.' })
   @ApiBadRequestResponse({ description: 'Something went wrong.' })
+  @AuthJwtBearer([Role.admin(), Role.moderator()])
   @Delete(':id')
   async deleteUser(@Param() params: UserIdDto): Promise<void> {
     const command = new DeleteUserCommand(params.id);
@@ -159,6 +166,7 @@ export class UsersController {
   @ApiOkResponse({ description: 'User undeleted successfully.' })
   @ApiNotFoundResponse({ description: 'User not found.' })
   @ApiBadRequestResponse({ description: 'Something went wrong.' })
+  @AuthJwtBearer([Role.admin(), Role.moderator()])
   @Patch('undelete/:id')
   async undeleteUser(@Param() params: UserIdDto): Promise<void> {
     const command = new UndeleteUserCommand(params.id);
