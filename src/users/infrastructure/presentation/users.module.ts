@@ -19,6 +19,7 @@ import {
   GetUsersHandler,
 } from '../../application/queries';
 import {
+  EmailSenderService,
   EncryptionService,
   UniqueIdGeneratorService,
 } from '../../application/services';
@@ -26,6 +27,7 @@ import { UserRepository } from '../../domain/repositories/user.repository';
 import { UserEntity } from '../persistence/entities';
 import { UserRepositoryMongoDb } from '../persistence/repositories';
 import {
+  EmailSenderServiceNodemailer,
   EncryptionServiceBcrypt,
   UniqueIdGeneratorServiceMongoDb,
 } from '../services';
@@ -57,6 +59,10 @@ const commandHandlers = [
     {
       provide: UniqueIdGeneratorService,
       useClass: UniqueIdGeneratorServiceMongoDb,
+    },
+    {
+      provide: EmailSenderService,
+      useClass: EmailSenderServiceNodemailer,
     },
     ...queryHandlers,
     ...commandHandlers,
