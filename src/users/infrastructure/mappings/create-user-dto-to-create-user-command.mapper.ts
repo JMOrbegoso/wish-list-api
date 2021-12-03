@@ -13,6 +13,5 @@ export function createUserDtoToCreateUserCommand(
     dto.lastName,
     dto.birthday,
     dto.biography,
-    dto.profilePicture,
   );
 }

@@ -4,10 +4,8 @@ import {
   IsMongoId,
   IsNotEmpty,
   IsNumber,
-  IsOptional,
   IsPositive,
   IsString,
-  IsUrl,
   Matches,
   MaxLength,
   MinLength,
@@ -113,15 +111,4 @@ export class CreateUserDto {
   @IsNotEmpty()
   @MaxLength(Biography.MaxLength)
   biography: string;
-
-  @ApiProperty({
-    type: String,
-    required: false,
-    description: 'User profile picture url.',
-    example: 'https://www.example.com',
-  })
-  @IsOptional()
-  @IsUrl()
-  @IsString()
-  profilePicture: string;
 }
