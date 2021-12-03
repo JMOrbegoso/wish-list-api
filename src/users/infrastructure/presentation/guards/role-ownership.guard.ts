@@ -13,7 +13,7 @@ type RoleOwnership = { role: Role; ownership: Ownership };
 export class RoleOwnershipGuard implements CanActivate {
   constructor(
     private readonly ownerships: RoleOwnership[],
-    private readonly target: 'body' | 'param',
+    private readonly target: 'body' | 'params',
     private readonly idPropertyName: string = 'id',
   ) {}
 
