@@ -882,10 +882,6 @@ describe('users', () => {
             const newBiography = mocked<Biography>({
               getBiography: newBiographyText,
             } as unknown as Biography);
-            const newProfilePictureText = 'https://www.example.com/new.jpg';
-            const newProfilePicture = mocked<WebUrl>({
-              getUrl: newProfilePictureText,
-            } as unknown as WebUrl);
 
             // Act
             user.updateProfile(
@@ -893,7 +889,6 @@ describe('users', () => {
               newLastName,
               newBirthday,
               newBiography,
-              newProfilePicture,
             );
 
             // Assert
@@ -903,86 +898,6 @@ describe('users', () => {
               newBirthday.getMilliseconds,
             );
             expect(user.biography.getBiography).toBe(newBiography.getBiography);
-            if (newProfilePicture)
-              expect(user.profilePicture.getUrl).toBe(newProfilePicture.getUrl);
-            else expect(user.profilePicture).toBeNull();
-          },
-        );
-
-        test.each(validValues)(
-          'update User profile (with nulls) should change the property values',
-          (
-            uniqueId: MockedObject<UniqueId>,
-            email: MockedObject<Email>,
-            username: MockedObject<Username>,
-            passwordHash: MockedObject<PasswordHash>,
-            isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
-            isBlocked: MockedObject<IsBlocked>,
-            firstName: MockedObject<FirstName>,
-            lastName: MockedObject<LastName>,
-            birthday: MockedObject<MillisecondsDate>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
-            biography: MockedObject<Biography>,
-            roles: MockedObject<Role[]>,
-            profilePicture: MockedObject<WebUrl>,
-            deletedAt: MockedObject<MillisecondsDate>,
-          ) => {
-            // Arrange
-            const user = User.create(
-              uniqueId,
-              email,
-              username,
-              passwordHash,
-              isVerified,
-              verificationCode,
-              isBlocked,
-              firstName,
-              lastName,
-              birthday,
-              createdAt,
-              updatedAt,
-              biography,
-              roles,
-              profilePicture,
-              deletedAt,
-            );
-
-            const newFirstNameText = 'new FirstName';
-            const newFirstName = mocked<FirstName>({
-              getFirstName: newFirstNameText,
-            } as unknown as FirstName);
-            const newLastNameText = 'new LastName';
-            const newLastName = mocked<LastName>({
-              getLastName: newLastNameText,
-            } as unknown as LastName);
-            const newBirthdayMillisecondsDate = new Date(2005, 1, 1).getTime();
-            const newBirthday = mocked<MillisecondsDate>({
-              getMilliseconds: newBirthdayMillisecondsDate,
-            } as unknown as MillisecondsDate);
-            const newBiographyText = 'new Biography';
-            const newBiography = mocked<Biography>({
-              getBiography: newBiographyText,
-            } as unknown as Biography);
-
-            // Act
-            user.updateProfile(
-              newFirstName,
-              newLastName,
-              newBirthday,
-              newBiography,
-              null,
-            );
-
-            // Assert
-            expect(user.firstName.getFirstName).toBe(newFirstName.getFirstName);
-            expect(user.lastName.getLastName).toBe(newLastName.getLastName);
-            expect(user.birthday.getMilliseconds).toBe(
-              newBirthday.getMilliseconds,
-            );
-            expect(user.biography.getBiography).toBe(newBiography.getBiography);
-            expect(user.profilePicture).toBeNull();
           },
         );
 

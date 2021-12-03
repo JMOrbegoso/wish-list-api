@@ -5,7 +5,6 @@ import { UnitOfWork } from '../../../../core/domain/repositories';
 import {
   MillisecondsDate,
   UniqueId,
-  WebUrl,
 } from '../../../../core/domain/value-objects';
 import { UserRepository } from '../../../domain/repositories';
 import { Biography, FirstName, LastName } from '../../../domain/value-objects';
@@ -41,18 +40,9 @@ export class UpdateUserProfileHandler
     const lastName = LastName.create(command.lastName);
     const birthday = MillisecondsDate.createFromMilliseconds(command.birthday);
     const biography = Biography.create(command.biography);
-    const profilePicture = command.profilePicture
-      ? WebUrl.create(command.profilePicture)
-      : null;
 
     // Update user properties
-    user.updateProfile(
-      firstName,
-      lastName,
-      birthday,
-      biography,
-      profilePicture,
-    );
+    user.updateProfile(firstName, lastName, birthday, biography);
 
     // Add the new user to the users repository
     this.userRepository.update(user);

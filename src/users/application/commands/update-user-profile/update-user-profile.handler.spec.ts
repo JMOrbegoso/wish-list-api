@@ -299,7 +299,6 @@ describe('users', () => {
             lastName: 'LastName0',
             birthday: 1,
             biography: 'A nice person 0.',
-            profilePicture: 'https://www.example.com/0.jpg',
           } as unknown as UpdateUserProfileCommand);
 
           const handler = new UpdateUserProfileHandler(

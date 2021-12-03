@@ -10,7 +10,6 @@ const validValues = [
       lastName: 'LastName0',
       birthday: 1,
       biography: 'A nice person 0.',
-      profilePicture: 'https://www.example.com/0.jpg',
     } as unknown as UpdateUserProfileDto),
   ],
   [
@@ -20,7 +19,6 @@ const validValues = [
       lastName: 'LastName1',
       birthday: 1,
       biography: 'A nice person 1.',
-      profilePicture: 'https://www.example.com/1.jpg',
     } as unknown as UpdateUserProfileDto),
   ],
   [
@@ -30,7 +28,6 @@ const validValues = [
       lastName: 'LastName2',
       birthday: 1,
       biography: 'A nice person 2.',
-      profilePicture: null,
     } as unknown as UpdateUserProfileDto),
   ],
   [
@@ -49,7 +46,6 @@ const validValues = [
       lastName: 'LastName4',
       birthday: 1,
       biography: 'A nice person 4.',
-      profilePicture: null,
     } as unknown as UpdateUserProfileDto),
   ],
   [
@@ -59,7 +55,6 @@ const validValues = [
       lastName: 'LastName5',
       birthday: 1,
       biography: 'A nice person 5.',
-      profilePicture: 'https://www.example.com/5.jpg',
     } as unknown as UpdateUserProfileDto),
   ],
   [
@@ -69,7 +64,6 @@ const validValues = [
       lastName: 'LastName6',
       birthday: 1,
       biography: 'A nice person 6.',
-      profilePicture: null,
     } as unknown as UpdateUserProfileDto),
   ],
   [
@@ -100,7 +94,6 @@ describe('users', () => {
             expect(command.lastName).toBe(dto.lastName);
             expect(command.birthday).toBe(dto.birthday);
             expect(command.biography).toBe(dto.biography);
-            expect(command.profilePicture).toBe(dto.profilePicture);
           },
         );
       });
