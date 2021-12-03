@@ -170,7 +170,7 @@ export class UsersController {
         { role: Role.admin(), ownership: Ownership.Any },
         { role: Role.moderator(), ownership: Ownership.Any },
       ],
-      'param',
+      'params',
     ),
   )
   @Patch('block/:id')
@@ -190,7 +190,7 @@ export class UsersController {
         { role: Role.admin(), ownership: Ownership.Any },
         { role: Role.moderator(), ownership: Ownership.Any },
       ],
-      'param',
+      'params',
     ),
   )
   @Patch('unblock/:id')
@@ -210,7 +210,7 @@ export class UsersController {
         { role: Role.admin(), ownership: Ownership.Any },
         { role: Role.moderator(), ownership: Ownership.Any },
       ],
-      'param',
+      'params',
     ),
   )
   @Delete(':id')
@@ -230,7 +230,7 @@ export class UsersController {
         { role: Role.admin(), ownership: Ownership.Any },
         { role: Role.moderator(), ownership: Ownership.Any },
       ],
-      'param',
+      'params',
     ),
   )
   @Patch('undelete/:id')
