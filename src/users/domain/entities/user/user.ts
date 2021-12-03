@@ -202,6 +202,12 @@ export class User extends AggregateRoot {
     this._updatedAt = MillisecondsDate.create();
   }
 
+  public updateProfilePicture(profilePicture: WebUrl = null): void {
+    this._profilePicture = profilePicture;
+
+    this._updatedAt = MillisecondsDate.create();
+  }
+
   public delete(): void {
     this._deletedAt = MillisecondsDate.create();
   }

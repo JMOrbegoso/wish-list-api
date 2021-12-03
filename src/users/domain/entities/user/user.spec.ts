@@ -902,6 +902,106 @@ describe('users', () => {
         );
 
         test.each(validValues)(
+          'update User profile picture should change the property value',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            email: MockedObject<Email>,
+            username: MockedObject<Username>,
+            passwordHash: MockedObject<PasswordHash>,
+            isVerified: MockedObject<IsVerified>,
+            verificationCode: MockedObject<VerificationCode>,
+            isBlocked: MockedObject<IsBlocked>,
+            firstName: MockedObject<FirstName>,
+            lastName: MockedObject<LastName>,
+            birthday: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            biography: MockedObject<Biography>,
+            roles: MockedObject<Role[]>,
+            profilePicture: MockedObject<WebUrl>,
+            deletedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+            const user = User.create(
+              uniqueId,
+              email,
+              username,
+              passwordHash,
+              isVerified,
+              verificationCode,
+              isBlocked,
+              firstName,
+              lastName,
+              birthday,
+              createdAt,
+              updatedAt,
+              biography,
+              roles,
+              profilePicture,
+              deletedAt,
+            );
+
+            const newProfilePicture = mocked<WebUrl>({
+              getWebUrl: 'https://www.example.com/new_image.jpg',
+            } as unknown as WebUrl);
+
+            // Act
+            user.updateProfilePicture(newProfilePicture);
+
+            // Assert
+            expect(user.profilePicture.getUrl).toBe(newProfilePicture.getUrl);
+          },
+        );
+
+        test.each(validValues)(
+          'update User profile picture with null value should change the property value',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            email: MockedObject<Email>,
+            username: MockedObject<Username>,
+            passwordHash: MockedObject<PasswordHash>,
+            isVerified: MockedObject<IsVerified>,
+            verificationCode: MockedObject<VerificationCode>,
+            isBlocked: MockedObject<IsBlocked>,
+            firstName: MockedObject<FirstName>,
+            lastName: MockedObject<LastName>,
+            birthday: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            biography: MockedObject<Biography>,
+            roles: MockedObject<Role[]>,
+            profilePicture: MockedObject<WebUrl>,
+            deletedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+            const user = User.create(
+              uniqueId,
+              email,
+              username,
+              passwordHash,
+              isVerified,
+              verificationCode,
+              isBlocked,
+              firstName,
+              lastName,
+              birthday,
+              createdAt,
+              updatedAt,
+              biography,
+              roles,
+              profilePicture,
+              deletedAt,
+            );
+
+            // Act
+            user.updateProfilePicture();
+
+            // Assert
+            expect(user.profilePicture).toBeNull();
+          },
+        );
+
+        test.each(validValues)(
           'delete User should change the property value',
           (
             uniqueId: MockedObject<UniqueId>,
