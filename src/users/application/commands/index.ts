@@ -4,6 +4,9 @@ export * from './create-user/create-user.handler';
 export * from './update-user-profile/update-user-profile.command';
 export * from './update-user-profile/update-user-profile.handler';
 
+export * from './update-user-profile-picture/update-user-profile-picture.command';
+export * from './update-user-profile-picture/update-user-profile-picture.handler';
+
 export * from './delete-user/delete-user.command';
 export * from './delete-user/delete-user.handler';
 
