@@ -129,8 +129,8 @@ export class UsersController {
       'body',
     ),
   )
-  @Patch(':id')
-  async update(
+  @Patch('profile/:id')
+  async updateProfile(
     @Param() params: UserIdDto,
     @Body() dto: UpdateUserProfileDto,
   ): Promise<void> {
