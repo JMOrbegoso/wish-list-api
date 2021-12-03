@@ -1,4 +1,12 @@
-import { Body, Controller, Get, HttpCode, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  Ip,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 import {
   ApiBadRequestResponse,
@@ -8,7 +16,6 @@ import {
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
-import { RealIP } from 'nestjs-real-ip';
 import {
   LocalLoginCommand,
   RefreshAccessTokenCommand,
@@ -36,7 +43,7 @@ export class AuthController {
   @HttpCode(200)
   async login(
     @Body() dto: LoginDto,
-    @RealIP() ipAddress: string,
+    @Ip() ipAddress: string,
   ): Promise<AuthTokensDto> {
     const command = new LocalLoginCommand(
       dto.username,
@@ -56,7 +63,7 @@ export class AuthController {
   @HttpCode(200)
   async refresh(
     @Body() dto: RefreshTokenDto,
-    @RealIP() ipAddress: string,
+    @Ip() ipAddress: string,
   ): Promise<AuthTokensDto> {
     const command = new RefreshAccessTokenCommand(dto.refresh_token, ipAddress);
     return await this.commandBus.execute(command);
