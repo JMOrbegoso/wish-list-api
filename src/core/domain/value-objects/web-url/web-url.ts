@@ -2,7 +2,7 @@ import { InvalidWebUrlError, MalformedWebUrlError, ValueObject } from '..';
 
 export class WebUrl extends ValueObject<string> {
   public static readonly Regex =
-    /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/;
+    /^(http(s)?:\/\/){1}([\w\:\-]+){1}(\.[\w\.-]+){0,1}[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/;
 
   protected validate(value: string): void {
     if (!value) throw new InvalidWebUrlError();

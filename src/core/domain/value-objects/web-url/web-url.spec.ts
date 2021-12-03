@@ -12,12 +12,11 @@ const validValues = [
   'http://www.example.com/products?id=1&page=2',
   'http://www.example.com#up',
   'http://255.255.255.255',
-  '255.255.255.255',
-  'www.example.com',
-  'example.com',
+  'http://255.255.255.255/resource/',
   'http://valid.com/perl.id?key=',
   'http://web-site.com/cgi-bin/perl.cgi?key1=value1&key2',
   'http://www.site.com:8008',
+  'http://localhost:3000/users/profile-pictures/01c0fd3a-1eaa-486d-99ad-81bbb9bbf1d4.jpg',
 ];
 
 describe('core', () => {
@@ -52,6 +51,9 @@ describe('core', () => {
           'httpp://',
           'hhttp://www.example.com',
           'httpp://www.example.com',
+          '255.255.255.255',
+          'www.example.com',
+          'example.com',
         ])(
           'should throw an error when trying to create a WebUrl from %p (Malformed)',
           (malformed) => {
