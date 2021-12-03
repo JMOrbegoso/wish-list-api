@@ -11,6 +11,7 @@ import {
   UndeleteUserHandler,
   UpdateUserPasswordHandler,
   UpdateUserProfileHandler,
+  UpdateUserProfilePictureHandler,
 } from '../../application/commands';
 import {
   GetUserByEmailHandler,
@@ -42,6 +43,7 @@ const queryHandlers = [
 const commandHandlers = [
   CreateUserHandler,
   UpdateUserProfileHandler,
+  UpdateUserProfilePictureHandler,
   UpdateUserPasswordHandler,
   DeleteUserHandler,
   UndeleteUserHandler,

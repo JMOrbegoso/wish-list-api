@@ -29,6 +29,7 @@ import {
   UndeleteUserCommand,
   UpdateUserPasswordCommand,
   UpdateUserProfileCommand,
+  UpdateUserProfilePictureCommand,
 } from '../../application/commands';
 import { OutputUserDto } from '../../application/dtos';
 import {
@@ -135,6 +136,31 @@ export class UsersController {
   ): Promise<void> {
     const command: UpdateUserProfileCommand =
       updateUserProfileDtoToUpdateUserProfileCommand(dto);
+    await this.commandBus.execute(command);
+  }
+
+  @ApiBearerAuth()
+  @ApiOkResponse({ description: 'User profile picture successfully deleted.' })
+  @ApiUnauthorizedResponse({ description: 'User is not authenticated.' })
+  @ApiForbiddenResponse({
+    description: 'This resource is prohibited for the authenticated user.',
+  })
+  @ApiNotFoundResponse({ description: 'User not found.' })
+  @ApiBadRequestResponse({ description: 'Something went wrong.' })
+  @UseGuards(
+    AuthGuard('jwt'),
+    new RoleOwnershipGuard(
+      [
+        { role: Role.admin(), ownership: Ownership.Any },
+        { role: Role.moderator(), ownership: Ownership.Any },
+        { role: Role.basic(), ownership: Ownership.Own },
+      ],
+      'params',
+    ),
+  )
+  @Delete('profile-picture/:id')
+  async deleteProfilePicture(@Param() params: UserIdDto): Promise<void> {
+    const command = new UpdateUserProfilePictureCommand(params.id, null);
     await this.commandBus.execute(command);
   }
 
