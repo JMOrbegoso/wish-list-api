@@ -1,5 +1,4 @@
 import {
-  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -50,7 +49,7 @@ import {
   updateUserPasswordDtoToUpdateUserPasswordCommand,
   updateUserProfileDtoToUpdateUserProfileCommand,
 } from '../mappings';
-import { RolesGuard } from './guards';
+import { ParamAndBodySameIdGuard, RolesGuard } from './guards';
 
 @ApiTags('UsersController')
 @Controller('users')
@@ -107,14 +106,12 @@ export class UsersController {
   @ApiOkResponse({ description: 'User updated successfully.' })
   @ApiNotFoundResponse({ description: 'User not found.' })
   @ApiBadRequestResponse({ description: 'Something went wrong.' })
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt'), new ParamAndBodySameIdGuard())
   @Patch(':id')
   async update(
     @Param() params: UserIdDto,
     @Body() dto: UpdateUserProfileDto,
   ): Promise<void> {
-    if (params.id !== dto.id)
-      throw new BadRequestException('Id are different.');
     const command: UpdateUserProfileCommand =
       updateUserProfileDtoToUpdateUserProfileCommand(dto);
     await this.commandBus.execute(command);
@@ -125,14 +122,12 @@ export class UsersController {
   @ApiOkResponse({ description: 'User updated successfully.' })
   @ApiNotFoundResponse({ description: 'User not found.' })
   @ApiBadRequestResponse({ description: 'Something went wrong.' })
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt'), new ParamAndBodySameIdGuard())
   @Patch('update-password/:id')
   async updatePassword(
     @Param() params: UserIdDto,
     @Body() dto: UpdateUserPasswordDto,
   ): Promise<void> {
-    if (params.id !== dto.id)
-      throw new BadRequestException('Id are different.');
     const command: UpdateUserPasswordCommand =
       updateUserPasswordDtoToUpdateUserPasswordCommand(dto);
     await this.commandBus.execute(command);
