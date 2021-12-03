@@ -49,7 +49,11 @@ import {
   updateUserPasswordDtoToUpdateUserPasswordCommand,
   updateUserProfileDtoToUpdateUserProfileCommand,
 } from '../mappings';
-import { ParamAndBodySameIdGuard, RolesGuard } from './guards';
+import {
+  Ownership,
+  ParamAndBodySameIdGuard,
+  RoleOwnershipGuard,
+} from './guards';
 
 @ApiTags('UsersController')
 @Controller('users')
@@ -106,7 +110,18 @@ export class UsersController {
   @ApiOkResponse({ description: 'User updated successfully.' })
   @ApiNotFoundResponse({ description: 'User not found.' })
   @ApiBadRequestResponse({ description: 'Something went wrong.' })
-  @UseGuards(AuthGuard('jwt'), new ParamAndBodySameIdGuard())
+  @UseGuards(
+    AuthGuard('jwt'),
+    new ParamAndBodySameIdGuard(),
+    new RoleOwnershipGuard(
+      [
+        { role: Role.admin(), ownership: Ownership.Any },
+        { role: Role.moderator(), ownership: Ownership.Any },
+        { role: Role.basic(), ownership: Ownership.Own },
+      ],
+      'body',
+    ),
+  )
   @Patch(':id')
   async update(
     @Param() params: UserIdDto,
@@ -122,7 +137,18 @@ export class UsersController {
   @ApiOkResponse({ description: 'User updated successfully.' })
   @ApiNotFoundResponse({ description: 'User not found.' })
   @ApiBadRequestResponse({ description: 'Something went wrong.' })
-  @UseGuards(AuthGuard('jwt'), new ParamAndBodySameIdGuard())
+  @UseGuards(
+    AuthGuard('jwt'),
+    new ParamAndBodySameIdGuard(),
+    new RoleOwnershipGuard(
+      [
+        { role: Role.admin(), ownership: Ownership.Own },
+        { role: Role.moderator(), ownership: Ownership.Own },
+        { role: Role.basic(), ownership: Ownership.Own },
+      ],
+      'body',
+    ),
+  )
   @Patch('update-password/:id')
   async updatePassword(
     @Param() params: UserIdDto,
@@ -137,7 +163,16 @@ export class UsersController {
   @ApiOkResponse({ description: 'User blocked successfully.' })
   @ApiNotFoundResponse({ description: 'User not found.' })
   @ApiBadRequestResponse({ description: 'Something went wrong.' })
-  @UseGuards(AuthGuard('jwt'), new RolesGuard([Role.admin(), Role.moderator()]))
+  @UseGuards(
+    AuthGuard('jwt'),
+    new RoleOwnershipGuard(
+      [
+        { role: Role.admin(), ownership: Ownership.Any },
+        { role: Role.moderator(), ownership: Ownership.Any },
+      ],
+      'param',
+    ),
+  )
   @Patch('block/:id')
   async blockUser(@Param() params: UserIdDto): Promise<void> {
     const command = new BlockUserCommand(params.id);
@@ -148,7 +183,16 @@ export class UsersController {
   @ApiOkResponse({ description: 'User unblocked successfully.' })
   @ApiNotFoundResponse({ description: 'User not found.' })
   @ApiBadRequestResponse({ description: 'Something went wrong.' })
-  @UseGuards(AuthGuard('jwt'), new RolesGuard([Role.admin(), Role.moderator()]))
+  @UseGuards(
+    AuthGuard('jwt'),
+    new RoleOwnershipGuard(
+      [
+        { role: Role.admin(), ownership: Ownership.Any },
+        { role: Role.moderator(), ownership: Ownership.Any },
+      ],
+      'param',
+    ),
+  )
   @Patch('unblock/:id')
   async unblockUser(@Param() params: UserIdDto): Promise<void> {
     const command = new UnblockUserCommand(params.id);
@@ -159,7 +203,16 @@ export class UsersController {
   @ApiOkResponse({ description: 'User deleted successfully.' })
   @ApiNotFoundResponse({ description: 'User not found.' })
   @ApiBadRequestResponse({ description: 'Something went wrong.' })
-  @UseGuards(AuthGuard('jwt'), new RolesGuard([Role.admin(), Role.moderator()]))
+  @UseGuards(
+    AuthGuard('jwt'),
+    new RoleOwnershipGuard(
+      [
+        { role: Role.admin(), ownership: Ownership.Any },
+        { role: Role.moderator(), ownership: Ownership.Any },
+      ],
+      'param',
+    ),
+  )
   @Delete(':id')
   async deleteUser(@Param() params: UserIdDto): Promise<void> {
     const command = new DeleteUserCommand(params.id);
@@ -170,7 +223,16 @@ export class UsersController {
   @ApiOkResponse({ description: 'User undeleted successfully.' })
   @ApiNotFoundResponse({ description: 'User not found.' })
   @ApiBadRequestResponse({ description: 'Something went wrong.' })
-  @UseGuards(AuthGuard('jwt'), new RolesGuard([Role.admin(), Role.moderator()]))
+  @UseGuards(
+    AuthGuard('jwt'),
+    new RoleOwnershipGuard(
+      [
+        { role: Role.admin(), ownership: Ownership.Any },
+        { role: Role.moderator(), ownership: Ownership.Any },
+      ],
+      'param',
+    ),
+  )
   @Patch('undelete/:id')
   async undeleteUser(@Param() params: UserIdDto): Promise<void> {
     const command = new UndeleteUserCommand(params.id);
