@@ -7,10 +7,13 @@ import {
   Param,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
+import { AuthGuard } from '@nestjs/passport';
 import {
   ApiBadRequestResponse,
+  ApiBearerAuth,
   ApiBody,
   ApiCreatedResponse,
   ApiNotFoundResponse,
@@ -47,7 +50,7 @@ import {
   updateUserPasswordDtoToUpdateUserPasswordCommand,
   updateUserProfileDtoToUpdateUserProfileCommand,
 } from '../mappings';
-import { AuthJwtBearer } from './decorators';
+import { RolesGuard } from './guards';
 
 @ApiTags('UsersController')
 @Controller('users')
@@ -99,11 +102,12 @@ export class UsersController {
     await this.commandBus.execute(command);
   }
 
+  @ApiBearerAuth()
   @ApiBody({ required: true, type: UpdateUserProfileDto })
   @ApiOkResponse({ description: 'User updated successfully.' })
   @ApiNotFoundResponse({ description: 'User not found.' })
   @ApiBadRequestResponse({ description: 'Something went wrong.' })
-  @AuthJwtBearer()
+  @UseGuards(AuthGuard('jwt'))
   @Patch(':id')
   async update(
     @Param() params: UserIdDto,
@@ -116,11 +120,12 @@ export class UsersController {
     await this.commandBus.execute(command);
   }
 
+  @ApiBearerAuth()
   @ApiBody({ required: true, type: UpdateUserPasswordDto })
   @ApiOkResponse({ description: 'User updated successfully.' })
   @ApiNotFoundResponse({ description: 'User not found.' })
   @ApiBadRequestResponse({ description: 'Something went wrong.' })
-  @AuthJwtBearer()
+  @UseGuards(AuthGuard('jwt'))
   @Patch('update-password/:id')
   async updatePassword(
     @Param() params: UserIdDto,
@@ -133,40 +138,44 @@ export class UsersController {
     await this.commandBus.execute(command);
   }
 
+  @ApiBearerAuth()
   @ApiOkResponse({ description: 'User blocked successfully.' })
   @ApiNotFoundResponse({ description: 'User not found.' })
   @ApiBadRequestResponse({ description: 'Something went wrong.' })
-  @AuthJwtBearer([Role.admin(), Role.moderator()])
+  @UseGuards(AuthGuard('jwt'), new RolesGuard([Role.admin(), Role.moderator()]))
   @Patch('block/:id')
   async blockUser(@Param() params: UserIdDto): Promise<void> {
     const command = new BlockUserCommand(params.id);
     await this.commandBus.execute(command);
   }
 
+  @ApiBearerAuth()
   @ApiOkResponse({ description: 'User unblocked successfully.' })
   @ApiNotFoundResponse({ description: 'User not found.' })
   @ApiBadRequestResponse({ description: 'Something went wrong.' })
-  @AuthJwtBearer([Role.admin(), Role.moderator()])
+  @UseGuards(AuthGuard('jwt'), new RolesGuard([Role.admin(), Role.moderator()]))
   @Patch('unblock/:id')
   async unblockUser(@Param() params: UserIdDto): Promise<void> {
     const command = new UnblockUserCommand(params.id);
     await this.commandBus.execute(command);
   }
 
+  @ApiBearerAuth()
   @ApiOkResponse({ description: 'User deleted successfully.' })
   @ApiNotFoundResponse({ description: 'User not found.' })
   @ApiBadRequestResponse({ description: 'Something went wrong.' })
-  @AuthJwtBearer([Role.admin(), Role.moderator()])
+  @UseGuards(AuthGuard('jwt'), new RolesGuard([Role.admin(), Role.moderator()]))
   @Delete(':id')
   async deleteUser(@Param() params: UserIdDto): Promise<void> {
     const command = new DeleteUserCommand(params.id);
     await this.commandBus.execute(command);
   }
 
+  @ApiBearerAuth()
   @ApiOkResponse({ description: 'User undeleted successfully.' })
   @ApiNotFoundResponse({ description: 'User not found.' })
   @ApiBadRequestResponse({ description: 'Something went wrong.' })
-  @AuthJwtBearer([Role.admin(), Role.moderator()])
+  @UseGuards(AuthGuard('jwt'), new RolesGuard([Role.admin(), Role.moderator()]))
   @Patch('undelete/:id')
   async undeleteUser(@Param() params: UserIdDto): Promise<void> {
     const command = new UndeleteUserCommand(params.id);
