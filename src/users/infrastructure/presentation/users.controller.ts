@@ -15,9 +15,11 @@ import {
   ApiBearerAuth,
   ApiBody,
   ApiCreatedResponse,
+  ApiForbiddenResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiTags,
+  ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import {
   BlockUserCommand,
@@ -108,6 +110,10 @@ export class UsersController {
   @ApiBearerAuth()
   @ApiBody({ required: true, type: UpdateUserProfileDto })
   @ApiOkResponse({ description: 'User updated successfully.' })
+  @ApiUnauthorizedResponse({ description: 'User is not authenticated.' })
+  @ApiForbiddenResponse({
+    description: 'This resource is prohibited for the authenticated user.',
+  })
   @ApiNotFoundResponse({ description: 'User not found.' })
   @ApiBadRequestResponse({ description: 'Something went wrong.' })
   @UseGuards(
@@ -135,6 +141,10 @@ export class UsersController {
   @ApiBearerAuth()
   @ApiBody({ required: true, type: UpdateUserPasswordDto })
   @ApiOkResponse({ description: 'User updated successfully.' })
+  @ApiUnauthorizedResponse({ description: 'User is not authenticated.' })
+  @ApiForbiddenResponse({
+    description: 'This resource is prohibited for the authenticated user.',
+  })
   @ApiNotFoundResponse({ description: 'User not found.' })
   @ApiBadRequestResponse({ description: 'Something went wrong.' })
   @UseGuards(
@@ -161,6 +171,10 @@ export class UsersController {
 
   @ApiBearerAuth()
   @ApiOkResponse({ description: 'User blocked successfully.' })
+  @ApiUnauthorizedResponse({ description: 'User is not authenticated.' })
+  @ApiForbiddenResponse({
+    description: 'This resource is prohibited for the authenticated user.',
+  })
   @ApiNotFoundResponse({ description: 'User not found.' })
   @ApiBadRequestResponse({ description: 'Something went wrong.' })
   @UseGuards(
@@ -181,6 +195,10 @@ export class UsersController {
 
   @ApiBearerAuth()
   @ApiOkResponse({ description: 'User unblocked successfully.' })
+  @ApiUnauthorizedResponse({ description: 'User is not authenticated.' })
+  @ApiForbiddenResponse({
+    description: 'This resource is prohibited for the authenticated user.',
+  })
   @ApiNotFoundResponse({ description: 'User not found.' })
   @ApiBadRequestResponse({ description: 'Something went wrong.' })
   @UseGuards(
@@ -201,6 +219,10 @@ export class UsersController {
 
   @ApiBearerAuth()
   @ApiOkResponse({ description: 'User deleted successfully.' })
+  @ApiUnauthorizedResponse({ description: 'User is not authenticated.' })
+  @ApiForbiddenResponse({
+    description: 'This resource is prohibited for the authenticated user.',
+  })
   @ApiNotFoundResponse({ description: 'User not found.' })
   @ApiBadRequestResponse({ description: 'Something went wrong.' })
   @UseGuards(
@@ -221,6 +243,10 @@ export class UsersController {
 
   @ApiBearerAuth()
   @ApiOkResponse({ description: 'User undeleted successfully.' })
+  @ApiUnauthorizedResponse({ description: 'User is not authenticated.' })
+  @ApiForbiddenResponse({
+    description: 'This resource is prohibited for the authenticated user.',
+  })
   @ApiNotFoundResponse({ description: 'User not found.' })
   @ApiBadRequestResponse({ description: 'Something went wrong.' })
   @UseGuards(
