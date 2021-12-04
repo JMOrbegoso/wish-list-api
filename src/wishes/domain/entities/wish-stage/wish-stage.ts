@@ -94,4 +94,25 @@ export class WishStage extends Entity {
   public get imageUrls(): WebUrl[] {
     return this._imageUrls;
   }
+
+  public update(
+    title: WishTitle,
+    description: WishDescription,
+    urls: WebUrl[] = [],
+    imageUrls: WebUrl[] = [],
+  ): void {
+    if (!title) throw new InvalidWishTitleError();
+
+    if (!description) throw new InvalidWishDescriptionError();
+
+    if (urls.length > WishStage.MaxUrls) throw new TooManyWishStageUrlsError();
+
+    if (imageUrls.length > WishStage.MaxImages)
+      throw new TooManyWishStageImagesError();
+
+    this._title = title;
+    this._description = description;
+    this._urls = urls;
+    this._imageUrls = imageUrls;
+  }
 }
