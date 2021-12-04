@@ -17,10 +17,10 @@ export class OutputUserDto {
 
   @ApiProperty({
     type: String,
-    description: 'User UserName.',
+    description: 'User Username.',
     example: 'john_doe',
   })
-  userName: string;
+  username: string;
 
   @ApiProperty({
     type: Boolean,
@@ -77,6 +77,13 @@ export class OutputUserDto {
     example: 'A nice person.',
   })
   biography: string;
+
+  @ApiProperty({
+    type: [String],
+    description: 'User roles.',
+    example: ['Admin', 'Moderator'],
+  })
+  roles: string[];
 
   @ApiProperty({
     type: String,

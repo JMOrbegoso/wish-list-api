@@ -1,41 +1,46 @@
+import { VerificationCode } from '..';
 import { AggregateRoot } from '../../../../core/domain/entities';
 import {
-  UniqueId,
   MillisecondsDate,
+  UniqueId,
   WebUrl,
 } from '../../../../core/domain/value-objects';
 import {
-  Email,
-  UserName,
-  PasswordHash,
-  IsVerified,
-  IsBlocked,
-  FirstName,
-  LastName,
   Biography,
+  Email,
+  FirstName,
+  IsBlocked,
+  IsVerified,
+  LastName,
+  PasswordHash,
+  Role,
+  Username,
 } from '../../value-objects';
 
 export class User extends AggregateRoot {
   private _email: Email;
-  private _userName: UserName;
+  private _username: Username;
   private _passwordHash: PasswordHash;
   private _isVerified: IsVerified;
+  private _verificationCode: VerificationCode;
   private _isBlocked: IsBlocked;
   private _firstName: FirstName;
   private _lastName: LastName;
   private _birthday: MillisecondsDate;
   private _createdAt: MillisecondsDate;
   private _updatedAt: MillisecondsDate;
-  private _biography?: Biography;
+  private _biography: Biography;
+  private _roles: Role[];
   private _profilePicture?: WebUrl;
   private _deletedAt?: MillisecondsDate;
 
   private constructor(
     id: UniqueId,
     email: Email,
-    userName: UserName,
+    username: Username,
     passwordHash: PasswordHash,
     isVerified: IsVerified,
+    verificationCode: VerificationCode,
     isBlocked: IsBlocked,
     firstName: FirstName,
     lastName: LastName,
@@ -43,15 +48,17 @@ export class User extends AggregateRoot {
     createdAt: MillisecondsDate,
     updatedAt: MillisecondsDate,
     biography: Biography,
-    profilePicture: WebUrl,
+    roles: Role[],
+    profilePicture?: WebUrl,
     deletedAt?: MillisecondsDate,
   ) {
     super(id);
 
     this._email = email;
-    this._userName = userName;
+    this._username = username;
     this._passwordHash = passwordHash;
     this._isVerified = isVerified;
+    this._verificationCode = verificationCode;
     this._isBlocked = isBlocked;
     this._firstName = firstName;
     this._lastName = lastName;
@@ -59,6 +66,7 @@ export class User extends AggregateRoot {
     this._createdAt = createdAt;
     this._updatedAt = updatedAt;
     this._biography = biography;
+    this._roles = roles;
     this._profilePicture = profilePicture;
     this._deletedAt = deletedAt;
   }
@@ -66,25 +74,28 @@ export class User extends AggregateRoot {
   public static create(
     id: UniqueId,
     email: Email,
-    userName: UserName,
+    username: Username,
     passwordHash: PasswordHash,
     isVerified: IsVerified,
+    verificationCode: VerificationCode,
     isBlocked: IsBlocked,
     firstName: FirstName,
     lastName: LastName,
     birthday: MillisecondsDate,
     createdAt: MillisecondsDate,
     updatedAt: MillisecondsDate,
-    biography: Biography = null,
+    biography: Biography,
+    roles: Role[] = [],
     profilePicture: WebUrl = null,
     deletedAt: MillisecondsDate = null,
   ): User {
     return new User(
       id,
       email,
-      userName,
+      username,
       passwordHash,
       isVerified,
+      verificationCode,
       isBlocked,
       firstName,
       lastName,
@@ -92,6 +103,7 @@ export class User extends AggregateRoot {
       createdAt,
       updatedAt,
       biography,
+      roles,
       profilePicture,
       deletedAt,
     );
@@ -104,81 +116,37 @@ export class User extends AggregateRoot {
   public get email(): Email {
     return this._email;
   }
-  public set email(email: Email) {
-    if (this._email.equals(email)) return;
 
-    this._email = email;
-    this.updatedAt = MillisecondsDate.create();
-  }
-
-  public get userName(): UserName {
-    return this._userName;
-  }
-  public set userName(userName: UserName) {
-    if (this._userName.equals(userName)) return;
-
-    this._userName = userName;
-    this.updatedAt = MillisecondsDate.create();
+  public get username(): Username {
+    return this._username;
   }
 
   public get passwordHash(): PasswordHash {
     return this._passwordHash;
   }
-  public set passwordHash(passwordHash: PasswordHash) {
-    if (this._passwordHash.equals(passwordHash)) return;
 
-    this._passwordHash = passwordHash;
-    this.updatedAt = MillisecondsDate.create();
+  public get isVerified(): boolean {
+    return this._isVerified.getStatus;
   }
 
-  public get isVerified(): IsVerified {
-    return this._isVerified;
-  }
-  public set isVerified(isVerified: IsVerified) {
-    if (this._isVerified.equals(isVerified)) return;
-
-    this._isVerified = isVerified;
-    this.updatedAt = MillisecondsDate.create();
+  public get verificationCode(): string {
+    return this._verificationCode.id.getId;
   }
 
-  public get isBlocked(): IsBlocked {
-    return this._isBlocked;
-  }
-  public set isBlocked(isBlocked: IsBlocked) {
-    if (this._isBlocked.equals(isBlocked)) return;
-
-    this._isBlocked = isBlocked;
-    this.updatedAt = MillisecondsDate.create();
+  public get isBlocked(): boolean {
+    return this._isBlocked.getStatus;
   }
 
   public get firstName(): FirstName {
     return this._firstName;
   }
-  public set firstName(firstName: FirstName) {
-    if (this._firstName.equals(firstName)) return;
-
-    this._firstName = firstName;
-    this.updatedAt = MillisecondsDate.create();
-  }
 
   public get lastName(): LastName {
     return this._lastName;
   }
-  public set lastName(lastName: LastName) {
-    if (this._lastName.equals(lastName)) return;
-
-    this._lastName = lastName;
-    this.updatedAt = MillisecondsDate.create();
-  }
 
   public get birthday(): MillisecondsDate {
     return this._birthday;
-  }
-  public set birthday(birthday: MillisecondsDate) {
-    if (this._birthday.equals(birthday)) return;
-
-    this._birthday = birthday;
-    this.updatedAt = MillisecondsDate.create();
   }
 
   public get createdAt(): MillisecondsDate {
@@ -188,48 +156,74 @@ export class User extends AggregateRoot {
   public get updatedAt(): MillisecondsDate {
     return this._updatedAt;
   }
-  public set updatedAt(updatedAt: MillisecondsDate) {
-    this._updatedAt = updatedAt;
-  }
 
   public get biography(): Biography {
     return this._biography;
-  }
-  public set biography(biography: Biography) {
-    if (!this._biography && !biography) return;
-
-    if (this._biography && this._biography.equals(biography)) return;
-
-    this._biography = biography;
-    this.updatedAt = MillisecondsDate.create();
   }
 
   public get profilePicture(): WebUrl {
     return this._profilePicture;
   }
-  public set profilePicture(profilePicture: WebUrl) {
-    if (!this._profilePicture && !profilePicture) return;
-
-    if (this._profilePicture && this._profilePicture.equals(profilePicture))
-      return;
-
-    this._profilePicture = profilePicture;
-    this.updatedAt = MillisecondsDate.create();
-  }
 
   public get deletedAt(): MillisecondsDate {
     return this._deletedAt;
   }
-  public set deletedAt(deletedAt: MillisecondsDate) {
-    if (!this._deletedAt && !deletedAt) return;
-
-    if (this._deletedAt && this._deletedAt.equals(deletedAt)) return;
-
-    this._deletedAt = deletedAt;
-    this.updatedAt = MillisecondsDate.create();
-  }
 
   public get isDeleted(): boolean {
-    return !this._deletedAt;
+    return !!this._deletedAt;
+  }
+
+  public updatePasswordHash(passwordHash: PasswordHash): void {
+    this._passwordHash = passwordHash;
+  }
+
+  public verify(): void {
+    this._isVerified = IsVerified.verified();
+  }
+
+  public block(): void {
+    this._isBlocked = IsBlocked.blocked();
+  }
+  public unblock(): void {
+    this._isBlocked = IsBlocked.notBlocked();
+  }
+
+  public updateProfile(
+    firstName: FirstName,
+    lastName: LastName,
+    birthday: MillisecondsDate,
+    biography: Biography,
+  ): void {
+    this._firstName = firstName;
+    this._lastName = lastName;
+    this._birthday = birthday;
+    this._biography = biography;
+
+    this._updatedAt = MillisecondsDate.create();
+  }
+
+  public updateProfilePicture(profilePicture: WebUrl = null): void {
+    this._profilePicture = profilePicture;
+
+    this._updatedAt = MillisecondsDate.create();
+  }
+
+  public delete(): void {
+    this._deletedAt = MillisecondsDate.create();
+  }
+  public undelete(): void {
+    this._deletedAt = null;
+  }
+
+  public get roles(): string[] {
+    return this._roles.map((r) => r.getRole);
+  }
+
+  public addRole(role: Role): void {
+    if (!this._roles.some((r) => r.equals(role))) this._roles.push(role);
+  }
+
+  public removeRole(role: Role): void {
+    this._roles = this._roles.filter((r) => !r.equals(role));
   }
 }

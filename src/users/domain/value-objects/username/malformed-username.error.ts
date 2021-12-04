@@ -1,5 +1,5 @@
-export class MalformedUserNameError extends Error {
+export class MalformedUsernameError extends Error {
   constructor() {
-    super('Malformed UserName.');
+    super('Malformed Username.');
   }
 }

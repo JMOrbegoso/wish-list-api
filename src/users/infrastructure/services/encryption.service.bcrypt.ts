@@ -1,6 +1,6 @@
-import { EncryptionService } from '../../application/services/encryption.service';
-import { genSaltSync, hashSync, compareSync } from 'bcrypt';
 import { Injectable } from '@nestjs/common';
+import { compareSync, genSaltSync, hashSync } from 'bcrypt';
+import { EncryptionService } from '../../application/services/encryption.service';
 
 @Injectable()
 export class EncryptionServiceBcrypt implements EncryptionService {

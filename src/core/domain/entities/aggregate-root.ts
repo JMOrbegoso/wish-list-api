@@ -1,6 +1,6 @@
-import { Entity } from '.';
-import { UniqueId } from '../value-objects';
 import { DomainEvent } from '../domain-events';
+import { UniqueId } from '../value-objects';
+import { Entity } from '.';
 
 export abstract class AggregateRoot extends Entity {
   private readonly _domainEvents: DomainEvent[] = [];

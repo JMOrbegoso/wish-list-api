@@ -1,18 +1,25 @@
-import { QueryHandler, IQueryHandler } from '@nestjs/cqrs';
-import { UnitOfWork } from '../../../../core/domain/repositories';
-import { User } from '../../../../users/domain/entities';
+import { NotFoundException } from '@nestjs/common';
+import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetUserByEmailQuery } from '..';
-import { Email } from '../../../../users/domain/value-objects';
+import { User } from '../../../domain/entities';
+import { UserRepository } from '../../../domain/repositories';
+import { Email } from '../../../domain/value-objects';
+import { OutputUserDto } from '../../dtos';
+import { userToOutputUserDto } from '../../mappings';
 
 @QueryHandler(GetUserByEmailQuery)
 export class GetUserByEmailHandler
   implements IQueryHandler<GetUserByEmailQuery>
 {
-  constructor(private readonly unitOfWork: UnitOfWork) {}
+  constructor(private readonly userRepository: UserRepository) {}
 
-  async execute(query: GetUserByEmailQuery): Promise<User> {
+  async execute(query: GetUserByEmailQuery): Promise<OutputUserDto> {
     const email = Email.create(query.email);
 
-    return await this.unitOfWork.userRepository.getOneByEmail(email);
+    const user: User = await this.userRepository.getOneByEmail(email);
+
+    if (!user) throw new NotFoundException();
+
+    return userToOutputUserDto(user);
   }
 }

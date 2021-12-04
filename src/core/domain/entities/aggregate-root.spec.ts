@@ -1,152 +1,166 @@
-import { AggregateRoot } from '.';
+import { MockedObject } from 'ts-jest/dist/utils/testing';
+import { mocked } from 'ts-jest/utils';
 import { DomainEvent } from '../domain-events';
 import { UniqueId } from '../value-objects';
+import { AggregateRoot } from '.';
+
+class Order extends AggregateRoot {
+  public price: number;
+
+  private constructor(uniqueId: MockedObject<UniqueId>, price: number) {
+    super(uniqueId);
+
+    this.price = price;
+  }
+
+  static create(uniqueId: MockedObject<UniqueId>, price: number): Order {
+    return new Order(uniqueId, price);
+  }
+
+  public get id(): UniqueId {
+    return this._id;
+  }
+}
+
+class OrderAdded extends DomainEvent {
+  public order: Order;
+
+  constructor(order: Order) {
+    super();
+
+    this.order = order;
+  }
+
+  getAggregateRootId(): UniqueId {
+    return this.order.id;
+  }
+}
+
+const validValues = [
+  [
+    mocked<UniqueId>({
+      getId: 'id-0',
+      equals: jest.fn(),
+    } as unknown as UniqueId),
+    0,
+  ],
+  [
+    mocked<UniqueId>({
+      getId: 'id-1',
+      equals: jest.fn(),
+    } as unknown as UniqueId),
+    10,
+  ],
+  [
+    mocked<UniqueId>({
+      getId: 'id-2',
+      equals: jest.fn(),
+    } as unknown as UniqueId),
+    20,
+  ],
+  [
+    mocked<UniqueId>({
+      getId: 'id-3',
+      equals: jest.fn(),
+    } as unknown as UniqueId),
+    30,
+  ],
+];
 
 describe('core', () => {
   describe('domain', () => {
     describe('entities', () => {
       describe('aggregate-root', () => {
-        class OrderAggregateRoot extends AggregateRoot {
-          public price: number;
+        test.each(validValues)(
+          'should create a Order with [id: %p], [price: %p] and should have zero domain events',
+          (uniqueId: MockedObject<UniqueId>, price: number) => {
+            // Arrange
 
-          private constructor(id: UniqueId, price: number) {
-            super(id);
+            // Act
+            const order = Order.create(uniqueId, price);
 
-            this.price = price;
-          }
+            // Assert
+            expect(order.id.getId).toBe(uniqueId.getId);
+            expect(order.price).toBe(price);
+            expect(order.domainEvents.length).toBe(0);
+          },
+        );
 
-          static create(id: UniqueId, price: number): OrderAggregateRoot {
-            return new OrderAggregateRoot(id, price);
-          }
+        test.each(validValues)(
+          'push one domain event using list getter to an Order recently created should have zero domain event (should not have an effect)',
+          (uniqueId: MockedObject<UniqueId>, price: number) => {
+            // Arrange
+            const order = Order.create(uniqueId, price);
+            const orderAdded = new OrderAdded(order);
 
-          public get id(): UniqueId {
-            return this._id;
-          }
-        }
+            // Act
+            order.domainEvents.push(orderAdded);
 
-        class OrderAdded extends DomainEvent {
-          public order: OrderAggregateRoot;
+            // Assert
+            expect(order.domainEvents.length).toBe(0);
+          },
+        );
 
-          constructor(order: OrderAggregateRoot) {
-            super();
+        test.each(validValues)(
+          'adding one domain event to an Order recently created should have one domain event',
+          (uniqueId: MockedObject<UniqueId>, price: number) => {
+            // Arrange
+            const order = Order.create(uniqueId, price);
+            const orderAdded = new OrderAdded(order);
 
-            this.order = order;
-          }
+            // Act
+            order.addDomainEvent(orderAdded);
 
-          getAggregateRootId(): UniqueId {
-            return this.order.id;
-          }
-        }
+            // Assert
+            expect(order.domainEvents.length).toBe(1);
+          },
+        );
 
-        it('should create an aggregate root instance and should store the values and should have zero domain events', () => {
-          // Arrange
+        test.each(validValues)(
+          'Order with one domain event and clear all of them using getter should still having one domain event (should not have an effect)',
+          (uniqueId: MockedObject<UniqueId>, price: number) => {
+            // Arrange
+            const order = Order.create(uniqueId, price);
+            const orderAdded = new OrderAdded(order);
+            order.addDomainEvent(orderAdded);
 
-          // Act
-          const id = 'id';
-          const uniqueId = UniqueId.create(id);
-          const price = 40;
-          const order = OrderAggregateRoot.create(uniqueId, price);
+            // Act
+            order.domainEvents.slice(0, order.domainEvents.length);
 
-          // Assert
-          expect(order.id.getId).toBe(id);
-          expect(order.price).toBe(price);
-          expect(order.domainEvents.length).toBe(0);
-        });
+            // Assert
+            expect(order.domainEvents.length).toBe(1);
+          },
+        );
 
-        it('aggregate root instance should have one domain event after add one', () => {
-          // Arrange
+        test.each(validValues)(
+          'Order with one domain event and cleaning all of them using should have zero domain event',
+          (uniqueId: MockedObject<UniqueId>, price: number) => {
+            // Arrange
+            const order = Order.create(uniqueId, price);
+            const orderAdded = new OrderAdded(order);
+            order.addDomainEvent(orderAdded);
 
-          // Act
-          const id = 'id';
-          const uniqueId = UniqueId.create(id);
-          const price = 40;
-          const order = OrderAggregateRoot.create(uniqueId, price);
-          const orderAdded = new OrderAdded(order);
-          order.addDomainEvent(orderAdded);
+            // Act
+            order.clearDomainEvents();
 
-          // Assert
-          expect(order.domainEvents.length).toBe(1);
-        });
+            // Assert
+            expect(order.domainEvents.length).toBe(0);
+          },
+        );
 
-        it('aggregate root instance should have zero domain events after push one using list getter', () => {
-          // Arrange
+        test.each(validValues)(
+          'comparing two aggregate roots should call "equals" method from UniqueId',
+          (uniqueId: MockedObject<UniqueId>, price: number) => {
+            // Arrange
+            const order = Order.create(uniqueId, price);
 
-          // Act
-          const id = 'id';
-          const uniqueId = UniqueId.create(id);
-          const price = 40;
-          const order = OrderAggregateRoot.create(uniqueId, price);
-          const orderAdded = new OrderAdded(order);
-          order.domainEvents.push(orderAdded);
+            // Act
+            order.equals(order);
 
-          // Assert
-          expect(order.domainEvents.length).toBe(0);
-        });
-
-        it('aggregate root instance should have zero domain events after add one and clear all of them', () => {
-          // Arrange
-
-          // Act
-          const id = 'id';
-          const uniqueId = UniqueId.create(id);
-          const price = 40;
-          const order = OrderAggregateRoot.create(uniqueId, price);
-          const orderAdded = new OrderAdded(order);
-          order.addDomainEvent(orderAdded);
-          order.clearDomainEvents();
-
-          // Assert
-          expect(order.domainEvents.length).toBe(0);
-        });
-
-        it('aggregate root instance should have one domain events after add one and clear all of them using getter', () => {
-          // Arrange
-
-          // Act
-          const id = 'id';
-          const uniqueId = UniqueId.create(id);
-          const price = 40;
-          const order = OrderAggregateRoot.create(uniqueId, price);
-          const orderAdded = new OrderAdded(order);
-          order.addDomainEvent(orderAdded);
-          order.domainEvents.slice(0, order.domainEvents.length);
-
-          // Assert
-          expect(order.domainEvents.length).toBe(1);
-        });
-
-        it('create two aggregate root instances with different id and compare them using "equals" should return false', () => {
-          // Arrange
-
-          // Act
-          const id_1 = 'id_1';
-          const id_2 = 'id_2';
-          const uniqueId_1 = UniqueId.create(id_1);
-          const uniqueId_2 = UniqueId.create(id_2);
-          const price = 40;
-          const order_1 = OrderAggregateRoot.create(uniqueId_1, price);
-          const order_2 = OrderAggregateRoot.create(uniqueId_2, price);
-          const result = order_1.equals(order_2);
-
-          // Assert
-          expect(result).toBe(false);
-        });
-
-        it('create two aggregate root instances with the same id and compare them using "equals" should return true', () => {
-          // Arrange
-
-          // Act
-          const id = 'id';
-          const uniqueId = UniqueId.create(id);
-          const price_1 = 40;
-          const price_2 = 80;
-          const order_1 = OrderAggregateRoot.create(uniqueId, price_1);
-          const order_2 = OrderAggregateRoot.create(uniqueId, price_2);
-          const result = order_1.equals(order_2);
-
-          // Assert
-          expect(result).toBe(true);
-        });
+            // Assert
+            expect(uniqueId.equals.mock.calls).toHaveLength(1);
+          },
+        );
       });
     });
   });

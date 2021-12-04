@@ -2,9 +2,9 @@ import {
   Entity,
   EntityRepositoryType,
   PrimaryKey,
+  Property,
   SerializedPrimaryKey,
   Unique,
-  Property,
 } from '@mikro-orm/core';
 import { ObjectId } from '@mikro-orm/mongodb';
 import { UserRepositoryMongoDb } from '../repositories';
@@ -29,17 +29,20 @@ export class UserEntity {
 
   @Unique()
   @Property()
-  userName: string;
+  username: string;
 
   @Unique()
   @Property()
-  normalizedUserName: string;
+  normalizedUsername: string;
 
   @Property()
   passwordHash: string;
 
   @Property()
   isVerified: boolean;
+
+  @Property()
+  verificationCode: string;
 
   @Property()
   isBlocked: boolean;
@@ -59,12 +62,15 @@ export class UserEntity {
   @Property()
   updatedAt: Date;
 
-  @Property({ nullable: true })
-  biography?: string;
+  @Property()
+  biography: string;
 
   @Property({ nullable: true })
   profilePicture?: string;
 
   @Property({ nullable: true })
   deletedAt?: Date;
+
+  @Property()
+  roles: string[];
 }

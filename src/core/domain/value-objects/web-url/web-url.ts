@@ -1,18 +1,13 @@
-import { ValueObject, InvalidWebUrlError, MalformedWebUrlError } from '..';
+import { InvalidWebUrlError, MalformedWebUrlError, ValueObject } from '..';
 
 export class WebUrl extends ValueObject<string> {
+  public static readonly Regex =
+    /^(http(s)?:\/\/){1}([\w\:\-]+){1}(\.[\w\.-]+){0,1}[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/;
+
   protected validate(value: string): void {
-    let url: URL;
     if (!value) throw new InvalidWebUrlError();
 
-    try {
-      url = new URL(value);
-    } catch {
-      throw new MalformedWebUrlError();
-    }
-
-    if (!(url.protocol === 'http:' || url.protocol === 'https:'))
-      throw new MalformedWebUrlError();
+    if (!WebUrl.Regex.test(value)) throw new MalformedWebUrlError();
   }
 
   static create(value: string): WebUrl {

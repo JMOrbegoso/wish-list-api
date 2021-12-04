@@ -1,3 +1,5 @@
+import { UniqueId } from '../../../core/domain/value-objects';
+
 export abstract class UniqueIdGeneratorService {
-  abstract generateId(): string;
+  abstract generateId(): UniqueId;
 }

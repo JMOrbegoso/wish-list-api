@@ -1,36 +1,36 @@
 import {
-  InvalidUserNameError,
-  UserNameIsTooShortError,
-  UserNameIsTooLongError,
-  MalformedUserNameError,
+  InvalidUsernameError,
+  MalformedUsernameError,
+  UsernameIsTooLongError,
+  UsernameIsTooShortError,
 } from '..';
 import { ValueObject } from '../../../../core/domain/value-objects';
 import { normalizeString } from '../../../../core/helpers';
 
-export class UserName extends ValueObject<string> {
+export class Username extends ValueObject<string> {
   public static readonly MinLength = 6;
   public static readonly MaxLength = 20;
   public static readonly Regex = /^[a-zA-Z0-9\_\-]*$/;
 
   protected validate(value: string): void {
-    if (!value) throw new InvalidUserNameError();
+    if (!value) throw new InvalidUsernameError();
 
-    if (value.length < UserName.MinLength) throw new UserNameIsTooShortError();
+    if (value.length < Username.MinLength) throw new UsernameIsTooShortError();
 
-    if (value.length > UserName.MaxLength) throw new UserNameIsTooLongError();
+    if (value.length > Username.MaxLength) throw new UsernameIsTooLongError();
 
-    if (!UserName.Regex.test(value)) throw new MalformedUserNameError();
+    if (!Username.Regex.test(value)) throw new MalformedUsernameError();
   }
 
-  static create(value: string): UserName {
-    return new UserName(value);
+  static create(value: string): Username {
+    return new Username(value);
   }
 
-  public get getUserName(): string {
+  public get getUsername(): string {
     return this.value;
   }
 
-  public get getNormalizedUserName(): string {
+  public get getNormalizedUsername(): string {
     return normalizeString(this.value);
   }
 }

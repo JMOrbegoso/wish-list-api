@@ -1,5 +1,5 @@
+import { BiographyIsTooLongError, InvalidBiographyError } from '..';
 import { ValueObject } from '../../../../core/domain/value-objects';
-import { InvalidBiographyError, BiographyIsTooLongError } from '..';
 
 export class Biography extends ValueObject<string> {
   public static readonly MaxLength = 500;

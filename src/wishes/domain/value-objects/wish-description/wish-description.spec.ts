@@ -1,108 +1,107 @@
 import {
-  WishDescription,
   InvalidWishDescriptionError,
+  WishDescription,
   WishDescriptionIsTooLongError,
 } from '..';
+
+const validValues = [
+  'a'.repeat(WishDescription.MaxLength),
+  '1'.repeat(WishDescription.MaxLength),
+  '_'.repeat(WishDescription.MaxLength),
+  'A nice wish.',
+  'Nice wish.',
+];
 
 describe('wishes', () => {
   describe('domain', () => {
     describe('value-objects', () => {
       describe('wish-description', () => {
-        it('should throw an error when trying to create a WishDescription from undefined', () => {
-          // Arrange
+        test.each([undefined, null, ''])(
+          'should throw an error when trying to create a WishDescription from %p',
+          (invalid) => {
+            // Arrange
 
-          // Act
+            // Act
 
-          // Assert
-          expect(() => WishDescription.create(undefined)).toThrowError(
-            InvalidWishDescriptionError,
-          );
-        });
+            // Assert
+            expect(() => WishDescription.create(invalid)).toThrowError(
+              InvalidWishDescriptionError,
+            );
+          },
+        );
 
-        it('should throw an error when trying to create a WishDescription from null', () => {
-          // Arrange
+        test.each([
+          'a'.repeat(WishDescription.MaxLength + 1),
+          '1'.repeat(WishDescription.MaxLength + 1),
+          '_'.repeat(WishDescription.MaxLength + 1),
+          'a'.repeat(WishDescription.MaxLength + 5),
+          '1'.repeat(WishDescription.MaxLength + 5),
+          '_'.repeat(WishDescription.MaxLength + 5),
+          'a'.repeat(WishDescription.MaxLength + 10),
+          '1'.repeat(WishDescription.MaxLength + 10),
+          '_'.repeat(WishDescription.MaxLength + 10),
+        ])(
+          'should throw an error when trying to create a WishDescription from %p (More characters than the limit)',
+          (larger) => {
+            // Arrange
 
-          // Act
+            // Act
 
-          // Assert
-          expect(() => WishDescription.create(null)).toThrowError(
-            InvalidWishDescriptionError,
-          );
-        });
+            // Assert
+            expect(() => WishDescription.create(larger)).toThrowError(
+              WishDescriptionIsTooLongError,
+            );
+          },
+        );
 
-        it('should throw an error when trying to create a WishDescription from an empty string', () => {
-          // Arrange
+        test.each(validValues)(
+          'should create a WishDescription from %p',
+          (valid) => {
+            // Arrange
 
-          // Act
+            // Act
+            const wishDescription = WishDescription.create(valid);
 
-          // Assert
-          expect(() => WishDescription.create('')).toThrowError(
-            InvalidWishDescriptionError,
-          );
-        });
+            // Assert
+            expect(wishDescription.getDescription).toBe(valid);
+          },
+        );
 
-        it('should throw an error when trying to create a WishDescription from an string with more characters than the limit', () => {
-          // Arrange
+        test.each([
+          [validValues[0], validValues[1]],
+          [validValues[1], validValues[0]],
+          [validValues[0], validValues[2]],
+          [validValues[2], validValues[0]],
+          [validValues[0], validValues[3]],
+        ])(
+          'comparing two WishDescription created from two different values (%p and %p) should return false',
+          (text1, text2) => {
+            // Arrange
 
-          // Act
-          const invalidDescription = 'a'.repeat(WishDescription.MaxLength + 1);
+            // Act
+            const wishDescription_1 = WishDescription.create(text1);
+            const wishDescription_2 = WishDescription.create(text2);
+            const result = wishDescription_1.equals(wishDescription_2);
 
-          // Assert
-          expect(() => WishDescription.create(invalidDescription)).toThrowError(
-            WishDescriptionIsTooLongError,
-          );
-        });
+            // Assert
+            expect(result).toBe(false);
+          },
+        );
 
-        it('should create a WishDescription instance from the largest valid string and should store the value', () => {
-          // Arrange
+        test.each(validValues)(
+          'comparing two WishDescription created from the same value (%p) should return true',
+          (text) => {
+            // Arrange
 
-          // Act
-          const largestValidDescription = 'a'.repeat(WishDescription.MaxLength);
-          const wishDescription = WishDescription.create(
-            largestValidDescription,
-          );
+            // Act
+            const wishDescription1 = WishDescription.create(text);
+            const wishDescription2 = WishDescription.create(text);
+            const result = wishDescription1.equals(wishDescription2);
 
-          // Assert
-          expect(wishDescription.getDescription).toBe(largestValidDescription);
-        });
-
-        it('should create a WishDescription instance and should store the value', () => {
-          // Arrange
-
-          // Act
-          const description = 'Nice wish.';
-          const wishDescription = WishDescription.create(description);
-
-          // Assert
-          expect(wishDescription.getDescription).toBe(description);
-        });
-
-        it('create two WishDescription instances with different value and compare them using "equals" should return false', () => {
-          // Arrange
-
-          // Act
-          const description_1 = 'Nice wish.';
-          const description_2 = 'No so nice wish.';
-          const wishDescription_1 = WishDescription.create(description_1);
-          const wishDescription_2 = WishDescription.create(description_2);
-          const result = wishDescription_1.equals(wishDescription_2);
-
-          // Assert
-          expect(result).toBe(false);
-        });
-
-        it('create two WishDescription instances with the same value and compare them using "equals" should return true', () => {
-          // Arrange
-
-          // Act
-          const description = 'Nice wish.';
-          const wishDescription_1 = WishDescription.create(description);
-          const wishDescription_2 = WishDescription.create(description);
-          const result = wishDescription_1.equals(wishDescription_2);
-
-          // Assert
-          expect(result).toBe(true);
-        });
+            // Assert
+            expect(result).toBe(true);
+          },
+        );
       });
     });
   });
