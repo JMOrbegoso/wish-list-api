@@ -5,7 +5,6 @@ import { UnitOfWork } from '../../../../core/domain/repositories';
 import {
   MillisecondsDate,
   UniqueId,
-  WebUrl,
 } from '../../../../core/domain/value-objects';
 import { User, VerificationCode } from '../../../domain/entities';
 import { UserRepository } from '../../../domain/repositories';
@@ -61,9 +60,6 @@ export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
     const birthday = MillisecondsDate.createFromMilliseconds(command.birthday);
     const createdAt = MillisecondsDate.create();
     const biography = Biography.create(command.biography);
-    const profilePicture = command.profilePicture
-      ? WebUrl.create(command.profilePicture)
-      : null;
     const roles = [Role.basic()];
 
     // Generate the verfication code
@@ -86,7 +82,7 @@ export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
       createdAt,
       biography,
       roles,
-      profilePicture,
+      null,
       null,
     );
 

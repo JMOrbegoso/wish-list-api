@@ -193,13 +193,17 @@ export class User extends AggregateRoot {
     lastName: LastName,
     birthday: MillisecondsDate,
     biography: Biography,
-    profilePicture?: WebUrl,
   ): void {
     this._firstName = firstName;
     this._lastName = lastName;
     this._birthday = birthday;
     this._biography = biography;
-    this._profilePicture = profilePicture ?? null;
+
+    this._updatedAt = MillisecondsDate.create();
+  }
+
+  public updateProfilePicture(profilePicture: WebUrl = null): void {
+    this._profilePicture = profilePicture;
 
     this._updatedAt = MillisecondsDate.create();
   }

@@ -1,6 +1,7 @@
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
+import { MulterModule } from '@nestjs/platform-express';
 import { UnitOfWork } from '../../../core/domain/repositories';
 import { UnitOfWorkMongoDb } from '../../../core/infrastructure/repositories';
 import {
@@ -11,6 +12,7 @@ import {
   UndeleteUserHandler,
   UpdateUserPasswordHandler,
   UpdateUserProfileHandler,
+  UpdateUserProfilePictureHandler,
 } from '../../application/commands';
 import {
   GetUserByEmailHandler,
@@ -42,6 +44,7 @@ const queryHandlers = [
 const commandHandlers = [
   CreateUserHandler,
   UpdateUserProfileHandler,
+  UpdateUserProfilePictureHandler,
   UpdateUserPasswordHandler,
   DeleteUserHandler,
   UndeleteUserHandler,
@@ -51,7 +54,11 @@ const commandHandlers = [
 
 @Module({
   controllers: [UsersController],
-  imports: [MikroOrmModule.forFeature([UserEntity]), CqrsModule],
+  imports: [
+    MikroOrmModule.forFeature([UserEntity]),
+    MulterModule.register(),
+    CqrsModule,
+  ],
   providers: [
     { provide: UserRepository, useClass: UserRepositoryMongoDb },
     { provide: UnitOfWork, useClass: UnitOfWorkMongoDb },

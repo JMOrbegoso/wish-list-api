@@ -10,6 +10,5 @@ export function updateUserProfileDtoToUpdateUserProfileCommand(
     dto.lastName,
     dto.birthday,
     dto.biography,
-    dto.profilePicture,
   );
 }

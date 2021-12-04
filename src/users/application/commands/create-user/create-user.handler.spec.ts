@@ -153,9 +153,6 @@ describe('users', () => {
           ).toBe(command.biography);
           expect(userRepository.add.mock.calls[0][0].roles.length).toBe(1);
           expect(userRepository.add.mock.calls[0][0].roles[0]).toBe('Basic');
-          expect(
-            userRepository.add.mock.calls[0][0].profilePicture.getUrl,
-          ).toBe(command.profilePicture);
           expect(userRepository.add.mock.calls[0][0].deletedAt).toBeNull();
         });
       });
