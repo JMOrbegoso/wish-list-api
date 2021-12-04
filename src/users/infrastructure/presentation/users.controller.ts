@@ -1,4 +1,6 @@
+import { extname } from 'path';
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -6,21 +8,29 @@ import {
   Param,
   Patch,
   Post,
+  Req,
+  UploadedFile,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { AuthGuard } from '@nestjs/passport';
+import { FileInterceptor } from '@nestjs/platform-express';
 import {
   ApiBadRequestResponse,
   ApiBearerAuth,
   ApiBody,
+  ApiConsumes,
   ApiCreatedResponse,
   ApiForbiddenResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
+  ApiPayloadTooLargeResponse,
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
+import { diskStorage } from 'multer';
+import { v4 as uuid } from 'uuid';
 import {
   BlockUserCommand,
   CreateUserCommand,
@@ -136,6 +146,71 @@ export class UsersController {
   ): Promise<void> {
     const command: UpdateUserProfileCommand =
       updateUserProfileDtoToUpdateUserProfileCommand(dto);
+    await this.commandBus.execute(command);
+  }
+
+  @ApiBearerAuth()
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        file: {
+          type: 'string',
+          format: 'binary',
+          description: 'User profile picture, in jpg format and 1 Mb max size.',
+        },
+      },
+    },
+  })
+  @ApiOkResponse({ description: 'User updated successfully.' })
+  @ApiUnauthorizedResponse({ description: 'User is not authenticated.' })
+  @ApiForbiddenResponse({
+    description: 'This resource is prohibited for the authenticated user.',
+  })
+  @ApiNotFoundResponse({ description: 'User not found.' })
+  @ApiPayloadTooLargeResponse({ description: 'File too large.' })
+  @ApiBadRequestResponse({ description: 'Something went wrong.' })
+  @UseGuards(
+    AuthGuard('jwt'),
+    new RoleOwnershipGuard(
+      [
+        { role: Role.admin(), ownership: Ownership.Own },
+        { role: Role.moderator(), ownership: Ownership.Own },
+        { role: Role.basic(), ownership: Ownership.Own },
+      ],
+      'params',
+    ),
+  )
+  @Patch('profile-picture/:id')
+  @UseInterceptors(
+    FileInterceptor('file', {
+      limits: { fileSize: 1050000 },
+      fileFilter: (req, file, callback) => {
+        // Check if the file have the extension jpg or jpeg
+        if (!file.originalname.match(/\.(jpg|jpeg|png)$/))
+          return callback(
+            new BadRequestException('Only jpg image files are allowed.'),
+            false,
+          );
+
+        callback(null, true);
+      },
+      storage: diskStorage({
+        destination: './public/users/profile-pictures',
+        filename: (req, file, callback) => {
+          callback(null, `${uuid()}${extname(file.originalname)}`);
+        },
+      }),
+    }),
+  )
+  async updateProfilePicture(
+    @Param() params: UserIdDto,
+    @Req() req,
+    @UploadedFile() file: Express.Multer.File,
+  ): Promise<void> {
+    const imgUrl = `${req.protocol}://${req.headers.host}/users/profile-pictures/${file.filename}`;
+    const command = new UpdateUserProfilePictureCommand(params.id, imgUrl);
     await this.commandBus.execute(command);
   }
 
