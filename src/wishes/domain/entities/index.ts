@@ -8,6 +8,8 @@ export * from './wish/too-many-wish-categories.error';
 export * from './wish/too-many-wish-urls.error';
 export * from './wish/too-many-wish-images.error';
 export * from './wish/too-many-wish-stages.error';
+export * from './wish/deleted-wish-cannot-be-completed.error';
+export * from './wish/wish-is-already-completed.error';
 
 export * from './wish-stage/wish-stage';
 export * from './wish-stage/invalid-wish-stage-urls.error';
