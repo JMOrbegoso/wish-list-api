@@ -1,5 +1,6 @@
 import {
   DeletedWishCannotBeUpdatedError,
+  DuplicatedWishStageError,
   InvalidWishCategoriesError,
   InvalidWishImagesError,
   InvalidWishStagesError,
@@ -265,6 +266,22 @@ export class Wish extends AggregateRoot {
     this._urls = urls;
     this._imageUrls = imageUrls;
     this._categories = categories;
+
+    this._updatedAt = MillisecondsDate.create();
+  }
+
+  public addStage(newStage: WishStage): void {
+    if (this.isDeleted) throw new DeletedWishCannotBeUpdatedError();
+
+    if (!newStage) throw new InvalidWishStagesError();
+
+    if (this._stages.length === Wish.MaxStages)
+      throw new TooManyWishStagesError();
+
+    if (this._stages.some((stage) => stage.equals(newStage)))
+      throw new DuplicatedWishStageError();
+
+    this._stages.push(newStage);
 
     this._updatedAt = MillisecondsDate.create();
   }

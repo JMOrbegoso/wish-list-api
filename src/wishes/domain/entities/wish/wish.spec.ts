@@ -2,6 +2,7 @@ import { MockedObject } from 'ts-jest/dist/utils/testing';
 import { mocked } from 'ts-jest/utils';
 import {
   DeletedWishCannotBeUpdatedError,
+  DuplicatedWishStageError,
   InvalidWishCategoriesError,
   InvalidWishImagesError,
   InvalidWishStagesError,
@@ -26,7 +27,6 @@ import {
 } from '../../../../core/domain/value-objects';
 import {
   CategoryName,
-  InvalidCategoryNameError,
   InvalidWishDescriptionError,
   InvalidWishPrivacyLevelError,
   InvalidWishTitleError,
@@ -1994,6 +1994,244 @@ describe('wishes', () => {
               expect(wish.imageUrls[i].getUrl).toBe(newImages[i].getUrl);
             for (let i = 0; i < newCategories.length; i++)
               expect(wish.categories[i].getName).toBe(newCategories[i].getName);
+            expect(wish.updatedAt.getMilliseconds).not.toBe(
+              updatedAt.getMilliseconds,
+            );
+          },
+        );
+
+        test.each(validValues)(
+          'add a stage to a deleted Wish should throw error',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            title: MockedObject<WishTitle>,
+            description: MockedObject<WishDescription>,
+            privacyLevel: MockedObject<WishPrivacyLevel>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            wisher: MockedObject<Wisher>,
+            urls: MockedObject<WebUrl>[],
+            images: MockedObject<WebUrl>[],
+            categories: MockedObject<CategoryName>[],
+            stages: MockedObject<WishStage>[],
+            deletedAt: MockedObject<MillisecondsDate>,
+            completedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+            deletedAt = mocked<MillisecondsDate>({
+              getMilliseconds: 1,
+            } as unknown as MillisecondsDate);
+            const wish = Wish.create(
+              uniqueId,
+              title,
+              description,
+              privacyLevel,
+              createdAt,
+              updatedAt,
+              wisher,
+              urls,
+              images,
+              categories,
+              stages,
+              deletedAt,
+              completedAt,
+            );
+
+            // Act
+
+            // Assert
+            expect(() => wish.addStage(null)).toThrowError(
+              DeletedWishCannotBeUpdatedError,
+            );
+          },
+        );
+
+        test.each(validValues)(
+          'add an invalid stage to a Wish should throw error',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            title: MockedObject<WishTitle>,
+            description: MockedObject<WishDescription>,
+            privacyLevel: MockedObject<WishPrivacyLevel>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            wisher: MockedObject<Wisher>,
+            urls: MockedObject<WebUrl>[],
+            images: MockedObject<WebUrl>[],
+            categories: MockedObject<CategoryName>[],
+            stages: MockedObject<WishStage>[],
+            deletedAt: MockedObject<MillisecondsDate>,
+            completedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+            const wish = Wish.create(
+              uniqueId,
+              title,
+              description,
+              privacyLevel,
+              createdAt,
+              updatedAt,
+              wisher,
+              urls,
+              images,
+              categories,
+              stages,
+              null,
+              completedAt,
+            );
+
+            // Act
+
+            // Assert
+            expect(() => wish.addStage(null)).toThrowError(
+              InvalidWishStagesError,
+            );
+          },
+        );
+
+        test.each(validValues)(
+          'add an stage to a Wish with the limit of stages should throw error',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            title: MockedObject<WishTitle>,
+            description: MockedObject<WishDescription>,
+            privacyLevel: MockedObject<WishPrivacyLevel>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            wisher: MockedObject<Wisher>,
+            urls: MockedObject<WebUrl>[],
+            images: MockedObject<WebUrl>[],
+            categories: MockedObject<CategoryName>[],
+            stages: MockedObject<WishStage>[],
+            deletedAt: MockedObject<MillisecondsDate>,
+            completedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+            stages = Array(Wish.MaxStages).fill(
+              mocked<WishStage>({} as unknown as WishStage),
+            );
+            const wish = Wish.create(
+              uniqueId,
+              title,
+              description,
+              privacyLevel,
+              createdAt,
+              updatedAt,
+              wisher,
+              urls,
+              images,
+              categories,
+              stages,
+              null,
+              completedAt,
+            );
+
+            // Act
+            const newStage = mocked<WishStage>({} as unknown as WishStage);
+
+            // Assert
+            expect(() => wish.addStage(newStage)).toThrowError(
+              TooManyWishStagesError,
+            );
+          },
+        );
+
+        test.each(validValues)(
+          'add an stage to a Wish with already that stage should throw error',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            title: MockedObject<WishTitle>,
+            description: MockedObject<WishDescription>,
+            privacyLevel: MockedObject<WishPrivacyLevel>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            wisher: MockedObject<Wisher>,
+            urls: MockedObject<WebUrl>[],
+            images: MockedObject<WebUrl>[],
+            categories: MockedObject<CategoryName>[],
+            stages: MockedObject<WishStage>[],
+            deletedAt: MockedObject<MillisecondsDate>,
+            completedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+            stages = [
+              mocked<WishStage>({
+                equals: jest.fn().mockReturnValue(true),
+              } as unknown as WishStage),
+            ];
+            const wish = Wish.create(
+              uniqueId,
+              title,
+              description,
+              privacyLevel,
+              createdAt,
+              updatedAt,
+              wisher,
+              urls,
+              images,
+              categories,
+              stages,
+              null,
+              completedAt,
+            );
+
+            // Act
+            const newStage = mocked<WishStage>({} as unknown as WishStage);
+
+            // Assert
+            expect(() => wish.addStage(newStage)).toThrowError(
+              DuplicatedWishStageError,
+            );
+          },
+        );
+
+        test.each(validValues)(
+          'add an stage to a Wish should change the property values',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            title: MockedObject<WishTitle>,
+            description: MockedObject<WishDescription>,
+            privacyLevel: MockedObject<WishPrivacyLevel>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            wisher: MockedObject<Wisher>,
+            urls: MockedObject<WebUrl>[],
+            images: MockedObject<WebUrl>[],
+            categories: MockedObject<CategoryName>[],
+            stages: MockedObject<WishStage>[],
+            deletedAt: MockedObject<MillisecondsDate>,
+            completedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+            const initialStagesLength = Wish.MaxStages - 1;
+            const finalStagesLength = initialStagesLength + 1;
+            stages = Array(initialStagesLength).fill(
+              mocked<WishStage>({
+                equals: jest.fn().mockReturnValue(false),
+              } as unknown as WishStage),
+            );
+            const wish = Wish.create(
+              uniqueId,
+              title,
+              description,
+              privacyLevel,
+              createdAt,
+              updatedAt,
+              wisher,
+              urls,
+              images,
+              categories,
+              stages,
+              null,
+              completedAt,
+            );
+
+            // Act
+            const newStage = mocked<WishStage>({} as unknown as WishStage);
+            wish.addStage(newStage);
+
+            // Assert
+            expect(wish.stages.length).toBe(finalStagesLength);
             expect(wish.updatedAt.getMilliseconds).not.toBe(
               updatedAt.getMilliseconds,
             );
