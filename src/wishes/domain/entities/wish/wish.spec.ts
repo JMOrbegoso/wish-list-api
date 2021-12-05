@@ -1137,6 +1137,52 @@ describe('wishes', () => {
         );
 
         test.each(validValues)(
+          'complete a Wish using null should change the property values',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            title: MockedObject<WishTitle>,
+            description: MockedObject<WishDescription>,
+            privacyLevel: MockedObject<WishPrivacyLevel>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            wisher: MockedObject<Wisher>,
+            urls: MockedObject<WebUrl>[],
+            images: MockedObject<WebUrl>[],
+            categories: MockedObject<CategoryName>[],
+            stages: MockedObject<WishStage>[],
+            deletedAt: MockedObject<MillisecondsDate>,
+            completedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+            const wish = Wish.create(
+              uniqueId,
+              title,
+              description,
+              privacyLevel,
+              createdAt,
+              updatedAt,
+              wisher,
+              urls,
+              images,
+              categories,
+              stages,
+              null,
+              null,
+            );
+
+            // Act
+            wish.complete();
+
+            // Assert
+            expect(wish.completedAt.getMilliseconds).not.toBeNull();
+            expect(wish.isCompleted).toBeTruthy();
+            expect(wish.updatedAt.getMilliseconds).not.toBe(
+              updatedAt.getMilliseconds,
+            );
+          },
+        );
+
+        test.each(validValues)(
           'complete Wish should change the property values',
           (
             uniqueId: MockedObject<UniqueId>,
@@ -1251,9 +1297,6 @@ describe('wishes', () => {
             completedAt: MockedObject<MillisecondsDate>,
           ) => {
             // Arrange
-            completedAt = mocked<MillisecondsDate>({
-              getMilliseconds: 1,
-            } as unknown as MillisecondsDate);
             const wish = Wish.create(
               uniqueId,
               title,
