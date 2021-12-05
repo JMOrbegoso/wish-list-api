@@ -1,6 +1,5 @@
 import {
-  DeletedWishCannotBeCompletedError,
-  DeletedWishCannotBeUncompletedError,
+  DeletedWishCannotBeUpdatedError,
   InvalidWishCategoriesError,
   InvalidWishImagesError,
   InvalidWishStagesError,
@@ -208,7 +207,7 @@ export class Wish extends AggregateRoot {
   }
 
   public complete(completedAt: MillisecondsDate): void {
-    if (this.isDeleted) throw new DeletedWishCannotBeCompletedError();
+    if (this.isDeleted) throw new DeletedWishCannotBeUpdatedError();
 
     if (this.isCompleted) throw new WishIsAlreadyCompletedError();
 
@@ -219,7 +218,7 @@ export class Wish extends AggregateRoot {
   }
 
   public uncomplete(): void {
-    if (this.isDeleted) throw new DeletedWishCannotBeUncompletedError();
+    if (this.isDeleted) throw new DeletedWishCannotBeUpdatedError();
 
     if (!this.isCompleted) throw new WishIsAlreadyUncompletedError();
 

@@ -1,8 +1,7 @@
 import { MockedObject } from 'ts-jest/dist/utils/testing';
 import { mocked } from 'ts-jest/utils';
 import {
-  DeletedWishCannotBeCompletedError,
-  DeletedWishCannotBeUncompletedError,
+  DeletedWishCannotBeUpdatedError,
   InvalidWishCategoriesError,
   InvalidWishImagesError,
   InvalidWishStagesError,
@@ -1083,7 +1082,7 @@ describe('wishes', () => {
 
             // Assert
             expect(() => wish.complete(completionDate)).toThrowError(
-              DeletedWishCannotBeCompletedError,
+              DeletedWishCannotBeUpdatedError,
             );
           },
         );
@@ -1229,7 +1228,7 @@ describe('wishes', () => {
 
             // Assert
             expect(() => wish.uncomplete()).toThrowError(
-              DeletedWishCannotBeUncompletedError,
+              DeletedWishCannotBeUpdatedError,
             );
           },
         );
