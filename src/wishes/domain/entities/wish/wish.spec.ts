@@ -1370,6 +1370,148 @@ describe('wishes', () => {
             );
           },
         );
+
+        test.each(validValues)(
+          'update privacyLevel of a deleted Wish should throw error',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            title: MockedObject<WishTitle>,
+            description: MockedObject<WishDescription>,
+            privacyLevel: MockedObject<WishPrivacyLevel>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            wisher: MockedObject<Wisher>,
+            urls: MockedObject<WebUrl>[],
+            images: MockedObject<WebUrl>[],
+            categories: MockedObject<CategoryName>[],
+            stages: MockedObject<WishStage>[],
+            deletedAt: MockedObject<MillisecondsDate>,
+            completedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+            deletedAt = mocked<MillisecondsDate>({
+              getMilliseconds: 1,
+            } as unknown as MillisecondsDate);
+            const wish = Wish.create(
+              uniqueId,
+              title,
+              description,
+              privacyLevel,
+              createdAt,
+              updatedAt,
+              wisher,
+              urls,
+              images,
+              categories,
+              stages,
+              deletedAt,
+              completedAt,
+            );
+
+            // Act
+            const newWishPrivacyLevel = mocked<WishPrivacyLevel>({
+              getPrivacyLevel: 1,
+            } as unknown as WishPrivacyLevel);
+
+            // Assert
+            expect(() =>
+              wish.changePrivacyLevel(newWishPrivacyLevel),
+            ).toThrowError(DeletedWishCannotBeUpdatedError);
+          },
+        );
+
+        test.each(validValues)(
+          'update privacyLevel of a Wish with a null value should throw error',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            title: MockedObject<WishTitle>,
+            description: MockedObject<WishDescription>,
+            privacyLevel: MockedObject<WishPrivacyLevel>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            wisher: MockedObject<Wisher>,
+            urls: MockedObject<WebUrl>[],
+            images: MockedObject<WebUrl>[],
+            categories: MockedObject<CategoryName>[],
+            stages: MockedObject<WishStage>[],
+            deletedAt: MockedObject<MillisecondsDate>,
+            completedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+            deletedAt = mocked<MillisecondsDate>({
+              getMilliseconds: 1,
+            } as unknown as MillisecondsDate);
+            const wish = Wish.create(
+              uniqueId,
+              title,
+              description,
+              privacyLevel,
+              createdAt,
+              updatedAt,
+              wisher,
+              urls,
+              images,
+              categories,
+              stages,
+              null,
+              completedAt,
+            );
+
+            // Act
+
+            // Assert
+            expect(() => wish.changePrivacyLevel(null)).toThrowError(
+              InvalidWishPrivacyLevelError,
+            );
+          },
+        );
+
+        test.each(validValues)(
+          'change privacyLevel of a Wish should change the property values',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            title: MockedObject<WishTitle>,
+            description: MockedObject<WishDescription>,
+            privacyLevel: MockedObject<WishPrivacyLevel>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            wisher: MockedObject<Wisher>,
+            urls: MockedObject<WebUrl>[],
+            images: MockedObject<WebUrl>[],
+            categories: MockedObject<CategoryName>[],
+            stages: MockedObject<WishStage>[],
+            deletedAt: MockedObject<MillisecondsDate>,
+            completedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+            const wish = Wish.create(
+              uniqueId,
+              title,
+              description,
+              privacyLevel,
+              createdAt,
+              updatedAt,
+              wisher,
+              urls,
+              images,
+              categories,
+              stages,
+              null,
+              completedAt,
+            );
+
+            // Act
+            const newWishPrivacyLevel = mocked<WishPrivacyLevel>({
+              getPrivacyLevel: 1,
+            } as unknown as WishPrivacyLevel);
+            wish.changePrivacyLevel(newWishPrivacyLevel);
+
+            // Assert
+            expect(wish.privacyLevel.getPrivacyLevel).toBe(
+              newWishPrivacyLevel.getPrivacyLevel,
+            );
+          },
+        );
       });
     });
   });

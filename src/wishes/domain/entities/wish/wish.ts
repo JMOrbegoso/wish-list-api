@@ -225,4 +225,12 @@ export class Wish extends AggregateRoot {
     this._completedAt = null;
     this._updatedAt = MillisecondsDate.create();
   }
+
+  public changePrivacyLevel(wishPrivacyLevel: WishPrivacyLevel): void {
+    if (this.isDeleted) throw new DeletedWishCannotBeUpdatedError();
+
+    if (!wishPrivacyLevel) throw new InvalidWishPrivacyLevelError();
+
+    this._privacyLevel = wishPrivacyLevel;
+  }
 }
