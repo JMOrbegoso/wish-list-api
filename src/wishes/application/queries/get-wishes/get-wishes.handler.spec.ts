@@ -14,9 +14,7 @@ describe('wishes', () => {
             getAll: jest.fn().mockReturnValue([]),
           } as unknown as WishRepository);
 
-          const query = mocked<GetWishesQuery>({
-            id: 1,
-          } as unknown as GetWishesQuery);
+          const query = mocked<GetWishesQuery>({} as unknown as GetWishesQuery);
 
           const handler = new GetWishesHandler(wishRepository);
 
@@ -69,9 +67,7 @@ describe('wishes', () => {
             getAll: jest.fn().mockReturnValue([wish]),
           } as unknown as WishRepository);
 
-          const query = mocked<GetWishesQuery>({
-            id: 1,
-          } as unknown as GetWishesQuery);
+          const query = mocked<GetWishesQuery>({} as unknown as GetWishesQuery);
 
           const handler = new GetWishesHandler(wishRepository);
 
