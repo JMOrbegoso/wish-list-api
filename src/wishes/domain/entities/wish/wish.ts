@@ -1,18 +1,39 @@
-import { WishStage, Wisher } from '..';
+import {
+  InvalidWishCategoriesError,
+  InvalidWishImagesError,
+  InvalidWishStagesError,
+  InvalidWishUrlsError,
+  InvalidWishWisherError,
+  TooManyWishCategoriesError,
+  TooManyWishImagesError,
+  TooManyWishStagesError,
+  TooManyWishUrlsError,
+  WishStage,
+  Wisher,
+} from '..';
 import { AggregateRoot } from '../../../../core/domain/entities';
 import {
+  InvalidMillisecondsDateError,
   MillisecondsDate,
   UniqueId,
   WebUrl,
 } from '../../../../core/domain/value-objects';
 import {
   CategoryName,
+  InvalidWishDescriptionError,
+  InvalidWishPrivacyLevelError,
+  InvalidWishTitleError,
   WishDescription,
   WishPrivacyLevel,
   WishTitle,
 } from '../../value-objects';
 
 export class Wish extends AggregateRoot {
+  public static readonly MaxUrls = 5;
+  public static readonly MaxImages = 5;
+  public static readonly MaxCategories = 5;
+  public static readonly MaxStages = 5;
+
   private _title: WishTitle;
   private _description: WishDescription;
   private _privacyLevel: WishPrivacyLevel;
@@ -42,6 +63,35 @@ export class Wish extends AggregateRoot {
     completedAt?: MillisecondsDate,
   ) {
     super(id);
+
+    if (!title) throw new InvalidWishTitleError();
+
+    if (!description) throw new InvalidWishDescriptionError();
+
+    if (!privacyLevel) throw new InvalidWishPrivacyLevelError();
+
+    if (!createdAt) throw new InvalidMillisecondsDateError();
+
+    if (!updatedAt) throw new InvalidMillisecondsDateError();
+
+    if (!wisher) throw new InvalidWishWisherError();
+
+    if (!urls) throw new InvalidWishUrlsError();
+
+    if (urls.length > Wish.MaxUrls) throw new TooManyWishUrlsError();
+
+    if (!imageUrls) throw new InvalidWishImagesError();
+
+    if (imageUrls.length > Wish.MaxImages) throw new TooManyWishImagesError();
+
+    if (!categories) throw new InvalidWishCategoriesError();
+
+    if (categories.length > Wish.MaxCategories)
+      throw new TooManyWishCategoriesError();
+
+    if (!stages) throw new InvalidWishStagesError();
+
+    if (stages.length > Wish.MaxStages) throw new TooManyWishStagesError();
 
     this._title = title;
     this._description = description;
