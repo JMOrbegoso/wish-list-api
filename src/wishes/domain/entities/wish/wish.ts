@@ -1,5 +1,6 @@
 import {
   DeletedWishCannotBeCompletedError,
+  DeletedWishCannotBeUncompletedError,
   InvalidWishCategoriesError,
   InvalidWishImagesError,
   InvalidWishStagesError,
@@ -10,6 +11,7 @@ import {
   TooManyWishStagesError,
   TooManyWishUrlsError,
   WishIsAlreadyCompletedError,
+  WishIsAlreadyUncompletedError,
   WishStage,
   Wisher,
 } from '..';
@@ -213,6 +215,15 @@ export class Wish extends AggregateRoot {
     if (!completedAt) throw new InvalidMillisecondsDateError();
 
     this._completedAt = completedAt;
+    this._updatedAt = MillisecondsDate.create();
+  }
+
+  public uncomplete(): void {
+    if (this.isDeleted) throw new DeletedWishCannotBeUncompletedError();
+
+    if (!this.isCompleted) throw new WishIsAlreadyUncompletedError();
+
+    this._completedAt = null;
     this._updatedAt = MillisecondsDate.create();
   }
 }

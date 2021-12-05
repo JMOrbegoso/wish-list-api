@@ -2,6 +2,7 @@ import { MockedObject } from 'ts-jest/dist/utils/testing';
 import { mocked } from 'ts-jest/utils';
 import {
   DeletedWishCannotBeCompletedError,
+  DeletedWishCannotBeUncompletedError,
   InvalidWishCategoriesError,
   InvalidWishImagesError,
   InvalidWishStagesError,
@@ -13,6 +14,7 @@ import {
   TooManyWishUrlsError,
   Wish,
   WishIsAlreadyCompletedError,
+  WishIsAlreadyUncompletedError,
   WishStage,
   Wisher,
 } from '..';
@@ -1180,6 +1182,147 @@ describe('wishes', () => {
               completionDate.getMilliseconds,
             );
             expect(wish.isCompleted).toBeTruthy();
+            expect(wish.updatedAt.getMilliseconds).not.toBe(
+              updatedAt.getMilliseconds,
+            );
+          },
+        );
+
+        test.each(validValues)(
+          'uncomplete Wish should change the property values',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            title: MockedObject<WishTitle>,
+            description: MockedObject<WishDescription>,
+            privacyLevel: MockedObject<WishPrivacyLevel>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            wisher: MockedObject<Wisher>,
+            urls: MockedObject<WebUrl>[],
+            images: MockedObject<WebUrl>[],
+            categories: MockedObject<CategoryName>[],
+            stages: MockedObject<WishStage>[],
+            deletedAt: MockedObject<MillisecondsDate>,
+            completedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+            deletedAt = mocked<MillisecondsDate>({
+              getMilliseconds: 1,
+            } as unknown as MillisecondsDate);
+            const wish = Wish.create(
+              uniqueId,
+              title,
+              description,
+              privacyLevel,
+              createdAt,
+              updatedAt,
+              wisher,
+              urls,
+              images,
+              categories,
+              stages,
+              deletedAt,
+              null,
+            );
+
+            // Act
+
+            // Assert
+            expect(() => wish.uncomplete()).toThrowError(
+              DeletedWishCannotBeUncompletedError,
+            );
+          },
+        );
+
+        test.each(validValues)(
+          'uncomplete Wish should change the property values',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            title: MockedObject<WishTitle>,
+            description: MockedObject<WishDescription>,
+            privacyLevel: MockedObject<WishPrivacyLevel>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            wisher: MockedObject<Wisher>,
+            urls: MockedObject<WebUrl>[],
+            images: MockedObject<WebUrl>[],
+            categories: MockedObject<CategoryName>[],
+            stages: MockedObject<WishStage>[],
+            deletedAt: MockedObject<MillisecondsDate>,
+            completedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+            completedAt = mocked<MillisecondsDate>({
+              getMilliseconds: 1,
+            } as unknown as MillisecondsDate);
+            const wish = Wish.create(
+              uniqueId,
+              title,
+              description,
+              privacyLevel,
+              createdAt,
+              updatedAt,
+              wisher,
+              urls,
+              images,
+              categories,
+              stages,
+              null,
+              null,
+            );
+
+            // Act
+
+            // Assert
+            expect(() => wish.uncomplete()).toThrowError(
+              WishIsAlreadyUncompletedError,
+            );
+          },
+        );
+
+        test.each(validValues)(
+          'uncomplete Wish should change the property values',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            title: MockedObject<WishTitle>,
+            description: MockedObject<WishDescription>,
+            privacyLevel: MockedObject<WishPrivacyLevel>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            wisher: MockedObject<Wisher>,
+            urls: MockedObject<WebUrl>[],
+            images: MockedObject<WebUrl>[],
+            categories: MockedObject<CategoryName>[],
+            stages: MockedObject<WishStage>[],
+            deletedAt: MockedObject<MillisecondsDate>,
+            completedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+            completedAt = mocked<MillisecondsDate>({
+              getMilliseconds: 1,
+            } as unknown as MillisecondsDate);
+            const wish = Wish.create(
+              uniqueId,
+              title,
+              description,
+              privacyLevel,
+              createdAt,
+              updatedAt,
+              wisher,
+              urls,
+              images,
+              categories,
+              stages,
+              null,
+              completedAt,
+            );
+
+            // Act
+            wish.uncomplete();
+
+            // Assert
+            expect(wish.completedAt).toBeNull();
+            expect(wish.isCompleted).toBeFalsy();
             expect(wish.updatedAt.getMilliseconds).not.toBe(
               updatedAt.getMilliseconds,
             );
