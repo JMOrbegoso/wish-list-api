@@ -1055,7 +1055,6 @@ describe('wishes', () => {
             categories: MockedObject<CategoryName>[],
             stages: MockedObject<WishStage>[],
             deletedAt: MockedObject<MillisecondsDate>,
-            completedAt: MockedObject<MillisecondsDate>,
           ) => {
             // Arrange
             deletedAt = mocked<MillisecondsDate>({
@@ -1152,8 +1151,6 @@ describe('wishes', () => {
             images: MockedObject<WebUrl>[],
             categories: MockedObject<CategoryName>[],
             stages: MockedObject<WishStage>[],
-            deletedAt: MockedObject<MillisecondsDate>,
-            completedAt: MockedObject<MillisecondsDate>,
           ) => {
             // Arrange
             const wish = Wish.create(
@@ -1198,8 +1195,6 @@ describe('wishes', () => {
             images: MockedObject<WebUrl>[],
             categories: MockedObject<CategoryName>[],
             stages: MockedObject<WishStage>[],
-            deletedAt: MockedObject<MillisecondsDate>,
-            completedAt: MockedObject<MillisecondsDate>,
           ) => {
             // Arrange
             const wish = Wish.create(
@@ -1250,7 +1245,6 @@ describe('wishes', () => {
             categories: MockedObject<CategoryName>[],
             stages: MockedObject<WishStage>[],
             deletedAt: MockedObject<MillisecondsDate>,
-            completedAt: MockedObject<MillisecondsDate>,
           ) => {
             // Arrange
             deletedAt = mocked<MillisecondsDate>({
@@ -1295,8 +1289,6 @@ describe('wishes', () => {
             images: MockedObject<WebUrl>[],
             categories: MockedObject<CategoryName>[],
             stages: MockedObject<WishStage>[],
-            deletedAt: MockedObject<MillisecondsDate>,
-            completedAt: MockedObject<MillisecondsDate>,
           ) => {
             // Arrange
             const wish = Wish.create(
