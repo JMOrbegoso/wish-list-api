@@ -6,6 +6,7 @@ import {
   InvalidWishStagesError,
   InvalidWishUrlsError,
   InvalidWishWisherError,
+  NonExistentWishStageError,
   TooManyWishCategoriesError,
   TooManyWishImagesError,
   TooManyWishStagesError,
@@ -282,6 +283,19 @@ export class Wish extends AggregateRoot {
       throw new DuplicatedWishStageError();
 
     this._stages.push(newStage);
+
+    this._updatedAt = MillisecondsDate.create();
+  }
+
+  public removeStage(stageToRemove: WishStage): void {
+    if (this.isDeleted) throw new DeletedWishCannotBeUpdatedError();
+
+    if (!stageToRemove) throw new InvalidWishStagesError();
+
+    if (!this._stages.some((stage) => stage.equals(stageToRemove)))
+      throw new NonExistentWishStageError();
+
+    this._stages = this._stages.filter((stage) => !stage.equals(stageToRemove));
 
     this._updatedAt = MillisecondsDate.create();
   }
