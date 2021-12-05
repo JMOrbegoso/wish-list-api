@@ -3,5 +3,7 @@ import { UniqueId } from '../../../core/domain/value-objects';
 import { Wish } from '../entities';
 
 export interface WishRepository extends Repository<Wish> {
+  getAllPublicWishes(): Promise<Wish[]>;
+
   getAllWishesByWisher(wisherId: UniqueId): Promise<Wish[]>;
 }
