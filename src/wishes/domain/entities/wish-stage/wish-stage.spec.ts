@@ -227,7 +227,6 @@ describe('wishes', () => {
             description: MockedObject<WishDescription>,
             createdAt: MockedObject<MillisecondsDate>,
             urls: MockedObject<WebUrl>[],
-            images: MockedObject<WebUrl>[],
           ) => {
             // Arrange
 
