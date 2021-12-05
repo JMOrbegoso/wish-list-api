@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { PrivacyLevel } from '../../../wishes/domain/value-objects';
 import { OutputWishStageDto } from '.';
 
 export class OutputWishDto {
@@ -29,7 +30,7 @@ export class OutputWishDto {
     enum: ['Public', 'JustFriends', 'OnlyMe'],
     description: 'Wish privacy level.',
   })
-  privacyLevel: string;
+  privacyLevel: PrivacyLevel;
 
   @ApiProperty({
     type: Number,
