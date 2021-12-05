@@ -196,6 +196,10 @@ export class Wish extends AggregateRoot {
   }
 
   public get isDeleted(): boolean {
-    return !this._deletedAt;
+    return !!this._deletedAt;
+  }
+
+  public delete(): void {
+    this._deletedAt = MillisecondsDate.create();
   }
 }

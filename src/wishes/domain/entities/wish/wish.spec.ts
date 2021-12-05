@@ -991,6 +991,49 @@ describe('wishes', () => {
             expect(uniqueId.equals.mock.calls).toHaveLength(1);
           },
         );
+
+        test.each(validValues)(
+          'delete Wish should change the property value',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            title: MockedObject<WishTitle>,
+            description: MockedObject<WishDescription>,
+            privacyLevel: MockedObject<WishPrivacyLevel>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            wisher: MockedObject<Wisher>,
+            urls: MockedObject<WebUrl>[],
+            images: MockedObject<WebUrl>[],
+            categories: MockedObject<CategoryName>[],
+            stages: MockedObject<WishStage>[],
+            deletedAt: MockedObject<MillisecondsDate>,
+            completedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+            const wish = Wish.create(
+              uniqueId,
+              title,
+              description,
+              privacyLevel,
+              createdAt,
+              updatedAt,
+              wisher,
+              urls,
+              images,
+              categories,
+              stages,
+              null,
+              completedAt,
+            );
+
+            // Act
+            wish.delete();
+
+            // Assert
+            expect(wish.deletedAt).not.toBeNull();
+            expect(wish.isDeleted).toBeTruthy();
+          },
+        );
       });
     });
   });
