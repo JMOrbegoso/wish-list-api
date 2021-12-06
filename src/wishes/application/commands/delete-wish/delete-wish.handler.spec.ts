@@ -1,4 +1,4 @@
-import { NotFoundException } from '@nestjs/common';
+import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { Wish } from 'src/wishes/domain/entities';
 import { mocked } from 'ts-jest/utils';
 import { DeleteWishCommand, DeleteWishHandler } from '..';
@@ -37,13 +37,37 @@ describe('wishes', () => {
         );
 
         test.each(commands)(
+          'delete an already deleted wish should throw error',
+          (command: DeleteWishCommand) => {
+            // Arrange
+            const wish = mocked<Wish>({
+              isDeleted: true,
+            } as unknown as Wish);
+
+            const wishRepository = mocked<WishRepository>({
+              getOne: jest.fn().mockReturnValue(wish),
+            } as unknown as WishRepository);
+
+            const unitOfWork = mocked<UnitOfWork>({} as unknown as UnitOfWork);
+
+            const handler = new DeleteWishHandler(wishRepository, unitOfWork);
+
+            // Act
+
+            // Assert
+            return expect(handler.execute(command)).rejects.toThrowError(
+              BadRequestException,
+            );
+          },
+        );
+
+        test.each(commands)(
           'should call the method update from the WishRepository, the method commitChanges from the UnitOfWork',
           async (command: DeleteWishCommand) => {
             // Arrange
             const wish = mocked<Wish>({
               id: { getId: 'id' },
               isDeleted: false,
-              isCompleted: false,
               delete: jest.fn(),
             } as unknown as Wish);
 
