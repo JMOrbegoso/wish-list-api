@@ -3,3 +3,6 @@ export * from './create-wish/create-wish.handler';
 
 export * from './complete-wish/complete-wish.command';
 export * from './complete-wish/complete-wish.handler';
+
+export * from './uncomplete-wish/uncomplete-wish.command';
+export * from './uncomplete-wish/uncomplete-wish.handler';
