@@ -15,3 +15,6 @@ export * from './undelete-wish/undelete-wish.handler';
 
 export * from './change-wish-privacy-level/change-wish-privacy-level.command';
 export * from './change-wish-privacy-level/change-wish-privacy-level.handler';
+
+export * from './update-wish/update-wish.command';
+export * from './update-wish/update-wish.handler';
