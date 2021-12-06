@@ -14,6 +14,7 @@ export * from './wish/wish-is-already-uncompleted.error';
 export * from './wish/duplicated-wish-stage.error';
 export * from './wish/non-existent-wish-stage.error';
 export * from './wish/wish-is-already-deleted.error';
+export * from './wish/wish-is-not-deleted.error';
 
 export * from './wish-stage/wish-stage';
 export * from './wish-stage/invalid-wish-stage-urls.error';

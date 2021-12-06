@@ -17,6 +17,7 @@ import {
   WishIsAlreadyCompletedError,
   WishIsAlreadyDeletedError,
   WishIsAlreadyUncompletedError,
+  WishIsNotDeletedError,
   WishStage,
   Wisher,
 } from '..';
@@ -1081,6 +1082,91 @@ describe('wishes', () => {
             // Assert
             expect(wish.deletedAt).not.toBeNull();
             expect(wish.isDeleted).toBeTruthy();
+          },
+        );
+
+        test.each(validValues)(
+          'undelete a not deleted Wish should throw error',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            title: MockedObject<WishTitle>,
+            description: MockedObject<WishDescription>,
+            privacyLevel: MockedObject<WishPrivacyLevel>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            wisher: MockedObject<Wisher>,
+            urls: MockedObject<WebUrl>[],
+            images: MockedObject<WebUrl>[],
+            categories: MockedObject<CategoryName>[],
+            stages: MockedObject<WishStage>[],
+          ) => {
+            // Arrange
+            const wish = Wish.create(
+              uniqueId,
+              title,
+              description,
+              privacyLevel,
+              createdAt,
+              updatedAt,
+              wisher,
+              urls,
+              images,
+              categories,
+              stages,
+              null,
+              null,
+            );
+
+            // Act
+
+            // Assert
+            expect(() => wish.undelete()).toThrowError(WishIsNotDeletedError);
+          },
+        );
+
+        test.each(validValues)(
+          'undelete a deleted Wish should change the property value',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            title: MockedObject<WishTitle>,
+            description: MockedObject<WishDescription>,
+            privacyLevel: MockedObject<WishPrivacyLevel>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            wisher: MockedObject<Wisher>,
+            urls: MockedObject<WebUrl>[],
+            images: MockedObject<WebUrl>[],
+            categories: MockedObject<CategoryName>[],
+            stages: MockedObject<WishStage>[],
+            deletedAt: MockedObject<MillisecondsDate>,
+            completedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+            deletedAt = mocked<MillisecondsDate>({
+              getMilliseconds: 1,
+            } as unknown as MillisecondsDate);
+            const wish = Wish.create(
+              uniqueId,
+              title,
+              description,
+              privacyLevel,
+              createdAt,
+              updatedAt,
+              wisher,
+              urls,
+              images,
+              categories,
+              stages,
+              deletedAt,
+              completedAt,
+            );
+
+            // Act
+            wish.undelete();
+
+            // Assert
+            expect(wish.deletedAt).toBeNull();
+            expect(wish.isDeleted).toBeFalsy();
           },
         );
 
