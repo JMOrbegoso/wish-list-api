@@ -408,6 +408,35 @@ describe('wishes', () => {
         );
 
         test.each(validValues)(
+          'update WishStage with invalid urls should throw error',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            title: MockedObject<WishTitle>,
+            description: MockedObject<WishDescription>,
+            createdAt: MockedObject<MillisecondsDate>,
+            urls: MockedObject<WebUrl>[],
+            images: MockedObject<WebUrl>[],
+          ) => {
+            // Arrange
+            const wishStage = WishStage.create(
+              uniqueId,
+              title,
+              description,
+              createdAt,
+              urls,
+              images,
+            );
+
+            // Act
+
+            // Assert
+            expect(() =>
+              wishStage.update(title, description, null, images),
+            ).toThrowError(InvalidWishStageUrlsError);
+          },
+        );
+
+        test.each(validValues)(
           'update WishStage with more urls than the limit should throw error',
           (
             uniqueId: MockedObject<UniqueId>,
@@ -438,6 +467,35 @@ describe('wishes', () => {
             expect(() =>
               wishStage.update(title, description, newUrls, images),
             ).toThrowError(TooManyWishStageUrlsError);
+          },
+        );
+
+        test.each(validValues)(
+          'update WishStage with invalid images should throw error',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            title: MockedObject<WishTitle>,
+            description: MockedObject<WishDescription>,
+            createdAt: MockedObject<MillisecondsDate>,
+            urls: MockedObject<WebUrl>[],
+            images: MockedObject<WebUrl>[],
+          ) => {
+            // Arrange
+            const wishStage = WishStage.create(
+              uniqueId,
+              title,
+              description,
+              createdAt,
+              urls,
+              images,
+            );
+
+            // Act
+
+            // Assert
+            expect(() =>
+              wishStage.update(title, description, urls, null),
+            ).toThrowError(InvalidWishStageImagesError);
           },
         );
 
