@@ -1138,7 +1138,7 @@ describe('wishes', () => {
         );
 
         test.each(validValues)(
-          'complete a Wish using null should change the property values',
+          'complete a Wish using null should throw error',
           (
             uniqueId: MockedObject<UniqueId>,
             title: MockedObject<WishTitle>,
@@ -1170,13 +1170,10 @@ describe('wishes', () => {
             );
 
             // Act
-            wish.complete();
 
             // Assert
-            expect(wish.completedAt.getMilliseconds).not.toBeNull();
-            expect(wish.isCompleted).toBeTruthy();
-            expect(wish.updatedAt.getMilliseconds).not.toBe(
-              updatedAt.getMilliseconds,
+            expect(() => wish.complete(null)).toThrowError(
+              InvalidMillisecondsDateError,
             );
           },
         );

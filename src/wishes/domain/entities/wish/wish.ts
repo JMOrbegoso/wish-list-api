@@ -208,12 +208,12 @@ export class Wish extends AggregateRoot {
     this._deletedAt = MillisecondsDate.create();
   }
 
-  public complete(completedAt: MillisecondsDate = null): void {
+  public complete(completedAt: MillisecondsDate): void {
     if (this.isDeleted) throw new DeletedWishCannotBeUpdatedError();
 
     if (this.isCompleted) throw new WishIsAlreadyCompletedError();
 
-    if (!completedAt) completedAt = MillisecondsDate.create();
+    if (!completedAt) throw new InvalidMillisecondsDateError();
 
     this._completedAt = completedAt;
     this._updatedAt = MillisecondsDate.create();
