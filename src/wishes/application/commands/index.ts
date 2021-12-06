@@ -18,3 +18,6 @@ export * from './change-wish-privacy-level/change-wish-privacy-level.handler';
 
 export * from './update-wish/update-wish.command';
 export * from './update-wish/update-wish.handler';
+
+export * from './create-wish-stage/create-wish-stage.command';
+export * from './create-wish-stage/create-wish-stage.handler';
