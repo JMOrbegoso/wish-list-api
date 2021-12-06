@@ -15,6 +15,7 @@ import {
   TooManyWishUrlsError,
   Wish,
   WishIsAlreadyCompletedError,
+  WishIsAlreadyDeletedError,
   WishIsAlreadyUncompletedError,
   WishStage,
   Wisher,
@@ -994,6 +995,49 @@ describe('wishes', () => {
 
             // Assert
             expect(uniqueId.equals.mock.calls).toHaveLength(1);
+          },
+        );
+
+        test.each(validValues)(
+          'delete a deleted Wish should throw error',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            title: MockedObject<WishTitle>,
+            description: MockedObject<WishDescription>,
+            privacyLevel: MockedObject<WishPrivacyLevel>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            wisher: MockedObject<Wisher>,
+            urls: MockedObject<WebUrl>[],
+            images: MockedObject<WebUrl>[],
+            categories: MockedObject<CategoryName>[],
+            stages: MockedObject<WishStage>[],
+            deletedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+            deletedAt = mocked<MillisecondsDate>({
+              getMilliseconds: 1,
+            } as unknown as MillisecondsDate);
+            const wish = Wish.create(
+              uniqueId,
+              title,
+              description,
+              privacyLevel,
+              createdAt,
+              updatedAt,
+              wisher,
+              urls,
+              images,
+              categories,
+              stages,
+              deletedAt,
+              null,
+            );
+
+            // Act
+
+            // Assert
+            expect(() => wish.delete()).toThrowError(WishIsAlreadyDeletedError);
           },
         );
 

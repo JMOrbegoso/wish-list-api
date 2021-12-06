@@ -12,6 +12,7 @@ import {
   TooManyWishStagesError,
   TooManyWishUrlsError,
   WishIsAlreadyCompletedError,
+  WishIsAlreadyDeletedError,
   WishIsAlreadyUncompletedError,
   WishStage,
   Wisher,
@@ -205,6 +206,8 @@ export class Wish extends AggregateRoot {
   }
 
   public delete(): void {
+    if (this.isDeleted) throw new WishIsAlreadyDeletedError();
+
     this._deletedAt = MillisecondsDate.create();
   }
 
