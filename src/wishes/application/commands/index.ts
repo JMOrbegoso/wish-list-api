@@ -9,3 +9,6 @@ export * from './uncomplete-wish/uncomplete-wish.handler';
 
 export * from './delete-wish/delete-wish.command';
 export * from './delete-wish/delete-wish.handler';
+
+export * from './undelete-wish/undelete-wish.command';
+export * from './undelete-wish/undelete-wish.handler';
