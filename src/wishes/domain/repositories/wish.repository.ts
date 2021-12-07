@@ -2,10 +2,20 @@ import { Repository } from '../../../core/domain/repositories';
 import { UniqueId } from '../../../core/domain/value-objects';
 import { Wish, WishStage } from '../entities';
 
-export interface WishRepository extends Repository<Wish> {
-  getWishStageById(wishStageId: UniqueId): Promise<WishStage>;
+export abstract class WishRepository implements Repository<Wish> {
+  abstract getWishStageById(wishStageId: UniqueId): Promise<WishStage>;
 
-  getAllPublicWishes(): Promise<Wish[]>;
+  abstract getAllPublicWishes(): Promise<Wish[]>;
 
-  getAllWishesByWisher(wisherId: UniqueId): Promise<Wish[]>;
+  abstract getAllWishesByWisher(wisherId: UniqueId): Promise<Wish[]>;
+
+  abstract getAll(): Promise<Wish[]>;
+
+  abstract getOne(id: UniqueId): Promise<Wish>;
+
+  abstract add(wish: Wish): void;
+
+  abstract update(wish: Wish): void;
+
+  abstract delete(id: UniqueId): void;
 }
