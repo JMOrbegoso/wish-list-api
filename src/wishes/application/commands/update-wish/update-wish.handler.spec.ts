@@ -1,8 +1,8 @@
 import { BadRequestException, NotFoundException } from '@nestjs/common';
-import { Wish } from 'src/wishes/domain/entities';
 import { mocked } from 'ts-jest/utils';
 import { UpdateWishCommand, UpdateWishHandler } from '..';
 import { UnitOfWork } from '../../../../core/domain/repositories';
+import { Wish } from '../../../domain/entities';
 import { WishRepository } from '../../../domain/repositories';
 
 const commands = [
