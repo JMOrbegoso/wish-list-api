@@ -24,3 +24,6 @@ export * from './create-wish-stage/create-wish-stage.handler';
 
 export * from './update-wish-stage/update-wish-stage.command';
 export * from './update-wish-stage/update-wish-stage.handler';
+
+export * from './delete-wish-stage/delete-wish-stage.command';
+export * from './delete-wish-stage/delete-wish-stage.handler';
