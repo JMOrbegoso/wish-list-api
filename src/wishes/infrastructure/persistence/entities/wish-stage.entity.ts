@@ -1,10 +1,13 @@
 import {
   Entity,
+  IdentifiedReference,
+  ManyToOne,
   PrimaryKey,
   Property,
   SerializedPrimaryKey,
 } from '@mikro-orm/core';
 import { ObjectId } from '@mikro-orm/mongodb';
+import { WishEntity } from '.';
 
 @Entity({ collection: 'wish-stages' })
 export class WishStageEntity {
@@ -13,6 +16,9 @@ export class WishStageEntity {
 
   @SerializedPrimaryKey()
   id!: string;
+
+  @ManyToOne(() => WishEntity, { wrappedReference: true, nullable: false })
+  wish: IdentifiedReference<WishEntity>;
 
   @Property()
   title: string;
