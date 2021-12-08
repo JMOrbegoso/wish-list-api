@@ -1,6 +1,7 @@
 import {
   Collection,
   Entity,
+  EntityRepositoryType,
   Enum,
   ManyToOne,
   OneToMany,
@@ -10,10 +11,13 @@ import {
 } from '@mikro-orm/core';
 import { ObjectId } from '@mikro-orm/mongodb';
 import { PrivacyLevel } from '../../../domain/value-objects';
+import { WishRepositoryMongoDb } from '../repositories';
 import { WishStageEntity, WisherEntity } from '.';
 
 @Entity({ collection: 'wishes' })
 export class WishEntity {
+  [EntityRepositoryType]?: WishRepositoryMongoDb;
+
   @PrimaryKey()
   _id: ObjectId;
 
