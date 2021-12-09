@@ -10,6 +10,7 @@ import { CreateWishHandler } from '../../application/commands';
 import {
   GetPublicWishesHandler,
   GetWishByIdHandler,
+  GetWishesByWisherIdHandler,
   GetWishesHandler,
 } from '../../application/queries';
 import { WishRepository } from '../../domain/repositories';
@@ -21,6 +22,7 @@ const queryHandlers = [
   GetWishesHandler,
   GetPublicWishesHandler,
   GetWishByIdHandler,
+  GetWishesByWisherIdHandler,
 ];
 const commandHandlers = [CreateWishHandler];
 

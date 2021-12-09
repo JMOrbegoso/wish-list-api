@@ -13,9 +13,10 @@ import { OutputWishDto } from '../../application/dtos';
 import {
   GetPublicWishesQuery,
   GetWishByIdQuery,
+  GetWishesByWisherIdQuery,
   GetWishesQuery,
 } from '../../application/queries';
-import { CreateWishDto, WishIdDto } from './dto';
+import { CreateWishDto, WishIdDto, WisherIdDto } from './dto';
 
 @ApiTags('WishesController')
 @Controller('wishes')
@@ -33,6 +34,15 @@ export class WishesController {
   @Get('/public')
   async getPublicWishes(): Promise<OutputWishDto[]> {
     const query = new GetPublicWishesQuery();
+    return await this.queryBus.execute(query);
+  }
+
+  @ApiOkResponse({ type: [OutputWishDto], description: 'Wishes found.' })
+  @Get('wisherId/:wisherId')
+  async getWishesByWisherId(
+    @Param() params: WisherIdDto,
+  ): Promise<OutputWishDto[]> {
+    const query = new GetWishesByWisherIdQuery(params.wisherId);
     return await this.queryBus.execute(query);
   }
 
