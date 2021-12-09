@@ -19,6 +19,7 @@ import {
 import {
   CreateWishCommand,
   DeleteWishCommand,
+  UncompleteWishCommand,
   UndeleteWishCommand,
 } from '../../application/commands';
 import { OutputWishDto } from '../../application/dtos';
@@ -100,6 +101,15 @@ export class WishesController {
   @Patch('undelete/:id')
   async undeleteWish(@Param() params: WishIdDto): Promise<void> {
     const command = new UndeleteWishCommand(params.id);
+    await this.commandBus.execute(command);
+  }
+
+  @ApiOkResponse({ description: 'Wish uncompleted successfully.' })
+  @ApiNotFoundResponse({ description: 'Wish not found.' })
+  @ApiBadRequestResponse({ description: 'Something went wrong.' })
+  @Patch('uncomplete/:id')
+  async uncompleteWish(@Param() params: WishIdDto): Promise<void> {
+    const command = new UncompleteWishCommand(params.id);
     await this.commandBus.execute(command);
   }
 }

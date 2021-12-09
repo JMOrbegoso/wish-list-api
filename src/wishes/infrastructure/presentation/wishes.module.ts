@@ -9,6 +9,7 @@ import { UserRepositoryMongoDb } from '../../../users/infrastructure/persistence
 import {
   CreateWishHandler,
   DeleteWishHandler,
+  UncompleteWishHandler,
   UndeleteWishHandler,
 } from '../../application/commands';
 import {
@@ -31,6 +32,7 @@ const queryHandlers = [
 const commandHandlers = [
   CreateWishHandler,
   DeleteWishHandler,
+  UncompleteWishHandler,
   UndeleteWishHandler,
 ];
 
