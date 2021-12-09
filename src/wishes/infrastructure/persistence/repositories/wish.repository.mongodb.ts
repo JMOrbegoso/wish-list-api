@@ -13,7 +13,7 @@ import {
   wishStageToWishStageEntity,
   wishToWishEntity,
 } from '../../mappings';
-import { WishEntity, WishStageEntity } from '../entities';
+import { WishEntity, WishStageEntity, WisherEntity } from '../entities';
 
 @MikroOrmRepository(WishEntity)
 export class WishRepositoryMongoDb
@@ -86,13 +86,15 @@ export class WishRepositoryMongoDb
   }
 
   add(wish: Wish): void {
-    const wishEntity = wishToWishEntity(wish);
+    const wisherEntity = this.getOrCreateWisherEntity(wish.wisher.id);
+    const wishEntity = wishToWishEntity(wish, wisherEntity);
     const wishEntityToPersist = this.create(wishEntity);
     this.persist(wishEntityToPersist);
   }
 
   update(wish: Wish): void {
-    const wishEntity = wishToWishEntity(wish);
+    const wisherEntity = this.getOrCreateWisherEntity(wish.wisher.id);
+    const wishEntity = wishToWishEntity(wish, wisherEntity);
     const wishFromDb = this.getReference(wish.id.getId);
     this.assign(wishFromDb, wishEntity);
   }
@@ -100,5 +102,16 @@ export class WishRepositoryMongoDb
   delete(id: UniqueId): void {
     const wishFromDb = this.getReference(id.getId);
     this.remove(wishFromDb);
+  }
+
+  private getOrCreateWisherEntity(wisherId: UniqueId): WisherEntity {
+    let wisherEntity = this.orm.em.getReference(WisherEntity, wisherId.getId);
+
+    if (!wisherEntity) {
+      wisherEntity = new WisherEntity();
+      wisherEntity.id = wisherId.getId;
+    }
+
+    return wisherEntity;
   }
 }

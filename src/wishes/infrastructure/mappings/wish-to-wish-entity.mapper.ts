@@ -1,9 +1,16 @@
 import { Collection } from '@mikro-orm/core';
 import { Wish } from '../../domain/entities';
-import { WishEntity, WishStageEntity } from '../persistence/entities';
-import { wishStageToWishStageEntity, wisherToWisherEntity } from '.';
+import {
+  WishEntity,
+  WishStageEntity,
+  WisherEntity,
+} from '../persistence/entities';
+import { wishStageToWishStageEntity } from '.';
 
-export function wishToWishEntity(wish: Wish): WishEntity {
+export function wishToWishEntity(
+  wish: Wish,
+  wisherEntity: WisherEntity,
+): WishEntity {
   const wishEntity = new WishEntity();
 
   wishEntity.id = wish.id.getId;
@@ -12,7 +19,7 @@ export function wishToWishEntity(wish: Wish): WishEntity {
   wishEntity.privacyLevel = wish.privacyLevel.getPrivacyLevel;
   wishEntity.createdAt = wish.createdAt.getDate;
   wishEntity.updatedAt = wish.updatedAt.getDate;
-  wishEntity.wisher = wisherToWisherEntity(wish.wisher);
+  wishEntity.wisher = wisherEntity;
   wishEntity.urls = wish.urls.map((url) => url.getUrl);
   wishEntity.imageUrls = wish.imageUrls.map((url) => url.getUrl);
   wishEntity.categories = wish.categories.map((url) => url.getName);

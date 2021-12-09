@@ -2,6 +2,7 @@ import { mocked } from 'ts-jest/utils';
 import { WebUrl } from '../../../core/domain/value-objects';
 import { Wish, WishStage } from '../../domain/entities';
 import { CategoryName, PrivacyLevel } from '../../domain/value-objects';
+import { WisherEntity } from '../persistence/entities';
 import { wishToWishEntity } from '.';
 
 const validValues = [
@@ -129,7 +130,10 @@ describe('wishes', () => {
             // Arrange
 
             // Act
-            const wishEntity = wishToWishEntity(wish);
+            const wisherEntity = mocked<WisherEntity>({
+              id: wish.wisher.id.getId,
+            } as unknown as WisherEntity);
+            const wishEntity = wishToWishEntity(wish, wisherEntity);
 
             // Assert
             expect(wishEntity.id).toBe(wish.id.getId);
