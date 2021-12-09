@@ -17,6 +17,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import {
+  ChangeWishPrivacyLevelCommand,
   CreateWishCommand,
   DeleteWishCommand,
   UncompleteWishCommand,
@@ -29,7 +30,12 @@ import {
   GetWishesByWisherIdQuery,
   GetWishesQuery,
 } from '../../application/queries';
-import { CreateWishDto, WishIdDto, WisherIdDto } from './dto';
+import {
+  ChangeWishPrivacyLevelDto,
+  CreateWishDto,
+  WishIdDto,
+  WisherIdDto,
+} from './dto';
 
 @ApiTags('WishesController')
 @Controller('wishes')
@@ -110,6 +116,22 @@ export class WishesController {
   @Patch('uncomplete/:id')
   async uncompleteWish(@Param() params: WishIdDto): Promise<void> {
     const command = new UncompleteWishCommand(params.id);
+    await this.commandBus.execute(command);
+  }
+
+  @ApiOkResponse({
+    description: 'Wish privacy level changed successfully.',
+  })
+  @ApiNotFoundResponse({ description: 'Wish not found.' })
+  @ApiBadRequestResponse({ description: 'Something went wrong.' })
+  @Patch('change-privacy-level/:id/:privacyLevel')
+  async changeWishPrivacyLevel(
+    @Param() params: ChangeWishPrivacyLevelDto,
+  ): Promise<void> {
+    const command = new ChangeWishPrivacyLevelCommand(
+      params.id,
+      params.privacyLevel,
+    );
     await this.commandBus.execute(command);
   }
 }
