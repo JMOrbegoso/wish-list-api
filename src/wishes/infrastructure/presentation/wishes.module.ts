@@ -9,6 +9,7 @@ import { UserRepositoryMongoDb } from '../../../users/infrastructure/persistence
 import {
   CreateWishHandler,
   DeleteWishHandler,
+  UndeleteWishHandler,
 } from '../../application/commands';
 import {
   GetPublicWishesHandler,
@@ -27,7 +28,11 @@ const queryHandlers = [
   GetWishByIdHandler,
   GetWishesByWisherIdHandler,
 ];
-const commandHandlers = [CreateWishHandler, DeleteWishHandler];
+const commandHandlers = [
+  CreateWishHandler,
+  DeleteWishHandler,
+  UndeleteWishHandler,
+];
 
 @Module({
   controllers: [WishesController],

@@ -1,4 +1,12 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import {
   ApiBadRequestResponse,
@@ -11,6 +19,7 @@ import {
 import {
   CreateWishCommand,
   DeleteWishCommand,
+  UndeleteWishCommand,
 } from '../../application/commands';
 import { OutputWishDto } from '../../application/dtos';
 import {
@@ -82,6 +91,15 @@ export class WishesController {
   @Delete(':id')
   async deleteWish(@Param() params: WishIdDto): Promise<void> {
     const command = new DeleteWishCommand(params.id);
+    await this.commandBus.execute(command);
+  }
+
+  @ApiOkResponse({ description: 'Wish undeleted successfully.' })
+  @ApiNotFoundResponse({ description: 'Wish not found.' })
+  @ApiBadRequestResponse({ description: 'Something went wrong.' })
+  @Patch('undelete/:id')
+  async undeleteWish(@Param() params: WishIdDto): Promise<void> {
+    const command = new UndeleteWishCommand(params.id);
     await this.commandBus.execute(command);
   }
 }
