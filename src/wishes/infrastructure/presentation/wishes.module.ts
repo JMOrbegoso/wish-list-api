@@ -8,6 +8,7 @@ import { UserRepository } from '../../../users/domain/repositories';
 import { UserRepositoryMongoDb } from '../../../users/infrastructure/persistence/repositories';
 import {
   ChangeWishPrivacyLevelHandler,
+  CompleteWishHandler,
   CreateWishHandler,
   DeleteWishHandler,
   UncompleteWishHandler,
@@ -32,6 +33,7 @@ const queryHandlers = [
 ];
 const commandHandlers = [
   ChangeWishPrivacyLevelHandler,
+  CompleteWishHandler,
   CreateWishHandler,
   DeleteWishHandler,
   UncompleteWishHandler,

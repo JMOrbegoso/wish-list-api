@@ -18,6 +18,7 @@ import {
 } from '@nestjs/swagger';
 import {
   ChangeWishPrivacyLevelCommand,
+  CompleteWishCommand,
   CreateWishCommand,
   DeleteWishCommand,
   UncompleteWishCommand,
@@ -36,6 +37,7 @@ import {
   WishIdDto,
   WisherIdDto,
 } from './dto';
+import { CompleteWishDto } from './dto/complete-wish.dto';
 
 @ApiTags('WishesController')
 @Controller('wishes')
@@ -107,6 +109,18 @@ export class WishesController {
   @Patch('undelete/:id')
   async undeleteWish(@Param() params: WishIdDto): Promise<void> {
     const command = new UndeleteWishCommand(params.id);
+    await this.commandBus.execute(command);
+  }
+
+  @ApiOkResponse({ description: 'Wish completed successfully.' })
+  @ApiNotFoundResponse({ description: 'Wish not found.' })
+  @ApiBadRequestResponse({ description: 'Something went wrong.' })
+  @Patch('complete/:id/:completionDate')
+  async completeWish(@Param() params: CompleteWishDto): Promise<void> {
+    const command = new CompleteWishCommand(
+      params.id,
+      parseInt(params.completionDate),
+    );
     await this.commandBus.execute(command);
   }
 
