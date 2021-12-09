@@ -20,6 +20,7 @@ import {
   ChangeWishPrivacyLevelCommand,
   CompleteWishCommand,
   CreateWishCommand,
+  CreateWishStageCommand,
   DeleteWishCommand,
   UncompleteWishCommand,
   UndeleteWishCommand,
@@ -35,6 +36,7 @@ import {
 import {
   ChangeWishPrivacyLevelDto,
   CreateWishDto,
+  CreateWishStageDto,
   UpdateWishDto,
   WishIdDto,
   WisherIdDto,
@@ -163,6 +165,22 @@ export class WishesController {
     const command = new ChangeWishPrivacyLevelCommand(
       params.id,
       params.privacyLevel,
+    );
+    await this.commandBus.execute(command);
+  }
+
+  @ApiBody({ required: true, type: CreateWishStageDto })
+  @ApiCreatedResponse({ description: 'Wish stage created successfully.' })
+  @ApiBadRequestResponse({ description: 'Something went wrong.' })
+  @Post('stage')
+  async createWishStage(@Body() dto: CreateWishStageDto): Promise<void> {
+    const command = new CreateWishStageCommand(
+      dto.wishStageId,
+      dto.id,
+      dto.title,
+      dto.description,
+      dto.urls,
+      dto.imageUrls,
     );
     await this.commandBus.execute(command);
   }
