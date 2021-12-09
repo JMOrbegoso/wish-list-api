@@ -3,6 +3,7 @@ import {
   MikroORM,
   Repository as MikroOrmRepository,
 } from '@mikro-orm/core';
+import { ObjectId } from '@mikro-orm/mongodb';
 import { UniqueId } from '../../../../core/domain/value-objects';
 import { Wish, WishStage } from '../../../domain/entities';
 import { WishRepository } from '../../../domain/repositories';
@@ -44,9 +45,9 @@ export class WishRepositoryMongoDb
 
   async getAllWishesByWisher(wisherId: UniqueId): Promise<Wish[]> {
     const wishesEntities = await this.find({
-      wisher: { id: wisherId.getId },
+      wisher: { _id: new ObjectId(wisherId.getId) },
     });
-    const wishes = wishesEntities.map((u) => wishEntityToWish(u));
+    const wishes = wishesEntities.map((w) => wishEntityToWish(w));
     return wishes;
   }
 
