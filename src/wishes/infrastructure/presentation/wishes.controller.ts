@@ -23,6 +23,7 @@ import {
   DeleteWishCommand,
   UncompleteWishCommand,
   UndeleteWishCommand,
+  UpdateWishCommand,
 } from '../../application/commands';
 import { OutputWishDto } from '../../application/dtos';
 import {
@@ -34,6 +35,7 @@ import {
 import {
   ChangeWishPrivacyLevelDto,
   CreateWishDto,
+  UpdateWishDto,
   WishIdDto,
   WisherIdDto,
 } from './dto';
@@ -87,6 +89,22 @@ export class WishesController {
       dto.description,
       dto.privacyLevel,
       dto.wisherId,
+      dto.urls,
+      dto.imageUrls,
+      dto.categories,
+    );
+    await this.commandBus.execute(command);
+  }
+
+  @ApiBody({ required: true, type: UpdateWishDto })
+  @ApiCreatedResponse({ description: 'Wish updated successfully.' })
+  @ApiBadRequestResponse({ description: 'Something went wrong.' })
+  @Patch()
+  async update(@Body() dto: UpdateWishDto): Promise<void> {
+    const command = new UpdateWishCommand(
+      dto.id,
+      dto.title,
+      dto.description,
       dto.urls,
       dto.imageUrls,
       dto.categories,

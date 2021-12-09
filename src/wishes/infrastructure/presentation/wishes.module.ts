@@ -13,6 +13,7 @@ import {
   DeleteWishHandler,
   UncompleteWishHandler,
   UndeleteWishHandler,
+  UpdateWishHandler,
 } from '../../application/commands';
 import {
   GetPublicWishesHandler,
@@ -38,6 +39,7 @@ const commandHandlers = [
   DeleteWishHandler,
   UncompleteWishHandler,
   UndeleteWishHandler,
+  UpdateWishHandler,
 ];
 
 @Module({
