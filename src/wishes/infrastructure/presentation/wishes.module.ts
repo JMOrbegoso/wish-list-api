@@ -8,6 +8,7 @@ import { UserRepository } from '../../../users/domain/repositories';
 import { UserRepositoryMongoDb } from '../../../users/infrastructure/persistence/repositories';
 import { CreateWishHandler } from '../../application/commands';
 import {
+  GetPublicWishesHandler,
   GetWishByIdHandler,
   GetWishesHandler,
 } from '../../application/queries';
@@ -16,7 +17,11 @@ import { WishEntity } from '../persistence/entities';
 import { WishRepositoryMongoDb } from '../persistence/repositories';
 import { WishesController } from './wishes.controller';
 
-const queryHandlers = [GetWishesHandler, GetWishByIdHandler];
+const queryHandlers = [
+  GetWishesHandler,
+  GetPublicWishesHandler,
+  GetWishByIdHandler,
+];
 const commandHandlers = [CreateWishHandler];
 
 @Module({

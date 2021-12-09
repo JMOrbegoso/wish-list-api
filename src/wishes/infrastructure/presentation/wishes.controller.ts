@@ -10,7 +10,11 @@ import {
 } from '@nestjs/swagger';
 import { CreateWishCommand } from '../../application/commands';
 import { OutputWishDto } from '../../application/dtos';
-import { GetWishByIdQuery, GetWishesQuery } from '../../application/queries';
+import {
+  GetPublicWishesQuery,
+  GetWishByIdQuery,
+  GetWishesQuery,
+} from '../../application/queries';
 import { CreateWishDto, WishIdDto } from './dto';
 
 @ApiTags('WishesController')
@@ -22,6 +26,13 @@ export class WishesController {
   @Get()
   async getAllWishes(): Promise<OutputWishDto[]> {
     const query = new GetWishesQuery();
+    return await this.queryBus.execute(query);
+  }
+
+  @ApiOkResponse({ type: [OutputWishDto], description: 'Wishes found.' })
+  @Get('/public')
+  async getPublicWishes(): Promise<OutputWishDto[]> {
+    const query = new GetPublicWishesQuery();
     return await this.queryBus.execute(query);
   }
 
