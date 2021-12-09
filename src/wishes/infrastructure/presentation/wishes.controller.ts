@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import {
   ApiBadRequestResponse,
@@ -8,7 +8,10 @@ import {
   ApiOkResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { CreateWishCommand } from '../../application/commands';
+import {
+  CreateWishCommand,
+  DeleteWishCommand,
+} from '../../application/commands';
 import { OutputWishDto } from '../../application/dtos';
 import {
   GetPublicWishesQuery,
@@ -70,6 +73,15 @@ export class WishesController {
       dto.imageUrls,
       dto.categories,
     );
+    await this.commandBus.execute(command);
+  }
+
+  @ApiOkResponse({ description: 'Wish deleted successfully.' })
+  @ApiNotFoundResponse({ description: 'Wish not found.' })
+  @ApiBadRequestResponse({ description: 'Something went wrong.' })
+  @Delete(':id')
+  async deleteWish(@Param() params: WishIdDto): Promise<void> {
+    const command = new DeleteWishCommand(params.id);
     await this.commandBus.execute(command);
   }
 }

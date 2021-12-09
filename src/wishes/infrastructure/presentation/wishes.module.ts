@@ -6,7 +6,10 @@ import { UnitOfWork } from '../../../core/domain/repositories';
 import { UnitOfWorkMongoDb } from '../../../core/infrastructure/repositories';
 import { UserRepository } from '../../../users/domain/repositories';
 import { UserRepositoryMongoDb } from '../../../users/infrastructure/persistence/repositories';
-import { CreateWishHandler } from '../../application/commands';
+import {
+  CreateWishHandler,
+  DeleteWishHandler,
+} from '../../application/commands';
 import {
   GetPublicWishesHandler,
   GetWishByIdHandler,
@@ -24,7 +27,7 @@ const queryHandlers = [
   GetWishByIdHandler,
   GetWishesByWisherIdHandler,
 ];
-const commandHandlers = [CreateWishHandler];
+const commandHandlers = [CreateWishHandler, DeleteWishHandler];
 
 @Module({
   controllers: [WishesController],
