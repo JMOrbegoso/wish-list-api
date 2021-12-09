@@ -1,8 +1,16 @@
-import { Controller, Get } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBadRequestResponse,
+  ApiBody,
+  ApiCreatedResponse,
+  ApiOkResponse,
+  ApiTags,
+} from '@nestjs/swagger';
+import { CreateWishCommand } from '../../application/commands';
 import { OutputWishDto } from '../../application/dtos';
 import { GetWishesQuery } from '../../application/queries';
+import { CreateWishDto } from './dto';
 
 @ApiTags('WishesController')
 @Controller('wishes')
@@ -14,5 +22,23 @@ export class WishesController {
   async getAllWishes(): Promise<OutputWishDto[]> {
     const query = new GetWishesQuery();
     return await this.queryBus.execute(query);
+  }
+
+  @ApiBody({ required: true, type: CreateWishDto })
+  @ApiCreatedResponse({ description: 'Wish created successfully.' })
+  @ApiBadRequestResponse({ description: 'Something went wrong.' })
+  @Post()
+  async post(@Body() dto: CreateWishDto): Promise<void> {
+    const command = new CreateWishCommand(
+      dto.id,
+      dto.title,
+      dto.description,
+      dto.privacyLevel,
+      dto.wisherId,
+      dto.urls,
+      dto.imageUrls,
+      dto.categories,
+    );
+    await this.commandBus.execute(command);
   }
 }
