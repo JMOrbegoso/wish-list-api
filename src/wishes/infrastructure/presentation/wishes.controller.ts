@@ -22,6 +22,7 @@ import {
   CreateWishCommand,
   CreateWishStageCommand,
   DeleteWishCommand,
+  DeleteWishStageCommand,
   UncompleteWishCommand,
   UndeleteWishCommand,
   UpdateWishCommand,
@@ -40,6 +41,7 @@ import {
   UpdateWishDto,
   WishIdDto,
   WisherIdDto,
+  WishStageIdDto,
 } from './dto';
 import { CompleteWishDto } from './dto/complete-wish.dto';
 
@@ -182,6 +184,15 @@ export class WishesController {
       dto.urls,
       dto.imageUrls,
     );
+    await this.commandBus.execute(command);
+  }
+
+  @ApiOkResponse({ description: 'Wish stage deleted successfully.' })
+  @ApiNotFoundResponse({ description: 'Wish stage not found.' })
+  @ApiBadRequestResponse({ description: 'Something went wrong.' })
+  @Delete('stage/:wishStageId')
+  async deleteWishStage(@Param() params: WishStageIdDto): Promise<void> {
+    const command = new DeleteWishStageCommand(params.wishStageId);
     await this.commandBus.execute(command);
   }
 }
