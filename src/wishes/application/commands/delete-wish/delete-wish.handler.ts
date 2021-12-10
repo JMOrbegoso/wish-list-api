@@ -27,7 +27,7 @@ export class DeleteWishHandler implements ICommandHandler<DeleteWishCommand> {
     wish.delete();
 
     // Save the wish
-    this.wishRepository.update(wish);
+    await this.wishRepository.update(wish);
 
     // Save changes using Unit of Work
     await this.unitOfWork.commitChanges();

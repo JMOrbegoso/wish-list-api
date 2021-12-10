@@ -39,7 +39,7 @@ export class UpdateWishHandler implements ICommandHandler<UpdateWishCommand> {
     wish.update(title, description, urls, imageUrls, categories);
 
     // Save the wish
-    this.wishRepository.update(wish);
+    await this.wishRepository.update(wish);
 
     // Save changes using Unit of Work
     await this.unitOfWork.commitChanges();

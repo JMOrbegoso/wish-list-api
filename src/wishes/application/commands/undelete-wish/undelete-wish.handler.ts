@@ -29,7 +29,7 @@ export class UndeleteWishHandler
     wish.undelete();
 
     // Save the wish
-    this.wishRepository.update(wish);
+    await this.wishRepository.update(wish);
 
     // Save changes using Unit of Work
     await this.unitOfWork.commitChanges();
