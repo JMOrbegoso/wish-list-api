@@ -5,11 +5,11 @@ import {
   WishStageEntity,
   WisherEntity,
 } from '../persistence/entities';
-import { wishStageToWishStageEntity } from '.';
 
 export function wishToWishEntity(
   wish: Wish,
   wisherEntity: WisherEntity,
+  wishStagesEntities: WishStageEntity[],
 ): WishEntity {
   const wishEntity = new WishEntity();
 
@@ -25,7 +25,7 @@ export function wishToWishEntity(
   wishEntity.categories = wish.categories.map((url) => url.getName);
   wishEntity.stages = new Collection<WishStageEntity>(
     WishEntity,
-    wish.stages.map((stage) => wishStageToWishStageEntity(stage)),
+    wishStagesEntities,
   );
   wishEntity.deletedAt = wish.deletedAt?.getDate ?? null;
   wishEntity.completedAt = wish.completedAt?.getDate ?? null;
