@@ -36,17 +36,23 @@ export class WishRepositoryMongoDb
   }
 
   async getAllPublicWishes(): Promise<Wish[]> {
-    const wishesEntities = await this.find({
-      privacyLevel: PrivacyLevel.Public,
-    });
+    const wishesEntities = await this.find(
+      {
+        privacyLevel: PrivacyLevel.Public,
+      },
+      { populate: true },
+    );
     const wishes = wishesEntities.map((u) => wishEntityToWish(u));
     return wishes;
   }
 
   async getAllWishesByWisher(wisherId: UniqueId): Promise<Wish[]> {
-    const wishesEntities = await this.find({
-      wisher: { _id: new ObjectId(wisherId.getId) },
-    });
+    const wishesEntities = await this.find(
+      {
+        wisher: { _id: new ObjectId(wisherId.getId) },
+      },
+      { populate: true },
+    );
     const wishes = wishesEntities.map((w) => wishEntityToWish(w));
     return wishes;
   }
@@ -74,13 +80,13 @@ export class WishRepositoryMongoDb
   }
 
   async getAll(): Promise<Wish[]> {
-    const wishesEntities = await this.findAll();
+    const wishesEntities = await this.findAll({ populate: true });
     const wishes = wishesEntities.map((u) => wishEntityToWish(u));
     return wishes;
   }
 
   async getOne(id: UniqueId): Promise<Wish> {
-    const wishEntity = await this.findOne(id.getId);
+    const wishEntity = await this.findOne(id.getId, { populate: true });
     if (!wishEntity) return null;
     const wish = wishEntityToWish(wishEntity);
     return wish;
