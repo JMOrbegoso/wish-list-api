@@ -95,13 +95,38 @@ export class WishRepositoryMongoDb
     this.persist(wishEntityToPersist);
   }
 
-  update(wish: Wish): void {
-    const wisherEntity = this.getOrCreateWisherEntity(wish.wisher);
-    const wishStagesEntities = wish.stages.map((stage) =>
-      this.getOrCreateWishStageEntity(stage),
+  async update(wish: Wish): Promise<void> {
+    const wishFromDb = await this.findOne(wish.id.getId, { populate: true });
+
+    // Update stages
+    const stagesToUpdate = wish.stages.filter((stage) =>
+      wishFromDb.stages
+        .getItems()
+        .some((stageDb) => stage.id.getId === stageDb.id),
     );
-    const wishEntity = wishToWishEntity(wish, wisherEntity, wishStagesEntities);
-    const wishFromDb = this.getReference(wish.id.getId);
+    const stagesToAdd = wish.stages.filter(
+      (stage) =>
+        !stagesToUpdate.some((stageToUpdate) => stage.id === stageToUpdate.id),
+    );
+    const stagesToDelete = wishFromDb.stages
+      .getItems()
+      .filter(
+        (stageDb) =>
+          !stagesToUpdate.some((stage) => stage.id.getId === stageDb.id),
+      );
+
+    // Persist wish stages to add
+    stagesToAdd.forEach((stage) => this.persistNewWishStage(stage, wishFromDb));
+
+    // Persist wish stages to update
+    stagesToUpdate.forEach((stage) => this.updateWishStageFromPersist(stage));
+
+    // Persist wish stages to delete
+    stagesToDelete.forEach((stage) => this.deleteWishStageFromPersist(stage));
+
+    // Update wish
+    const wisherEntity = this.getOrCreateWisherEntity(wish.wisher);
+    const wishEntity = wishToWishEntity(wish, wisherEntity, []);
     this.assign(wishFromDb, wishEntity);
   }
 
@@ -131,5 +156,28 @@ export class WishRepositoryMongoDb
     }
 
     return wishStageEntity;
+  }
+
+  private persistNewWishStage(stage: WishStage, wishFromDb: WishEntity): void {
+    const stageEntity = wishStageToWishStageEntity(stage);
+    wishFromDb.stages.add(stageEntity);
+    this.orm.em.persist(stageEntity);
+  }
+
+  private updateWishStageFromPersist(stage: WishStage): void {
+    const stageReference = this.orm.em.getReference(
+      WishStageEntity,
+      stage.id.getId,
+    );
+    this.orm.em.assign(stageReference, wishStageToWishStageEntity(stage));
+  }
+
+  private deleteWishStageFromPersist(stageEntity: WishStageEntity): void {
+    const wishStageFromDb = this.orm.em.getReference(
+      WishStageEntity,
+      stageEntity.id,
+    );
+
+    this.remove(wishStageFromDb);
   }
 }
