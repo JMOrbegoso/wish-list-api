@@ -29,8 +29,11 @@ export class DeleteWishStageHandler
     // Check if the wish is deleted
     if (wish.isDeleted) throw new BadRequestException('Wish is deleted.');
 
-    // Update the wish stage using the repository
-    this.wishRepository.deleteWishStage(id);
+    // Update the wish
+    wish.removeStage(wishStage);
+
+    // Update the wish using the repository
+    this.wishRepository.update(wish);
 
     // Save changes using Unit of Work
     await this.unitOfWork.commitChanges();

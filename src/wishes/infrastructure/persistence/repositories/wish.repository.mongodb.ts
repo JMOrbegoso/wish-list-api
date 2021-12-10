@@ -75,11 +75,6 @@ export class WishRepositoryMongoDb
     this.assign(wishStageFromDb, wishStageEntity);
   }
 
-  deleteWishStage(id: UniqueId): void {
-    const wishStageFromDb = this.orm.em.getReference(WishStageEntity, id.getId);
-    this.remove(wishStageFromDb);
-  }
-
   async getAll(): Promise<Wish[]> {
     const wishesEntities = await this.findAll({ populate: true });
     const wishes = wishesEntities.map((u) => wishEntityToWish(u));
