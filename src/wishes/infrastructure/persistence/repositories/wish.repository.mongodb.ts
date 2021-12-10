@@ -62,9 +62,12 @@ export class WishRepositoryMongoDb
     const wishStageEntity = await this.orm.em.findOne(
       WishStageEntity,
       id.getId,
+      { populate: true },
     );
+
     if (!wishStageEntity) return null;
-    const wishEntity = wishStageEntity.wish;
+    const wishEntity = wishStageEntity.wish.getEntity();
+
     const wish = wishEntityToWish(wishEntity);
     return wish;
   }
