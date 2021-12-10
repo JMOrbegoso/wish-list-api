@@ -26,6 +26,7 @@ import {
   UncompleteWishCommand,
   UndeleteWishCommand,
   UpdateWishCommand,
+  UpdateWishStageCommand,
 } from '../../application/commands';
 import { OutputWishDto } from '../../application/dtos';
 import {
@@ -42,6 +43,7 @@ import {
   WishIdDto,
   WisherIdDto,
   WishStageIdDto,
+  UpdateWishStageDto,
 } from './dto';
 import { CompleteWishDto } from './dto/complete-wish.dto';
 
@@ -179,6 +181,21 @@ export class WishesController {
     const command = new CreateWishStageCommand(
       dto.wishStageId,
       dto.id,
+      dto.title,
+      dto.description,
+      dto.urls,
+      dto.imageUrls,
+    );
+    await this.commandBus.execute(command);
+  }
+
+  @ApiBody({ required: true, type: UpdateWishStageDto })
+  @ApiCreatedResponse({ description: 'Wish stage updated successfully.' })
+  @ApiBadRequestResponse({ description: 'Something went wrong.' })
+  @Patch('stage')
+  async updateWishStage(@Body() dto: UpdateWishStageDto): Promise<void> {
+    const command = new UpdateWishStageCommand(
+      dto.wishStageId,
       dto.title,
       dto.description,
       dto.urls,
