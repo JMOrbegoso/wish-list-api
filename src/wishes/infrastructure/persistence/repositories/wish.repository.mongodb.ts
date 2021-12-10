@@ -95,14 +95,20 @@ export class WishRepositoryMongoDb
 
   add(wish: Wish): void {
     const wisherEntity = this.getOrCreateWisherEntity(wish.wisher);
-    const wishEntity = wishToWishEntity(wish, wisherEntity);
+    const wishStagesEntities = wish.stages.map((stage) =>
+      this.getOrCreateWishStageEntity(stage),
+    );
+    const wishEntity = wishToWishEntity(wish, wisherEntity, wishStagesEntities);
     const wishEntityToPersist = this.create(wishEntity);
     this.persist(wishEntityToPersist);
   }
 
   update(wish: Wish): void {
     const wisherEntity = this.getOrCreateWisherEntity(wish.wisher);
-    const wishEntity = wishToWishEntity(wish, wisherEntity);
+    const wishStagesEntities = wish.stages.map((stage) =>
+      this.getOrCreateWishStageEntity(stage),
+    );
+    const wishEntity = wishToWishEntity(wish, wisherEntity, wishStagesEntities);
     const wishFromDb = this.getReference(wish.id.getId);
     this.assign(wishFromDb, wishEntity);
   }
@@ -120,5 +126,18 @@ export class WishRepositoryMongoDb
     }
 
     return wisherEntity;
+  }
+
+  private getOrCreateWishStageEntity(wishStage: WishStage): WishStageEntity {
+    let wishStageEntity = this.orm.em.getReference(
+      WishStageEntity,
+      wishStage.id.getId,
+    );
+
+    if (!wishStageEntity) {
+      wishStageEntity = wishStageToWishStageEntity(wishStage);
+    }
+
+    return wishStageEntity;
   }
 }
