@@ -35,10 +35,10 @@ export class UpdateWishStageHandler
     if (wish.isDeleted) throw new BadRequestException('Wish is deleted.');
 
     // Update the wish stage
-    wishStage.update(title, description, urls, imageUrls);
+    wish.updateStage(id, title, description, urls, imageUrls);
 
-    // Update the wish stage using the repository
-    this.wishRepository.updateWishStage(wishStage);
+    // Update the wish using the repository
+    this.wishRepository.update(wish);
 
     // Save changes using Unit of Work
     await this.unitOfWork.commitChanges();

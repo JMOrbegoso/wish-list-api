@@ -69,12 +69,6 @@ export class WishRepositoryMongoDb
     return wish;
   }
 
-  updateWishStage(wishStage: WishStage): void {
-    const wishStageEntity = wishStageToWishStageEntity(wishStage);
-    const wishStageFromDb = this.getReference(wishStage.id.getId);
-    this.assign(wishStageFromDb, wishStageEntity);
-  }
-
   async getAll(): Promise<Wish[]> {
     const wishesEntities = await this.findAll({ populate: true });
     const wishes = wishesEntities.map((u) => wishEntityToWish(u));

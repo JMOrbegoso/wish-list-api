@@ -297,6 +297,23 @@ export class Wish extends AggregateRoot {
     this._updatedAt = MillisecondsDate.create();
   }
 
+  public updateStage(
+    id: UniqueId,
+    title: WishTitle,
+    description: WishDescription,
+    urls: WebUrl[] = [],
+    imageUrls: WebUrl[] = [],
+  ): void {
+    if (this.isDeleted) throw new DeletedWishCannotBeUpdatedError();
+
+    const wishStage = this._stages.find((stage) => stage.id.equals(id));
+    if (!wishStage) throw new NonExistentWishStageError();
+
+    wishStage.update(title, description, urls, imageUrls);
+
+    this._updatedAt = MillisecondsDate.create();
+  }
+
   public removeStage(stageToRemove: WishStage): void {
     if (this.isDeleted) throw new DeletedWishCannotBeUpdatedError();
 
