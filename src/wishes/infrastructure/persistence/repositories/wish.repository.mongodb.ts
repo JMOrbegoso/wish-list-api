@@ -5,7 +5,7 @@ import {
 } from '@mikro-orm/core';
 import { ObjectId } from '@mikro-orm/mongodb';
 import { UniqueId } from '../../../../core/domain/value-objects';
-import { Wish, WishStage } from '../../../domain/entities';
+import { Wish, WishStage, Wisher } from '../../../domain/entities';
 import { WishRepository } from '../../../domain/repositories';
 import { PrivacyLevel } from '../../../domain/value-objects';
 import {
@@ -13,6 +13,7 @@ import {
   wishStageEntityToWishStage,
   wishStageToWishStageEntity,
   wishToWishEntity,
+  wisherToWisherEntity,
 } from '../../mappings';
 import { WishEntity, WishStageEntity, WisherEntity } from '../entities';
 
@@ -93,14 +94,14 @@ export class WishRepositoryMongoDb
   }
 
   add(wish: Wish): void {
-    const wisherEntity = this.getOrCreateWisherEntity(wish.wisher.id);
+    const wisherEntity = this.getOrCreateWisherEntity(wish.wisher);
     const wishEntity = wishToWishEntity(wish, wisherEntity);
     const wishEntityToPersist = this.create(wishEntity);
     this.persist(wishEntityToPersist);
   }
 
   update(wish: Wish): void {
-    const wisherEntity = this.getOrCreateWisherEntity(wish.wisher.id);
+    const wisherEntity = this.getOrCreateWisherEntity(wish.wisher);
     const wishEntity = wishToWishEntity(wish, wisherEntity);
     const wishFromDb = this.getReference(wish.id.getId);
     this.assign(wishFromDb, wishEntity);
@@ -111,12 +112,11 @@ export class WishRepositoryMongoDb
     this.remove(wishFromDb);
   }
 
-  private getOrCreateWisherEntity(wisherId: UniqueId): WisherEntity {
-    let wisherEntity = this.orm.em.getReference(WisherEntity, wisherId.getId);
+  private getOrCreateWisherEntity(wisher: Wisher): WisherEntity {
+    let wisherEntity = this.orm.em.getReference(WisherEntity, wisher.id.getId);
 
     if (!wisherEntity) {
-      wisherEntity = new WisherEntity();
-      wisherEntity.id = wisherId.getId;
+      wisherEntity = wisherToWisherEntity(wisher);
     }
 
     return wisherEntity;
