@@ -24,7 +24,7 @@ export function wishToWishEntity(
   wishEntity.imageUrls = wish.imageUrls.map((url) => url.getUrl);
   wishEntity.categories = wish.categories.map((url) => url.getName);
   wishEntity.stages = new Collection<WishStageEntity>(
-    WishEntity,
+    wishEntity,
     wishStagesEntities,
   );
   wishEntity.deletedAt = wish.deletedAt?.getDate ?? null;
