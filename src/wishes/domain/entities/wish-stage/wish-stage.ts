@@ -1,12 +1,27 @@
+import {
+  InvalidWishStageImagesError,
+  InvalidWishStageUrlsError,
+  TooManyWishStageImagesError,
+  TooManyWishStageUrlsError,
+} from '..';
 import { Entity } from '../../../../core/domain/entities';
 import {
+  InvalidMillisecondsDateError,
   MillisecondsDate,
   UniqueId,
   WebUrl,
 } from '../../../../core/domain/value-objects';
-import { WishDescription, WishTitle } from '../../value-objects';
+import {
+  InvalidWishDescriptionError,
+  InvalidWishTitleError,
+  WishDescription,
+  WishTitle,
+} from '../../value-objects';
 
 export class WishStage extends Entity {
+  public static readonly MaxUrls = 5;
+  public static readonly MaxImages = 5;
+
   private _title: WishTitle;
   private _description: WishDescription;
   private _createdAt: MillisecondsDate;
@@ -22,6 +37,21 @@ export class WishStage extends Entity {
     imageUrls: WebUrl[],
   ) {
     super(id);
+
+    if (!title) throw new InvalidWishTitleError();
+
+    if (!description) throw new InvalidWishDescriptionError();
+
+    if (!createdAt) throw new InvalidMillisecondsDateError();
+
+    if (!urls) throw new InvalidWishStageUrlsError();
+
+    if (urls.length > WishStage.MaxUrls) throw new TooManyWishStageUrlsError();
+
+    if (!imageUrls) throw new InvalidWishStageImagesError();
+
+    if (imageUrls.length > WishStage.MaxImages)
+      throw new TooManyWishStageImagesError();
 
     this._title = title;
     this._description = description;
@@ -63,5 +93,30 @@ export class WishStage extends Entity {
 
   public get imageUrls(): WebUrl[] {
     return this._imageUrls;
+  }
+
+  public update(
+    title: WishTitle,
+    description: WishDescription,
+    urls: WebUrl[] = [],
+    imageUrls: WebUrl[] = [],
+  ): void {
+    if (!title) throw new InvalidWishTitleError();
+
+    if (!description) throw new InvalidWishDescriptionError();
+
+    if (!urls) throw new InvalidWishStageUrlsError();
+
+    if (urls.length > WishStage.MaxUrls) throw new TooManyWishStageUrlsError();
+
+    if (!imageUrls) throw new InvalidWishStageImagesError();
+
+    if (imageUrls.length > WishStage.MaxImages)
+      throw new TooManyWishStageImagesError();
+
+    this._title = title;
+    this._description = description;
+    this._urls = urls;
+    this._imageUrls = imageUrls;
   }
 }

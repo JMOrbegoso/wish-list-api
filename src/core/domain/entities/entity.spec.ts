@@ -1,6 +1,6 @@
 import { MockedObject } from 'ts-jest/dist/utils/testing';
 import { mocked } from 'ts-jest/utils';
-import { UniqueId } from '../value-objects';
+import { InvalidUniqueIdError, UniqueId } from '../value-objects';
 import { Entity } from './entity';
 
 class Product extends Entity {
@@ -56,6 +56,20 @@ describe('core', () => {
   describe('domain', () => {
     describe('entities', () => {
       describe('entity', () => {
+        test.each(validValues)(
+          'create a Product with id null should throw error',
+          (uniqueId: MockedObject<UniqueId>, price: number) => {
+            // Arrange
+
+            // Act
+
+            // Assert
+            expect(() => Product.create(null, price)).toThrowError(
+              InvalidUniqueIdError,
+            );
+          },
+        );
+
         test.each(validValues)(
           'should create a Product with [id: %p] and [price: %p]',
           (uniqueId: MockedObject<UniqueId>, price: number) => {

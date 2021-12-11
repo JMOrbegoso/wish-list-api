@@ -1,9 +1,11 @@
-import { UniqueId } from '../value-objects';
+import { InvalidUniqueIdError, UniqueId } from '../value-objects';
 
 export abstract class Entity {
   protected readonly _id: UniqueId;
 
   protected constructor(id: UniqueId) {
+    if (!id) throw new InvalidUniqueIdError();
+
     this._id = id;
   }
 
