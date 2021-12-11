@@ -10,11 +10,14 @@ import {
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import {
   ApiBadRequestResponse,
+  ApiBearerAuth,
   ApiBody,
   ApiCreatedResponse,
+  ApiForbiddenResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiTags,
+  ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import {
   ChangeWishPrivacyLevelCommand,
@@ -40,10 +43,10 @@ import {
   CreateWishDto,
   CreateWishStageDto,
   UpdateWishDto,
-  WishIdDto,
-  WisherIdDto,
-  WishStageIdDto,
   UpdateWishStageDto,
+  WishIdDto,
+  WishStageIdDto,
+  WisherIdDto,
 } from './dto';
 import { CompleteWishDto } from './dto/complete-wish.dto';
 
@@ -52,7 +55,12 @@ import { CompleteWishDto } from './dto/complete-wish.dto';
 export class WishesController {
   constructor(private commandBus: CommandBus, private queryBus: QueryBus) {}
 
+  @ApiBearerAuth()
   @ApiOkResponse({ type: [OutputWishDto], description: 'Wishes found.' })
+  @ApiUnauthorizedResponse({ description: 'User is not authenticated.' })
+  @ApiForbiddenResponse({
+    description: 'This resource is prohibited for the authenticated user.',
+  })
   @Get()
   async getAllWishes(): Promise<OutputWishDto[]> {
     const query = new GetWishesQuery();
@@ -66,7 +74,12 @@ export class WishesController {
     return await this.queryBus.execute(query);
   }
 
+  @ApiBearerAuth()
   @ApiOkResponse({ type: [OutputWishDto], description: 'Wishes found.' })
+  @ApiUnauthorizedResponse({ description: 'User is not authenticated.' })
+  @ApiForbiddenResponse({
+    description: 'This resource is prohibited for the authenticated user.',
+  })
   @Get('wisherId/:wisherId')
   async getWishesByWisherId(
     @Param() params: WisherIdDto,
@@ -75,7 +88,12 @@ export class WishesController {
     return await this.queryBus.execute(query);
   }
 
+  @ApiBearerAuth()
   @ApiOkResponse({ type: OutputWishDto, description: 'Wish found.' })
+  @ApiUnauthorizedResponse({ description: 'User is not authenticated.' })
+  @ApiForbiddenResponse({
+    description: 'This resource is prohibited for the authenticated user.',
+  })
   @ApiNotFoundResponse({ description: 'Wish not found.' })
   @ApiBadRequestResponse({ description: 'Something went wrong.' })
   @Get(':id')
@@ -84,8 +102,13 @@ export class WishesController {
     return await this.queryBus.execute(query);
   }
 
+  @ApiBearerAuth()
   @ApiBody({ required: true, type: CreateWishDto })
   @ApiCreatedResponse({ description: 'Wish created successfully.' })
+  @ApiUnauthorizedResponse({ description: 'User is not authenticated.' })
+  @ApiForbiddenResponse({
+    description: 'This resource is prohibited for the authenticated user.',
+  })
   @ApiBadRequestResponse({ description: 'Something went wrong.' })
   @Post()
   async post(@Body() dto: CreateWishDto): Promise<void> {
@@ -102,8 +125,13 @@ export class WishesController {
     await this.commandBus.execute(command);
   }
 
+  @ApiBearerAuth()
   @ApiBody({ required: true, type: UpdateWishDto })
   @ApiCreatedResponse({ description: 'Wish updated successfully.' })
+  @ApiUnauthorizedResponse({ description: 'User is not authenticated.' })
+  @ApiForbiddenResponse({
+    description: 'This resource is prohibited for the authenticated user.',
+  })
   @ApiBadRequestResponse({ description: 'Something went wrong.' })
   @Patch()
   async update(@Body() dto: UpdateWishDto): Promise<void> {
@@ -118,7 +146,12 @@ export class WishesController {
     await this.commandBus.execute(command);
   }
 
+  @ApiBearerAuth()
   @ApiOkResponse({ description: 'Wish deleted successfully.' })
+  @ApiUnauthorizedResponse({ description: 'User is not authenticated.' })
+  @ApiForbiddenResponse({
+    description: 'This resource is prohibited for the authenticated user.',
+  })
   @ApiNotFoundResponse({ description: 'Wish not found.' })
   @ApiBadRequestResponse({ description: 'Something went wrong.' })
   @Delete(':id')
@@ -127,7 +160,12 @@ export class WishesController {
     await this.commandBus.execute(command);
   }
 
+  @ApiBearerAuth()
   @ApiOkResponse({ description: 'Wish undeleted successfully.' })
+  @ApiUnauthorizedResponse({ description: 'User is not authenticated.' })
+  @ApiForbiddenResponse({
+    description: 'This resource is prohibited for the authenticated user.',
+  })
   @ApiNotFoundResponse({ description: 'Wish not found.' })
   @ApiBadRequestResponse({ description: 'Something went wrong.' })
   @Patch('undelete/:id')
@@ -136,7 +174,12 @@ export class WishesController {
     await this.commandBus.execute(command);
   }
 
+  @ApiBearerAuth()
   @ApiOkResponse({ description: 'Wish completed successfully.' })
+  @ApiUnauthorizedResponse({ description: 'User is not authenticated.' })
+  @ApiForbiddenResponse({
+    description: 'This resource is prohibited for the authenticated user.',
+  })
   @ApiNotFoundResponse({ description: 'Wish not found.' })
   @ApiBadRequestResponse({ description: 'Something went wrong.' })
   @Patch('complete/:id/:completionDate')
@@ -148,7 +191,12 @@ export class WishesController {
     await this.commandBus.execute(command);
   }
 
+  @ApiBearerAuth()
   @ApiOkResponse({ description: 'Wish uncompleted successfully.' })
+  @ApiUnauthorizedResponse({ description: 'User is not authenticated.' })
+  @ApiForbiddenResponse({
+    description: 'This resource is prohibited for the authenticated user.',
+  })
   @ApiNotFoundResponse({ description: 'Wish not found.' })
   @ApiBadRequestResponse({ description: 'Something went wrong.' })
   @Patch('uncomplete/:id')
@@ -157,8 +205,13 @@ export class WishesController {
     await this.commandBus.execute(command);
   }
 
+  @ApiBearerAuth()
   @ApiOkResponse({
     description: 'Wish privacy level changed successfully.',
+  })
+  @ApiUnauthorizedResponse({ description: 'User is not authenticated.' })
+  @ApiForbiddenResponse({
+    description: 'This resource is prohibited for the authenticated user.',
   })
   @ApiNotFoundResponse({ description: 'Wish not found.' })
   @ApiBadRequestResponse({ description: 'Something went wrong.' })
@@ -173,8 +226,13 @@ export class WishesController {
     await this.commandBus.execute(command);
   }
 
+  @ApiBearerAuth()
   @ApiBody({ required: true, type: CreateWishStageDto })
   @ApiCreatedResponse({ description: 'Wish stage created successfully.' })
+  @ApiUnauthorizedResponse({ description: 'User is not authenticated.' })
+  @ApiForbiddenResponse({
+    description: 'This resource is prohibited for the authenticated user.',
+  })
   @ApiBadRequestResponse({ description: 'Something went wrong.' })
   @Post('stage')
   async createWishStage(@Body() dto: CreateWishStageDto): Promise<void> {
@@ -189,8 +247,13 @@ export class WishesController {
     await this.commandBus.execute(command);
   }
 
+  @ApiBearerAuth()
   @ApiBody({ required: true, type: UpdateWishStageDto })
   @ApiCreatedResponse({ description: 'Wish stage updated successfully.' })
+  @ApiUnauthorizedResponse({ description: 'User is not authenticated.' })
+  @ApiForbiddenResponse({
+    description: 'This resource is prohibited for the authenticated user.',
+  })
   @ApiBadRequestResponse({ description: 'Something went wrong.' })
   @Patch('stage')
   async updateWishStage(@Body() dto: UpdateWishStageDto): Promise<void> {
@@ -204,7 +267,12 @@ export class WishesController {
     await this.commandBus.execute(command);
   }
 
+  @ApiBearerAuth()
   @ApiOkResponse({ description: 'Wish stage deleted successfully.' })
+  @ApiUnauthorizedResponse({ description: 'User is not authenticated.' })
+  @ApiForbiddenResponse({
+    description: 'This resource is prohibited for the authenticated user.',
+  })
   @ApiNotFoundResponse({ description: 'Wish stage not found.' })
   @ApiBadRequestResponse({ description: 'Something went wrong.' })
   @Delete('stage/:wishStageId')
