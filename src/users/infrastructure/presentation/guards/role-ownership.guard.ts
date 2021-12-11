@@ -3,8 +3,8 @@ import { OutputUserDto } from '../../../application/dtos';
 import { Role } from '../../../domain/value-objects';
 
 export const enum Ownership {
-  Own = 0,
-  Any = 1,
+  Own = 'Own',
+  Any = 'Any',
 }
 
 type RoleOwnership = { role: Role; ownership: Ownership };
