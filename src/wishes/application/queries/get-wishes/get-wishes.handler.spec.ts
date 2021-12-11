@@ -4,80 +4,84 @@ import { Wish } from '../../../domain/entities';
 import { WishRepository } from '../../../domain/repositories';
 import { PrivacyLevel } from '../../../domain/value-objects';
 
+const queries = [new GetWishesQuery()];
+
 describe('wishes', () => {
   describe('application', () => {
     describe('queries', () => {
       describe('get-wishes', () => {
-        test('should return an empty wishes array', async () => {
-          // Arrange
-          const wishRepository = mocked<WishRepository>({
-            getAll: jest.fn().mockReturnValue([]),
-          } as unknown as WishRepository);
+        test.each(queries)(
+          'should return an empty wishes array',
+          async (query: GetWishesQuery) => {
+            // Arrange
+            const wishRepository = mocked<WishRepository>({
+              getAll: jest.fn().mockReturnValue([]),
+            } as unknown as WishRepository);
 
-          const query = mocked<GetWishesQuery>({} as unknown as GetWishesQuery);
+            const handler = new GetWishesHandler(wishRepository);
 
-          const handler = new GetWishesHandler(wishRepository);
+            // Act
+            const outputWishes = await handler.execute(query);
 
-          // Act
-          const outputWishes = await handler.execute(query);
+            // Assert
+            expect(outputWishes.length).toBe(0);
+          },
+        );
 
-          // Assert
-          expect(outputWishes.length).toBe(0);
-        });
-
-        test('should return an array with one OutputWishDto', async () => {
-          // Arrange
-          const wish = mocked<Wish>({
-            id: {
-              getId: 'id 0',
-            },
-            title: {
-              getTitle: 'title 0',
-            },
-            description: {
-              getDescription: 'description 0',
-            },
-            privacyLevel: {
-              getPrivacyLevel: PrivacyLevel.Public,
-            },
-            createdAt: {
-              getMilliseconds: 2,
-            },
-            updatedAt: {
-              getMilliseconds: 2,
-            },
-            wisher: {
+        test.each(queries)(
+          'should return an array with one OutputWishDto',
+          async (query: GetWishesQuery) => {
+            // Arrange
+            const wish = mocked<Wish>({
               id: {
-                getId: 'wisher id 0',
+                getId: 'id 0',
               },
-            },
-            urls: [],
-            imageUrls: [],
-            categories: [],
-            stages: [],
-            deletedAt: {
-              getMilliseconds: 2,
-            },
-            completedAt: {
-              getMilliseconds: 2,
-            },
-          } as unknown as Wish);
+              title: {
+                getTitle: 'title 0',
+              },
+              description: {
+                getDescription: 'description 0',
+              },
+              privacyLevel: {
+                getPrivacyLevel: PrivacyLevel.Public,
+              },
+              createdAt: {
+                getMilliseconds: 2,
+              },
+              updatedAt: {
+                getMilliseconds: 2,
+              },
+              wisher: {
+                id: {
+                  getId: 'wisher id 0',
+                },
+              },
+              urls: [],
+              imageUrls: [],
+              categories: [],
+              stages: [],
+              deletedAt: {
+                getMilliseconds: 2,
+              },
+              completedAt: {
+                getMilliseconds: 2,
+              },
+            } as unknown as Wish);
 
-          const wishRepository = mocked<WishRepository>({
-            getAll: jest.fn().mockReturnValue([wish]),
-          } as unknown as WishRepository);
+            const wishRepository = mocked<WishRepository>({
+              getAll: jest.fn().mockReturnValue([wish]),
+            } as unknown as WishRepository);
 
-          const query = mocked<GetWishesQuery>({} as unknown as GetWishesQuery);
+            const handler = new GetWishesHandler(wishRepository);
 
-          const handler = new GetWishesHandler(wishRepository);
+            // Act
+            const outputWishes = await handler.execute(query);
 
-          // Act
-          const outputWishes = await handler.execute(query);
-
-          // Assert
-          expect(outputWishes.length).toBe(1);
-          expect(outputWishes[0].id).toBe(wish.id.getId);
-        });
+            // Assert
+            expect(outputWishes.length).toBe(1);
+            expect(outputWishes[0].id).toBe(wish.id.getId);
+          },
+        );
       });
     });
   });
