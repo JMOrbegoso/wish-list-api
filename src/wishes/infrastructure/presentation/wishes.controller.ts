@@ -40,6 +40,7 @@ import {
 } from '../../application/queries';
 import {
   ChangeWishPrivacyLevelDto,
+  CompleteWishDto,
   CreateWishDto,
   CreateWishStageDto,
   UpdateWishDto,
@@ -47,8 +48,7 @@ import {
   WishIdDto,
   WishStageIdDto,
   WisherIdDto,
-} from './dto';
-import { CompleteWishDto } from './dto/complete-wish.dto';
+} from '../dto';
 
 @ApiTags('WishesController')
 @Controller('wishes')

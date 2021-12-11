@@ -8,13 +8,13 @@ import {
   IsString,
   MaxLength,
 } from 'class-validator';
-import { Wish } from '../../../domain/entities';
+import { Wish } from '../../domain/entities';
 import {
   CategoryName,
   PrivacyLevel,
   WishDescription,
   WishTitle,
-} from '../../../domain/value-objects';
+} from '../../domain/value-objects';
 
 export class CreateWishDto {
   @ApiProperty({
