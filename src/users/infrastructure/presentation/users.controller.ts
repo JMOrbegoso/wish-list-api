@@ -31,6 +31,7 @@ import {
 } from '@nestjs/swagger';
 import { diskStorage } from 'multer';
 import { v4 as uuid } from 'uuid';
+import { ParamAndBodySameIdGuard } from '../../../shared/infrastructure/presentation/guards';
 import {
   BlockUserCommand,
   CreateUserCommand,
@@ -62,11 +63,7 @@ import {
   updateUserPasswordDtoToUpdateUserPasswordCommand,
   updateUserProfileDtoToUpdateUserProfileCommand,
 } from '../mappings';
-import {
-  Ownership,
-  ParamAndBodySameIdGuard,
-  RoleOwnershipGuard,
-} from './guards';
+import { Ownership, RoleOwnershipGuard } from './guards';
 
 @ApiTags('UsersController')
 @Controller('users')
