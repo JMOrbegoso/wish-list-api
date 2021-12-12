@@ -1,4 +1,4 @@
-import { deepEqual } from '../../helpers';
+import { deepEqual } from '../../../core/helpers';
 
 export abstract class ValueObject<T> {
   protected readonly value: T;

@@ -1,6 +1,6 @@
 import { normalizeString } from '..';
 
-describe('shared', () => {
+describe('core', () => {
   describe('helpers', () => {
     describe('normalizeString', () => {
       it('normalize an undefined should return an empty string', () => {

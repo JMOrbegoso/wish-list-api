@@ -1,6 +1,6 @@
 import { deepEqual } from '..';
 
-describe('shared', () => {
+describe('core', () => {
   describe('helpers', () => {
     describe('deepEqual', () => {
       it('comparing undefineds should throw error', () => {

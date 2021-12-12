@@ -1,6 +1,6 @@
 import { InvalidEmailError, MalformedEmailError } from '..';
+import { normalizeString } from '../../../../core/helpers';
 import { ValueObject } from '../../../../shared/domain/value-objects';
-import { normalizeString } from '../../../../shared/helpers';
 
 export class Email extends ValueObject<string> {
   public static readonly Regex =
