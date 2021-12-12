@@ -1,5 +1,5 @@
-import { Repository } from '../../../core/domain/repositories';
-import { UniqueId } from '../../../core/domain/value-objects';
+import { Repository } from '../../../shared/domain/repositories';
+import { UniqueId } from '../../../shared/domain/value-objects';
 import { RefreshToken } from '../entities';
 import { IpAddress } from '../value-objects';
 

@@ -7,7 +7,7 @@ const validValues = [
   '61872ad79452gd41c8c80f81',
 ];
 
-describe('core', () => {
+describe('shared', () => {
   describe('domain', () => {
     describe('value-objects', () => {
       describe('unique-id', () => {

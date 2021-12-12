@@ -1,7 +1,7 @@
 import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { mocked } from 'ts-jest/utils';
 import { UpdateUserProfileCommand, UpdateUserProfileHandler } from '..';
-import { UnitOfWork } from '../../../../core/domain/repositories';
+import { UnitOfWork } from '../../../../shared/domain/repositories';
 import { User } from '../../../domain/entities';
 import { UserRepository } from '../../../domain/repositories';
 

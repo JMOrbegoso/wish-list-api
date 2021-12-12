@@ -1,12 +1,12 @@
 import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { CreateWishCommand } from '..';
-import { UnitOfWork } from '../../../../core/domain/repositories';
+import { UnitOfWork } from '../../../../shared/domain/repositories';
 import {
   MillisecondsDate,
   UniqueId,
   WebUrl,
-} from '../../../../core/domain/value-objects';
+} from '../../../../shared/domain/value-objects';
 import { UserRepository } from '../../../../users/domain/repositories';
 import { Wish, Wisher } from '../../../domain/entities';
 import { WishRepository } from '../../../domain/repositories';

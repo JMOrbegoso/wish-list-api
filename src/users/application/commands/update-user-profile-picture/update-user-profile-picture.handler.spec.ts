@@ -4,7 +4,7 @@ import {
   UpdateUserProfilePictureCommand,
   UpdateUserProfilePictureHandler,
 } from '..';
-import { UnitOfWork } from '../../../../core/domain/repositories';
+import { UnitOfWork } from '../../../../shared/domain/repositories';
 import { User } from '../../../domain/entities';
 import { UserRepository } from '../../../domain/repositories';
 

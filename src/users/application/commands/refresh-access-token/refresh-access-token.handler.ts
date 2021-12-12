@@ -1,8 +1,8 @@
 import { UnauthorizedException } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { RefreshAccessTokenCommand } from '..';
-import { UnitOfWork } from '../../../../core/domain/repositories';
-import { UniqueId } from '../../../../core/domain/value-objects';
+import { UnitOfWork } from '../../../../shared/domain/repositories';
+import { UniqueId } from '../../../../shared/domain/value-objects';
 import { RefreshToken, User } from '../../../domain/entities';
 import {
   RefreshTokenRepository,

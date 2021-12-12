@@ -1,5 +1,5 @@
 import { mocked } from 'ts-jest/utils';
-import { WebUrl } from '../../../core/domain/value-objects';
+import { WebUrl } from '../../../shared/domain/value-objects';
 import { Wish, WishStage } from '../../domain/entities';
 import { CategoryName, PrivacyLevel } from '../../domain/value-objects';
 import { wishToOutputWishDto } from '.';

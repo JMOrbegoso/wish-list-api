@@ -1,8 +1,8 @@
 import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { VerifyUserCommand } from '..';
-import { UnitOfWork } from '../../../../core/domain/repositories';
-import { UniqueId } from '../../../../core/domain/value-objects';
+import { UnitOfWork } from '../../../../shared/domain/repositories';
+import { UniqueId } from '../../../../shared/domain/value-objects';
 import { VerificationCode } from '../../../domain/entities';
 import { UserRepository } from '../../../domain/repositories';
 

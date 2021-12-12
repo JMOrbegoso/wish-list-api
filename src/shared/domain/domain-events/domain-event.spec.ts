@@ -1,7 +1,7 @@
 import { UniqueId } from '../value-objects';
 import { DomainEvent } from './domain-event';
 
-describe('core', () => {
+describe('shared', () => {
   describe('domain', () => {
     describe('domain-events', () => {
       describe('domain-event', () => {

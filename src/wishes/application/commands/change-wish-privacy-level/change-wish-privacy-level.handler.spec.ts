@@ -4,7 +4,7 @@ import {
   ChangeWishPrivacyLevelCommand,
   ChangeWishPrivacyLevelHandler,
 } from '..';
-import { UnitOfWork } from '../../../../core/domain/repositories';
+import { UnitOfWork } from '../../../../shared/domain/repositories';
 import { Wish } from '../../../domain/entities';
 import { WishRepository } from '../../../domain/repositories';
 import { PrivacyLevel } from '../../../domain/value-objects';

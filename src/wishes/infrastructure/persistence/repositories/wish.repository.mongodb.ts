@@ -4,7 +4,7 @@ import {
   Repository as MikroOrmRepository,
 } from '@mikro-orm/core';
 import { ObjectId } from '@mikro-orm/mongodb';
-import { UniqueId } from '../../../../core/domain/value-objects';
+import { UniqueId } from '../../../../shared/domain/value-objects';
 import { Wish, WishStage, Wisher } from '../../../domain/entities';
 import { WishRepository } from '../../../domain/repositories';
 import { PrivacyLevel } from '../../../domain/value-objects';

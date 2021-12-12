@@ -1,5 +1,5 @@
 import { InvalidWishPrivacyLevelError } from '..';
-import { ValueObject } from '../../../../core/domain/value-objects';
+import { ValueObject } from '../../../../shared/domain/value-objects';
 
 export enum PrivacyLevel {
   Public = 'Public',

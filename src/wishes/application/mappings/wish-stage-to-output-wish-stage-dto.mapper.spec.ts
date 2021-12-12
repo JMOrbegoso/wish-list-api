@@ -1,5 +1,5 @@
 import { mocked } from 'ts-jest/utils';
-import { WebUrl } from '../../../core/domain/value-objects';
+import { WebUrl } from '../../../shared/domain/value-objects';
 import { WishStage } from '../../domain/entities';
 import { wishStageToOutputWishStageDto } from '.';
 

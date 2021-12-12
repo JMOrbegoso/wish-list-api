@@ -1,4 +1,4 @@
-import { UniqueId } from '../../../core/domain/value-objects';
+import { UniqueId } from '../../../shared/domain/value-objects';
 import { Wisher } from '../../domain/entities';
 import { WisherEntity } from '../persistence/entities';
 

@@ -1,7 +1,7 @@
 import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { mocked } from 'ts-jest/utils';
 import { DeleteWishCommand, DeleteWishHandler } from '..';
-import { UnitOfWork } from '../../../../core/domain/repositories';
+import { UnitOfWork } from '../../../../shared/domain/repositories';
 import { Wish } from '../../../domain/entities';
 import { WishRepository } from '../../../domain/repositories';
 

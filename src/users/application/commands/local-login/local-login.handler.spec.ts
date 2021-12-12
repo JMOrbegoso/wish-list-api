@@ -1,8 +1,8 @@
 import { NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { mocked } from 'ts-jest/utils';
 import { LocalLoginCommand, LocalLoginHandler } from '..';
-import { UnitOfWork } from '../../../../core/domain/repositories';
-import { UniqueId } from '../../../../core/domain/value-objects';
+import { UnitOfWork } from '../../../../shared/domain/repositories';
+import { UniqueId } from '../../../../shared/domain/value-objects';
 import { User } from '../../../domain/entities';
 import {
   RefreshTokenRepository,

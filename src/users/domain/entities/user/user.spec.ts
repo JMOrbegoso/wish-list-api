@@ -5,7 +5,7 @@ import {
   MillisecondsDate,
   UniqueId,
   WebUrl,
-} from '../../../../core/domain/value-objects';
+} from '../../../../shared/domain/value-objects';
 import {
   Biography,
   Email,

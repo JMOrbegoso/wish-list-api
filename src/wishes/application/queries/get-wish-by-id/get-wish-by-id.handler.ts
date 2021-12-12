@@ -1,7 +1,7 @@
 import { NotFoundException } from '@nestjs/common';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetWishByIdQuery } from '..';
-import { UniqueId } from '../../../../core/domain/value-objects';
+import { UniqueId } from '../../../../shared/domain/value-objects';
 import { WishRepository } from '../../../domain/repositories';
 import { OutputWishDto } from '../../dtos';
 import { wishToOutputWishDto } from '../../mappings';

@@ -1,5 +1,5 @@
-import { Entity } from '../../../../core/domain/entities';
-import { UniqueId } from '../../../../core/domain/value-objects';
+import { Entity } from '../../../../shared/domain/entities';
+import { UniqueId } from '../../../../shared/domain/value-objects';
 
 export class VerificationCode extends Entity {
   private constructor(id: UniqueId) {

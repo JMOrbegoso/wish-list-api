@@ -1,5 +1,5 @@
-import { Repository } from '../../../core/domain/repositories';
-import { UniqueId } from '../../../core/domain/value-objects';
+import { Repository } from '../../../shared/domain/repositories';
+import { UniqueId } from '../../../shared/domain/value-objects';
 import { User, VerificationCode } from '../entities';
 import { Email, Username } from '../value-objects';
 

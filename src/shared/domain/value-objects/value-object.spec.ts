@@ -23,7 +23,7 @@ const validValues = [
   '999999',
 ];
 
-describe('core', () => {
+describe('shared', () => {
   describe('domain', () => {
     describe('value-objects', () => {
       describe('value-object', () => {

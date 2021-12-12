@@ -18,13 +18,13 @@ import {
   WishStage,
   Wisher,
 } from '..';
-import { AggregateRoot } from '../../../../core/domain/entities';
+import { AggregateRoot } from '../../../../shared/domain/entities';
 import {
   InvalidMillisecondsDateError,
   MillisecondsDate,
   UniqueId,
   WebUrl,
-} from '../../../../core/domain/value-objects';
+} from '../../../../shared/domain/value-objects';
 import {
   CategoryName,
   InvalidWishDescriptionError,

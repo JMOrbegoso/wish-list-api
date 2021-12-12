@@ -1,8 +1,8 @@
-import { AggregateRoot } from '../../../../core/domain/entities';
+import { AggregateRoot } from '../../../../shared/domain/entities';
 import {
   MillisecondsDate,
   UniqueId,
-} from '../../../../core/domain/value-objects';
+} from '../../../../shared/domain/value-objects';
 import { IpAddress, SecondsDuration } from '../../value-objects';
 
 export class RefreshToken extends AggregateRoot {

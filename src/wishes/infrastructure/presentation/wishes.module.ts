@@ -2,8 +2,8 @@ import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 import { MulterModule } from '@nestjs/platform-express';
-import { UnitOfWork } from '../../../core/domain/repositories';
-import { UnitOfWorkMongoDb } from '../../../core/infrastructure/repositories';
+import { UnitOfWork } from '../../../shared/domain/repositories';
+import { UnitOfWorkMongoDb } from '../../../shared/infrastructure/repositories';
 import { UserRepository } from '../../../users/domain/repositories';
 import { UserRepositoryMongoDb } from '../../../users/infrastructure/persistence/repositories';
 import {

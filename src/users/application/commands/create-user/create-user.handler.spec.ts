@@ -1,8 +1,8 @@
 import { BadRequestException } from '@nestjs/common';
 import { mocked } from 'ts-jest/utils';
 import { CreateUserCommand, CreateUserHandler } from '..';
-import { UnitOfWork } from '../../../../core/domain/repositories';
-import { UniqueId } from '../../../../core/domain/value-objects';
+import { UnitOfWork } from '../../../../shared/domain/repositories';
+import { UniqueId } from '../../../../shared/domain/value-objects';
 import { UserRepository } from '../../../domain/repositories';
 import {
   EmailSenderService,

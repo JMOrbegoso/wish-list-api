@@ -11,7 +11,7 @@ const validValues = [
   new Date('2010-04-04'),
 ];
 
-describe('core', () => {
+describe('shared', () => {
   describe('domain', () => {
     describe('value-objects', () => {
       describe('milliseconds-date', () => {

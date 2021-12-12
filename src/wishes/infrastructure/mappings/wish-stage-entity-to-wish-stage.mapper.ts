@@ -2,7 +2,7 @@ import {
   MillisecondsDate,
   UniqueId,
   WebUrl,
-} from '../../../core/domain/value-objects';
+} from '../../../shared/domain/value-objects';
 import { WishStage } from '../../domain/entities';
 import { WishDescription, WishTitle } from '../../domain/value-objects';
 import { WishStageEntity } from '../persistence/entities';

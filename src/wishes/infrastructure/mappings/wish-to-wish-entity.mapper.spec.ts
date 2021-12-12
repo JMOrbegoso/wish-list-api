@@ -1,6 +1,6 @@
 import { MockedObject } from 'ts-jest/dist/utils/testing';
 import { mocked } from 'ts-jest/utils';
-import { WebUrl } from '../../../core/domain/value-objects';
+import { WebUrl } from '../../../shared/domain/value-objects';
 import { Wish, WishStage } from '../../domain/entities';
 import { CategoryName, PrivacyLevel } from '../../domain/value-objects';
 import { WishStageEntity, WisherEntity } from '../persistence/entities';

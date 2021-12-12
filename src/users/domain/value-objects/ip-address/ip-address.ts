@@ -1,5 +1,5 @@
 import { InvalidIpAddressError } from '..';
-import { ValueObject } from '../../../../core/domain/value-objects';
+import { ValueObject } from '../../../../shared/domain/value-objects';
 
 export class IpAddress extends ValueObject<string> {
   protected validate(value: string): void {

@@ -19,7 +19,7 @@ const validValues = [
   'http://localhost:3000/users/profile-pictures/01c0fd3a-1eaa-486d-99ad-81bbb9bbf1d4.jpg',
 ];
 
-describe('core', () => {
+describe('shared', () => {
   describe('domain', () => {
     describe('value-objects', () => {
       describe('web-url', () => {

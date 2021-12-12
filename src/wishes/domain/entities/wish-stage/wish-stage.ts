@@ -4,13 +4,13 @@ import {
   TooManyWishStageImagesError,
   TooManyWishStageUrlsError,
 } from '..';
-import { Entity } from '../../../../core/domain/entities';
+import { Entity } from '../../../../shared/domain/entities';
 import {
   InvalidMillisecondsDateError,
   MillisecondsDate,
   UniqueId,
   WebUrl,
-} from '../../../../core/domain/value-objects';
+} from '../../../../shared/domain/value-objects';
 import {
   InvalidWishDescriptionError,
   InvalidWishTitleError,

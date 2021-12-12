@@ -1,8 +1,8 @@
 import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { UpdateWishCommand } from '..';
-import { UnitOfWork } from '../../../../core/domain/repositories';
-import { UniqueId, WebUrl } from '../../../../core/domain/value-objects';
+import { UnitOfWork } from '../../../../shared/domain/repositories';
+import { UniqueId, WebUrl } from '../../../../shared/domain/value-objects';
 import { WishRepository } from '../../../domain/repositories';
 import {
   CategoryName,

@@ -67,7 +67,7 @@ const validValues = [
   ],
 ];
 
-describe('core', () => {
+describe('shared', () => {
   describe('domain', () => {
     describe('entities', () => {
       describe('aggregate-root', () => {

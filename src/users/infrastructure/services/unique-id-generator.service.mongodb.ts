@@ -1,6 +1,6 @@
 import { ObjectId } from '@mikro-orm/mongodb';
 import { Injectable } from '@nestjs/common';
-import { UniqueId } from '../../../core/domain/value-objects';
+import { UniqueId } from '../../../shared/domain/value-objects';
 import { UniqueIdGeneratorService } from '../../application/services/unique-id-generator.service';
 
 @Injectable()
