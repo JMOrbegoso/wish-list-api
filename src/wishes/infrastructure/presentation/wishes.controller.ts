@@ -29,7 +29,11 @@ import {
 import { SameIdRequestGuard } from '../../../shared/infrastructure/presentation/guards';
 import { Role } from '../../../users/domain/value-objects';
 import { RolesKey } from '../../../users/infrastructure/presentation/decorators';
-import { RolesGuard } from '../../../users/infrastructure/presentation/guards';
+import {
+  RoleOwnershipGuard,
+  RoleOwnershipKey,
+  RolesGuard,
+} from '../../../users/infrastructure/presentation/guards';
 import {
   ChangeWishPrivacyLevelCommand,
   CompleteWishCommand,
@@ -94,6 +98,18 @@ export class WishesController {
   @ApiForbiddenResponse({
     description: 'This resource is prohibited for the authenticated user.',
   })
+  @SetMetadata<string, RoleOwnership>(RoleOwnershipKey, {
+    ownerships: [
+      { role: Role.admin(), ownership: Ownership.Any },
+      { role: Role.moderator(), ownership: Ownership.Any },
+      { role: Role.basic(), ownership: Ownership.Own },
+    ],
+    idProperty: {
+      target: 'params',
+      name: 'wisherId',
+    },
+  })
+  @UseGuards(AuthGuard('jwt'), RoleOwnershipGuard)
   @Get('wisherId/:wisherId')
   async getWishesByWisherId(
     @Param() params: WisherIdDto,
@@ -136,6 +152,18 @@ export class WishesController {
     description: 'This resource is prohibited for the authenticated user.',
   })
   @ApiBadRequestResponse({ description: 'Something went wrong.' })
+  @SetMetadata<string, RoleOwnership>(RoleOwnershipKey, {
+    ownerships: [
+      { role: Role.admin(), ownership: Ownership.Own },
+      { role: Role.moderator(), ownership: Ownership.Own },
+      { role: Role.basic(), ownership: Ownership.Own },
+    ],
+    idProperty: {
+      target: 'body',
+      name: 'wisherId',
+    },
+  })
+  @UseGuards(AuthGuard('jwt'), RoleOwnershipGuard)
   @Post()
   async post(@Body() dto: CreateWishDto): Promise<void> {
     const command = new CreateWishCommand(
