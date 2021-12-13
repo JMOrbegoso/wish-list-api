@@ -9,6 +9,7 @@ import {
   Patch,
   Post,
   Req,
+  SetMetadata,
   UploadedFile,
   UseGuards,
   UseInterceptors,
@@ -31,7 +32,13 @@ import {
 } from '@nestjs/swagger';
 import { diskStorage } from 'multer';
 import { v4 as uuid } from 'uuid';
-import { ParamAndBodySameIdGuard } from '../../../shared/infrastructure/presentation/guards';
+import {
+  Ownership,
+  RequestIds,
+  RequestIdsKey,
+  RoleOwnership,
+} from '../../../shared/infrastructure/presentation/decorators';
+import { SameIdRequestGuard } from '../../../shared/infrastructure/presentation/guards';
 import {
   BlockUserCommand,
   CreateUserCommand,
@@ -63,7 +70,7 @@ import {
   updateUserPasswordDtoToUpdateUserPasswordCommand,
   updateUserProfileDtoToUpdateUserProfileCommand,
 } from '../mappings';
-import { Ownership, RoleOwnershipGuard } from './guards';
+import { RoleOwnershipGuard, RoleOwnershipKey } from './guards';
 
 @ApiTags('UsersController')
 @Controller('users')
@@ -124,18 +131,22 @@ export class UsersController {
   })
   @ApiNotFoundResponse({ description: 'User not found.' })
   @ApiBadRequestResponse({ description: 'Something went wrong.' })
-  @UseGuards(
-    AuthGuard('jwt'),
-    new ParamAndBodySameIdGuard(),
-    new RoleOwnershipGuard(
-      [
-        { role: Role.admin(), ownership: Ownership.Any },
-        { role: Role.moderator(), ownership: Ownership.Any },
-        { role: Role.basic(), ownership: Ownership.Own },
-      ],
-      'body',
-    ),
-  )
+  @SetMetadata<string, RequestIds>(RequestIdsKey, {
+    bodyIdPropertyName: 'id',
+    paramsIdPropertyName: 'id',
+  })
+  @SetMetadata<string, RoleOwnership>(RoleOwnershipKey, {
+    ownerships: [
+      { role: Role.admin(), ownership: Ownership.Any },
+      { role: Role.moderator(), ownership: Ownership.Any },
+      { role: Role.basic(), ownership: Ownership.Own },
+    ],
+    idProperty: {
+      target: 'body',
+      name: 'id',
+    },
+  })
+  @UseGuards(AuthGuard('jwt'), SameIdRequestGuard, RoleOwnershipGuard)
   @Patch('profile/:id')
   async updateProfile(
     @Param() params: UserIdDto,
@@ -168,17 +179,18 @@ export class UsersController {
   @ApiNotFoundResponse({ description: 'User not found.' })
   @ApiPayloadTooLargeResponse({ description: 'File too large.' })
   @ApiBadRequestResponse({ description: 'Something went wrong.' })
-  @UseGuards(
-    AuthGuard('jwt'),
-    new RoleOwnershipGuard(
-      [
-        { role: Role.admin(), ownership: Ownership.Own },
-        { role: Role.moderator(), ownership: Ownership.Own },
-        { role: Role.basic(), ownership: Ownership.Own },
-      ],
-      'params',
-    ),
-  )
+  @SetMetadata<string, RoleOwnership>(RoleOwnershipKey, {
+    ownerships: [
+      { role: Role.admin(), ownership: Ownership.Own },
+      { role: Role.moderator(), ownership: Ownership.Own },
+      { role: Role.basic(), ownership: Ownership.Own },
+    ],
+    idProperty: {
+      target: 'params',
+      name: 'id',
+    },
+  })
+  @UseGuards(AuthGuard('jwt'), RoleOwnershipGuard)
   @Patch('profile-picture/:id')
   @UseInterceptors(
     FileInterceptor('file', {
@@ -219,17 +231,18 @@ export class UsersController {
   })
   @ApiNotFoundResponse({ description: 'User not found.' })
   @ApiBadRequestResponse({ description: 'Something went wrong.' })
-  @UseGuards(
-    AuthGuard('jwt'),
-    new RoleOwnershipGuard(
-      [
-        { role: Role.admin(), ownership: Ownership.Any },
-        { role: Role.moderator(), ownership: Ownership.Any },
-        { role: Role.basic(), ownership: Ownership.Own },
-      ],
-      'params',
-    ),
-  )
+  @SetMetadata<string, RoleOwnership>(RoleOwnershipKey, {
+    ownerships: [
+      { role: Role.admin(), ownership: Ownership.Any },
+      { role: Role.moderator(), ownership: Ownership.Any },
+      { role: Role.basic(), ownership: Ownership.Own },
+    ],
+    idProperty: {
+      target: 'params',
+      name: 'id',
+    },
+  })
+  @UseGuards(AuthGuard('jwt'), RoleOwnershipGuard)
   @Delete('profile-picture/:id')
   async deleteProfilePicture(@Param() params: UserIdDto): Promise<void> {
     const command = new UpdateUserProfilePictureCommand(params.id, null);
@@ -245,18 +258,22 @@ export class UsersController {
   })
   @ApiNotFoundResponse({ description: 'User not found.' })
   @ApiBadRequestResponse({ description: 'Something went wrong.' })
-  @UseGuards(
-    AuthGuard('jwt'),
-    new ParamAndBodySameIdGuard(),
-    new RoleOwnershipGuard(
-      [
-        { role: Role.admin(), ownership: Ownership.Own },
-        { role: Role.moderator(), ownership: Ownership.Own },
-        { role: Role.basic(), ownership: Ownership.Own },
-      ],
-      'body',
-    ),
-  )
+  @SetMetadata<string, RequestIds>(RequestIdsKey, {
+    bodyIdPropertyName: 'id',
+    paramsIdPropertyName: 'id',
+  })
+  @SetMetadata<string, RoleOwnership>(RoleOwnershipKey, {
+    ownerships: [
+      { role: Role.admin(), ownership: Ownership.Own },
+      { role: Role.moderator(), ownership: Ownership.Own },
+      { role: Role.basic(), ownership: Ownership.Own },
+    ],
+    idProperty: {
+      target: 'body',
+      name: 'id',
+    },
+  })
+  @UseGuards(AuthGuard('jwt'), SameIdRequestGuard, RoleOwnershipGuard)
   @Patch('update-password/:id')
   async updatePassword(
     @Param() params: UserIdDto,
@@ -275,16 +292,17 @@ export class UsersController {
   })
   @ApiNotFoundResponse({ description: 'User not found.' })
   @ApiBadRequestResponse({ description: 'Something went wrong.' })
-  @UseGuards(
-    AuthGuard('jwt'),
-    new RoleOwnershipGuard(
-      [
-        { role: Role.admin(), ownership: Ownership.Any },
-        { role: Role.moderator(), ownership: Ownership.Any },
-      ],
-      'params',
-    ),
-  )
+  @SetMetadata<string, RoleOwnership>(RoleOwnershipKey, {
+    ownerships: [
+      { role: Role.admin(), ownership: Ownership.Any },
+      { role: Role.moderator(), ownership: Ownership.Any },
+    ],
+    idProperty: {
+      target: 'params',
+      name: 'id',
+    },
+  })
+  @UseGuards(AuthGuard('jwt'), RoleOwnershipGuard)
   @Patch('block/:id')
   async blockUser(@Param() params: UserIdDto): Promise<void> {
     const command = new BlockUserCommand(params.id);
@@ -299,16 +317,17 @@ export class UsersController {
   })
   @ApiNotFoundResponse({ description: 'User not found.' })
   @ApiBadRequestResponse({ description: 'Something went wrong.' })
-  @UseGuards(
-    AuthGuard('jwt'),
-    new RoleOwnershipGuard(
-      [
-        { role: Role.admin(), ownership: Ownership.Any },
-        { role: Role.moderator(), ownership: Ownership.Any },
-      ],
-      'params',
-    ),
-  )
+  @SetMetadata<string, RoleOwnership>(RoleOwnershipKey, {
+    ownerships: [
+      { role: Role.admin(), ownership: Ownership.Any },
+      { role: Role.moderator(), ownership: Ownership.Any },
+    ],
+    idProperty: {
+      target: 'params',
+      name: 'id',
+    },
+  })
+  @UseGuards(AuthGuard('jwt'), RoleOwnershipGuard)
   @Patch('unblock/:id')
   async unblockUser(@Param() params: UserIdDto): Promise<void> {
     const command = new UnblockUserCommand(params.id);
@@ -323,16 +342,17 @@ export class UsersController {
   })
   @ApiNotFoundResponse({ description: 'User not found.' })
   @ApiBadRequestResponse({ description: 'Something went wrong.' })
-  @UseGuards(
-    AuthGuard('jwt'),
-    new RoleOwnershipGuard(
-      [
-        { role: Role.admin(), ownership: Ownership.Any },
-        { role: Role.moderator(), ownership: Ownership.Any },
-      ],
-      'params',
-    ),
-  )
+  @SetMetadata<string, RoleOwnership>(RoleOwnershipKey, {
+    ownerships: [
+      { role: Role.admin(), ownership: Ownership.Any },
+      { role: Role.moderator(), ownership: Ownership.Any },
+    ],
+    idProperty: {
+      target: 'params',
+      name: 'id',
+    },
+  })
+  @UseGuards(AuthGuard('jwt'), RoleOwnershipGuard)
   @Delete(':id')
   async deleteUser(@Param() params: UserIdDto): Promise<void> {
     const command = new DeleteUserCommand(params.id);
@@ -347,16 +367,17 @@ export class UsersController {
   })
   @ApiNotFoundResponse({ description: 'User not found.' })
   @ApiBadRequestResponse({ description: 'Something went wrong.' })
-  @UseGuards(
-    AuthGuard('jwt'),
-    new RoleOwnershipGuard(
-      [
-        { role: Role.admin(), ownership: Ownership.Any },
-        { role: Role.moderator(), ownership: Ownership.Any },
-      ],
-      'params',
-    ),
-  )
+  @SetMetadata<string, RoleOwnership>(RoleOwnershipKey, {
+    ownerships: [
+      { role: Role.admin(), ownership: Ownership.Any },
+      { role: Role.moderator(), ownership: Ownership.Any },
+    ],
+    idProperty: {
+      target: 'params',
+      name: 'id',
+    },
+  })
+  @UseGuards(AuthGuard('jwt'), RoleOwnershipGuard)
   @Patch('undelete/:id')
   async undeleteUser(@Param() params: UserIdDto): Promise<void> {
     const command = new UndeleteUserCommand(params.id);
