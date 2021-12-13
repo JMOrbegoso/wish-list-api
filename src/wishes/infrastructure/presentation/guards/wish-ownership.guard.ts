@@ -1,10 +1,10 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
+import { UniqueId } from '../../../../shared/domain/value-objects';
 import {
   Ownership,
   RoleOwnership,
 } from '../../../../shared/infrastructure/presentation/decorators';
-import { UniqueId } from '../../../../shared/domain/value-objects';
 import { WishRepository } from '../../../domain/repositories';
 
 export const WishOwnershipKey = 'WishOwnership';
