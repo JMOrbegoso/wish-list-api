@@ -24,6 +24,8 @@ import {
 } from '@nestjs/swagger';
 import { SameIdRequestGuard } from '../../../shared/infrastructure/presentation/guards';
 import { Role } from '../../../users/domain/value-objects';
+import { RolesKey } from '../../../users/infrastructure/presentation/decorators';
+import { RolesGuard } from '../../../users/infrastructure/presentation/guards';
 import {
   ChangeWishPrivacyLevelCommand,
   CompleteWishCommand,
@@ -68,6 +70,8 @@ export class WishesController {
   @ApiForbiddenResponse({
     description: 'This resource is prohibited for the authenticated user.',
   })
+  @SetMetadata<string, Role[]>(RolesKey, [Role.admin(), Role.moderator()])
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Get()
   async getAllWishes(): Promise<OutputWishDto[]> {
     const query = new GetWishesQuery();
