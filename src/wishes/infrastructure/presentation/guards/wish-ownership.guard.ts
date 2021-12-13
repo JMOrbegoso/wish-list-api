@@ -1,8 +1,13 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
+import {
+  Ownership,
+  RoleOwnership,
+} from '../../../../shared/infrastructure/presentation/decorators';
 import { UniqueId } from '../../../../shared/domain/value-objects';
 import { WishRepository } from '../../../domain/repositories';
-import { Ownership, WishOwnership, WishOwnershipKey } from '../decorators';
+
+export const WishOwnershipKey = 'WishOwnership';
 
 @Injectable()
 export class WishOwnershipGuard implements CanActivate {
@@ -14,7 +19,7 @@ export class WishOwnershipGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
 
-    const wishOwnership = this.reflector.get<WishOwnership>(
+    const wishOwnership = this.reflector.get<RoleOwnership>(
       WishOwnershipKey,
       context.getHandler(),
     );

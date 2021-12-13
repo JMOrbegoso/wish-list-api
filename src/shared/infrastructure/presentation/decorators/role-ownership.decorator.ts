@@ -1,7 +1,5 @@
 import { CustomDecorator, SetMetadata } from '@nestjs/common';
-import { Role } from '../../../domain/value-objects';
-
-export const RoleOwnershipKey = 'RoleOwnership';
+import { Role } from '../../../../users/domain/value-objects';
 
 export const enum Ownership {
   Own = 'Own',
@@ -17,5 +15,6 @@ export type RoleOwnership = {
 };
 
 export const RoleOwnershipDecorator = (
+  key: string,
   roleOwnership: RoleOwnership,
-): CustomDecorator<string> => SetMetadata(RoleOwnershipKey, roleOwnership);
+): CustomDecorator<string> => SetMetadata(key, roleOwnership);

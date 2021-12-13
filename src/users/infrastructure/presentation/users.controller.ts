@@ -33,8 +33,10 @@ import {
 import { diskStorage } from 'multer';
 import { v4 as uuid } from 'uuid';
 import {
+  Ownership,
   RequestIds,
   RequestIdsKey,
+  RoleOwnership,
 } from '../../../shared/infrastructure/presentation/decorators';
 import { SameIdRequestGuard } from '../../../shared/infrastructure/presentation/guards';
 import {
@@ -68,8 +70,7 @@ import {
   updateUserPasswordDtoToUpdateUserPasswordCommand,
   updateUserProfileDtoToUpdateUserProfileCommand,
 } from '../mappings';
-import { Ownership, RoleOwnership, RoleOwnershipKey } from './decorators';
-import { RoleOwnershipGuard } from './guards';
+import { RoleOwnershipGuard, RoleOwnershipKey } from './guards';
 
 @ApiTags('UsersController')
 @Controller('users')

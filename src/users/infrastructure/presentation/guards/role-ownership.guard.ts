@@ -1,7 +1,12 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
+import {
+  Ownership,
+  RoleOwnership,
+} from '../../../../shared/infrastructure/presentation/decorators';
 import { OutputUserDto } from '../../../application/dtos';
-import { Ownership, RoleOwnership, RoleOwnershipKey } from '../decorators';
+
+export const RoleOwnershipKey = 'RoleOwnership';
 
 @Injectable()
 export class RoleOwnershipGuard implements CanActivate {

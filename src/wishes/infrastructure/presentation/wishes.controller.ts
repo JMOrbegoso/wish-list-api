@@ -22,6 +22,10 @@ import {
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
+import {
+  Ownership,
+  RoleOwnership,
+} from '../../../shared/infrastructure/presentation/decorators';
 import { SameIdRequestGuard } from '../../../shared/infrastructure/presentation/guards';
 import { Role } from '../../../users/domain/value-objects';
 import { RolesKey } from '../../../users/infrastructure/presentation/decorators';
@@ -56,8 +60,7 @@ import {
   WishStageIdDto,
   WisherIdDto,
 } from '../dto';
-import { Ownership, WishOwnership, WishOwnershipKey } from './decorators';
-import { WishOwnershipGuard } from './guards';
+import { WishOwnershipGuard, WishOwnershipKey } from './guards';
 
 @ApiTags('WishesController')
 @Controller('wishes')
@@ -107,7 +110,7 @@ export class WishesController {
   })
   @ApiNotFoundResponse({ description: 'Wish not found.' })
   @ApiBadRequestResponse({ description: 'Something went wrong.' })
-  @SetMetadata<string, WishOwnership>(WishOwnershipKey, {
+  @SetMetadata<string, RoleOwnership>(WishOwnershipKey, {
     ownerships: [
       { role: Role.admin(), ownership: Ownership.Any },
       { role: Role.moderator(), ownership: Ownership.Any },
@@ -156,7 +159,7 @@ export class WishesController {
     description: 'This resource is prohibited for the authenticated user.',
   })
   @ApiBadRequestResponse({ description: 'Something went wrong.' })
-  @SetMetadata<string, WishOwnership>(WishOwnershipKey, {
+  @SetMetadata<string, RoleOwnership>(WishOwnershipKey, {
     ownerships: [
       { role: Role.admin(), ownership: Ownership.Any },
       { role: Role.moderator(), ownership: Ownership.Any },
@@ -189,7 +192,7 @@ export class WishesController {
   })
   @ApiNotFoundResponse({ description: 'Wish not found.' })
   @ApiBadRequestResponse({ description: 'Something went wrong.' })
-  @SetMetadata<string, WishOwnership>(WishOwnershipKey, {
+  @SetMetadata<string, RoleOwnership>(WishOwnershipKey, {
     ownerships: [
       { role: Role.admin(), ownership: Ownership.Any },
       { role: Role.moderator(), ownership: Ownership.Any },
@@ -215,7 +218,7 @@ export class WishesController {
   })
   @ApiNotFoundResponse({ description: 'Wish not found.' })
   @ApiBadRequestResponse({ description: 'Something went wrong.' })
-  @SetMetadata<string, WishOwnership>(WishOwnershipKey, {
+  @SetMetadata<string, RoleOwnership>(WishOwnershipKey, {
     ownerships: [
       { role: Role.admin(), ownership: Ownership.Any },
       { role: Role.moderator(), ownership: Ownership.Any },
@@ -241,7 +244,7 @@ export class WishesController {
   })
   @ApiNotFoundResponse({ description: 'Wish not found.' })
   @ApiBadRequestResponse({ description: 'Something went wrong.' })
-  @SetMetadata<string, WishOwnership>(WishOwnershipKey, {
+  @SetMetadata<string, RoleOwnership>(WishOwnershipKey, {
     ownerships: [
       { role: Role.admin(), ownership: Ownership.Own },
       { role: Role.moderator(), ownership: Ownership.Own },
@@ -270,7 +273,7 @@ export class WishesController {
   })
   @ApiNotFoundResponse({ description: 'Wish not found.' })
   @ApiBadRequestResponse({ description: 'Something went wrong.' })
-  @SetMetadata<string, WishOwnership>(WishOwnershipKey, {
+  @SetMetadata<string, RoleOwnership>(WishOwnershipKey, {
     ownerships: [
       { role: Role.admin(), ownership: Ownership.Own },
       { role: Role.moderator(), ownership: Ownership.Own },
@@ -298,7 +301,7 @@ export class WishesController {
   })
   @ApiNotFoundResponse({ description: 'Wish not found.' })
   @ApiBadRequestResponse({ description: 'Something went wrong.' })
-  @SetMetadata<string, WishOwnership>(WishOwnershipKey, {
+  @SetMetadata<string, RoleOwnership>(WishOwnershipKey, {
     ownerships: [
       { role: Role.admin(), ownership: Ownership.Own },
       { role: Role.moderator(), ownership: Ownership.Own },
