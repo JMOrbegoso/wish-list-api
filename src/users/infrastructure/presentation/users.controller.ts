@@ -9,6 +9,7 @@ import {
   Patch,
   Post,
   Req,
+  SetMetadata,
   UploadedFile,
   UseGuards,
   UseInterceptors,
@@ -31,7 +32,8 @@ import {
 } from '@nestjs/swagger';
 import { diskStorage } from 'multer';
 import { v4 as uuid } from 'uuid';
-import { ParamAndBodySameIdGuard } from '../../../shared/infrastructure/presentation/guards';
+import { RequestIdsKey } from '../../../shared/infrastructure/presentation/decorators';
+import { SameIdRequestGuard } from '../../../shared/infrastructure/presentation/guards';
 import {
   BlockUserCommand,
   CreateUserCommand,
@@ -124,9 +126,13 @@ export class UsersController {
   })
   @ApiNotFoundResponse({ description: 'User not found.' })
   @ApiBadRequestResponse({ description: 'Something went wrong.' })
+  @SetMetadata(RequestIdsKey, {
+    bodyIdPropertyName: 'id',
+    paramsIdPropertyName: 'id',
+  })
   @UseGuards(
     AuthGuard('jwt'),
-    new ParamAndBodySameIdGuard(),
+    SameIdRequestGuard,
     new RoleOwnershipGuard(
       [
         { role: Role.admin(), ownership: Ownership.Any },
@@ -245,9 +251,13 @@ export class UsersController {
   })
   @ApiNotFoundResponse({ description: 'User not found.' })
   @ApiBadRequestResponse({ description: 'Something went wrong.' })
+  @SetMetadata(RequestIdsKey, {
+    bodyIdPropertyName: 'id',
+    paramsIdPropertyName: 'id',
+  })
   @UseGuards(
     AuthGuard('jwt'),
-    new ParamAndBodySameIdGuard(),
+    SameIdRequestGuard,
     new RoleOwnershipGuard(
       [
         { role: Role.admin(), ownership: Ownership.Own },
