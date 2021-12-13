@@ -64,7 +64,12 @@ import {
   WishStageIdDto,
   WisherIdDto,
 } from '../dto';
-import { WishOwnershipGuard, WishOwnershipKey } from './guards';
+import {
+  WishOwnershipGuard,
+  WishOwnershipKey,
+  WishStageOwnershipGuard,
+  WishStageOwnershipKey,
+} from './guards';
 
 @ApiTags('WishesController')
 @Controller('wishes')
@@ -360,6 +365,18 @@ export class WishesController {
     description: 'This resource is prohibited for the authenticated user.',
   })
   @ApiBadRequestResponse({ description: 'Something went wrong.' })
+  @SetMetadata<string, RoleOwnership>(WishStageOwnershipKey, {
+    ownerships: [
+      { role: Role.admin(), ownership: Ownership.Own },
+      { role: Role.moderator(), ownership: Ownership.Own },
+      { role: Role.basic(), ownership: Ownership.Own },
+    ],
+    idProperty: {
+      target: 'body',
+      name: 'wishStageId',
+    },
+  })
+  @UseGuards(AuthGuard('jwt'), WishStageOwnershipGuard)
   @Post('stage')
   async createWishStage(@Body() dto: CreateWishStageDto): Promise<void> {
     const command = new CreateWishStageCommand(
@@ -381,6 +398,18 @@ export class WishesController {
     description: 'This resource is prohibited for the authenticated user.',
   })
   @ApiBadRequestResponse({ description: 'Something went wrong.' })
+  @SetMetadata<string, RoleOwnership>(WishStageOwnershipKey, {
+    ownerships: [
+      { role: Role.admin(), ownership: Ownership.Any },
+      { role: Role.moderator(), ownership: Ownership.Any },
+      { role: Role.basic(), ownership: Ownership.Own },
+    ],
+    idProperty: {
+      target: 'body',
+      name: 'wishStageId',
+    },
+  })
+  @UseGuards(AuthGuard('jwt'), SameIdRequestGuard, WishStageOwnershipGuard)
   @Patch('stage')
   async updateWishStage(@Body() dto: UpdateWishStageDto): Promise<void> {
     const command = new UpdateWishStageCommand(
@@ -401,6 +430,18 @@ export class WishesController {
   })
   @ApiNotFoundResponse({ description: 'Wish stage not found.' })
   @ApiBadRequestResponse({ description: 'Something went wrong.' })
+  @SetMetadata<string, RoleOwnership>(WishStageOwnershipKey, {
+    ownerships: [
+      { role: Role.admin(), ownership: Ownership.Any },
+      { role: Role.moderator(), ownership: Ownership.Any },
+      { role: Role.basic(), ownership: Ownership.Own },
+    ],
+    idProperty: {
+      target: 'params',
+      name: 'id',
+    },
+  })
+  @UseGuards(AuthGuard('jwt'), WishStageOwnershipGuard)
   @Delete('stage/:wishStageId')
   async deleteWishStage(@Param() params: WishStageIdDto): Promise<void> {
     const command = new DeleteWishStageCommand(params.wishStageId);
