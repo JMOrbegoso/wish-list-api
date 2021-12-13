@@ -1,27 +1,22 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
+import { Reflector } from '@nestjs/core';
 import { OutputUserDto } from '../../../application/dtos';
-import { Role } from '../../../domain/value-objects';
-
-export const enum Ownership {
-  Own = 'Own',
-  Any = 'Any',
-}
-
-type RoleOwnership = { role: Role; ownership: Ownership };
+import { Ownership, RoleOwnership, RoleOwnershipKey } from '../decorators';
 
 @Injectable()
 export class RoleOwnershipGuard implements CanActivate {
-  constructor(
-    private readonly ownerships: RoleOwnership[],
-    private readonly target: 'body' | 'params',
-    private readonly idPropertyName: string = 'id',
-  ) {}
+  constructor(private readonly reflector: Reflector) {}
 
   canActivate(context: ExecutionContext): boolean {
     const request = context.switchToHttp().getRequest();
     const user = request.user as OutputUserDto;
 
-    for (const ownership of this.ownerships) {
+    const roleOwnership = this.reflector.get<RoleOwnership>(
+      RoleOwnershipKey,
+      context.getHandler(),
+    );
+
+    for (const ownership of roleOwnership.ownerships) {
       // Check if the user have the role
       if (!user.roles.includes(ownership.role.getRole)) continue;
 
@@ -29,7 +24,11 @@ export class RoleOwnershipGuard implements CanActivate {
       if (ownership.ownership === Ownership.Any) return true;
 
       // Check if the user is owner
-      if (user.id == request[this.target][this.idPropertyName]) return true;
+      if (
+        user.id ==
+        request[roleOwnership.idProperty.target][roleOwnership.idProperty.name]
+      )
+        return true;
     }
 
     return false;
