@@ -32,7 +32,10 @@ import {
 } from '@nestjs/swagger';
 import { diskStorage } from 'multer';
 import { v4 as uuid } from 'uuid';
-import { RequestIdsKey } from '../../../shared/infrastructure/presentation/decorators';
+import {
+  RequestIds,
+  RequestIdsKey,
+} from '../../../shared/infrastructure/presentation/decorators';
 import { SameIdRequestGuard } from '../../../shared/infrastructure/presentation/guards';
 import {
   BlockUserCommand,
@@ -127,7 +130,7 @@ export class UsersController {
   })
   @ApiNotFoundResponse({ description: 'User not found.' })
   @ApiBadRequestResponse({ description: 'Something went wrong.' })
-  @SetMetadata(RequestIdsKey, {
+  @SetMetadata<string, RequestIds>(RequestIdsKey, {
     bodyIdPropertyName: 'id',
     paramsIdPropertyName: 'id',
   })
@@ -254,7 +257,7 @@ export class UsersController {
   })
   @ApiNotFoundResponse({ description: 'User not found.' })
   @ApiBadRequestResponse({ description: 'Something went wrong.' })
-  @SetMetadata(RequestIdsKey, {
+  @SetMetadata<string, RequestIds>(RequestIdsKey, {
     bodyIdPropertyName: 'id',
     paramsIdPropertyName: 'id',
   })
