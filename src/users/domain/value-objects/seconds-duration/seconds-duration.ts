@@ -1,5 +1,5 @@
 import { InvalidSecondsDurationError, SecondsDurationIsTooLongError } from '..';
-import { ValueObject } from '../../../../core/domain/value-objects';
+import { ValueObject } from '../../../../shared/domain/value-objects';
 
 export class SecondsDuration extends ValueObject<number> {
   public static readonly Max = 315360000; // 10 years in seconds

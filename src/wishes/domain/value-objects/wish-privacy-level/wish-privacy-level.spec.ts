@@ -14,7 +14,7 @@ describe('wishes', () => {
   describe('domain', () => {
     describe('value-objects', () => {
       describe('wish-privacy-level', () => {
-        test.each([undefined, null, -1, 4, 10])(
+        test.each([undefined, null])(
           'should throw an error when trying to create a WishPrivacyLevel from %p',
           (invalid) => {
             // Arrange

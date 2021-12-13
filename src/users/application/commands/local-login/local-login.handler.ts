@@ -1,7 +1,7 @@
 import { NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { LocalLoginCommand } from '..';
-import { UnitOfWork } from '../../../../core/domain/repositories';
+import { UnitOfWork } from '../../../../shared/domain/repositories';
 import { RefreshToken, User } from '../../../domain/entities';
 import {
   RefreshTokenRepository,

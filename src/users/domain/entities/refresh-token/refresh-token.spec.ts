@@ -4,7 +4,7 @@ import { RefreshToken } from '..';
 import {
   MillisecondsDate,
   UniqueId,
-} from '../../../../core/domain/value-objects';
+} from '../../../../shared/domain/value-objects';
 import { IpAddress, SecondsDuration } from '../../value-objects';
 
 const validValues = [

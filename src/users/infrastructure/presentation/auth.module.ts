@@ -3,8 +3,8 @@ import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
-import { UnitOfWork } from '../../../core/domain/repositories';
-import { UnitOfWorkMongoDb } from '../../../core/infrastructure/repositories';
+import { UnitOfWork } from '../../../shared/domain/repositories';
+import { UnitOfWorkMongoDb } from '../../../shared/infrastructure/repositories';
 import {
   LocalLoginHandler,
   RefreshAccessTokenHandler,

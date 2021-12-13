@@ -1,7 +1,7 @@
 import { NotFoundException } from '@nestjs/common';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetUserByIdQuery } from '..';
-import { UniqueId } from '../../../../core/domain/value-objects';
+import { UniqueId } from '../../../../shared/domain/value-objects';
 import { User } from '../../../domain/entities';
 import { UserRepository } from '../../../domain/repositories';
 import { OutputUserDto } from '../../dtos';

@@ -4,8 +4,8 @@ import {
   UsernameIsTooLongError,
   UsernameIsTooShortError,
 } from '..';
-import { ValueObject } from '../../../../core/domain/value-objects';
 import { normalizeString } from '../../../../core/helpers';
+import { ValueObject } from '../../../../shared/domain/value-objects';
 
 export class Username extends ValueObject<string> {
   public static readonly MinLength = 6;

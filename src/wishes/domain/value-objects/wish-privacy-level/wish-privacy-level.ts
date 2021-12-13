@@ -1,10 +1,10 @@
 import { InvalidWishPrivacyLevelError } from '..';
-import { ValueObject } from '../../../../core/domain/value-objects';
+import { ValueObject } from '../../../../shared/domain/value-objects';
 
 export enum PrivacyLevel {
-  Public = 0,
-  JustFriends = 1,
-  OnlyMe = 2,
+  Public = 'Public',
+  JustFriends = 'JustFriends',
+  OnlyMe = 'OnlyMe',
 }
 
 export class WishPrivacyLevel extends ValueObject<PrivacyLevel> {

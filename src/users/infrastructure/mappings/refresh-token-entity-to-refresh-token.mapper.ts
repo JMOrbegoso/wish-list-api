@@ -1,4 +1,7 @@
-import { MillisecondsDate, UniqueId } from '../../../core/domain/value-objects';
+import {
+  MillisecondsDate,
+  UniqueId,
+} from '../../../shared/domain/value-objects';
 import { RefreshToken } from '../../domain/entities';
 import { IpAddress, SecondsDuration } from '../../domain/value-objects';
 import { RefreshTokenEntity } from '../persistence/entities';

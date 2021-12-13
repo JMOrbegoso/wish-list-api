@@ -1,4 +1,4 @@
-import { ValueObject } from '../../../../core/domain/value-objects';
+import { ValueObject } from '../../../../shared/domain/value-objects';
 import { InvalidIsBlockedStatus } from './invalid-is-blocked-status';
 
 export class IsBlocked extends ValueObject<boolean> {

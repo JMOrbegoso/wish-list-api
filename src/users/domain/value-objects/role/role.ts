@@ -1,5 +1,5 @@
 import { InvalidRoleError } from '..';
-import { ValueObject } from '../../../../core/domain/value-objects';
+import { ValueObject } from '../../../../shared/domain/value-objects';
 
 export class Role extends ValueObject<string> {
   public static admin(): Role {

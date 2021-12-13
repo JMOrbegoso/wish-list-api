@@ -1,11 +1,11 @@
 import { BadRequestException } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { CreateUserCommand } from '..';
-import { UnitOfWork } from '../../../../core/domain/repositories';
+import { UnitOfWork } from '../../../../shared/domain/repositories';
 import {
   MillisecondsDate,
   UniqueId,
-} from '../../../../core/domain/value-objects';
+} from '../../../../shared/domain/value-objects';
 import { User, VerificationCode } from '../../../domain/entities';
 import { UserRepository } from '../../../domain/repositories';
 import {

@@ -31,7 +31,7 @@ export class EmailSenderServiceNodemailer implements EmailSenderService {
   async send(to: string, subject: string, body: string): Promise<boolean> {
     try {
       const mail = {
-        from: process.env.EMAIL_USER,
+        from: process.env.EMAIL_SENDER,
         to: to,
         subject: subject,
         text: body,

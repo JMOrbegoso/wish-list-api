@@ -4,7 +4,7 @@ import {
   PasswordIsTooLongError,
   PasswordIsTooShortError,
 } from '..';
-import { ValueObject } from '../../../../core/domain/value-objects';
+import { ValueObject } from '../../../../shared/domain/value-objects';
 
 export class Password extends ValueObject<string> {
   public static readonly MinLength = 6;

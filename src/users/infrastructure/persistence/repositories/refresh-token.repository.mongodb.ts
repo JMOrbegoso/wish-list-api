@@ -3,7 +3,7 @@ import {
   MikroORM,
   Repository as MikroOrmRepository,
 } from '@mikro-orm/core';
-import { UniqueId } from '../../../../core/domain/value-objects';
+import { UniqueId } from '../../../../shared/domain/value-objects';
 import { RefreshToken } from '../../../domain/entities';
 import { RefreshTokenRepository } from '../../../domain/repositories';
 import { IpAddress } from '../../../domain/value-objects';

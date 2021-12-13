@@ -4,7 +4,7 @@ import {
   Repository as MikroOrmRepository,
 } from '@mikro-orm/core';
 import { Query } from '@mikro-orm/core/typings';
-import { UniqueId } from '../../../../core/domain/value-objects';
+import { UniqueId } from '../../../../shared/domain/value-objects';
 import { User, VerificationCode } from '../../../domain/entities';
 import { UserRepository } from '../../../domain/repositories';
 import { Email, Username } from '../../../domain/value-objects';

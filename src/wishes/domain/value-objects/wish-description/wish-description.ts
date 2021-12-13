@@ -1,5 +1,5 @@
 import { InvalidWishDescriptionError, WishDescriptionIsTooLongError } from '..';
-import { ValueObject } from '../../../../core/domain/value-objects';
+import { ValueObject } from '../../../../shared/domain/value-objects';
 
 export class WishDescription extends ValueObject<string> {
   public static readonly MaxLength = 1000;

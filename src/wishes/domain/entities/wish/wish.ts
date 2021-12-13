@@ -1,18 +1,46 @@
-import { WishStage, Wisher } from '..';
-import { AggregateRoot } from '../../../../core/domain/entities';
 import {
+  DeletedWishCannotBeUpdatedError,
+  DuplicatedWishStageError,
+  InvalidWishCategoriesError,
+  InvalidWishImagesError,
+  InvalidWishStagesError,
+  InvalidWishUrlsError,
+  InvalidWishWisherError,
+  NonExistentWishStageError,
+  TooManyWishCategoriesError,
+  TooManyWishImagesError,
+  TooManyWishStagesError,
+  TooManyWishUrlsError,
+  WishIsAlreadyCompletedError,
+  WishIsAlreadyDeletedError,
+  WishIsAlreadyUncompletedError,
+  WishIsNotDeletedError,
+  WishStage,
+  Wisher,
+} from '..';
+import { AggregateRoot } from '../../../../shared/domain/entities';
+import {
+  InvalidMillisecondsDateError,
   MillisecondsDate,
   UniqueId,
   WebUrl,
-} from '../../../../core/domain/value-objects';
+} from '../../../../shared/domain/value-objects';
 import {
   CategoryName,
+  InvalidWishDescriptionError,
+  InvalidWishPrivacyLevelError,
+  InvalidWishTitleError,
   WishDescription,
   WishPrivacyLevel,
   WishTitle,
 } from '../../value-objects';
 
 export class Wish extends AggregateRoot {
+  public static readonly MaxUrls = 5;
+  public static readonly MaxImages = 5;
+  public static readonly MaxCategories = 5;
+  public static readonly MaxStages = 5;
+
   private _title: WishTitle;
   private _description: WishDescription;
   private _privacyLevel: WishPrivacyLevel;
@@ -42,6 +70,35 @@ export class Wish extends AggregateRoot {
     completedAt?: MillisecondsDate,
   ) {
     super(id);
+
+    if (!title) throw new InvalidWishTitleError();
+
+    if (!description) throw new InvalidWishDescriptionError();
+
+    if (!privacyLevel) throw new InvalidWishPrivacyLevelError();
+
+    if (!createdAt) throw new InvalidMillisecondsDateError();
+
+    if (!updatedAt) throw new InvalidMillisecondsDateError();
+
+    if (!wisher) throw new InvalidWishWisherError();
+
+    if (!urls) throw new InvalidWishUrlsError();
+
+    if (urls.length > Wish.MaxUrls) throw new TooManyWishUrlsError();
+
+    if (!imageUrls) throw new InvalidWishImagesError();
+
+    if (imageUrls.length > Wish.MaxImages) throw new TooManyWishImagesError();
+
+    if (!categories) throw new InvalidWishCategoriesError();
+
+    if (categories.length > Wish.MaxCategories)
+      throw new TooManyWishCategoriesError();
+
+    if (!stages) throw new InvalidWishStagesError();
+
+    if (stages.length > Wish.MaxStages) throw new TooManyWishStagesError();
 
     this._title = title;
     this._description = description;
@@ -142,10 +199,131 @@ export class Wish extends AggregateRoot {
   }
 
   public get isCompleted(): boolean {
-    return !this._completedAt;
+    return !!this._completedAt;
   }
 
   public get isDeleted(): boolean {
-    return !this._deletedAt;
+    return !!this._deletedAt;
+  }
+
+  public delete(): void {
+    if (this.isDeleted) throw new WishIsAlreadyDeletedError();
+
+    this._deletedAt = MillisecondsDate.create();
+  }
+
+  public undelete(): void {
+    if (!this.isDeleted) throw new WishIsNotDeletedError();
+
+    this._deletedAt = null;
+  }
+
+  public complete(completedAt: MillisecondsDate): void {
+    if (this.isDeleted) throw new DeletedWishCannotBeUpdatedError();
+
+    if (this.isCompleted) throw new WishIsAlreadyCompletedError();
+
+    if (!completedAt) throw new InvalidMillisecondsDateError();
+
+    this._completedAt = completedAt;
+    this._updatedAt = MillisecondsDate.create();
+  }
+
+  public uncomplete(): void {
+    if (this.isDeleted) throw new DeletedWishCannotBeUpdatedError();
+
+    if (!this.isCompleted) throw new WishIsAlreadyUncompletedError();
+
+    this._completedAt = null;
+    this._updatedAt = MillisecondsDate.create();
+  }
+
+  public changePrivacyLevel(wishPrivacyLevel: WishPrivacyLevel): void {
+    if (this.isDeleted) throw new DeletedWishCannotBeUpdatedError();
+
+    if (!wishPrivacyLevel) throw new InvalidWishPrivacyLevelError();
+
+    this._privacyLevel = wishPrivacyLevel;
+  }
+
+  public update(
+    title: WishTitle,
+    description: WishDescription,
+    urls: WebUrl[] = [],
+    imageUrls: WebUrl[] = [],
+    categories: CategoryName[] = [],
+  ): void {
+    if (this.isDeleted) throw new DeletedWishCannotBeUpdatedError();
+
+    if (!title) throw new InvalidWishTitleError();
+
+    if (!description) throw new InvalidWishDescriptionError();
+
+    if (!urls) throw new InvalidWishUrlsError();
+
+    if (urls.length > Wish.MaxUrls) throw new TooManyWishUrlsError();
+
+    if (!imageUrls) throw new InvalidWishImagesError();
+
+    if (imageUrls.length > Wish.MaxImages) throw new TooManyWishImagesError();
+
+    if (!categories) throw new InvalidWishCategoriesError();
+
+    if (categories.length > Wish.MaxCategories)
+      throw new TooManyWishCategoriesError();
+
+    this._title = title;
+    this._description = description;
+    this._urls = urls;
+    this._imageUrls = imageUrls;
+    this._categories = categories;
+
+    this._updatedAt = MillisecondsDate.create();
+  }
+
+  public addStage(newStage: WishStage): void {
+    if (this.isDeleted) throw new DeletedWishCannotBeUpdatedError();
+
+    if (!newStage) throw new InvalidWishStagesError();
+
+    if (this._stages.length === Wish.MaxStages)
+      throw new TooManyWishStagesError();
+
+    if (this._stages.some((stage) => stage.equals(newStage)))
+      throw new DuplicatedWishStageError();
+
+    this._stages.push(newStage);
+
+    this._updatedAt = MillisecondsDate.create();
+  }
+
+  public updateStage(
+    id: UniqueId,
+    title: WishTitle,
+    description: WishDescription,
+    urls: WebUrl[] = [],
+    imageUrls: WebUrl[] = [],
+  ): void {
+    if (this.isDeleted) throw new DeletedWishCannotBeUpdatedError();
+
+    const wishStage = this._stages.find((stage) => stage.id.equals(id));
+    if (!wishStage) throw new NonExistentWishStageError();
+
+    wishStage.update(title, description, urls, imageUrls);
+
+    this._updatedAt = MillisecondsDate.create();
+  }
+
+  public removeStage(stageToRemove: WishStage): void {
+    if (this.isDeleted) throw new DeletedWishCannotBeUpdatedError();
+
+    if (!stageToRemove) throw new InvalidWishStagesError();
+
+    if (!this._stages.some((stage) => stage.equals(stageToRemove)))
+      throw new NonExistentWishStageError();
+
+    this._stages = this._stages.filter((stage) => !stage.equals(stageToRemove));
+
+    this._updatedAt = MillisecondsDate.create();
   }
 }

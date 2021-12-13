@@ -1,11 +1,11 @@
 import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { UpdateUserProfileCommand } from '..';
-import { UnitOfWork } from '../../../../core/domain/repositories';
+import { UnitOfWork } from '../../../../shared/domain/repositories';
 import {
   MillisecondsDate,
   UniqueId,
-} from '../../../../core/domain/value-objects';
+} from '../../../../shared/domain/value-objects';
 import { UserRepository } from '../../../domain/repositories';
 import { Biography, FirstName, LastName } from '../../../domain/value-objects';
 
