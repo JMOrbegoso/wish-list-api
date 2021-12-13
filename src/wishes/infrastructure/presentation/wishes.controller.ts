@@ -6,8 +6,11 @@ import {
   Param,
   Patch,
   Post,
+  SetMetadata,
+  UseGuards,
 } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
+import { AuthGuard } from '@nestjs/passport';
 import {
   ApiBadRequestResponse,
   ApiBearerAuth,
@@ -19,6 +22,8 @@ import {
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
+import { SameIdRequestGuard } from '../../../shared/infrastructure/presentation/guards';
+import { Role } from '../../../users/domain/value-objects';
 import {
   ChangeWishPrivacyLevelCommand,
   CompleteWishCommand,
@@ -49,6 +54,8 @@ import {
   WishStageIdDto,
   WisherIdDto,
 } from '../dto';
+import { Ownership, WishOwnership, WishOwnershipKey } from './decorators';
+import { WishOwnershipGuard } from './guards';
 
 @ApiTags('WishesController')
 @Controller('wishes')
@@ -96,6 +103,18 @@ export class WishesController {
   })
   @ApiNotFoundResponse({ description: 'Wish not found.' })
   @ApiBadRequestResponse({ description: 'Something went wrong.' })
+  @SetMetadata<string, WishOwnership>(WishOwnershipKey, {
+    ownerships: [
+      { role: Role.admin(), ownership: Ownership.Any },
+      { role: Role.moderator(), ownership: Ownership.Any },
+      { role: Role.basic(), ownership: Ownership.Own },
+    ],
+    idProperty: {
+      target: 'params',
+      name: 'id',
+    },
+  })
+  @UseGuards(AuthGuard('jwt'), WishOwnershipGuard)
   @Get(':id')
   async getWishById(@Param() params: WishIdDto): Promise<OutputWishDto> {
     const query = new GetWishByIdQuery(params.id);
@@ -133,6 +152,18 @@ export class WishesController {
     description: 'This resource is prohibited for the authenticated user.',
   })
   @ApiBadRequestResponse({ description: 'Something went wrong.' })
+  @SetMetadata<string, WishOwnership>(WishOwnershipKey, {
+    ownerships: [
+      { role: Role.admin(), ownership: Ownership.Any },
+      { role: Role.moderator(), ownership: Ownership.Any },
+      { role: Role.basic(), ownership: Ownership.Own },
+    ],
+    idProperty: {
+      target: 'body',
+      name: 'id',
+    },
+  })
+  @UseGuards(AuthGuard('jwt'), SameIdRequestGuard, WishOwnershipGuard)
   @Patch()
   async update(@Body() dto: UpdateWishDto): Promise<void> {
     const command = new UpdateWishCommand(
@@ -154,6 +185,18 @@ export class WishesController {
   })
   @ApiNotFoundResponse({ description: 'Wish not found.' })
   @ApiBadRequestResponse({ description: 'Something went wrong.' })
+  @SetMetadata<string, WishOwnership>(WishOwnershipKey, {
+    ownerships: [
+      { role: Role.admin(), ownership: Ownership.Any },
+      { role: Role.moderator(), ownership: Ownership.Any },
+      { role: Role.basic(), ownership: Ownership.Own },
+    ],
+    idProperty: {
+      target: 'params',
+      name: 'id',
+    },
+  })
+  @UseGuards(AuthGuard('jwt'), WishOwnershipGuard)
   @Delete(':id')
   async deleteWish(@Param() params: WishIdDto): Promise<void> {
     const command = new DeleteWishCommand(params.id);
@@ -168,6 +211,18 @@ export class WishesController {
   })
   @ApiNotFoundResponse({ description: 'Wish not found.' })
   @ApiBadRequestResponse({ description: 'Something went wrong.' })
+  @SetMetadata<string, WishOwnership>(WishOwnershipKey, {
+    ownerships: [
+      { role: Role.admin(), ownership: Ownership.Any },
+      { role: Role.moderator(), ownership: Ownership.Any },
+      { role: Role.basic(), ownership: Ownership.Own },
+    ],
+    idProperty: {
+      target: 'params',
+      name: 'id',
+    },
+  })
+  @UseGuards(AuthGuard('jwt'), WishOwnershipGuard)
   @Patch('undelete/:id')
   async undeleteWish(@Param() params: WishIdDto): Promise<void> {
     const command = new UndeleteWishCommand(params.id);
@@ -182,6 +237,18 @@ export class WishesController {
   })
   @ApiNotFoundResponse({ description: 'Wish not found.' })
   @ApiBadRequestResponse({ description: 'Something went wrong.' })
+  @SetMetadata<string, WishOwnership>(WishOwnershipKey, {
+    ownerships: [
+      { role: Role.admin(), ownership: Ownership.Own },
+      { role: Role.moderator(), ownership: Ownership.Own },
+      { role: Role.basic(), ownership: Ownership.Own },
+    ],
+    idProperty: {
+      target: 'params',
+      name: 'id',
+    },
+  })
+  @UseGuards(AuthGuard('jwt'), WishOwnershipGuard)
   @Patch('complete/:id/:completionDate')
   async completeWish(@Param() params: CompleteWishDto): Promise<void> {
     const command = new CompleteWishCommand(
@@ -199,6 +266,18 @@ export class WishesController {
   })
   @ApiNotFoundResponse({ description: 'Wish not found.' })
   @ApiBadRequestResponse({ description: 'Something went wrong.' })
+  @SetMetadata<string, WishOwnership>(WishOwnershipKey, {
+    ownerships: [
+      { role: Role.admin(), ownership: Ownership.Own },
+      { role: Role.moderator(), ownership: Ownership.Own },
+      { role: Role.basic(), ownership: Ownership.Own },
+    ],
+    idProperty: {
+      target: 'params',
+      name: 'id',
+    },
+  })
+  @UseGuards(AuthGuard('jwt'), WishOwnershipGuard)
   @Patch('uncomplete/:id')
   async uncompleteWish(@Param() params: WishIdDto): Promise<void> {
     const command = new UncompleteWishCommand(params.id);
@@ -215,6 +294,18 @@ export class WishesController {
   })
   @ApiNotFoundResponse({ description: 'Wish not found.' })
   @ApiBadRequestResponse({ description: 'Something went wrong.' })
+  @SetMetadata<string, WishOwnership>(WishOwnershipKey, {
+    ownerships: [
+      { role: Role.admin(), ownership: Ownership.Own },
+      { role: Role.moderator(), ownership: Ownership.Own },
+      { role: Role.basic(), ownership: Ownership.Own },
+    ],
+    idProperty: {
+      target: 'params',
+      name: 'id',
+    },
+  })
+  @UseGuards(AuthGuard('jwt'), WishOwnershipGuard)
   @Patch('change-privacy-level/:id/:privacyLevel')
   async changeWishPrivacyLevel(
     @Param() params: ChangeWishPrivacyLevelDto,
