@@ -1,5 +1,5 @@
 import { NotFoundException } from '@nestjs/common';
-import { mocked } from 'ts-jest/utils';
+import { MockedObject } from 'ts-jest/dist/utils/testing';
 import { GetWishByIdHandler, GetWishByIdQuery } from '..';
 import { Wish } from '../../../domain/entities';
 import { WishRepository } from '../../../domain/repositories';
@@ -19,9 +19,9 @@ describe('wishes', () => {
           'should throw NotFoundException',
           async (query: GetWishByIdQuery) => {
             // Arrange
-            const wishRepository = mocked<WishRepository>({
+            const wishRepository = {
               getOne: jest.fn().mockReturnValue(null),
-            } as unknown as WishRepository);
+            } as MockedObject<WishRepository>;
 
             const handler = new GetWishByIdHandler(wishRepository);
 
@@ -38,7 +38,7 @@ describe('wishes', () => {
           'should return a single OutputWishDto',
           async (query: GetWishByIdQuery) => {
             // Arrange
-            const wish = mocked<Wish>({
+            const wish = {
               id: {
                 getId: 'id 0',
               },
@@ -72,11 +72,11 @@ describe('wishes', () => {
               completedAt: {
                 getMilliseconds: 2,
               },
-            } as unknown as Wish);
+            } as MockedObject<Wish>;
 
-            const wishRepository = mocked<WishRepository>({
+            const wishRepository = {
               getOne: jest.fn().mockReturnValue(wish),
-            } as unknown as WishRepository);
+            } as MockedObject<WishRepository>;
 
             const handler = new GetWishByIdHandler(wishRepository);
 

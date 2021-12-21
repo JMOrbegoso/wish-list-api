@@ -1,5 +1,4 @@
 import { MockedObject } from 'ts-jest/dist/utils/testing';
-import { mocked } from 'ts-jest/utils';
 import { RefreshToken } from '..';
 import {
   MillisecondsDate,
@@ -9,119 +8,119 @@ import { IpAddress, SecondsDuration } from '../../value-objects';
 
 const validValues = [
   [
-    mocked<UniqueId>({
+    {
       getId: 'id-0',
       equals: jest.fn(),
-    } as unknown as UniqueId),
-    mocked<UniqueId>({
+    } as MockedObject<UniqueId>,
+    {
       getId: 'user-0',
       equals: jest.fn(),
-    } as unknown as UniqueId),
-    mocked<MillisecondsDate>({
+    } as MockedObject<UniqueId>,
+    {
       getMilliseconds: 4,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as MillisecondsDate),
-    mocked<SecondsDuration>({
+    } as MockedObject<MillisecondsDate>,
+    {
       getDuration: 4,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as SecondsDuration),
-    mocked<IpAddress>({
+    } as MockedObject<SecondsDuration>,
+    {
       getIpAddress: '192.168.1.1',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as IpAddress),
-    mocked<MillisecondsDate>({
+    } as MockedObject<IpAddress>,
+    {
       getMilliseconds: 1,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as MillisecondsDate),
-    mocked<MillisecondsDate>({
+    } as MockedObject<MillisecondsDate>,
+    {
       getMilliseconds: 2,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as MillisecondsDate),
-    mocked<MillisecondsDate>({
+    } as MockedObject<MillisecondsDate>,
+    {
       getMilliseconds: 3,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as MillisecondsDate),
+    } as MockedObject<MillisecondsDate>,
   ],
   [
-    mocked<UniqueId>({
+    {
       getId: 'id-1',
       equals: jest.fn(),
-    } as unknown as UniqueId),
-    mocked<UniqueId>({
+    } as MockedObject<UniqueId>,
+    {
       getId: 'user-1',
       equals: jest.fn(),
-    } as unknown as UniqueId),
-    mocked<MillisecondsDate>({
+    } as MockedObject<UniqueId>,
+    {
       getMilliseconds: 4,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as MillisecondsDate),
-    mocked<SecondsDuration>({
+    } as MockedObject<MillisecondsDate>,
+    {
       getDuration: 4,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as SecondsDuration),
-    mocked<IpAddress>({
+    } as MockedObject<SecondsDuration>,
+    {
       getIpAddress: '192.168.1.1',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as IpAddress),
+    } as MockedObject<IpAddress>,
     null,
-    mocked<MillisecondsDate>({
+    {
       getMilliseconds: 2,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as MillisecondsDate),
-    mocked<MillisecondsDate>({
+    } as MockedObject<MillisecondsDate>,
+    {
       getMilliseconds: 3,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as MillisecondsDate),
+    } as MockedObject<MillisecondsDate>,
   ],
   [
-    mocked<UniqueId>({
+    {
       getId: 'id-2',
       equals: jest.fn(),
-    } as unknown as UniqueId),
-    mocked<UniqueId>({
+    } as MockedObject<UniqueId>,
+    {
       getId: 'user-2',
       equals: jest.fn(),
-    } as unknown as UniqueId),
-    mocked<MillisecondsDate>({
+    } as MockedObject<UniqueId>,
+    {
       getMilliseconds: 4,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as MillisecondsDate),
-    mocked<SecondsDuration>({
+    } as MockedObject<MillisecondsDate>,
+    {
       getDuration: 4,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as SecondsDuration),
-    mocked<IpAddress>({
+    } as MockedObject<SecondsDuration>,
+    {
       getIpAddress: '192.168.1.1',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as IpAddress),
+    } as MockedObject<IpAddress>,
     null,
     null,
-    mocked<MillisecondsDate>({
+    {
       getMilliseconds: 3,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as MillisecondsDate),
+    } as MockedObject<MillisecondsDate>,
   ],
   [
-    mocked<UniqueId>({
+    {
       getId: 'id-3',
       equals: jest.fn(),
-    } as unknown as UniqueId),
-    mocked<UniqueId>({
+    } as MockedObject<UniqueId>,
+    {
       getId: 'user-3',
       equals: jest.fn(),
-    } as unknown as UniqueId),
-    mocked<MillisecondsDate>({
+    } as MockedObject<UniqueId>,
+    {
       getMilliseconds: 4,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as MillisecondsDate),
-    mocked<SecondsDuration>({
+    } as MockedObject<MillisecondsDate>,
+    {
       getDuration: 4,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as SecondsDuration),
-    mocked<IpAddress>({
+    } as MockedObject<SecondsDuration>,
+    {
       getIpAddress: '192.168.1.1',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as IpAddress),
+    } as MockedObject<IpAddress>,
     null,
     null,
     null,
@@ -241,9 +240,9 @@ describe('users', () => {
               revokedAt,
             );
 
-            const newRefreshToken = mocked<UniqueId>({
+            const newRefreshToken = {
               getId: 'newHash',
-            } as unknown as UniqueId);
+            } as MockedObject<UniqueId>;
 
             // Act
             refreshToken.replace(newRefreshToken);

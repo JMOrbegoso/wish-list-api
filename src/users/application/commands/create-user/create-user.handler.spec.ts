@@ -1,5 +1,5 @@
 import { BadRequestException } from '@nestjs/common';
-import { mocked } from 'ts-jest/utils';
+import { MockedObject } from 'ts-jest/dist/utils/testing';
 import { CreateUserCommand, CreateUserHandler } from '..';
 import { UnitOfWork } from '../../../../shared/domain/repositories';
 import { UniqueId } from '../../../../shared/domain/value-objects';
@@ -41,25 +41,15 @@ describe('users', () => {
           'should throw BadRequestException because already exist an User with that Id, Email or Username',
           (command: CreateUserCommand) => {
             // Arrange
-            const encryptionService = mocked<EncryptionService>(
-              {} as unknown as EncryptionService,
-            );
-
-            const uniqueIdGeneratorService = mocked<UniqueIdGeneratorService>(
-              {} as unknown as UniqueIdGeneratorService,
-            );
-
-            const emailSenderService = mocked<EmailSenderService>(
-              {} as unknown as EmailSenderService,
-            );
-
-            const userRepository = mocked<UserRepository>({
+            const encryptionService = {} as MockedObject<EncryptionService>;
+            const uniqueIdGeneratorService =
+              {} as MockedObject<UniqueIdGeneratorService>;
+            const emailSenderService = {} as MockedObject<EmailSenderService>;
+            const userRepository = {
               userExists: jest.fn().mockReturnValue(true),
-            } as unknown as UserRepository);
+            } as MockedObject<UserRepository>;
 
-            const unitOfWork = mocked<UnitOfWork>({
-              userRepository: userRepository,
-            } as unknown as UnitOfWork);
+            const unitOfWork = {} as MockedObject<UnitOfWork>;
 
             const handler = new CreateUserHandler(
               unitOfWork,
@@ -82,31 +72,30 @@ describe('users', () => {
           'should call the method hashPassword from EncryptionService, the method add from the UserRepository, the method commitChanges from the UnitOfWork, the method generateId from UniqueIdGeneratorService and the method send from EmailSenderService',
           async (command: CreateUserCommand) => {
             // Arrange
-            const encryptionService = mocked<EncryptionService>({
+            const encryptionService = {
               hashPassword: jest.fn().mockReturnValue('password hashed'),
-            } as unknown as EncryptionService);
+            } as MockedObject<EncryptionService>;
 
-            const uniqueId = mocked<UniqueId>({
+            const uniqueId = {
               getId: 'verification-code-id',
-            } as unknown as UniqueId);
+            } as MockedObject<UniqueId>;
 
-            const uniqueIdGeneratorService = mocked<UniqueIdGeneratorService>({
+            const uniqueIdGeneratorService = {
               generateId: jest.fn().mockReturnValue(uniqueId),
-            } as unknown as UniqueIdGeneratorService);
+            } as MockedObject<UniqueIdGeneratorService>;
 
-            const emailSenderService = mocked<EmailSenderService>({
+            const emailSenderService = {
               send: jest.fn(),
-            } as unknown as EmailSenderService);
+            } as MockedObject<EmailSenderService>;
 
-            const userRepository = mocked<UserRepository>({
+            const userRepository = {
               userExists: jest.fn().mockReturnValue(false),
               add: jest.fn(),
-            } as unknown as UserRepository);
+            } as MockedObject<UserRepository>;
 
-            const unitOfWork = mocked<UnitOfWork>({
-              userRepository: userRepository,
+            const unitOfWork = {
               commitChanges: jest.fn(),
-            } as unknown as UnitOfWork);
+            } as MockedObject<UnitOfWork>;
 
             const handler = new CreateUserHandler(
               unitOfWork,

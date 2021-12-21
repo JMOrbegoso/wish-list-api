@@ -1,5 +1,5 @@
 import { BadRequestException, NotFoundException } from '@nestjs/common';
-import { mocked } from 'ts-jest/utils';
+import { MockedObject } from 'ts-jest/dist/utils/testing';
 import { UnblockUserCommand, UnblockUserHandler } from '..';
 import { UnitOfWork } from '../../../../shared/domain/repositories';
 import { User } from '../../../domain/entities';
@@ -19,13 +19,11 @@ describe('users', () => {
           'should throw NotFoundException',
           (command: UnblockUserCommand) => {
             // Arrange
-            const userRepository = mocked<UserRepository>({
+            const userRepository = {
               getOne: jest.fn().mockReturnValue(null),
-            } as unknown as UserRepository);
+            } as MockedObject<UserRepository>;
 
-            const unitOfWork = mocked<UnitOfWork>({
-              userRepository: userRepository,
-            } as unknown as UnitOfWork);
+            const unitOfWork = {} as MockedObject<UnitOfWork>;
 
             const handler = new UnblockUserHandler(unitOfWork, userRepository);
 
@@ -42,7 +40,7 @@ describe('users', () => {
           'should throw BadRequestException',
           (command: UnblockUserCommand) => {
             // Arrange
-            const user = mocked<User>({
+            const user = {
               id: {
                 getId: 'id-0',
               },
@@ -81,15 +79,13 @@ describe('users', () => {
               deletedAt: {
                 getMilliseconds: 4,
               },
-            } as unknown as User);
+            } as MockedObject<User>;
 
-            const userRepository = mocked<UserRepository>({
+            const userRepository = {
               getOne: jest.fn().mockReturnValue(user),
-            } as unknown as UserRepository);
+            } as MockedObject<UserRepository>;
 
-            const unitOfWork = mocked<UnitOfWork>({
-              userRepository: userRepository,
-            } as unknown as UnitOfWork);
+            const unitOfWork = {} as MockedObject<UnitOfWork>;
 
             const handler = new UnblockUserHandler(unitOfWork, userRepository);
 
@@ -106,7 +102,7 @@ describe('users', () => {
           'should call the method block of the User, call the update method of the UserRepository and the commitChanges method of the UnitOfWork',
           async (command: UnblockUserCommand) => {
             // Arrange
-            const user = mocked<User>({
+            const user = {
               id: {
                 getId: 'id-0',
               },
@@ -146,17 +142,16 @@ describe('users', () => {
                 getMilliseconds: 4,
               },
               unblock: jest.fn(),
-            } as unknown as User);
+            } as MockedObject<User>;
 
-            const userRepository = mocked<UserRepository>({
+            const userRepository = {
               getOne: jest.fn().mockReturnValue(user),
               update: jest.fn(),
-            } as unknown as UserRepository);
+            } as MockedObject<UserRepository>;
 
-            const unitOfWork = mocked<UnitOfWork>({
-              userRepository: userRepository,
+            const unitOfWork = {
               commitChanges: jest.fn(),
-            } as unknown as UnitOfWork);
+            } as MockedObject<UnitOfWork>;
 
             const handler = new UnblockUserHandler(unitOfWork, userRepository);
 

@@ -1,5 +1,4 @@
 import { MockedObject } from 'ts-jest/dist/utils/testing';
-import { mocked } from 'ts-jest/utils';
 import { User, VerificationCode } from '..';
 import {
   MillisecondsDate,
@@ -20,482 +19,474 @@ import {
 
 const validValues = [
   [
-    mocked<UniqueId>({
+    {
       getId: 'id-0',
       equals: jest.fn(),
-    } as unknown as UniqueId),
-    mocked<Email>({
+    } as MockedObject<UniqueId>,
+    {
       getEmail: 'email0@email.com',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as Email),
-    mocked<Username>({
+    } as MockedObject<Email>,
+    {
       getUsername: 'John_Doe_0',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as Username),
-    mocked<PasswordHash>({
+    } as MockedObject<Username>,
+    {
       getPasswordHash: 'hash0',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as PasswordHash),
-    mocked<IsVerified>({
+    } as MockedObject<PasswordHash>,
+    {
       getStatus: true,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as IsVerified),
-    mocked<VerificationCode>({
-      getStatus: true,
+    } as MockedObject<IsVerified>,
+    {
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as VerificationCode),
-    mocked<IsBlocked>({
+    } as MockedObject<VerificationCode>,
+    {
       getStatus: false,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as IsBlocked),
-    mocked<FirstName>({
+    } as MockedObject<IsBlocked>,
+    {
       getFirstName: 'FirstName0',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as FirstName),
-    mocked<LastName>({
+    } as MockedObject<FirstName>,
+    {
       getLastName: 'LastName0',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as LastName),
-    mocked<MillisecondsDate>({
+    } as MockedObject<LastName>,
+    {
       getMilliseconds: 1,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as MillisecondsDate),
-    mocked<MillisecondsDate>({
+    } as MockedObject<MillisecondsDate>,
+    {
       getMilliseconds: 2,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as MillisecondsDate),
-    mocked<MillisecondsDate>({
+    } as MockedObject<MillisecondsDate>,
+    {
       getMilliseconds: 3,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as MillisecondsDate),
-    mocked<Biography>({
+    } as MockedObject<MillisecondsDate>,
+    {
       getBiography: 'A nice person 0.',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as Biography),
-    mocked<Role[]>({} as unknown as Role[]),
-    mocked<WebUrl>({
+    } as MockedObject<Biography>,
+    {} as MockedObject<Role[]>,
+    {
       getUrl: 'https://www.example.com/0.jpg',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as WebUrl),
-    mocked<MillisecondsDate>({
+    } as MockedObject<WebUrl>,
+    {
       getMilliseconds: 4,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as MillisecondsDate),
+    } as MockedObject<MillisecondsDate>,
   ],
   [
-    mocked<UniqueId>({
+    {
       getId: 'id-1',
       equals: jest.fn(),
-    } as unknown as UniqueId),
-    mocked<Email>({
+    } as MockedObject<UniqueId>,
+    {
       getEmail: 'email1@email.com',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as Email),
-    mocked<Username>({
+    } as MockedObject<Email>,
+    {
       getUsername: 'John_Doe_1',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as Username),
-    mocked<PasswordHash>({
+    } as MockedObject<Username>,
+    {
       getPasswordHash: 'hash1',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as PasswordHash),
-    mocked<IsVerified>({
+    } as MockedObject<PasswordHash>,
+    {
       getStatus: true,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as IsVerified),
-    mocked<VerificationCode>({
-      getStatus: true,
+    } as MockedObject<IsVerified>,
+    {
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as VerificationCode),
-    mocked<IsBlocked>({
+    } as MockedObject<VerificationCode>,
+    {
       getStatus: false,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as IsBlocked),
-    mocked<FirstName>({
+    } as MockedObject<IsBlocked>,
+    {
       getFirstName: 'FirstName1',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as FirstName),
-    mocked<LastName>({
+    } as MockedObject<FirstName>,
+    {
       getLastName: 'LastName1',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as LastName),
-    mocked<MillisecondsDate>({
+    } as MockedObject<LastName>,
+    {
       getMilliseconds: 1,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as MillisecondsDate),
-    mocked<MillisecondsDate>({
+    } as MockedObject<MillisecondsDate>,
+    {
       getMilliseconds: 2,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as MillisecondsDate),
-    mocked<MillisecondsDate>({
+    } as MockedObject<MillisecondsDate>,
+    {
       getMilliseconds: 3,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as MillisecondsDate),
-    mocked<Biography>({
+    } as MockedObject<MillisecondsDate>,
+    {
       getBiography: 'A nice person 1.',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as Biography),
-    mocked<Role[]>({} as unknown as Role[]),
-    mocked<WebUrl>({
+    } as MockedObject<Biography>,
+    {} as MockedObject<Role[]>,
+    {
       getUrl: 'https://www.example.com/1.jpg',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as WebUrl),
-    mocked<MillisecondsDate>({
+    } as MockedObject<WebUrl>,
+    {
       getMilliseconds: 4,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as MillisecondsDate),
+    } as MockedObject<MillisecondsDate>,
   ],
   [
-    mocked<UniqueId>({
+    {
       getId: 'id-2',
       equals: jest.fn(),
-    } as unknown as UniqueId),
-    mocked<Email>({
+    } as MockedObject<UniqueId>,
+    {
       getEmail: 'email2@email.com',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as Email),
-    mocked<Username>({
+    } as MockedObject<Email>,
+    {
       getUsername: 'John_Doe_2',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as Username),
-    mocked<PasswordHash>({
+    } as MockedObject<Username>,
+    {
       getPasswordHash: 'hash2',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as PasswordHash),
-    mocked<IsVerified>({
+    } as MockedObject<PasswordHash>,
+    {
       getStatus: true,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as IsVerified),
-    mocked<VerificationCode>({
-      getStatus: true,
+    } as MockedObject<IsVerified>,
+    {
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as VerificationCode),
-    mocked<IsBlocked>({
+    } as MockedObject<VerificationCode>,
+    {
       getStatus: false,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as IsBlocked),
-    mocked<FirstName>({
+    } as MockedObject<IsBlocked>,
+    {
       getFirstName: 'FirstName2',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as FirstName),
-    mocked<LastName>({
+    } as MockedObject<FirstName>,
+    {
       getLastName: 'LastName2',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as LastName),
-    mocked<MillisecondsDate>({
+    } as MockedObject<LastName>,
+    {
       getMilliseconds: 1,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as MillisecondsDate),
-    mocked<MillisecondsDate>({
+    } as MockedObject<MillisecondsDate>,
+    {
       getMilliseconds: 2,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as MillisecondsDate),
-    mocked<MillisecondsDate>({
+    } as MockedObject<MillisecondsDate>,
+    {
       getMilliseconds: 3,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as MillisecondsDate),
-    mocked<Biography>({
+    } as MockedObject<MillisecondsDate>,
+    {
       getBiography: 'A nice person 2.',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as Biography),
-    mocked<Role[]>({} as unknown as Role[]),
+    } as MockedObject<Biography>,
+    {} as MockedObject<Role[]>,
     null,
-    mocked<MillisecondsDate>({
+    {
       getMilliseconds: 4,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as MillisecondsDate),
+    } as MockedObject<MillisecondsDate>,
   ],
   [
-    mocked<UniqueId>({
+    {
       getId: 'id-3',
       equals: jest.fn(),
-    } as unknown as UniqueId),
-    mocked<Email>({
+    } as MockedObject<UniqueId>,
+    {
       getEmail: 'email3@email.com',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as Email),
-    mocked<Username>({
+    } as MockedObject<Email>,
+    {
       getUsername: 'John_Doe_3',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as Username),
-    mocked<PasswordHash>({
+    } as MockedObject<Username>,
+    {
       getPasswordHash: 'hash3',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as PasswordHash),
-    mocked<IsVerified>({
+    } as MockedObject<PasswordHash>,
+    {
       getStatus: true,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as IsVerified),
-    mocked<VerificationCode>({
-      getStatus: true,
+    } as MockedObject<IsVerified>,
+    {
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as VerificationCode),
-    mocked<IsBlocked>({
+    } as MockedObject<VerificationCode>,
+    {
       getStatus: false,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as IsBlocked),
-    mocked<FirstName>({
+    } as MockedObject<IsBlocked>,
+    {
       getFirstName: 'FirstName3',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as FirstName),
-    mocked<LastName>({
+    } as MockedObject<FirstName>,
+    {
       getLastName: 'LastName3',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as LastName),
-    mocked<MillisecondsDate>({
+    } as MockedObject<LastName>,
+    {
       getMilliseconds: 1,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as MillisecondsDate),
-    mocked<MillisecondsDate>({
+    } as MockedObject<MillisecondsDate>,
+    {
       getMilliseconds: 2,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as MillisecondsDate),
-    mocked<MillisecondsDate>({
+    } as MockedObject<MillisecondsDate>,
+    {
       getMilliseconds: 3,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as MillisecondsDate),
-    mocked<Biography>({
+    } as MockedObject<MillisecondsDate>,
+    {
       getBiography: 'A nice person 3.',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as Biography),
-    mocked<Role[]>({} as unknown as Role[]),
-    mocked<WebUrl>({
+    } as MockedObject<Biography>,
+    {} as MockedObject<Role[]>,
+    {
       getUrl: 'https://www.example.com/3.jpg',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as WebUrl),
+    } as MockedObject<WebUrl>,
     null,
   ],
   [
-    mocked<UniqueId>({
+    {
       getId: 'id-4',
       equals: jest.fn(),
-    } as unknown as UniqueId),
-    mocked<Email>({
+    } as MockedObject<UniqueId>,
+    {
       getEmail: 'email4@email.com',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as Email),
-    mocked<Username>({
+    } as MockedObject<Email>,
+    {
       getUsername: 'John_Doe_4',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as Username),
-    mocked<PasswordHash>({
+    } as MockedObject<Username>,
+    {
       getPasswordHash: 'hash4',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as PasswordHash),
-    mocked<IsVerified>({
+    } as MockedObject<PasswordHash>,
+    {
       getStatus: true,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as IsVerified),
-    mocked<VerificationCode>({
-      getStatus: true,
+    } as MockedObject<IsVerified>,
+    {
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as VerificationCode),
-    mocked<IsBlocked>({
+    } as MockedObject<VerificationCode>,
+    {
       getStatus: false,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as IsBlocked),
-    mocked<FirstName>({
+    } as MockedObject<IsBlocked>,
+    {
       getFirstName: 'FirstName4',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as FirstName),
-    mocked<LastName>({
+    } as MockedObject<FirstName>,
+    {
       getLastName: 'LastName4',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as LastName),
-    mocked<MillisecondsDate>({
+    } as MockedObject<LastName>,
+    {
       getMilliseconds: 1,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as MillisecondsDate),
-    mocked<MillisecondsDate>({
+    } as MockedObject<MillisecondsDate>,
+    {
       getMilliseconds: 2,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as MillisecondsDate),
-    mocked<MillisecondsDate>({
+    } as MockedObject<MillisecondsDate>,
+    {
       getMilliseconds: 3,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as MillisecondsDate),
-    mocked<Biography>({
+    } as MockedObject<MillisecondsDate>,
+    {
       getBiography: 'A nice person 4.',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as Biography),
-    mocked<Role[]>({} as unknown as Role[]),
+    } as MockedObject<Biography>,
+    {} as MockedObject<Role[]>,
     null,
-    mocked<MillisecondsDate>({
+    {
       getMilliseconds: 4,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as MillisecondsDate),
+    } as MockedObject<MillisecondsDate>,
   ],
   [
-    mocked<UniqueId>({
+    {
       getId: 'id-5',
       equals: jest.fn(),
-    } as unknown as UniqueId),
-    mocked<Email>({
+    } as MockedObject<UniqueId>,
+    {
       getEmail: 'email5@email.com',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as Email),
-    mocked<Username>({
+    } as MockedObject<Email>,
+    {
       getUsername: 'John_Doe_5',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as Username),
-    mocked<PasswordHash>({
+    } as MockedObject<Username>,
+    {
       getPasswordHash: 'hash5',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as PasswordHash),
-    mocked<IsVerified>({
+    } as MockedObject<PasswordHash>,
+    {
       getStatus: true,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as IsVerified),
-    mocked<VerificationCode>({
-      getStatus: true,
+    } as MockedObject<IsVerified>,
+    {
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as VerificationCode),
-    mocked<IsBlocked>({
+    } as MockedObject<VerificationCode>,
+    {
       getStatus: false,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as IsBlocked),
-    mocked<FirstName>({
+    } as MockedObject<IsBlocked>,
+    {
       getFirstName: 'FirstName5',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as FirstName),
-    mocked<LastName>({
+    } as MockedObject<FirstName>,
+    {
       getLastName: 'LastName5',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as LastName),
-    mocked<MillisecondsDate>({
+    } as MockedObject<LastName>,
+    {
       getMilliseconds: 1,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as MillisecondsDate),
-    mocked<MillisecondsDate>({
+    } as MockedObject<MillisecondsDate>,
+    {
       getMilliseconds: 2,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as MillisecondsDate),
-    mocked<MillisecondsDate>({
+    } as MockedObject<MillisecondsDate>,
+    {
       getMilliseconds: 3,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as MillisecondsDate),
-    mocked<Biography>({
+    } as MockedObject<MillisecondsDate>,
+    {
       getBiography: 'A nice person 5.',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as Biography),
-    mocked<Role[]>({} as unknown as Role[]),
-    mocked<WebUrl>({
+    } as MockedObject<Biography>,
+    {} as MockedObject<Role[]>,
+    {
       getUrl: 'https://www.example.com/5.jpg',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as WebUrl),
+    } as MockedObject<WebUrl>,
     null,
   ],
   [
-    mocked<UniqueId>({
+    {
       getId: 'id-6',
       equals: jest.fn(),
-    } as unknown as UniqueId),
-    mocked<Email>({
+    } as MockedObject<UniqueId>,
+    {
       getEmail: 'email6@email.com',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as Email),
-    mocked<Username>({
+    } as MockedObject<Email>,
+    {
       getUsername: 'John_Doe_6',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as Username),
-    mocked<PasswordHash>({
+    } as MockedObject<Username>,
+    {
       getPasswordHash: 'hash6',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as PasswordHash),
-    mocked<IsVerified>({
+    } as MockedObject<PasswordHash>,
+    {
       getStatus: true,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as IsVerified),
-    mocked<VerificationCode>({
-      getStatus: true,
+    } as MockedObject<IsVerified>,
+    {
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as VerificationCode),
-    mocked<IsBlocked>({
+    } as MockedObject<VerificationCode>,
+    {
       getStatus: false,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as IsBlocked),
-    mocked<FirstName>({
+    } as MockedObject<IsBlocked>,
+    {
       getFirstName: 'FirstName6',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as FirstName),
-    mocked<LastName>({
+    } as MockedObject<FirstName>,
+    {
       getLastName: 'LastName6',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as LastName),
-    mocked<MillisecondsDate>({
+    } as MockedObject<LastName>,
+    {
       getMilliseconds: 1,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as MillisecondsDate),
-    mocked<MillisecondsDate>({
+    } as MockedObject<MillisecondsDate>,
+    {
       getMilliseconds: 2,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as MillisecondsDate),
-    mocked<MillisecondsDate>({
+    } as MockedObject<MillisecondsDate>,
+    {
       getMilliseconds: 3,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as MillisecondsDate),
-    mocked<Biography>({
+    } as MockedObject<MillisecondsDate>,
+    {
       getBiography: 'A nice person 6.',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as Biography),
-    mocked<Role[]>({} as unknown as Role[]),
+    } as MockedObject<Biography>,
+    {} as MockedObject<Role[]>,
     null,
     null,
   ],
   [
-    mocked<UniqueId>({
+    {
       getId: 'id-7',
       equals: jest.fn(),
-    } as unknown as UniqueId),
-    mocked<Email>({
+    } as MockedObject<UniqueId>,
+    {
       getEmail: 'email7@email.com',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as Email),
-    mocked<Username>({
+    } as MockedObject<Email>,
+    {
       getUsername: 'John_Doe_7',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as Username),
-    mocked<PasswordHash>({
+    } as MockedObject<Username>,
+    {
       getPasswordHash: 'hash7',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as PasswordHash),
-    mocked<IsVerified>({
+    } as MockedObject<PasswordHash>,
+    {
       getStatus: true,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as IsVerified),
-    mocked<VerificationCode>({
-      getStatus: true,
+    } as MockedObject<IsVerified>,
+    {
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as VerificationCode),
-    mocked<IsBlocked>({
+    } as MockedObject<VerificationCode>,
+    {
       getStatus: false,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as IsBlocked),
-    mocked<FirstName>({
+    } as MockedObject<IsBlocked>,
+    {
       getFirstName: 'FirstName7',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as FirstName),
-    mocked<LastName>({
+    } as MockedObject<FirstName>,
+    {
       getLastName: 'LastName7',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as LastName),
-    mocked<MillisecondsDate>({
+    } as MockedObject<LastName>,
+    {
       getMilliseconds: 1,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as MillisecondsDate),
-    mocked<MillisecondsDate>({
+    } as MockedObject<MillisecondsDate>,
+    {
       getMilliseconds: 2,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as MillisecondsDate),
-    mocked<MillisecondsDate>({
+    } as MockedObject<MillisecondsDate>,
+    {
       getMilliseconds: 3,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as MillisecondsDate),
-    mocked<Biography>({
+    } as MockedObject<MillisecondsDate>,
+    {
       getBiography: 'A nice person 7.',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as Biography),
-    mocked<Role[]>({} as unknown as Role[]),
+    } as MockedObject<Biography>,
+    {} as MockedObject<Role[]>,
     null,
     null,
   ],
@@ -670,9 +661,9 @@ describe('users', () => {
               deletedAt,
             );
             const newPasswordHashText = 'newHash';
-            const newPasswordHash = mocked<PasswordHash>({
+            const newPasswordHash = {
               getPasswordHash: newPasswordHashText,
-            } as unknown as PasswordHash);
+            } as MockedObject<PasswordHash>;
 
             // Act
             user.updatePasswordHash(newPasswordHash);
@@ -867,21 +858,21 @@ describe('users', () => {
             );
 
             const newFirstNameText = 'new FirstName';
-            const newFirstName = mocked<FirstName>({
+            const newFirstName = {
               getFirstName: newFirstNameText,
-            } as unknown as FirstName);
+            } as MockedObject<FirstName>;
             const newLastNameText = 'new LastName';
-            const newLastName = mocked<LastName>({
+            const newLastName = {
               getLastName: newLastNameText,
-            } as unknown as LastName);
+            } as MockedObject<LastName>;
             const newBirthdayMillisecondsDate = new Date(2005, 1, 1).getTime();
-            const newBirthday = mocked<MillisecondsDate>({
+            const newBirthday = {
               getMilliseconds: newBirthdayMillisecondsDate,
-            } as unknown as MillisecondsDate);
+            } as MockedObject<MillisecondsDate>;
             const newBiographyText = 'new Biography';
-            const newBiography = mocked<Biography>({
+            const newBiography = {
               getBiography: newBiographyText,
-            } as unknown as Biography);
+            } as MockedObject<Biography>;
 
             // Act
             user.updateProfile(
@@ -941,9 +932,9 @@ describe('users', () => {
               deletedAt,
             );
 
-            const newProfilePicture = mocked<WebUrl>({
-              getWebUrl: 'https://www.example.com/new_image.jpg',
-            } as unknown as WebUrl);
+            const newProfilePicture = {
+              getUrl: 'https://www.example.com/new_image.jpg',
+            } as MockedObject<WebUrl>;
 
             // Act
             user.updateProfilePicture(newProfilePicture);
@@ -1121,14 +1112,14 @@ describe('users', () => {
           ) => {
             // Arrange
             const customRoles = [
-              mocked<Role>({
+              {
                 getRole: 'Admin',
                 equals: jest.fn().mockReturnValue(true),
-              } as unknown as Role),
+              } as MockedObject<Role>,
             ];
-            const roleToAdd = mocked<Role>({
+            const roleToAdd = {
               getRole: 'Admin',
-            } as unknown as Role);
+            } as MockedObject<Role>;
             const user = User.create(
               uniqueId,
               email,
@@ -1179,14 +1170,14 @@ describe('users', () => {
           ) => {
             // Arrange
             const customRoles = [
-              mocked<Role>({
+              {
                 getRole: 'Admin',
                 equals: jest.fn().mockReturnValue(false),
-              } as unknown as Role),
+              } as MockedObject<Role>,
             ];
-            const roleToAdd = mocked<Role>({
+            const roleToAdd = {
               getRole: 'Moderator',
-            } as unknown as Role);
+            } as MockedObject<Role>;
             const user = User.create(
               uniqueId,
               email,
@@ -1238,14 +1229,14 @@ describe('users', () => {
           ) => {
             // Arrange
             const customRoles = [
-              mocked<Role>({
+              {
                 getRole: 'Admin',
                 equals: jest.fn().mockReturnValue(false),
-              } as unknown as Role),
+              } as MockedObject<Role>,
             ];
-            const roleToRemove = mocked<Role>({
+            const roleToRemove = {
               getRole: 'Moderator',
-            } as unknown as Role);
+            } as MockedObject<Role>;
             const user = User.create(
               uniqueId,
               email,
@@ -1296,14 +1287,14 @@ describe('users', () => {
           ) => {
             // Arrange
             const customRoles = [
-              mocked<Role>({
+              {
                 getRole: 'Admin',
                 equals: jest.fn().mockReturnValue(true),
-              } as unknown as Role),
+              } as MockedObject<Role>,
             ];
-            const roleToRemove = mocked<Role>({
+            const roleToRemove = {
               getRole: 'Admin',
-            } as unknown as Role);
+            } as MockedObject<Role>;
             const user = User.create(
               uniqueId,
               email,
@@ -1353,18 +1344,18 @@ describe('users', () => {
           ) => {
             // Arrange
             const customRoles = [
-              mocked<Role>({
+              {
                 getRole: 'Admin',
                 equals: jest.fn().mockReturnValue(true),
-              } as unknown as Role),
-              mocked<Role>({
+              } as MockedObject<Role>,
+              {
                 getRole: 'Moderator',
                 equals: jest.fn().mockReturnValue(false),
-              } as unknown as Role),
+              } as MockedObject<Role>,
             ];
-            const roleToRemove = mocked<Role>({
+            const roleToRemove = {
               getRole: 'Admin',
-            } as unknown as Role);
+            } as MockedObject<Role>;
             const user = User.create(
               uniqueId,
               email,

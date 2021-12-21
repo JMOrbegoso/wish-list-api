@@ -1,11 +1,14 @@
-import { Collection } from '@mikro-orm/core';
-import { mocked } from 'ts-jest/utils';
+import { MockedObject } from 'ts-jest/dist/utils/testing';
 import { PrivacyLevel } from '../../domain/value-objects';
-import { WishEntity, WishStageEntity } from '../persistence/entities';
+import {
+  WishEntity,
+  WishStageEntity,
+  WisherEntity,
+} from '../persistence/entities';
 import { wishEntityToWish } from '.';
 
 const validValues = [
-  mocked<WishEntity>({
+  {
     id: 'id 0',
     title: 'title 0',
     description: 'description 0',
@@ -14,37 +17,37 @@ const validValues = [
     updatedAt: new Date(1990, 5, 4),
     wisher: {
       id: 'wisher id 0',
-    },
+    } as MockedObject<WisherEntity>,
     urls: ['https://www.example.com', 'https://www.example.net'],
     imageUrls: [
       'https://www.example.com/1.jpg',
       'https://www.example.net/1.jpg',
     ],
     categories: ['category 0', 'category 0 (1)'],
-    stages: mocked<Collection<WishStageEntity>>({
+    stages: {
       toArray: jest.fn().mockReturnValue([
-        mocked<WishStageEntity>({
+        {
           id: 'id 0',
           title: 'title 0',
           description: 'description 0',
           createdAt: new Date(1995, 5, 4),
           urls: [],
           imageUrls: [],
-        } as unknown as WishStageEntity),
-        mocked<WishStageEntity>({
+        },
+        {
           id: 'id 0',
           title: 'title 0',
           description: 'description 0',
           createdAt: new Date(1995, 5, 4),
           urls: [],
           imageUrls: [],
-        } as unknown as WishStageEntity),
-      ]),
-    } as unknown as Collection<WishStageEntity>),
+        },
+      ] as MockedObject<WishStageEntity[]>),
+    } as unknown,
     deletedAt: null,
     completedAt: null,
-  } as unknown as WishEntity),
-  mocked<WishEntity>({
+  } as MockedObject<WishEntity>,
+  {
     id: 'id 0',
     title: 'title 0',
     description: 'description 0',
@@ -52,17 +55,17 @@ const validValues = [
     createdAt: new Date(1980, 5, 4),
     updatedAt: new Date(1980, 5, 4),
     wisher: {
-      id: {
-        getId: 'wisher id 0',
-      },
-    },
-    urls: [],
-    imageUrls: [],
-    categories: [],
-    stages: { toArray: jest.fn().mockReturnValue([]) },
+      id: 'wisher id 0',
+    } as MockedObject<WisherEntity>,
+    urls: [] as string[],
+    imageUrls: [] as string[],
+    categories: [] as string[],
+    stages: {
+      toArray: jest.fn().mockReturnValue([] as MockedObject<WishStageEntity[]>),
+    } as unknown,
     deletedAt: new Date(1994, 5, 4),
     completedAt: new Date(1994, 5, 4),
-  } as unknown as WishEntity),
+  } as MockedObject<WishEntity>,
 ];
 
 describe('wishes', () => {

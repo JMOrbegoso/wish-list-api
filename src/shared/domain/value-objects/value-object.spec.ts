@@ -1,3 +1,4 @@
+import { MockedObject } from 'ts-jest/dist/utils/testing';
 import { ValueObject } from './value-object';
 
 class Name extends ValueObject<string> {
@@ -91,7 +92,7 @@ describe('shared', () => {
 
             // Act
             const name = Name.create(text);
-            const result = name.equals({} as unknown as Name);
+            const result = name.equals({} as MockedObject<Name>);
 
             // Assert
             expect(result).toBe(false);
