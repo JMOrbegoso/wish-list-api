@@ -3,77 +3,61 @@ import { UpdateUserProfileDto } from '../dtos';
 import { updateUserProfileDtoToUpdateUserProfileCommand } from '.';
 
 const validValues = [
-  [
-    {
-      id: 'id-0',
-      firstName: 'FirstName0',
-      lastName: 'LastName0',
-      birthday: 1,
-      biography: 'A nice person 0.',
-    } as MockedObject<UpdateUserProfileDto>,
-  ],
-  [
-    {
-      id: 'id-1',
-      firstName: 'FirstName1',
-      lastName: 'LastName1',
-      birthday: 1,
-      biography: 'A nice person 1.',
-    } as MockedObject<UpdateUserProfileDto>,
-  ],
-  [
-    {
-      id: 'id-2',
-      firstName: 'FirstName2',
-      lastName: 'LastName2',
-      birthday: 1,
-      biography: 'A nice person 2.',
-    } as MockedObject<UpdateUserProfileDto>,
-  ],
-  [
-    {
-      id: 'id-3',
-      firstName: 'FirstName3',
-      lastName: 'LastName3',
-      birthday: 1,
-      biography: 'A nice person 3.',
-    } as MockedObject<UpdateUserProfileDto>,
-  ],
-  [
-    {
-      id: 'id-4',
-      firstName: 'FirstName4',
-      lastName: 'LastName4',
-      birthday: 1,
-      biography: 'A nice person 4.',
-    } as MockedObject<UpdateUserProfileDto>,
-  ],
-  [
-    {
-      id: 'id-5',
-      firstName: 'FirstName5',
-      lastName: 'LastName5',
-      birthday: 1,
-      biography: 'A nice person 5.',
-    } as MockedObject<UpdateUserProfileDto>,
-  ],
-  [
-    {
-      id: 'id-6',
-      firstName: 'FirstName6',
-      lastName: 'LastName6',
-      birthday: 1,
-      biography: 'A nice person 6.',
-    } as MockedObject<UpdateUserProfileDto>,
-  ],
-  [
-    {
-      id: 'id-7',
-      firstName: 'FirstName7',
-      lastName: 'LastName7',
-      birthday: 1,
-    } as MockedObject<UpdateUserProfileDto>,
-  ],
+  {
+    id: 'id-0',
+    firstName: 'FirstName0',
+    lastName: 'LastName0',
+    birthday: 1,
+    biography: 'A nice person 0.',
+  } as MockedObject<UpdateUserProfileDto>,
+  {
+    id: 'id-1',
+    firstName: 'FirstName1',
+    lastName: 'LastName1',
+    birthday: 1,
+    biography: 'A nice person 1.',
+  } as MockedObject<UpdateUserProfileDto>,
+  {
+    id: 'id-2',
+    firstName: 'FirstName2',
+    lastName: 'LastName2',
+    birthday: 1,
+    biography: 'A nice person 2.',
+  } as MockedObject<UpdateUserProfileDto>,
+  {
+    id: 'id-3',
+    firstName: 'FirstName3',
+    lastName: 'LastName3',
+    birthday: 1,
+    biography: 'A nice person 3.',
+  } as MockedObject<UpdateUserProfileDto>,
+  {
+    id: 'id-4',
+    firstName: 'FirstName4',
+    lastName: 'LastName4',
+    birthday: 1,
+    biography: 'A nice person 4.',
+  } as MockedObject<UpdateUserProfileDto>,
+  {
+    id: 'id-5',
+    firstName: 'FirstName5',
+    lastName: 'LastName5',
+    birthday: 1,
+    biography: 'A nice person 5.',
+  } as MockedObject<UpdateUserProfileDto>,
+  {
+    id: 'id-6',
+    firstName: 'FirstName6',
+    lastName: 'LastName6',
+    birthday: 1,
+    biography: 'A nice person 6.',
+  } as MockedObject<UpdateUserProfileDto>,
+  {
+    id: 'id-7',
+    firstName: 'FirstName7',
+    lastName: 'LastName7',
+    birthday: 1,
+  } as MockedObject<UpdateUserProfileDto>,
 ];
 
 describe('users', () => {

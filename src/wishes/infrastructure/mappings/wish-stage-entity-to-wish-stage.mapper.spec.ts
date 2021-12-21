@@ -3,39 +3,33 @@ import { WishStageEntity } from '../persistence/entities';
 import { wishStageEntityToWishStage } from '.';
 
 const validValues = [
-  [
-    {
-      id: 'id-0',
-      title: 'title 0',
-      description: 'description 0',
-      createdAt: new Date(1990, 5, 5),
-      urls: [],
-      imageUrls: [],
-    } as MockedObject<WishStageEntity>,
-  ],
-  [
-    {
-      id: 'id-1',
-      title: 'title 1',
-      description: 'description 1',
-      createdAt: new Date(1995, 5, 5),
-      urls: ['https://www.example.com', 'https://www.example.net'],
-      imageUrls: [],
-    } as MockedObject<WishStageEntity>,
-  ],
-  [
-    {
-      id: 'id-1',
-      title: 'title 1',
-      description: 'description 1',
-      createdAt: new Date(2000, 5, 5),
-      urls: ['https://www.example.com', 'https://www.example.net'],
-      imageUrls: [
-        'https://www.example.com/1.jpg',
-        'https://www.example.net/2.jpg',
-      ],
-    } as MockedObject<WishStageEntity>,
-  ],
+  {
+    id: 'id-0',
+    title: 'title 0',
+    description: 'description 0',
+    createdAt: new Date(1990, 5, 5),
+    urls: [],
+    imageUrls: [],
+  } as MockedObject<WishStageEntity>,
+  {
+    id: 'id-1',
+    title: 'title 1',
+    description: 'description 1',
+    createdAt: new Date(1995, 5, 5),
+    urls: ['https://www.example.com', 'https://www.example.net'],
+    imageUrls: [],
+  } as MockedObject<WishStageEntity>,
+  {
+    id: 'id-1',
+    title: 'title 1',
+    description: 'description 1',
+    createdAt: new Date(2000, 5, 5),
+    urls: ['https://www.example.com', 'https://www.example.net'],
+    imageUrls: [
+      'https://www.example.com/1.jpg',
+      'https://www.example.net/2.jpg',
+    ],
+  } as MockedObject<WishStageEntity>,
 ];
 
 describe('wishes', () => {

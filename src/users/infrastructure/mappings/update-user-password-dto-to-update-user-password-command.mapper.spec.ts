@@ -3,30 +3,22 @@ import { UpdateUserPasswordDto } from '../dtos';
 import { updateUserPasswordDtoToUpdateUserPasswordCommand } from '.';
 
 const validValues = [
-  [
-    {
-      id: 'id-0',
-      password: 'password0',
-    } as MockedObject<UpdateUserPasswordDto>,
-  ],
-  [
-    {
-      id: 'id-1',
-      password: 'password1',
-    } as MockedObject<UpdateUserPasswordDto>,
-  ],
-  [
-    {
-      id: 'id-2',
-      password: 'password2',
-    } as MockedObject<UpdateUserPasswordDto>,
-  ],
-  [
-    {
-      id: 'id-3',
-      password: 'password3',
-    } as MockedObject<UpdateUserPasswordDto>,
-  ],
+  {
+    id: 'id-0',
+    password: 'password0',
+  } as MockedObject<UpdateUserPasswordDto>,
+  {
+    id: 'id-1',
+    password: 'password1',
+  } as MockedObject<UpdateUserPasswordDto>,
+  {
+    id: 'id-2',
+    password: 'password2',
+  } as MockedObject<UpdateUserPasswordDto>,
+  {
+    id: 'id-3',
+    password: 'password3',
+  } as MockedObject<UpdateUserPasswordDto>,
 ];
 
 describe('users', () => {

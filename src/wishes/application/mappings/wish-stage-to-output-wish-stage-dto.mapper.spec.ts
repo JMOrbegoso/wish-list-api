@@ -4,48 +4,44 @@ import { WishStage } from '../../domain/entities';
 import { wishStageToOutputWishStageDto } from '.';
 
 const validValues = [
-  [
-    {
-      id: {
-        getId: 'id 0',
-      },
-      title: {
-        getTitle: 'title 0',
-      },
-      description: {
-        getDescription: 'description 0',
-      },
-      createdAt: {
-        getMilliseconds: 2,
-      },
-      urls: [],
-      imageUrls: [],
-    } as MockedObject<WishStage>,
-  ],
-  [
-    {
-      id: {
-        getId: 'id 1',
-      },
-      title: {
-        getTitle: 'title 1',
-      },
-      description: {
-        getDescription: 'description 1',
-      },
-      createdAt: {
-        getMilliseconds: 2,
-      },
-      urls: [
-        { getUrl: 'url 1' } as MockedObject<WebUrl>,
-        { getUrl: 'url 1 (1)' } as MockedObject<WebUrl>,
-      ] as MockedObject<WebUrl[]>,
-      imageUrls: [
-        { getUrl: 'image url 1' } as MockedObject<WebUrl>,
-        { getUrl: 'image url 1 (1)' } as MockedObject<WebUrl>,
-      ] as MockedObject<WebUrl[]>,
-    } as MockedObject<WishStage>,
-  ],
+  {
+    id: {
+      getId: 'id 0',
+    },
+    title: {
+      getTitle: 'title 0',
+    },
+    description: {
+      getDescription: 'description 0',
+    },
+    createdAt: {
+      getMilliseconds: 2,
+    },
+    urls: [],
+    imageUrls: [],
+  } as MockedObject<WishStage>,
+  {
+    id: {
+      getId: 'id 1',
+    },
+    title: {
+      getTitle: 'title 1',
+    },
+    description: {
+      getDescription: 'description 1',
+    },
+    createdAt: {
+      getMilliseconds: 2,
+    },
+    urls: [
+      { getUrl: 'url 1' } as MockedObject<WebUrl>,
+      { getUrl: 'url 1 (1)' } as MockedObject<WebUrl>,
+    ] as MockedObject<WebUrl[]>,
+    imageUrls: [
+      { getUrl: 'image url 1' } as MockedObject<WebUrl>,
+      { getUrl: 'image url 1 (1)' } as MockedObject<WebUrl>,
+    ] as MockedObject<WebUrl[]>,
+  } as MockedObject<WishStage>,
 ];
 
 describe('wishes', () => {

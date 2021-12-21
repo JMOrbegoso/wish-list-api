@@ -3,342 +3,326 @@ import { User } from '../../domain/entities';
 import { userToUserEntity } from '.';
 
 const validValues = [
-  [
-    {
-      id: {
-        getId: 'id-0',
-      },
-      email: {
-        getEmail: 'email0@email.com',
-      },
-      username: {
-        getUsername: 'John_Doe_0',
-      },
-      passwordHash: {
-        getPasswordHash: 'hash0',
-      },
-      isVerified: true,
-      verificationCode: 'verification-code-00',
-      isBlocked: false,
-      firstName: {
-        getFirstName: 'FirstName0',
-      },
-      lastName: {
-        getLastName: 'LastName0',
-      },
-      birthday: {
-        getDate: new Date(1990, 5, 5),
-      },
-      createdAt: {
-        getDate: new Date(1995, 5, 5),
-      },
-      updatedAt: {
-        getDate: new Date(2000, 5, 5),
-      },
-      biography: {
-        getBiography: 'A nice person 0.',
-      },
-      roles: ['Admin'],
-      profilePicture: {
-        getUrl: 'https://www.example.com/0.jpg',
-      },
-      deletedAt: {
-        getDate: new Date(2001, 5, 5),
-      },
-    } as MockedObject<User>,
-  ],
-  [
-    {
-      id: {
-        getId: 'id-1',
-      },
-      email: {
-        getEmail: 'email1@email.com',
-      },
-      username: {
-        getUsername: 'John_Doe_1',
-      },
-      passwordHash: {
-        getPasswordHash: 'hash1',
-      },
-      isVerified: true,
-      verificationCode: 'verification-code-01',
-      isBlocked: false,
-      firstName: {
-        getFirstName: 'FirstName1',
-      },
-      lastName: {
-        getLastName: 'LastName1',
-      },
-      birthday: {
-        getDate: new Date(1990, 5, 5),
-      },
-      createdAt: {
-        getDate: new Date(1995, 5, 5),
-      },
-      updatedAt: {
-        getDate: new Date(2000, 5, 5),
-      },
-      biography: {
-        getBiography: 'A nice person 1.',
-      },
-      roles: ['Admin', 'Moderator'],
-      profilePicture: {
-        getUrl: 'https://www.example.com/1.jpg',
-      },
-      deletedAt: {
-        getDate: new Date(2001, 5, 5),
-      },
-    } as MockedObject<User>,
-  ],
-  [
-    {
-      id: {
-        getId: 'id-2',
-      },
-      email: {
-        getEmail: 'email2@email.com',
-      },
-      username: {
-        getUsername: 'John_Doe_2',
-      },
-      passwordHash: {
-        getPasswordHash: 'hash2',
-      },
-      isVerified: true,
-      verificationCode: 'verification-code-02',
-      isBlocked: false,
-      firstName: {
-        getFirstName: 'FirstName2',
-      },
-      lastName: {
-        getLastName: 'LastName2',
-      },
-      birthday: {
-        getDate: new Date(1990, 5, 5),
-      },
-      createdAt: {
-        getDate: new Date(1995, 5, 5),
-      },
-      updatedAt: {
-        getDate: new Date(2000, 5, 5),
-      },
-      biography: {
-        getBiography: 'A nice person 2.',
-      },
-      roles: ['Admin', 'Moderator'],
-      profilePicture: null,
-      deletedAt: {
-        getDate: new Date(2001, 5, 5),
-      },
-    } as MockedObject<User>,
-  ],
-  [
-    {
-      id: {
-        getId: 'id-3',
-      },
-      email: {
-        getEmail: 'email3@email.com',
-      },
-      username: {
-        getUsername: 'John_Doe_3',
-      },
-      passwordHash: {
-        getPasswordHash: 'hash3',
-      },
-      isVerified: true,
-      verificationCode: 'verification-code-03',
-      isBlocked: false,
-      firstName: {
-        getFirstName: 'FirstName3',
-      },
-      lastName: {
-        getLastName: 'LastName3',
-      },
-      birthday: {
-        getDate: new Date(1990, 5, 5),
-      },
-      createdAt: {
-        getDate: new Date(1995, 5, 5),
-      },
-      updatedAt: {
-        getDate: new Date(2000, 5, 5),
-      },
-      biography: {
-        getBiography: 'A nice person 3.',
-      },
-      roles: ['Admin', 'Moderator'],
-      profilePicture: {
-        getUrl: 'https://www.example.com/3.jpg',
-      },
-      deletedAt: null,
-    } as MockedObject<User>,
-  ],
-  [
-    {
-      id: {
-        getId: 'id-4',
-      },
-      email: {
-        getEmail: 'email4@email.com',
-      },
-      username: {
-        getUsername: 'John_Doe_4',
-      },
-      passwordHash: {
-        getPasswordHash: 'hash4',
-      },
-      isVerified: true,
-      verificationCode: 'verification-code-04',
-      isBlocked: false,
-      firstName: {
-        getFirstName: 'FirstName4',
-      },
-      lastName: {
-        getLastName: 'LastName4',
-      },
-      birthday: {
-        getDate: new Date(1990, 5, 5),
-      },
-      createdAt: {
-        getDate: new Date(1995, 5, 5),
-      },
-      updatedAt: {
-        getDate: new Date(2000, 5, 5),
-      },
-      biography: {
-        getBiography: 'A nice person 4.',
-      },
-      roles: ['Admin', 'Moderator'],
-      profilePicture: null,
-      deletedAt: {
-        getDate: new Date(2001, 5, 5),
-      },
-    } as MockedObject<User>,
-  ],
-  [
-    {
-      id: {
-        getId: 'id-5',
-      },
-      email: {
-        getEmail: 'email5@email.com',
-      },
-      username: {
-        getUsername: 'John_Doe_5',
-      },
-      passwordHash: {
-        getPasswordHash: 'hash5',
-      },
-      isVerified: true,
-      verificationCode: 'verification-code-05',
-      isBlocked: false,
-      firstName: {
-        getFirstName: 'FirstName5',
-      },
-      lastName: {
-        getLastName: 'LastName5',
-      },
-      birthday: {
-        getDate: new Date(1990, 5, 5),
-      },
-      createdAt: {
-        getDate: new Date(1995, 5, 5),
-      },
-      updatedAt: {
-        getDate: new Date(2000, 5, 5),
-      },
-      biography: {
-        getBiography: 'A nice person 5.',
-      },
-      roles: ['Admin', 'Moderator'],
-      profilePicture: {
-        getUrl: 'https://www.example.com/5.jpg',
-      },
-      deletedAt: null,
-    } as MockedObject<User>,
-  ],
-  [
-    {
-      id: {
-        getId: 'id-6',
-      },
-      email: {
-        getEmail: 'email6@email.com',
-      },
-      username: {
-        getUsername: 'John_Doe_6',
-      },
-      passwordHash: {
-        getPasswordHash: 'hash6',
-      },
-      isVerified: true,
-      verificationCode: 'verification-code-06',
-      isBlocked: false,
-      firstName: {
-        getFirstName: 'FirstName6',
-      },
-      lastName: {
-        getLastName: 'LastName6',
-      },
-      birthday: {
-        getDate: new Date(1990, 5, 5),
-      },
-      createdAt: {
-        getDate: new Date(1995, 5, 5),
-      },
-      updatedAt: {
-        getDate: new Date(2000, 5, 5),
-      },
-      biography: {
-        getBiography: 'A nice person 6.',
-      },
-      roles: ['Admin', 'Moderator', 'Basic'],
-      profilePicture: null,
-      deletedAt: null,
-    } as MockedObject<User>,
-  ],
-  [
-    {
-      id: {
-        getId: 'id-7',
-      },
-      email: {
-        getEmail: 'email7@email.com',
-      },
-      username: {
-        getUsername: 'John_Doe_7',
-      },
-      passwordHash: {
-        getPasswordHash: 'hash7',
-      },
-      isVerified: true,
-      verificationCode: 'verification-code-07',
-      isBlocked: false,
-      firstName: {
-        getFirstName: 'FirstName7',
-      },
-      lastName: {
-        getLastName: 'LastName7',
-      },
-      birthday: {
-        getDate: new Date(1990, 5, 5),
-      },
-      createdAt: {
-        getDate: new Date(1995, 5, 5),
-      },
-      updatedAt: {
-        getDate: new Date(2000, 5, 5),
-      },
-      biography: {
-        getBiography: 'A nice person 7.',
-      },
-      roles: [],
-      profilePicture: null,
-      deletedAt: null,
-    } as MockedObject<User>,
-  ],
+  {
+    id: {
+      getId: 'id-0',
+    },
+    email: {
+      getEmail: 'email0@email.com',
+    },
+    username: {
+      getUsername: 'John_Doe_0',
+    },
+    passwordHash: {
+      getPasswordHash: 'hash0',
+    },
+    isVerified: true,
+    verificationCode: 'verification-code-00',
+    isBlocked: false,
+    firstName: {
+      getFirstName: 'FirstName0',
+    },
+    lastName: {
+      getLastName: 'LastName0',
+    },
+    birthday: {
+      getDate: new Date(1990, 5, 5),
+    },
+    createdAt: {
+      getDate: new Date(1995, 5, 5),
+    },
+    updatedAt: {
+      getDate: new Date(2000, 5, 5),
+    },
+    biography: {
+      getBiography: 'A nice person 0.',
+    },
+    roles: ['Admin'],
+    profilePicture: {
+      getUrl: 'https://www.example.com/0.jpg',
+    },
+    deletedAt: {
+      getDate: new Date(2001, 5, 5),
+    },
+  } as MockedObject<User>,
+  {
+    id: {
+      getId: 'id-1',
+    },
+    email: {
+      getEmail: 'email1@email.com',
+    },
+    username: {
+      getUsername: 'John_Doe_1',
+    },
+    passwordHash: {
+      getPasswordHash: 'hash1',
+    },
+    isVerified: true,
+    verificationCode: 'verification-code-01',
+    isBlocked: false,
+    firstName: {
+      getFirstName: 'FirstName1',
+    },
+    lastName: {
+      getLastName: 'LastName1',
+    },
+    birthday: {
+      getDate: new Date(1990, 5, 5),
+    },
+    createdAt: {
+      getDate: new Date(1995, 5, 5),
+    },
+    updatedAt: {
+      getDate: new Date(2000, 5, 5),
+    },
+    biography: {
+      getBiography: 'A nice person 1.',
+    },
+    roles: ['Admin', 'Moderator'],
+    profilePicture: {
+      getUrl: 'https://www.example.com/1.jpg',
+    },
+    deletedAt: {
+      getDate: new Date(2001, 5, 5),
+    },
+  } as MockedObject<User>,
+  {
+    id: {
+      getId: 'id-2',
+    },
+    email: {
+      getEmail: 'email2@email.com',
+    },
+    username: {
+      getUsername: 'John_Doe_2',
+    },
+    passwordHash: {
+      getPasswordHash: 'hash2',
+    },
+    isVerified: true,
+    verificationCode: 'verification-code-02',
+    isBlocked: false,
+    firstName: {
+      getFirstName: 'FirstName2',
+    },
+    lastName: {
+      getLastName: 'LastName2',
+    },
+    birthday: {
+      getDate: new Date(1990, 5, 5),
+    },
+    createdAt: {
+      getDate: new Date(1995, 5, 5),
+    },
+    updatedAt: {
+      getDate: new Date(2000, 5, 5),
+    },
+    biography: {
+      getBiography: 'A nice person 2.',
+    },
+    roles: ['Admin', 'Moderator'],
+    profilePicture: null,
+    deletedAt: {
+      getDate: new Date(2001, 5, 5),
+    },
+  } as MockedObject<User>,
+  {
+    id: {
+      getId: 'id-3',
+    },
+    email: {
+      getEmail: 'email3@email.com',
+    },
+    username: {
+      getUsername: 'John_Doe_3',
+    },
+    passwordHash: {
+      getPasswordHash: 'hash3',
+    },
+    isVerified: true,
+    verificationCode: 'verification-code-03',
+    isBlocked: false,
+    firstName: {
+      getFirstName: 'FirstName3',
+    },
+    lastName: {
+      getLastName: 'LastName3',
+    },
+    birthday: {
+      getDate: new Date(1990, 5, 5),
+    },
+    createdAt: {
+      getDate: new Date(1995, 5, 5),
+    },
+    updatedAt: {
+      getDate: new Date(2000, 5, 5),
+    },
+    biography: {
+      getBiography: 'A nice person 3.',
+    },
+    roles: ['Admin', 'Moderator'],
+    profilePicture: {
+      getUrl: 'https://www.example.com/3.jpg',
+    },
+    deletedAt: null,
+  } as MockedObject<User>,
+  {
+    id: {
+      getId: 'id-4',
+    },
+    email: {
+      getEmail: 'email4@email.com',
+    },
+    username: {
+      getUsername: 'John_Doe_4',
+    },
+    passwordHash: {
+      getPasswordHash: 'hash4',
+    },
+    isVerified: true,
+    verificationCode: 'verification-code-04',
+    isBlocked: false,
+    firstName: {
+      getFirstName: 'FirstName4',
+    },
+    lastName: {
+      getLastName: 'LastName4',
+    },
+    birthday: {
+      getDate: new Date(1990, 5, 5),
+    },
+    createdAt: {
+      getDate: new Date(1995, 5, 5),
+    },
+    updatedAt: {
+      getDate: new Date(2000, 5, 5),
+    },
+    biography: {
+      getBiography: 'A nice person 4.',
+    },
+    roles: ['Admin', 'Moderator'],
+    profilePicture: null,
+    deletedAt: {
+      getDate: new Date(2001, 5, 5),
+    },
+  } as MockedObject<User>,
+  {
+    id: {
+      getId: 'id-5',
+    },
+    email: {
+      getEmail: 'email5@email.com',
+    },
+    username: {
+      getUsername: 'John_Doe_5',
+    },
+    passwordHash: {
+      getPasswordHash: 'hash5',
+    },
+    isVerified: true,
+    verificationCode: 'verification-code-05',
+    isBlocked: false,
+    firstName: {
+      getFirstName: 'FirstName5',
+    },
+    lastName: {
+      getLastName: 'LastName5',
+    },
+    birthday: {
+      getDate: new Date(1990, 5, 5),
+    },
+    createdAt: {
+      getDate: new Date(1995, 5, 5),
+    },
+    updatedAt: {
+      getDate: new Date(2000, 5, 5),
+    },
+    biography: {
+      getBiography: 'A nice person 5.',
+    },
+    roles: ['Admin', 'Moderator'],
+    profilePicture: {
+      getUrl: 'https://www.example.com/5.jpg',
+    },
+    deletedAt: null,
+  } as MockedObject<User>,
+  {
+    id: {
+      getId: 'id-6',
+    },
+    email: {
+      getEmail: 'email6@email.com',
+    },
+    username: {
+      getUsername: 'John_Doe_6',
+    },
+    passwordHash: {
+      getPasswordHash: 'hash6',
+    },
+    isVerified: true,
+    verificationCode: 'verification-code-06',
+    isBlocked: false,
+    firstName: {
+      getFirstName: 'FirstName6',
+    },
+    lastName: {
+      getLastName: 'LastName6',
+    },
+    birthday: {
+      getDate: new Date(1990, 5, 5),
+    },
+    createdAt: {
+      getDate: new Date(1995, 5, 5),
+    },
+    updatedAt: {
+      getDate: new Date(2000, 5, 5),
+    },
+    biography: {
+      getBiography: 'A nice person 6.',
+    },
+    roles: ['Admin', 'Moderator', 'Basic'],
+    profilePicture: null,
+    deletedAt: null,
+  } as MockedObject<User>,
+  {
+    id: {
+      getId: 'id-7',
+    },
+    email: {
+      getEmail: 'email7@email.com',
+    },
+    username: {
+      getUsername: 'John_Doe_7',
+    },
+    passwordHash: {
+      getPasswordHash: 'hash7',
+    },
+    isVerified: true,
+    verificationCode: 'verification-code-07',
+    isBlocked: false,
+    firstName: {
+      getFirstName: 'FirstName7',
+    },
+    lastName: {
+      getLastName: 'LastName7',
+    },
+    birthday: {
+      getDate: new Date(1990, 5, 5),
+    },
+    createdAt: {
+      getDate: new Date(1995, 5, 5),
+    },
+    updatedAt: {
+      getDate: new Date(2000, 5, 5),
+    },
+    biography: {
+      getBiography: 'A nice person 7.',
+    },
+    roles: [],
+    profilePicture: null,
+    deletedAt: null,
+  } as MockedObject<User>,
 ];
 
 describe('users', () => {

@@ -3,30 +3,22 @@ import { Wisher } from '..';
 import { UniqueId } from '../../../../shared/domain/value-objects';
 
 const validValues = [
-  [
-    {
-      getId: 'id-0',
-      equals: jest.fn(),
-    } as MockedObject<UniqueId>,
-  ],
-  [
-    {
-      getId: 'id-1',
-      equals: jest.fn(),
-    } as MockedObject<UniqueId>,
-  ],
-  [
-    {
-      getId: 'id-2',
-      equals: jest.fn(),
-    } as MockedObject<UniqueId>,
-  ],
-  [
-    {
-      getId: 'id-3',
-      equals: jest.fn(),
-    } as MockedObject<UniqueId>,
-  ],
+  {
+    getId: 'id-0',
+    equals: jest.fn(),
+  } as MockedObject<UniqueId>,
+  {
+    getId: 'id-1',
+    equals: jest.fn(),
+  } as MockedObject<UniqueId>,
+  {
+    getId: 'id-2',
+    equals: jest.fn(),
+  } as MockedObject<UniqueId>,
+  {
+    getId: 'id-3',
+    equals: jest.fn(),
+  } as MockedObject<UniqueId>,
 ];
 
 describe('wishes', () => {
