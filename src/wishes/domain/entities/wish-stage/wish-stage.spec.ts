@@ -25,25 +25,25 @@ const validValues = [
     {
       getId: 'id-0',
       equals: jest.fn(),
-    } as unknown as MockedObject<UniqueId>,
+    } as MockedObject<UniqueId>,
     {
       getTitle: 'title',
-    } as unknown as MockedObject<WishTitle>,
+    } as MockedObject<WishTitle>,
     {
       getDescription: 'description',
-    } as unknown as MockedObject<WishDescription>,
+    } as MockedObject<WishDescription>,
     {
       getMilliseconds: 1,
-    } as unknown as MockedObject<MillisecondsDate>,
+    } as MockedObject<MillisecondsDate>,
     [
       {
         getUrl: 'https://www.example.com',
-      } as unknown as MockedObject<WebUrl>,
+      } as MockedObject<WebUrl>,
     ],
     [
       {
         getUrl: 'https://www.example.com/1.jpg',
-      } as unknown as MockedObject<WebUrl>,
+      } as MockedObject<WebUrl>,
     ],
   ],
 ];
@@ -200,7 +200,7 @@ describe('wishes', () => {
             // Act
             urls = Array(WishStage.MaxUrls + 1).fill({
               getUrl: 'https://www.example.com',
-            } as unknown as MockedObject<WebUrl>);
+            } as MockedObject<WebUrl>);
 
             // Assert
             expect(() =>
@@ -258,7 +258,7 @@ describe('wishes', () => {
             // Act
             images = Array(WishStage.MaxImages + 1).fill({
               getUrl: 'https://www.example.com/1.jpg',
-            } as unknown as MockedObject<WebUrl>);
+            } as MockedObject<WebUrl>);
 
             // Assert
             expect(() =>
@@ -361,7 +361,7 @@ describe('wishes', () => {
             // Act
             const newDescription = {
               getDescription: 'description',
-            } as unknown as MockedObject<WishDescription>;
+            } as MockedObject<WishDescription>;
 
             // Assert
             expect(() => wishStage.update(null, newDescription)).toThrowError(
@@ -393,7 +393,7 @@ describe('wishes', () => {
             // Act
             const newTitle = {
               getTitle: 'title',
-            } as unknown as MockedObject<WishTitle>;
+            } as MockedObject<WishTitle>;
 
             // Assert
             expect(() => wishStage.update(newTitle, null)).toThrowError(
@@ -454,7 +454,7 @@ describe('wishes', () => {
             // Act
             const newUrls = Array(WishStage.MaxUrls + 1).fill({
               getUrl: 'https://www.example.com',
-            } as unknown as MockedObject<WebUrl>);
+            } as MockedObject<WebUrl>);
 
             // Assert
             expect(() =>
@@ -515,7 +515,7 @@ describe('wishes', () => {
             // Act
             const newImages = Array(WishStage.MaxImages + 1).fill({
               getUrl: 'https://www.example.com/1.jpg',
-            } as unknown as MockedObject<WebUrl>);
+            } as MockedObject<WebUrl>);
 
             // Assert
             expect(() =>
@@ -547,10 +547,10 @@ describe('wishes', () => {
             // Act
             const newTitle = {
               getTitle: 'title',
-            } as unknown as MockedObject<WishTitle>;
+            } as MockedObject<WishTitle>;
             const newDescription = {
               getDescription: 'description',
-            } as unknown as MockedObject<WishDescription>;
+            } as MockedObject<WishDescription>;
 
             wishStage.update(newTitle, newDescription);
 
@@ -587,19 +587,19 @@ describe('wishes', () => {
             // Act
             const newTitle = {
               getTitle: 'title',
-            } as unknown as MockedObject<WishTitle>;
+            } as MockedObject<WishTitle>;
             const newDescription = {
               getDescription: 'description',
-            } as unknown as MockedObject<WishDescription>;
+            } as MockedObject<WishDescription>;
             const newUrls = [
               {
                 getUrl: 'https://www.example.com',
-              } as unknown as MockedObject<WebUrl>,
+              } as MockedObject<WebUrl>,
             ];
             const newImages = [
               {
                 getUrl: 'https://www.example.com/1.jpg',
-              } as unknown as MockedObject<WebUrl>,
+              } as MockedObject<WebUrl>,
             ];
 
             wishStage.update(newTitle, newDescription, newUrls, newImages);

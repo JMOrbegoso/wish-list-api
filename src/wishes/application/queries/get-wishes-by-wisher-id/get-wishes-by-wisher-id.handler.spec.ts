@@ -20,7 +20,7 @@ describe('wishes', () => {
             // Arrange
             const wishRepository = {
               getAllWishesByWisher: jest.fn().mockReturnValue([]),
-            } as unknown as MockedObject<WishRepository>;
+            } as MockedObject<WishRepository>;
 
             const handler = new GetWishesByWisherIdHandler(wishRepository);
 
@@ -70,11 +70,11 @@ describe('wishes', () => {
               completedAt: {
                 getMilliseconds: 2,
               },
-            } as unknown as MockedObject<Wish>;
+            } as MockedObject<Wish>;
 
             const wishRepository = {
               getAllWishesByWisher: jest.fn().mockReturnValue([wish]),
-            } as unknown as MockedObject<WishRepository>;
+            } as MockedObject<WishRepository>;
 
             const handler = new GetWishesByWisherIdHandler(wishRepository);
 

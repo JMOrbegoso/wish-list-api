@@ -25,9 +25,9 @@ describe('wishes', () => {
             // Arrange
             const wishRepository = {
               getOne: jest.fn().mockReturnValue(null),
-            } as unknown as MockedObject<WishRepository>;
+            } as MockedObject<WishRepository>;
 
-            const unitOfWork = {} as unknown as MockedObject<UnitOfWork>;
+            const unitOfWork = {} as MockedObject<UnitOfWork>;
 
             const handler = new ChangeWishPrivacyLevelHandler(
               wishRepository,
@@ -47,13 +47,13 @@ describe('wishes', () => {
           'change wish privacy level of a deleted wish should throw error',
           (command: ChangeWishPrivacyLevelCommand) => {
             // Arrange
-            const wish = { isDeleted: true } as unknown as MockedObject<Wish>;
+            const wish = { isDeleted: true } as MockedObject<Wish>;
 
             const wishRepository = {
               getOne: jest.fn().mockReturnValue(wish),
-            } as unknown as MockedObject<WishRepository>;
+            } as MockedObject<WishRepository>;
 
-            const unitOfWork = {} as unknown as MockedObject<UnitOfWork>;
+            const unitOfWork = {} as MockedObject<UnitOfWork>;
 
             const handler = new ChangeWishPrivacyLevelHandler(
               wishRepository,
@@ -77,16 +77,16 @@ describe('wishes', () => {
               id: { getId: 'id' },
               isDeleted: false,
               changePrivacyLevel: jest.fn(),
-            } as unknown as MockedObject<Wish>;
+            } as MockedObject<Wish>;
 
             const wishRepository = {
               getOne: jest.fn().mockReturnValue(wish),
               update: jest.fn(),
-            } as unknown as MockedObject<WishRepository>;
+            } as MockedObject<WishRepository>;
 
             const unitOfWork = {
               commitChanges: jest.fn(),
-            } as unknown as MockedObject<UnitOfWork>;
+            } as MockedObject<UnitOfWork>;
 
             const handler = new ChangeWishPrivacyLevelHandler(
               wishRepository,

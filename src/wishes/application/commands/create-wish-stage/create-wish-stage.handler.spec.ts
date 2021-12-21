@@ -42,9 +42,9 @@ describe('wishes', () => {
             // Arrange
             const wishRepository = {
               getWishStageById: jest.fn().mockReturnValue(true),
-            } as unknown as MockedObject<WishRepository>;
+            } as MockedObject<WishRepository>;
 
-            const unitOfWork = {} as unknown as MockedObject<UnitOfWork>;
+            const unitOfWork = {} as MockedObject<UnitOfWork>;
 
             const handler = new CreateWishStageHandler(
               wishRepository,
@@ -66,9 +66,9 @@ describe('wishes', () => {
             const wishRepository = {
               getWishStageById: jest.fn().mockReturnValue(null),
               getOne: jest.fn().mockReturnValue(null),
-            } as unknown as MockedObject<WishRepository>;
+            } as MockedObject<WishRepository>;
 
-            const unitOfWork = {} as unknown as MockedObject<UnitOfWork>;
+            const unitOfWork = {} as MockedObject<UnitOfWork>;
 
             const handler = new CreateWishStageHandler(
               wishRepository,
@@ -93,14 +93,14 @@ describe('wishes', () => {
                 getId: 'id',
               },
               isDeleted: true,
-            } as unknown as MockedObject<Wish>;
+            } as MockedObject<Wish>;
 
             const wishRepository = {
               getWishStageById: jest.fn().mockReturnValue(null),
               getOne: jest.fn().mockReturnValue(wish),
-            } as unknown as MockedObject<WishRepository>;
+            } as MockedObject<WishRepository>;
 
-            const unitOfWork = {} as unknown as MockedObject<UnitOfWork>;
+            const unitOfWork = {} as MockedObject<UnitOfWork>;
 
             const handler = new CreateWishStageHandler(
               wishRepository,
@@ -126,14 +126,14 @@ describe('wishes', () => {
               },
               isDeleted: false,
               stages: { length: Wish.MaxStages },
-            } as unknown as MockedObject<Wish>;
+            } as MockedObject<Wish>;
 
             const wishRepository = {
               getWishStageById: jest.fn().mockReturnValue(null),
               getOne: jest.fn().mockReturnValue(wish),
-            } as unknown as MockedObject<WishRepository>;
+            } as MockedObject<WishRepository>;
 
-            const unitOfWork = {} as unknown as MockedObject<UnitOfWork>;
+            const unitOfWork = {} as MockedObject<UnitOfWork>;
 
             const handler = new CreateWishStageHandler(
               wishRepository,
@@ -160,17 +160,17 @@ describe('wishes', () => {
               isDeleted: false,
               stages: { length: 1 },
               addStage: jest.fn(),
-            } as unknown as MockedObject<Wish>;
+            } as MockedObject<Wish>;
 
             const wishRepository = {
               getWishStageById: jest.fn().mockReturnValue(null),
               getOne: jest.fn().mockReturnValue(wish),
               update: jest.fn(),
-            } as unknown as MockedObject<WishRepository>;
+            } as MockedObject<WishRepository>;
 
             const unitOfWork = {
               commitChanges: jest.fn(),
-            } as unknown as MockedObject<UnitOfWork>;
+            } as MockedObject<UnitOfWork>;
 
             const handler = new CreateWishStageHandler(
               wishRepository,

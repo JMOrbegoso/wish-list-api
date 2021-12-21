@@ -43,190 +43,190 @@ const validValues = [
     {
       getId: 'id-0',
       equals: jest.fn(),
-    } as unknown as MockedObject<UniqueId>,
+    } as MockedObject<UniqueId>,
     {
       getTitle: 'title',
-    } as unknown as MockedObject<WishTitle>,
+    } as MockedObject<WishTitle>,
     {
       getDescription: 'description',
-    } as unknown as MockedObject<WishDescription>,
+    } as MockedObject<WishDescription>,
     {
       getPrivacyLevel: PrivacyLevel.Public,
-    } as unknown as MockedObject<WishPrivacyLevel>,
+    } as MockedObject<WishPrivacyLevel>,
     {
       getMilliseconds: 1,
-    } as unknown as MockedObject<MillisecondsDate>,
+    } as MockedObject<MillisecondsDate>,
     {
       getMilliseconds: 1,
-    } as unknown as MockedObject<MillisecondsDate>,
+    } as MockedObject<MillisecondsDate>,
     {
       id: { getId: 'id-0' },
-    } as unknown as MockedObject<Wisher>,
+    } as MockedObject<Wisher>,
     [
       {
         getUrl: 'https://www.example.com',
-      } as unknown as MockedObject<WebUrl>,
+      } as MockedObject<WebUrl>,
     ],
     [
       {
         getUrl: 'https://www.example.com/1.jpg',
-      } as unknown as MockedObject<WebUrl>,
+      } as MockedObject<WebUrl>,
     ],
     [
       {
         getName: 'category name',
-      } as unknown as MockedObject<CategoryName>,
+      } as MockedObject<CategoryName>,
     ],
     [
       {
         id: { getId: 'id-0' },
-      } as unknown as MockedObject<WishStage>,
+      } as MockedObject<WishStage>,
     ],
     {
       getMilliseconds: 1,
-    } as unknown as MockedObject<MillisecondsDate>,
+    } as MockedObject<MillisecondsDate>,
     {
       getMilliseconds: 1,
-    } as unknown as MockedObject<MillisecondsDate>,
+    } as MockedObject<MillisecondsDate>,
   ],
   [
     {
       getId: 'id-0',
       equals: jest.fn(),
-    } as unknown as MockedObject<UniqueId>,
+    } as MockedObject<UniqueId>,
     {
       getTitle: 'title',
-    } as unknown as MockedObject<WishTitle>,
+    } as MockedObject<WishTitle>,
     {
       getDescription: 'description',
-    } as unknown as MockedObject<WishDescription>,
+    } as MockedObject<WishDescription>,
     {
       getPrivacyLevel: PrivacyLevel.Public,
-    } as unknown as MockedObject<WishPrivacyLevel>,
+    } as MockedObject<WishPrivacyLevel>,
     {
       getMilliseconds: 1,
-    } as unknown as MockedObject<MillisecondsDate>,
+    } as MockedObject<MillisecondsDate>,
     {
       getMilliseconds: 1,
-    } as unknown as MockedObject<MillisecondsDate>,
+    } as MockedObject<MillisecondsDate>,
     {
       id: { getId: 'id-0' },
-    } as unknown as MockedObject<Wisher>,
+    } as MockedObject<Wisher>,
     [
       {
         getUrl: 'https://www.example.com',
-      } as unknown as MockedObject<WebUrl>,
+      } as MockedObject<WebUrl>,
     ],
     [
       {
         getUrl: 'https://www.example.com/1.jpg',
-      } as unknown as MockedObject<WebUrl>,
+      } as MockedObject<WebUrl>,
     ],
     [
       {
         getName: 'category name',
-      } as unknown as MockedObject<CategoryName>,
+      } as MockedObject<CategoryName>,
     ],
     [
       {
         id: { getId: 'id-0' },
-      } as unknown as MockedObject<WishStage>,
+      } as MockedObject<WishStage>,
     ],
     null,
     {
       getMilliseconds: 1,
-    } as unknown as MockedObject<MillisecondsDate>,
+    } as MockedObject<MillisecondsDate>,
   ],
   [
     {
       getId: 'id-0',
       equals: jest.fn(),
-    } as unknown as MockedObject<UniqueId>,
+    } as MockedObject<UniqueId>,
     {
       getTitle: 'title',
-    } as unknown as MockedObject<WishTitle>,
+    } as MockedObject<WishTitle>,
     {
       getDescription: 'description',
-    } as unknown as MockedObject<WishDescription>,
+    } as MockedObject<WishDescription>,
     {
       getPrivacyLevel: PrivacyLevel.Public,
-    } as unknown as MockedObject<WishPrivacyLevel>,
+    } as MockedObject<WishPrivacyLevel>,
     {
       getMilliseconds: 1,
-    } as unknown as MockedObject<MillisecondsDate>,
+    } as MockedObject<MillisecondsDate>,
     {
       getMilliseconds: 1,
-    } as unknown as MockedObject<MillisecondsDate>,
+    } as MockedObject<MillisecondsDate>,
     {
       id: { getId: 'id-0' },
-    } as unknown as MockedObject<Wisher>,
+    } as MockedObject<Wisher>,
     [
       {
         getUrl: 'https://www.example.com',
-      } as unknown as MockedObject<WebUrl>,
+      } as MockedObject<WebUrl>,
     ],
     [
       {
         getUrl: 'https://www.example.com/1.jpg',
-      } as unknown as MockedObject<WebUrl>,
+      } as MockedObject<WebUrl>,
     ],
     [
       {
         getName: 'category name',
-      } as unknown as MockedObject<CategoryName>,
+      } as MockedObject<CategoryName>,
     ],
     [
       {
         id: { getId: 'id-0' },
-      } as unknown as MockedObject<WishStage>,
+      } as MockedObject<WishStage>,
     ],
     {
       getMilliseconds: 1,
-    } as unknown as MockedObject<MillisecondsDate>,
+    } as MockedObject<MillisecondsDate>,
     null,
   ],
   [
     {
       getId: 'id-0',
       equals: jest.fn(),
-    } as unknown as MockedObject<UniqueId>,
+    } as MockedObject<UniqueId>,
     {
       getTitle: 'title',
-    } as unknown as MockedObject<WishTitle>,
+    } as MockedObject<WishTitle>,
     {
       getDescription: 'description',
-    } as unknown as MockedObject<WishDescription>,
+    } as MockedObject<WishDescription>,
     {
       getPrivacyLevel: PrivacyLevel.Public,
-    } as unknown as MockedObject<WishPrivacyLevel>,
+    } as MockedObject<WishPrivacyLevel>,
     {
       getMilliseconds: 1,
-    } as unknown as MockedObject<MillisecondsDate>,
+    } as MockedObject<MillisecondsDate>,
     {
       getMilliseconds: 1,
-    } as unknown as MockedObject<MillisecondsDate>,
+    } as MockedObject<MillisecondsDate>,
     {
       id: { getId: 'id-0' },
-    } as unknown as MockedObject<Wisher>,
+    } as MockedObject<Wisher>,
     [
       {
         getUrl: 'https://www.example.com',
-      } as unknown as MockedObject<WebUrl>,
+      } as MockedObject<WebUrl>,
     ],
     [
       {
         getUrl: 'https://www.example.com/1.jpg',
-      } as unknown as MockedObject<WebUrl>,
+      } as MockedObject<WebUrl>,
     ],
     [
       {
         getName: 'category name',
-      } as unknown as MockedObject<CategoryName>,
+      } as MockedObject<CategoryName>,
     ],
     [
       {
         id: { getId: 'id-0' },
-      } as unknown as MockedObject<WishStage>,
+      } as MockedObject<WishStage>,
     ],
     null,
     null,
@@ -595,7 +595,7 @@ describe('wishes', () => {
             // Act
             urls = Array(Wish.MaxUrls + 1).fill({
               getUrl: 'https://www.example.com',
-            } as unknown as MockedObject<WebUrl>);
+            } as MockedObject<WebUrl>);
 
             // Assert
             expect(() =>
@@ -682,7 +682,7 @@ describe('wishes', () => {
             // Act
             images = Array(Wish.MaxImages + 1).fill({
               getUrl: 'https://www.example.com/1.jpg',
-            } as unknown as MockedObject<WebUrl>);
+            } as MockedObject<WebUrl>);
 
             // Assert
             expect(() =>
@@ -769,7 +769,7 @@ describe('wishes', () => {
             // Act
             categories = Array(Wish.MaxCategories + 1).fill({
               getName: 'category',
-            } as unknown as MockedObject<CategoryName>);
+            } as MockedObject<CategoryName>);
 
             // Assert
             expect(() =>
@@ -855,7 +855,7 @@ describe('wishes', () => {
 
             // Act
             stages = Array(Wish.MaxStages + 1).fill(
-              {} as unknown as MockedObject<WishStage>,
+              {} as MockedObject<WishStage>,
             );
 
             // Assert
@@ -1011,7 +1011,7 @@ describe('wishes', () => {
             // Arrange
             deletedAt = {
               getMilliseconds: 1,
-            } as unknown as MockedObject<MillisecondsDate>;
+            } as MockedObject<MillisecondsDate>;
             const wish = Wish.create(
               uniqueId,
               title,
@@ -1137,7 +1137,7 @@ describe('wishes', () => {
             // Arrange
             deletedAt = {
               getMilliseconds: 1,
-            } as unknown as MockedObject<MillisecondsDate>;
+            } as MockedObject<MillisecondsDate>;
             const wish = Wish.create(
               uniqueId,
               title,
@@ -1182,7 +1182,7 @@ describe('wishes', () => {
             // Arrange
             deletedAt = {
               getMilliseconds: 1,
-            } as unknown as MockedObject<MillisecondsDate>;
+            } as MockedObject<MillisecondsDate>;
             const wish = Wish.create(
               uniqueId,
               title,
@@ -1202,7 +1202,7 @@ describe('wishes', () => {
             // Act
             const completionDate = {
               getMilliseconds: 1,
-            } as unknown as MockedObject<MillisecondsDate>;
+            } as MockedObject<MillisecondsDate>;
 
             // Assert
             expect(() => wish.complete(completionDate)).toThrowError(
@@ -1231,7 +1231,7 @@ describe('wishes', () => {
             // Arrange
             completedAt = {
               getMilliseconds: 1,
-            } as unknown as MockedObject<MillisecondsDate>;
+            } as MockedObject<MillisecondsDate>;
             const wish = Wish.create(
               uniqueId,
               title,
@@ -1251,7 +1251,7 @@ describe('wishes', () => {
             // Act
             const completionDate = {
               getMilliseconds: 1,
-            } as unknown as MockedObject<MillisecondsDate>;
+            } as MockedObject<MillisecondsDate>;
 
             // Assert
             expect(() => wish.complete(completionDate)).toThrowError(
@@ -1336,7 +1336,7 @@ describe('wishes', () => {
             // Act
             const completionDate = {
               getMilliseconds: 1,
-            } as unknown as MockedObject<MillisecondsDate>;
+            } as MockedObject<MillisecondsDate>;
             wish.complete(completionDate);
 
             // Assert
@@ -1369,7 +1369,7 @@ describe('wishes', () => {
             // Arrange
             deletedAt = {
               getMilliseconds: 1,
-            } as unknown as MockedObject<MillisecondsDate>;
+            } as MockedObject<MillisecondsDate>;
             const wish = Wish.create(
               uniqueId,
               title,
@@ -1456,7 +1456,7 @@ describe('wishes', () => {
             // Arrange
             completedAt = {
               getMilliseconds: 1,
-            } as unknown as MockedObject<MillisecondsDate>;
+            } as MockedObject<MillisecondsDate>;
             const wish = Wish.create(
               uniqueId,
               title,
@@ -1505,7 +1505,7 @@ describe('wishes', () => {
             // Arrange
             deletedAt = {
               getMilliseconds: 1,
-            } as unknown as MockedObject<MillisecondsDate>;
+            } as MockedObject<MillisecondsDate>;
             const wish = Wish.create(
               uniqueId,
               title,
@@ -1524,8 +1524,8 @@ describe('wishes', () => {
 
             // Act
             const newWishPrivacyLevel = {
-              getPrivacyLevel: 1,
-            } as unknown as MockedObject<WishPrivacyLevel>;
+              getPrivacyLevel: 'JustFriends',
+            } as MockedObject<WishPrivacyLevel>;
 
             // Assert
             expect(() =>
@@ -1554,7 +1554,7 @@ describe('wishes', () => {
             // Arrange
             deletedAt = {
               getMilliseconds: 1,
-            } as unknown as MockedObject<MillisecondsDate>;
+            } as MockedObject<MillisecondsDate>;
             const wish = Wish.create(
               uniqueId,
               title,
@@ -1616,8 +1616,8 @@ describe('wishes', () => {
 
             // Act
             const newWishPrivacyLevel = {
-              getPrivacyLevel: 1,
-            } as unknown as MockedObject<WishPrivacyLevel>;
+              getPrivacyLevel: 'JustFriends',
+            } as MockedObject<WishPrivacyLevel>;
             wish.changePrivacyLevel(newWishPrivacyLevel);
 
             // Assert
@@ -1647,7 +1647,7 @@ describe('wishes', () => {
             // Arrange
             deletedAt = {
               getMilliseconds: 1,
-            } as unknown as MockedObject<MillisecondsDate>;
+            } as MockedObject<MillisecondsDate>;
             const wish = Wish.create(
               uniqueId,
               title,
@@ -1839,7 +1839,7 @@ describe('wishes', () => {
             );
             const newUrls = Array(Wish.MaxUrls + 1).fill({
               getUrl: 'https://www.example.com',
-            } as unknown as MockedObject<WebUrl>);
+            } as MockedObject<WebUrl>);
 
             // Assert
             expect(() =>
@@ -1928,7 +1928,7 @@ describe('wishes', () => {
             );
             const newImages = Array(Wish.MaxImages + 1).fill({
               getUrl: 'https://www.example.com/1.jpg',
-            } as unknown as MockedObject<WebUrl>);
+            } as MockedObject<WebUrl>);
 
             // Assert
             expect(() =>
@@ -2017,7 +2017,7 @@ describe('wishes', () => {
             );
             const newCategories = Array(Wish.MaxCategories + 1).fill({
               getName: 'category',
-            } as unknown as MockedObject<CategoryName>);
+            } as MockedObject<CategoryName>);
 
             // Assert
             expect(() =>
@@ -2063,19 +2063,19 @@ describe('wishes', () => {
             );
             const newTitle = {
               getTitle: 'title',
-            } as unknown as MockedObject<WishTitle>;
+            } as MockedObject<WishTitle>;
             const newDescription = {
               getDescription: 'description',
-            } as unknown as MockedObject<WishDescription>;
+            } as MockedObject<WishDescription>;
             const newUrls = Array(Wish.MaxUrls).fill({
               getUrl: 'https://www.example.com/new/',
-            } as unknown as MockedObject<WebUrl>);
+            } as MockedObject<WebUrl>);
             const newImages = Array(Wish.MaxImages).fill({
               getUrl: 'https://www.example.com/new.jpg',
-            } as unknown as MockedObject<WebUrl>);
+            } as MockedObject<WebUrl>);
             const newCategories = Array(Wish.MaxCategories).fill({
               getName: 'new category',
-            } as unknown as MockedObject<CategoryName>);
+            } as MockedObject<CategoryName>);
             wish.update(
               newTitle,
               newDescription,
@@ -2121,7 +2121,7 @@ describe('wishes', () => {
             // Arrange
             deletedAt = {
               getMilliseconds: 1,
-            } as unknown as MockedObject<MillisecondsDate>;
+            } as MockedObject<MillisecondsDate>;
             const wish = Wish.create(
               uniqueId,
               title,
@@ -2208,9 +2208,7 @@ describe('wishes', () => {
             completedAt: MockedObject<MillisecondsDate>,
           ) => {
             // Arrange
-            stages = Array(Wish.MaxStages).fill(
-              {} as unknown as MockedObject<WishStage>,
-            );
+            stages = Array(Wish.MaxStages).fill({} as MockedObject<WishStage>);
             const wish = Wish.create(
               uniqueId,
               title,
@@ -2228,7 +2226,7 @@ describe('wishes', () => {
             );
 
             // Act
-            const newStage = {} as unknown as MockedObject<WishStage>;
+            const newStage = {} as MockedObject<WishStage>;
 
             // Assert
             expect(() => wish.addStage(newStage)).toThrowError(
@@ -2258,7 +2256,7 @@ describe('wishes', () => {
             stages = [
               {
                 equals: jest.fn().mockReturnValue(true),
-              } as unknown as MockedObject<WishStage>,
+              } as MockedObject<WishStage>,
             ];
             const wish = Wish.create(
               uniqueId,
@@ -2277,7 +2275,7 @@ describe('wishes', () => {
             );
 
             // Act
-            const newStage = {} as unknown as MockedObject<WishStage>;
+            const newStage = {} as MockedObject<WishStage>;
 
             // Assert
             expect(() => wish.addStage(newStage)).toThrowError(
@@ -2308,7 +2306,7 @@ describe('wishes', () => {
             const finalStagesLength = initialStagesLength + 1;
             stages = Array(initialStagesLength).fill({
               equals: jest.fn().mockReturnValue(false),
-            } as unknown as MockedObject<WishStage>);
+            } as MockedObject<WishStage>);
             const wish = Wish.create(
               uniqueId,
               title,
@@ -2326,7 +2324,7 @@ describe('wishes', () => {
             );
 
             // Act
-            const newStage = {} as unknown as MockedObject<WishStage>;
+            const newStage = {} as MockedObject<WishStage>;
             wish.addStage(newStage);
 
             // Assert
@@ -2357,7 +2355,7 @@ describe('wishes', () => {
             // Arrange
             deletedAt = {
               getMilliseconds: 1,
-            } as unknown as MockedObject<MillisecondsDate>;
+            } as MockedObject<MillisecondsDate>;
             const wish = Wish.create(
               uniqueId,
               title,
@@ -2447,7 +2445,7 @@ describe('wishes', () => {
             stages = [
               {
                 equals: jest.fn().mockReturnValue(false),
-              } as unknown as MockedObject<WishStage>,
+              } as MockedObject<WishStage>,
             ];
             const wish = Wish.create(
               uniqueId,
@@ -2466,7 +2464,7 @@ describe('wishes', () => {
             );
 
             // Act
-            const stageToRemove = {} as unknown as MockedObject<WishStage>;
+            const stageToRemove = {} as MockedObject<WishStage>;
 
             // Assert
             expect(() => wish.removeStage(stageToRemove)).toThrowError(
@@ -2497,7 +2495,7 @@ describe('wishes', () => {
             const finalStagesLength = 0;
             stages = Array(initialStagesLength).fill({
               equals: jest.fn().mockReturnValue(true),
-            } as unknown as MockedObject<WishStage>);
+            } as MockedObject<WishStage>);
             const wish = Wish.create(
               uniqueId,
               title,
@@ -2515,7 +2513,7 @@ describe('wishes', () => {
             );
 
             // Act
-            const stageToRemove = {} as unknown as MockedObject<WishStage>;
+            const stageToRemove = {} as MockedObject<WishStage>;
             wish.removeStage(stageToRemove);
 
             // Assert

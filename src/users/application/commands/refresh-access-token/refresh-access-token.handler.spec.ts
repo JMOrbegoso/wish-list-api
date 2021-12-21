@@ -24,17 +24,16 @@ describe('users', () => {
           'should throw UnauthorizedException because RefreshToken to use was not found',
           (command: RefreshAccessTokenCommand) => {
             // Arrange
-            const unitOfWork = {} as unknown as MockedObject<UnitOfWork>;
+            const unitOfWork = {} as MockedObject<UnitOfWork>;
 
-            const userRepository =
-              {} as unknown as MockedObject<UserRepository>;
+            const userRepository = {} as MockedObject<UserRepository>;
             const refreshTokenRepository = {
               getOne: jest.fn().mockReturnValue(null),
-            } as unknown as MockedObject<RefreshTokenRepository>;
+            } as MockedObject<RefreshTokenRepository>;
 
-            const tokenService = {} as unknown as MockedObject<TokenService>;
+            const tokenService = {} as MockedObject<TokenService>;
             const uniqueIdGeneratorService =
-              {} as unknown as MockedObject<UniqueIdGeneratorService>;
+              {} as MockedObject<UniqueIdGeneratorService>;
             const handler = new RefreshAccessTokenHandler(
               unitOfWork,
               userRepository,
@@ -56,21 +55,20 @@ describe('users', () => {
           'should throw UnauthorizedException because the RefreshToken User was not found',
           (command: RefreshAccessTokenCommand) => {
             // Arrange
-            const unitOfWork = {} as unknown as MockedObject<UnitOfWork>;
+            const unitOfWork = {} as MockedObject<UnitOfWork>;
 
             const userRepository = {
               getOne: jest.fn().mockReturnValue(null),
-            } as unknown as MockedObject<UserRepository>;
+            } as MockedObject<UserRepository>;
 
-            const refreshTokenToUse =
-              {} as unknown as MockedObject<RefreshToken>;
+            const refreshTokenToUse = {} as MockedObject<RefreshToken>;
             const refreshTokenRepository = {
               getOne: jest.fn().mockReturnValue(refreshTokenToUse),
-            } as unknown as MockedObject<RefreshTokenRepository>;
+            } as MockedObject<RefreshTokenRepository>;
 
-            const tokenService = {} as unknown as MockedObject<TokenService>;
+            const tokenService = {} as MockedObject<TokenService>;
             const uniqueIdGeneratorService =
-              {} as unknown as MockedObject<UniqueIdGeneratorService>;
+              {} as MockedObject<UniqueIdGeneratorService>;
             const handler = new RefreshAccessTokenHandler(
               unitOfWork,
               userRepository,
@@ -92,29 +90,29 @@ describe('users', () => {
           'should throw UnauthorizedException because the RefreshToken to use is expired',
           (command: RefreshAccessTokenCommand) => {
             // Arrange
-            const unitOfWork = {} as unknown as MockedObject<UnitOfWork>;
+            const unitOfWork = {} as MockedObject<UnitOfWork>;
 
             const user = {
               id: {
                 getId: 'id-0',
               },
-            } as unknown as MockedObject<User>;
+            } as MockedObject<User>;
 
             const userRepository = {
               getOne: jest.fn().mockReturnValue(user),
-            } as unknown as MockedObject<UserRepository>;
+            } as MockedObject<UserRepository>;
 
             const refreshTokenToUse = {
               isExpired: true,
-            } as unknown as MockedObject<RefreshToken>;
+            } as MockedObject<RefreshToken>;
 
             const refreshTokenRepository = {
               getOne: jest.fn().mockReturnValue(refreshTokenToUse),
-            } as unknown as MockedObject<RefreshTokenRepository>;
+            } as MockedObject<RefreshTokenRepository>;
 
-            const tokenService = {} as unknown as MockedObject<TokenService>;
+            const tokenService = {} as MockedObject<TokenService>;
             const uniqueIdGeneratorService =
-              {} as unknown as MockedObject<UniqueIdGeneratorService>;
+              {} as MockedObject<UniqueIdGeneratorService>;
             const handler = new RefreshAccessTokenHandler(
               unitOfWork,
               userRepository,
@@ -138,23 +136,23 @@ describe('users', () => {
             // Arrange
             const unitOfWork = {
               commitChanges: jest.fn(),
-            } as unknown as MockedObject<UnitOfWork>;
+            } as MockedObject<UnitOfWork>;
 
             const user = {
               id: {
                 getId: 'id-0',
               },
-            } as unknown as MockedObject<User>;
+            } as MockedObject<User>;
 
             const userRepository = {
               getOne: jest.fn().mockReturnValue(user),
-            } as unknown as MockedObject<UserRepository>;
+            } as MockedObject<UserRepository>;
 
             const refreshTokenToUse = {
               wasReplaced: false,
               isRevoked: true,
               isExpired: false,
-            } as unknown as MockedObject<RefreshToken>;
+            } as MockedObject<RefreshToken>;
 
             const validRefreshTokenToRevoke = {
               isRevoked: false,
@@ -162,7 +160,7 @@ describe('users', () => {
               isExpired: false,
               isValid: true,
               revoke: jest.fn(),
-            } as unknown as MockedObject<RefreshToken>;
+            } as MockedObject<RefreshToken>;
 
             const usedRefreshToken = {
               isRevoked: false,
@@ -170,7 +168,7 @@ describe('users', () => {
               isExpired: false,
               isValid: false,
               revoke: jest.fn(),
-            } as unknown as MockedObject<RefreshToken>;
+            } as MockedObject<RefreshToken>;
 
             const refreshTokenRepository = {
               getOne: jest.fn().mockReturnValue(refreshTokenToUse),
@@ -181,11 +179,11 @@ describe('users', () => {
                 .fn()
                 .mockReturnValue([validRefreshTokenToRevoke, usedRefreshToken]),
               update: jest.fn(),
-            } as unknown as MockedObject<RefreshTokenRepository>;
+            } as MockedObject<RefreshTokenRepository>;
 
-            const tokenService = {} as unknown as MockedObject<TokenService>;
+            const tokenService = {} as MockedObject<TokenService>;
             const uniqueIdGeneratorService =
-              {} as unknown as MockedObject<UniqueIdGeneratorService>;
+              {} as MockedObject<UniqueIdGeneratorService>;
             const handler = new RefreshAccessTokenHandler(
               unitOfWork,
               userRepository,
@@ -217,23 +215,23 @@ describe('users', () => {
             // Arrange
             const unitOfWork = {
               commitChanges: jest.fn(),
-            } as unknown as MockedObject<UnitOfWork>;
+            } as MockedObject<UnitOfWork>;
 
             const user = {
               id: {
                 getId: 'id-0',
               },
-            } as unknown as MockedObject<User>;
+            } as MockedObject<User>;
 
             const userRepository = {
               getOne: jest.fn().mockReturnValue(user),
-            } as unknown as MockedObject<UserRepository>;
+            } as MockedObject<UserRepository>;
 
             const refreshTokenToUse = {
               wasReplaced: true,
               isRevoked: false,
               isExpired: false,
-            } as unknown as MockedObject<RefreshToken>;
+            } as MockedObject<RefreshToken>;
 
             const validRefreshTokenToRevoke = {
               isRevoked: false,
@@ -241,7 +239,7 @@ describe('users', () => {
               isExpired: false,
               isValid: true,
               revoke: jest.fn(),
-            } as unknown as MockedObject<RefreshToken>;
+            } as MockedObject<RefreshToken>;
 
             const usedRefreshToken = {
               isRevoked: false,
@@ -249,7 +247,7 @@ describe('users', () => {
               isExpired: false,
               isValid: false,
               revoke: jest.fn(),
-            } as unknown as MockedObject<RefreshToken>;
+            } as MockedObject<RefreshToken>;
 
             const refreshTokenRepository = {
               getOne: jest.fn().mockReturnValue(refreshTokenToUse),
@@ -260,11 +258,11 @@ describe('users', () => {
                 .fn()
                 .mockReturnValue([validRefreshTokenToRevoke, usedRefreshToken]),
               update: jest.fn(),
-            } as unknown as MockedObject<RefreshTokenRepository>;
+            } as MockedObject<RefreshTokenRepository>;
 
-            const tokenService = {} as unknown as MockedObject<TokenService>;
+            const tokenService = {} as MockedObject<TokenService>;
             const uniqueIdGeneratorService =
-              {} as unknown as MockedObject<UniqueIdGeneratorService>;
+              {} as MockedObject<UniqueIdGeneratorService>;
             const handler = new RefreshAccessTokenHandler(
               unitOfWork,
               userRepository,
@@ -296,7 +294,7 @@ describe('users', () => {
             // Arrange
             const unitOfWork = {
               commitChanges: jest.fn(),
-            } as unknown as MockedObject<UnitOfWork>;
+            } as MockedObject<UnitOfWork>;
 
             const user = {
               id: {
@@ -330,11 +328,11 @@ describe('users', () => {
               },
               roles: ['Admin'],
               profilePicture: null,
-            } as unknown as MockedObject<User>;
+            } as MockedObject<User>;
 
             const userRepository = {
               getOne: jest.fn().mockReturnValue(user),
-            } as unknown as MockedObject<UserRepository>;
+            } as MockedObject<UserRepository>;
 
             const refreshTokenToUse = {
               isExpired: false,
@@ -342,25 +340,25 @@ describe('users', () => {
               wasReplaced: false,
               isValid: true,
               replace: jest.fn(),
-            } as unknown as MockedObject<RefreshToken>;
+            } as MockedObject<RefreshToken>;
 
             const refreshTokenRepository = {
               getOne: jest.fn().mockReturnValue(refreshTokenToUse),
               add: jest.fn(),
               update: jest.fn(),
-            } as unknown as MockedObject<RefreshTokenRepository>;
+            } as MockedObject<RefreshTokenRepository>;
 
             const tokenService = {
               signPayload: jest.fn().mockReturnValue('access-token'),
-            } as unknown as MockedObject<TokenService>;
+            } as MockedObject<TokenService>;
 
             const uniqueId = {
               getId: 'new-refresh-token-id',
-            } as unknown as MockedObject<UniqueId>;
+            } as MockedObject<UniqueId>;
 
             const uniqueIdGeneratorService = {
               generateId: jest.fn().mockReturnValue(uniqueId),
-            } as unknown as MockedObject<UniqueIdGeneratorService>;
+            } as MockedObject<UniqueIdGeneratorService>;
 
             const handler = new RefreshAccessTokenHandler(
               unitOfWork,

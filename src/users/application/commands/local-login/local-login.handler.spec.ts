@@ -33,18 +33,17 @@ describe('users', () => {
 
             const userRepository = {
               getOneByUsername: jest.fn().mockReturnValue(null),
-            } as unknown as MockedObject<UserRepository>;
+            } as MockedObject<UserRepository>;
 
             const refreshTokenRepository =
-              {} as unknown as MockedObject<RefreshTokenRepository>;
+              {} as MockedObject<RefreshTokenRepository>;
 
-            const unitOfWork = {} as unknown as MockedObject<UnitOfWork>;
+            const unitOfWork = {} as MockedObject<UnitOfWork>;
 
-            const encryptionService =
-              {} as unknown as MockedObject<EncryptionService>;
-            const tokenService = {} as unknown as MockedObject<TokenService>;
+            const encryptionService = {} as MockedObject<EncryptionService>;
+            const tokenService = {} as MockedObject<TokenService>;
             const uniqueIdGeneratorService =
-              {} as unknown as MockedObject<UniqueIdGeneratorService>;
+              {} as MockedObject<UniqueIdGeneratorService>;
             const handler = new LocalLoginHandler(
               userRepository,
               refreshTokenRepository,
@@ -69,17 +68,16 @@ describe('users', () => {
             // Arrange
             const userRepository = {
               getOneByUsername: jest.fn().mockReturnValue(null),
-            } as unknown as MockedObject<UserRepository>;
+            } as MockedObject<UserRepository>;
 
             const refreshTokenRepository =
-              {} as unknown as MockedObject<RefreshTokenRepository>;
-            const unitOfWork = {} as unknown as MockedObject<UnitOfWork>;
+              {} as MockedObject<RefreshTokenRepository>;
+            const unitOfWork = {} as MockedObject<UnitOfWork>;
 
-            const encryptionService =
-              {} as unknown as MockedObject<EncryptionService>;
-            const tokenService = {} as unknown as MockedObject<TokenService>;
+            const encryptionService = {} as MockedObject<EncryptionService>;
+            const tokenService = {} as MockedObject<TokenService>;
             const uniqueIdGeneratorService =
-              {} as unknown as MockedObject<UniqueIdGeneratorService>;
+              {} as MockedObject<UniqueIdGeneratorService>;
             const handler = new LocalLoginHandler(
               userRepository,
               refreshTokenRepository,
@@ -139,23 +137,23 @@ describe('users', () => {
                 getUrl: 'https://www.example.com/0.jpg',
               },
               deletedAt: null,
-            } as unknown as MockedObject<User>;
+            } as MockedObject<User>;
 
             const userRepository = {
               getOneByUsername: jest.fn().mockReturnValue(user),
-            } as unknown as MockedObject<UserRepository>;
+            } as MockedObject<UserRepository>;
 
             const refreshTokenRepository =
-              {} as unknown as MockedObject<RefreshTokenRepository>;
-            const unitOfWork = {} as unknown as MockedObject<UnitOfWork>;
+              {} as MockedObject<RefreshTokenRepository>;
+            const unitOfWork = {} as MockedObject<UnitOfWork>;
 
             const encryptionService = {
               passwordMatch: jest.fn().mockReturnValue(false),
-            } as unknown as MockedObject<EncryptionService>;
+            } as MockedObject<EncryptionService>;
 
-            const tokenService = {} as unknown as MockedObject<TokenService>;
+            const tokenService = {} as MockedObject<TokenService>;
             const uniqueIdGeneratorService =
-              {} as unknown as MockedObject<UniqueIdGeneratorService>;
+              {} as MockedObject<UniqueIdGeneratorService>;
             const handler = new LocalLoginHandler(
               userRepository,
               refreshTokenRepository,
@@ -218,23 +216,23 @@ describe('users', () => {
                 getMilliseconds: 4,
               },
               isDeleted: true,
-            } as unknown as MockedObject<User>;
+            } as MockedObject<User>;
 
             const userRepository = {
               getOneByUsername: jest.fn().mockReturnValue(user),
-            } as unknown as MockedObject<UserRepository>;
+            } as MockedObject<UserRepository>;
 
             const refreshTokenRepository =
-              {} as unknown as MockedObject<RefreshTokenRepository>;
-            const unitOfWork = {} as unknown as MockedObject<UnitOfWork>;
+              {} as MockedObject<RefreshTokenRepository>;
+            const unitOfWork = {} as MockedObject<UnitOfWork>;
 
             const encryptionService = {
               passwordMatch: jest.fn().mockReturnValue(true),
-            } as unknown as MockedObject<EncryptionService>;
+            } as MockedObject<EncryptionService>;
 
-            const tokenService = {} as unknown as MockedObject<TokenService>;
+            const tokenService = {} as MockedObject<TokenService>;
             const uniqueIdGeneratorService =
-              {} as unknown as MockedObject<UniqueIdGeneratorService>;
+              {} as MockedObject<UniqueIdGeneratorService>;
             const handler = new LocalLoginHandler(
               userRepository,
               refreshTokenRepository,
@@ -295,23 +293,23 @@ describe('users', () => {
               },
               deletedAt: null,
               isDeleted: false,
-            } as unknown as MockedObject<User>;
+            } as MockedObject<User>;
 
             const userRepository = {
               getOneByUsername: jest.fn().mockReturnValue(user),
-            } as unknown as MockedObject<UserRepository>;
+            } as MockedObject<UserRepository>;
 
             const refreshTokenRepository =
-              {} as unknown as MockedObject<RefreshTokenRepository>;
-            const unitOfWork = {} as unknown as MockedObject<UnitOfWork>;
+              {} as MockedObject<RefreshTokenRepository>;
+            const unitOfWork = {} as MockedObject<UnitOfWork>;
 
             const encryptionService = {
               passwordMatch: jest.fn().mockReturnValue(true),
-            } as unknown as MockedObject<EncryptionService>;
+            } as MockedObject<EncryptionService>;
 
-            const tokenService = {} as unknown as MockedObject<TokenService>;
+            const tokenService = {} as MockedObject<TokenService>;
             const uniqueIdGeneratorService =
-              {} as unknown as MockedObject<UniqueIdGeneratorService>;
+              {} as MockedObject<UniqueIdGeneratorService>;
             const handler = new LocalLoginHandler(
               userRepository,
               refreshTokenRepository,
@@ -372,23 +370,23 @@ describe('users', () => {
               },
               deletedAt: null,
               isDeleted: false,
-            } as unknown as MockedObject<User>;
+            } as MockedObject<User>;
 
             const userRepository = {
               getOneByUsername: jest.fn().mockReturnValue(user),
-            } as unknown as MockedObject<UserRepository>;
+            } as MockedObject<UserRepository>;
 
             const refreshTokenRepository =
-              {} as unknown as MockedObject<RefreshTokenRepository>;
-            const unitOfWork = {} as unknown as MockedObject<UnitOfWork>;
+              {} as MockedObject<RefreshTokenRepository>;
+            const unitOfWork = {} as MockedObject<UnitOfWork>;
 
             const encryptionService = {
               passwordMatch: jest.fn().mockReturnValue(true),
-            } as unknown as MockedObject<EncryptionService>;
+            } as MockedObject<EncryptionService>;
 
-            const tokenService = {} as unknown as MockedObject<TokenService>;
+            const tokenService = {} as MockedObject<TokenService>;
             const uniqueIdGeneratorService =
-              {} as unknown as MockedObject<UniqueIdGeneratorService>;
+              {} as MockedObject<UniqueIdGeneratorService>;
             const handler = new LocalLoginHandler(
               userRepository,
               refreshTokenRepository,
@@ -449,35 +447,35 @@ describe('users', () => {
               },
               deletedAt: null,
               isDeleted: false,
-            } as unknown as MockedObject<User>;
+            } as MockedObject<User>;
 
             const userRepository = {
               getOneByUsername: jest.fn().mockReturnValue(user),
-            } as unknown as MockedObject<UserRepository>;
+            } as MockedObject<UserRepository>;
 
             const refreshTokenRepository = {
               add: jest.fn(),
-            } as unknown as MockedObject<RefreshTokenRepository>;
+            } as MockedObject<RefreshTokenRepository>;
 
             const unitOfWork = {
               commitChanges: jest.fn(),
-            } as unknown as MockedObject<UnitOfWork>;
+            } as MockedObject<UnitOfWork>;
 
             const encryptionService = {
               passwordMatch: jest.fn().mockReturnValue(true),
-            } as unknown as MockedObject<EncryptionService>;
+            } as MockedObject<EncryptionService>;
 
             const tokenService = {
               signPayload: jest.fn().mockReturnValue('access-token'),
-            } as unknown as MockedObject<TokenService>;
+            } as MockedObject<TokenService>;
 
             const uniqueId = {
               getId: 'id-0',
-            } as unknown as MockedObject<UniqueId>;
+            } as MockedObject<UniqueId>;
 
             const uniqueIdGeneratorService = {
               generateId: jest.fn().mockRejectedValue(uniqueId),
-            } as unknown as MockedObject<UniqueIdGeneratorService>;
+            } as MockedObject<UniqueIdGeneratorService>;
 
             const handler = new LocalLoginHandler(
               userRepository,

@@ -32,28 +32,28 @@ const validValues = [
         },
       },
       urls: [
-        { getUrl: 'url 0' } as unknown as MockedObject<WebUrl>,
-        { getUrl: 'url 0 (1)' } as unknown as MockedObject<WebUrl>,
-      ],
+        { getUrl: 'url 0' } as MockedObject<WebUrl>,
+        { getUrl: 'url 0 (1)' } as MockedObject<WebUrl>,
+      ] as MockedObject<WebUrl[]>,
       imageUrls: [
-        { getUrl: 'image url 0' } as unknown as MockedObject<WebUrl>,
-        { getUrl: 'image url 0 (1)' } as unknown as MockedObject<WebUrl>,
-      ],
+        { getUrl: 'image url 0' } as MockedObject<WebUrl>,
+        { getUrl: 'image url 0 (1)' } as MockedObject<WebUrl>,
+      ] as MockedObject<WebUrl[]>,
       categories: [
         {
           getName: 'category 0',
-        } as unknown as MockedObject<CategoryName>,
+        } as MockedObject<CategoryName>,
         {
           getName: 'category 0 (1)',
-        } as unknown as MockedObject<CategoryName>,
-      ],
+        } as MockedObject<CategoryName>,
+      ] as MockedObject<CategoryName[]>,
       stages: [],
       deletedAt: null,
       completedAt: null,
-    } as unknown as MockedObject<Wish>,
+    } as MockedObject<Wish>,
     {
       id: 'wisher id 0',
-    } as unknown as MockedObject<WisherEntity>,
+    } as MockedObject<WisherEntity>,
     [],
   ],
   [
@@ -100,7 +100,7 @@ const validValues = [
           },
           urls: [],
           imageUrls: [],
-        } as unknown as MockedObject<WishStage>,
+        } as MockedObject<WishStage>,
         {
           id: {
             getId: 'wish-stage-id-1',
@@ -116,27 +116,27 @@ const validValues = [
           },
           urls: [],
           imageUrls: [],
-        } as unknown as MockedObject<WishStage>,
-      ],
+        } as MockedObject<WishStage>,
+      ] as MockedObject<WishStage[]>,
       deletedAt: {
         getDate: new Date(1994, 5, 4),
       },
       completedAt: {
         getDate: new Date(1994, 5, 4),
       },
-    } as unknown as MockedObject<Wish>,
+    } as MockedObject<Wish>,
     {
       id: 'wisher id 1',
-    } as unknown as MockedObject<WisherEntity>,
+    } as MockedObject<WisherEntity>,
     [
       {
         id: 'wish-stage-id-0',
         title: 'title 0',
-      } as unknown as MockedObject<WishStageEntity>,
+      } as MockedObject<WishStageEntity>,
       {
         id: 'wish-stage-id-1',
         title: 'title 1',
-      } as unknown as MockedObject<WishStageEntity>,
+      } as MockedObject<WishStageEntity>,
     ],
   ],
 ];

@@ -21,9 +21,9 @@ describe('users', () => {
             // Arrange
             const userRepository = {
               getOne: jest.fn().mockReturnValue(null),
-            } as unknown as MockedObject<UserRepository>;
+            } as MockedObject<UserRepository>;
 
-            const unitOfWork = {} as unknown as MockedObject<UnitOfWork>;
+            const unitOfWork = {} as MockedObject<UnitOfWork>;
 
             const handler = new DeleteUserHandler(unitOfWork, userRepository);
 
@@ -80,13 +80,13 @@ describe('users', () => {
                 getMilliseconds: 4,
               },
               isDeleted: true,
-            } as unknown as MockedObject<User>;
+            } as MockedObject<User>;
 
             const userRepository = {
               getOne: jest.fn().mockReturnValue(user),
-            } as unknown as MockedObject<UserRepository>;
+            } as MockedObject<UserRepository>;
 
-            const unitOfWork = {} as unknown as MockedObject<UnitOfWork>;
+            const unitOfWork = {} as MockedObject<UnitOfWork>;
 
             const handler = new DeleteUserHandler(unitOfWork, userRepository);
 
@@ -142,16 +142,16 @@ describe('users', () => {
               deletedAt: null,
               isDeleted: false,
               delete: jest.fn(),
-            } as unknown as MockedObject<User>;
+            } as MockedObject<User>;
 
             const userRepository = {
               getOne: jest.fn().mockReturnValue(user),
               update: jest.fn(),
-            } as unknown as MockedObject<UserRepository>;
+            } as MockedObject<UserRepository>;
 
             const unitOfWork = {
               commitChanges: jest.fn(),
-            } as unknown as MockedObject<UnitOfWork>;
+            } as MockedObject<UnitOfWork>;
 
             const handler = new DeleteUserHandler(unitOfWork, userRepository);
 

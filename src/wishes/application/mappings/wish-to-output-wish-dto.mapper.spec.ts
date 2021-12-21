@@ -30,21 +30,21 @@ const validValues = [
       },
     },
     urls: [
-      { getUrl: 'url 0' } as unknown as MockedObject<WebUrl>,
-      { getUrl: 'url 0 (1)' } as unknown as MockedObject<WebUrl>,
-    ],
+      { getUrl: 'url 0' } as MockedObject<WebUrl>,
+      { getUrl: 'url 0 (1)' } as MockedObject<WebUrl>,
+    ] as MockedObject<WebUrl[]>,
     imageUrls: [
-      { getUrl: 'image url 0' } as unknown as MockedObject<WebUrl>,
-      { getUrl: 'image url 0 (1)' } as unknown as MockedObject<WebUrl>,
-    ],
+      { getUrl: 'image url 0' } as MockedObject<WebUrl>,
+      { getUrl: 'image url 0 (1)' } as MockedObject<WebUrl>,
+    ] as MockedObject<WebUrl[]>,
     categories: [
       {
         getName: 'category 0',
-      } as unknown as MockedObject<CategoryName>,
+      } as MockedObject<CategoryName>,
       {
         getName: 'category 0 (1)',
-      } as unknown as MockedObject<CategoryName>,
-    ],
+      } as MockedObject<CategoryName>,
+    ] as MockedObject<CategoryName[]>,
     stages: [
       {
         id: {
@@ -61,7 +61,7 @@ const validValues = [
         },
         urls: [],
         imageUrls: [],
-      } as unknown as MockedObject<WishStage>,
+      } as MockedObject<WishStage>,
       {
         id: {
           getId: 'id 0',
@@ -77,11 +77,11 @@ const validValues = [
         },
         urls: [],
         imageUrls: [],
-      } as unknown as MockedObject<WishStage>,
-    ],
+      } as MockedObject<WishStage>,
+    ] as MockedObject<WishStage[]>,
     deletedAt: null,
     completedAt: null,
-  } as unknown as MockedObject<Wish>,
+  } as MockedObject<Wish>,
   {
     id: {
       getId: 'id 0',
@@ -116,7 +116,7 @@ const validValues = [
     completedAt: {
       getMilliseconds: 2,
     },
-  } as unknown as MockedObject<Wish>,
+  } as MockedObject<Wish>,
 ];
 
 describe('wishes', () => {

@@ -92,7 +92,7 @@ describe('shared', () => {
 
             // Act
             const name = Name.create(text);
-            const result = name.equals({} as unknown as MockedObject<Name>);
+            const result = name.equals({} as MockedObject<Name>);
 
             // Assert
             expect(result).toBe(false);

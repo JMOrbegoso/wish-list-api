@@ -13,7 +13,7 @@ const validValues = [
       replacedAt: null,
       replacedBy: null,
       revokedAt: null,
-    } as unknown as MockedObject<RefreshTokenEntity>,
+    } as MockedObject<RefreshTokenEntity>,
   ],
   [
     {
@@ -25,7 +25,7 @@ const validValues = [
       replacedAt: null,
       replacedBy: null,
       revokedAt: new Date(2021, 5, 5),
-    } as unknown as MockedObject<RefreshTokenEntity>,
+    } as MockedObject<RefreshTokenEntity>,
   ],
   [
     {
@@ -37,7 +37,7 @@ const validValues = [
       replacedAt: new Date(2021, 5, 5),
       replacedBy: 'id-1',
       revokedAt: null,
-    } as unknown as MockedObject<RefreshTokenEntity>,
+    } as MockedObject<RefreshTokenEntity>,
   ],
   [
     {
@@ -49,7 +49,7 @@ const validValues = [
       replacedAt: new Date(2021, 5, 5),
       replacedBy: 'id-1',
       revokedAt: new Date(2021, 5, 5),
-    } as unknown as MockedObject<RefreshTokenEntity>,
+    } as MockedObject<RefreshTokenEntity>,
   ],
 ];
 

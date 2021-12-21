@@ -47,13 +47,12 @@ describe('wishes', () => {
           'creating a wish with a user that does not exist should throw error',
           (command: CreateWishCommand) => {
             // Arrange
-            const wishRepository =
-              {} as unknown as MockedObject<WishRepository>;
+            const wishRepository = {} as MockedObject<WishRepository>;
             const userRepository = {
               getOne: jest.fn().mockReturnValue(false),
-            } as unknown as MockedObject<UserRepository>;
+            } as MockedObject<UserRepository>;
 
-            const unitOfWork = {} as unknown as MockedObject<UnitOfWork>;
+            const unitOfWork = {} as MockedObject<UnitOfWork>;
 
             const handler = new CreateWishHandler(
               wishRepository,
@@ -76,13 +75,13 @@ describe('wishes', () => {
             // Arrange
             const wishRepository = {
               getOne: jest.fn().mockReturnValue(true),
-            } as unknown as MockedObject<WishRepository>;
+            } as MockedObject<WishRepository>;
 
             const userRepository = {
               getOne: jest.fn().mockReturnValue(true),
-            } as unknown as MockedObject<UserRepository>;
+            } as MockedObject<UserRepository>;
 
-            const unitOfWork = {} as unknown as MockedObject<UnitOfWork>;
+            const unitOfWork = {} as MockedObject<UnitOfWork>;
 
             const handler = new CreateWishHandler(
               wishRepository,
@@ -104,13 +103,13 @@ describe('wishes', () => {
             // Arrange
             const wishRepository = {
               getOne: jest.fn().mockReturnValue(true),
-            } as unknown as MockedObject<WishRepository>;
+            } as MockedObject<WishRepository>;
 
             const userRepository = {
               getOne: jest.fn().mockReturnValue(true),
-            } as unknown as MockedObject<UserRepository>;
+            } as MockedObject<UserRepository>;
 
-            const unitOfWork = {} as unknown as MockedObject<UnitOfWork>;
+            const unitOfWork = {} as MockedObject<UnitOfWork>;
 
             const handler = new CreateWishHandler(
               wishRepository,
@@ -133,15 +132,15 @@ describe('wishes', () => {
             const wishRepository = {
               getOne: jest.fn().mockReturnValue(null),
               add: jest.fn(),
-            } as unknown as MockedObject<WishRepository>;
+            } as MockedObject<WishRepository>;
 
             const userRepository = {
               getOne: jest.fn().mockReturnValue(true),
-            } as unknown as MockedObject<UserRepository>;
+            } as MockedObject<UserRepository>;
 
             const unitOfWork = {
               commitChanges: jest.fn(),
-            } as unknown as MockedObject<UnitOfWork>;
+            } as MockedObject<UnitOfWork>;
 
             const handler = new CreateWishHandler(
               wishRepository,

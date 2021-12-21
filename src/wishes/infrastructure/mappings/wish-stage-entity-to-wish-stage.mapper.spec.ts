@@ -11,7 +11,7 @@ const validValues = [
       createdAt: new Date(1990, 5, 5),
       urls: [],
       imageUrls: [],
-    } as unknown as MockedObject<WishStageEntity>,
+    } as MockedObject<WishStageEntity>,
   ],
   [
     {
@@ -21,7 +21,7 @@ const validValues = [
       createdAt: new Date(1995, 5, 5),
       urls: ['https://www.example.com', 'https://www.example.net'],
       imageUrls: [],
-    } as unknown as MockedObject<WishStageEntity>,
+    } as MockedObject<WishStageEntity>,
   ],
   [
     {
@@ -34,7 +34,7 @@ const validValues = [
         'https://www.example.com/1.jpg',
         'https://www.example.net/2.jpg',
       ],
-    } as unknown as MockedObject<WishStageEntity>,
+    } as MockedObject<WishStageEntity>,
   ],
 ];
 

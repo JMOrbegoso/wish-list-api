@@ -23,7 +23,7 @@ const validValues = [
       profilePicture: 'https://www.example.com/0.jpg',
       deletedAt: new Date(2000, 5, 5),
       roles: ['Admin'],
-    } as unknown as MockedObject<UserEntity>,
+    } as MockedObject<UserEntity>,
   ],
   [
     {
@@ -45,7 +45,7 @@ const validValues = [
       profilePicture: 'https://www.example.com/1.jpg',
       deletedAt: new Date(2000, 5, 5),
       roles: ['Moderator'],
-    } as unknown as MockedObject<UserEntity>,
+    } as MockedObject<UserEntity>,
   ],
   [
     {
@@ -67,7 +67,7 @@ const validValues = [
       profilePicture: null,
       deletedAt: new Date(2000, 5, 5),
       roles: ['Admin', 'Moderator'],
-    } as unknown as MockedObject<UserEntity>,
+    } as MockedObject<UserEntity>,
   ],
   [
     {
@@ -89,7 +89,7 @@ const validValues = [
       profilePicture: null,
       deletedAt: new Date(2000, 5, 5),
       roles: ['Basic'],
-    } as unknown as MockedObject<UserEntity>,
+    } as MockedObject<UserEntity>,
   ],
   [
     {
@@ -111,7 +111,7 @@ const validValues = [
       profilePicture: null,
       deletedAt: new Date(2000, 5, 5),
       roles: ['Admin', 'Moderator', 'Basic'],
-    } as unknown as MockedObject<UserEntity>,
+    } as MockedObject<UserEntity>,
   ],
   [
     {
@@ -133,7 +133,7 @@ const validValues = [
       profilePicture: 'https://www.example.com/5.jpg',
       deletedAt: new Date(2000, 5, 5),
       roles: [],
-    } as unknown as MockedObject<UserEntity>,
+    } as MockedObject<UserEntity>,
   ],
   [
     {
@@ -155,7 +155,7 @@ const validValues = [
       profilePicture: null,
       deletedAt: new Date(2000, 5, 5),
       roles: ['Admin'],
-    } as unknown as MockedObject<UserEntity>,
+    } as MockedObject<UserEntity>,
   ],
   [
     {
@@ -175,7 +175,7 @@ const validValues = [
       updatedAt: new Date(1990, 5, 5),
       biography: 'A nice person 7.',
       roles: ['Admin'],
-    } as unknown as MockedObject<UserEntity>,
+    } as MockedObject<UserEntity>,
   ],
 ];
 

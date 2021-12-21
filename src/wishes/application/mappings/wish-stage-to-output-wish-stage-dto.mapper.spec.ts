@@ -20,7 +20,7 @@ const validValues = [
       },
       urls: [],
       imageUrls: [],
-    } as unknown as MockedObject<WishStage>,
+    } as MockedObject<WishStage>,
   ],
   [
     {
@@ -37,14 +37,14 @@ const validValues = [
         getMilliseconds: 2,
       },
       urls: [
-        { getUrl: 'url 1' } as unknown as MockedObject<WebUrl>,
-        { getUrl: 'url 1 (1)' } as unknown as MockedObject<WebUrl>,
-      ],
+        { getUrl: 'url 1' } as MockedObject<WebUrl>,
+        { getUrl: 'url 1 (1)' } as MockedObject<WebUrl>,
+      ] as MockedObject<WebUrl[]>,
       imageUrls: [
-        { getUrl: 'image url 1' } as unknown as MockedObject<WebUrl>,
-        { getUrl: 'image url 1 (1)' } as unknown as MockedObject<WebUrl>,
-      ],
-    } as unknown as MockedObject<WishStage>,
+        { getUrl: 'image url 1' } as MockedObject<WebUrl>,
+        { getUrl: 'image url 1 (1)' } as MockedObject<WebUrl>,
+      ] as MockedObject<WebUrl[]>,
+    } as MockedObject<WishStage>,
   ],
 ];
 

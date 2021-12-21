@@ -3,9 +3,9 @@ import { Wisher } from '../../domain/entities';
 import { wisherToWisherEntity } from '.';
 
 const validValues = [
-  [{ id: { getId: 'id-0' } } as unknown as MockedObject<Wisher>],
-  [{ id: { getId: 'id-1' } } as unknown as MockedObject<Wisher>],
-  [{ id: { getId: 'id-2' } } as unknown as MockedObject<Wisher>],
+  [{ id: { getId: 'id-0' } } as MockedObject<Wisher>],
+  [{ id: { getId: 'id-1' } } as MockedObject<Wisher>],
+  [{ id: { getId: 'id-2' } } as MockedObject<Wisher>],
 ];
 
 describe('wishes', () => {

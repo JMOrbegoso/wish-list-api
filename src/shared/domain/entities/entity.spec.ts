@@ -25,28 +25,28 @@ const validValues = [
     {
       getId: 'id-0',
       equals: jest.fn(),
-    } as unknown as MockedObject<UniqueId>,
+    } as MockedObject<UniqueId>,
     0,
   ],
   [
     {
       getId: 'id-1',
       equals: jest.fn(),
-    } as unknown as MockedObject<UniqueId>,
+    } as MockedObject<UniqueId>,
     10,
   ],
   [
     {
       getId: 'id-2',
       equals: jest.fn(),
-    } as unknown as MockedObject<UniqueId>,
+    } as MockedObject<UniqueId>,
     20,
   ],
   [
     {
       getId: 'id-3',
       equals: jest.fn(),
-    } as unknown as MockedObject<UniqueId>,
+    } as MockedObject<UniqueId>,
     30,
   ],
 ];

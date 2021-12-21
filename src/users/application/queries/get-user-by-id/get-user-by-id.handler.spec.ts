@@ -20,7 +20,7 @@ describe('users', () => {
             // Arrange
             const userRepository = {
               getOne: jest.fn().mockReturnValue(null),
-            } as unknown as MockedObject<UserRepository>;
+            } as MockedObject<UserRepository>;
 
             const handler = new GetUserByIdHandler(userRepository);
 
@@ -76,11 +76,11 @@ describe('users', () => {
               deletedAt: {
                 getMilliseconds: 4,
               },
-            } as unknown as MockedObject<User>;
+            } as MockedObject<User>;
 
             const userRepository = {
               getOne: jest.fn().mockReturnValue(user),
-            } as unknown as MockedObject<UserRepository>;
+            } as MockedObject<UserRepository>;
 
             const handler = new GetUserByIdHandler(userRepository);
 

@@ -12,7 +12,7 @@ const validValues = [
       createdAt: { getDate: new Date(1995, 5, 5) },
       urls: [],
       imageUrls: [],
-    } as unknown as MockedObject<WishStage>,
+    } as MockedObject<WishStage>,
   ],
   [
     {
@@ -23,13 +23,13 @@ const validValues = [
       urls: [
         {
           getUrl: 'https://www.example.com',
-        } as unknown as MockedObject<WebUrl>,
+        } as MockedObject<WebUrl>,
         {
           getUrl: 'https://www.example.net',
-        } as unknown as MockedObject<WebUrl>,
-      ],
+        } as MockedObject<WebUrl>,
+      ] as MockedObject<WebUrl[]>,
       imageUrls: [],
-    } as unknown as MockedObject<WishStage>,
+    } as MockedObject<WishStage>,
   ],
   [
     {
@@ -40,20 +40,20 @@ const validValues = [
       urls: [
         {
           getUrl: 'https://www.example.com',
-        } as unknown as MockedObject<WebUrl>,
+        } as MockedObject<WebUrl>,
         {
           getUrl: 'https://www.example.net',
-        } as unknown as MockedObject<WebUrl>,
-      ],
+        } as MockedObject<WebUrl>,
+      ] as MockedObject<WebUrl[]>,
       imageUrls: [
         {
           getUrl: 'https://www.example.com/1.jpg',
-        } as unknown as MockedObject<WebUrl>,
+        } as MockedObject<WebUrl>,
         {
           getUrl: 'https://www.example.net/2.jpg',
-        } as unknown as MockedObject<WebUrl>,
-      ],
-    } as unknown as MockedObject<WishStage>,
+        } as MockedObject<WebUrl>,
+      ] as MockedObject<WebUrl[]>,
+    } as MockedObject<WishStage>,
   ],
 ];
 

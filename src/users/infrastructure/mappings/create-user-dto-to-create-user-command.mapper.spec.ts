@@ -13,7 +13,7 @@ const validValues = [
       lastName: 'LastName0',
       birthday: 1,
       biography: 'A nice person 0.',
-    } as unknown as MockedObject<CreateUserDto>,
+    } as MockedObject<CreateUserDto>,
   ],
   [
     {
@@ -25,7 +25,7 @@ const validValues = [
       lastName: 'LastName1',
       birthday: 1,
       biography: 'A nice person 1.',
-    } as unknown as MockedObject<CreateUserDto>,
+    } as MockedObject<CreateUserDto>,
   ],
   [
     {
@@ -37,7 +37,7 @@ const validValues = [
       lastName: 'LastName2',
       birthday: 1,
       biography: 'A nice person 2.',
-    } as unknown as MockedObject<CreateUserDto>,
+    } as MockedObject<CreateUserDto>,
   ],
   [
     {
@@ -49,7 +49,7 @@ const validValues = [
       lastName: 'LastName3',
       birthday: 1,
       biography: 'A nice person 3.',
-    } as unknown as MockedObject<CreateUserDto>,
+    } as MockedObject<CreateUserDto>,
   ],
   [
     {
@@ -61,7 +61,7 @@ const validValues = [
       lastName: 'LastName4',
       birthday: 1,
       biography: 'A nice person 4.',
-    } as unknown as MockedObject<CreateUserDto>,
+    } as MockedObject<CreateUserDto>,
   ],
   [
     {
@@ -73,7 +73,7 @@ const validValues = [
       lastName: 'LastName5',
       birthday: 1,
       biography: 'A nice person 5.',
-    } as unknown as MockedObject<CreateUserDto>,
+    } as MockedObject<CreateUserDto>,
   ],
   [
     {
@@ -85,7 +85,7 @@ const validValues = [
       lastName: 'LastName6',
       birthday: 1,
       biography: 'A nice person 6.',
-    } as unknown as MockedObject<CreateUserDto>,
+    } as MockedObject<CreateUserDto>,
   ],
   [
     {
@@ -96,7 +96,7 @@ const validValues = [
       firstName: 'FirstName7',
       lastName: 'LastName7',
       birthday: 1,
-    } as unknown as MockedObject<CreateUserDto>,
+    } as MockedObject<CreateUserDto>,
   ],
 ];
 

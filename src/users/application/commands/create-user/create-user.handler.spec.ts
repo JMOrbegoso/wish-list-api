@@ -41,17 +41,15 @@ describe('users', () => {
           'should throw BadRequestException because already exist an User with that Id, Email or Username',
           (command: CreateUserCommand) => {
             // Arrange
-            const encryptionService =
-              {} as unknown as MockedObject<EncryptionService>;
+            const encryptionService = {} as MockedObject<EncryptionService>;
             const uniqueIdGeneratorService =
-              {} as unknown as MockedObject<UniqueIdGeneratorService>;
-            const emailSenderService =
-              {} as unknown as MockedObject<EmailSenderService>;
+              {} as MockedObject<UniqueIdGeneratorService>;
+            const emailSenderService = {} as MockedObject<EmailSenderService>;
             const userRepository = {
               userExists: jest.fn().mockReturnValue(true),
-            } as unknown as MockedObject<UserRepository>;
+            } as MockedObject<UserRepository>;
 
-            const unitOfWork = {} as unknown as MockedObject<UnitOfWork>;
+            const unitOfWork = {} as MockedObject<UnitOfWork>;
 
             const handler = new CreateUserHandler(
               unitOfWork,
@@ -76,28 +74,28 @@ describe('users', () => {
             // Arrange
             const encryptionService = {
               hashPassword: jest.fn().mockReturnValue('password hashed'),
-            } as unknown as MockedObject<EncryptionService>;
+            } as MockedObject<EncryptionService>;
 
             const uniqueId = {
               getId: 'verification-code-id',
-            } as unknown as MockedObject<UniqueId>;
+            } as MockedObject<UniqueId>;
 
             const uniqueIdGeneratorService = {
               generateId: jest.fn().mockReturnValue(uniqueId),
-            } as unknown as MockedObject<UniqueIdGeneratorService>;
+            } as MockedObject<UniqueIdGeneratorService>;
 
             const emailSenderService = {
               send: jest.fn(),
-            } as unknown as MockedObject<EmailSenderService>;
+            } as MockedObject<EmailSenderService>;
 
             const userRepository = {
               userExists: jest.fn().mockReturnValue(false),
               add: jest.fn(),
-            } as unknown as MockedObject<UserRepository>;
+            } as MockedObject<UserRepository>;
 
             const unitOfWork = {
               commitChanges: jest.fn(),
-            } as unknown as MockedObject<UnitOfWork>;
+            } as MockedObject<UnitOfWork>;
 
             const handler = new CreateUserHandler(
               unitOfWork,
