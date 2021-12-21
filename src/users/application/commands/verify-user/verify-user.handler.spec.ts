@@ -23,9 +23,7 @@ describe('users', () => {
               getOneByVerificationCode: jest.fn().mockReturnValue(null),
             } as unknown as MockedObject<UserRepository>;
 
-            const unitOfWork = {
-              userRepository: userRepository,
-            } as unknown as MockedObject<UnitOfWork>;
+            const unitOfWork = {} as unknown as MockedObject<UnitOfWork>;
 
             const handler = new VerifyUserHandler(unitOfWork, userRepository);
 
@@ -87,9 +85,7 @@ describe('users', () => {
               getOneByVerificationCode: jest.fn().mockReturnValue(user),
             } as unknown as MockedObject<UserRepository>;
 
-            const unitOfWork = {
-              userRepository: userRepository,
-            } as unknown as MockedObject<UnitOfWork>;
+            const unitOfWork = {} as unknown as MockedObject<UnitOfWork>;
 
             const handler = new VerifyUserHandler(unitOfWork, userRepository);
 
@@ -154,7 +150,6 @@ describe('users', () => {
             } as unknown as MockedObject<UserRepository>;
 
             const unitOfWork = {
-              userRepository: userRepository,
               commitChanges: jest.fn(),
             } as unknown as MockedObject<UnitOfWork>;
 

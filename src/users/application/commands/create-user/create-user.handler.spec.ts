@@ -51,9 +51,7 @@ describe('users', () => {
               userExists: jest.fn().mockReturnValue(true),
             } as unknown as MockedObject<UserRepository>;
 
-            const unitOfWork = {
-              userRepository: userRepository,
-            } as unknown as MockedObject<UnitOfWork>;
+            const unitOfWork = {} as unknown as MockedObject<UnitOfWork>;
 
             const handler = new CreateUserHandler(
               unitOfWork,
@@ -98,7 +96,6 @@ describe('users', () => {
             } as unknown as MockedObject<UserRepository>;
 
             const unitOfWork = {
-              userRepository: userRepository,
               commitChanges: jest.fn(),
             } as unknown as MockedObject<UnitOfWork>;
 

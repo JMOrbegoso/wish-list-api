@@ -24,9 +24,7 @@ describe('users', () => {
               getOne: jest.fn().mockReturnValue(null),
             } as unknown as MockedObject<UserRepository>;
 
-            const unitOfWork = {
-              userRepository: userRepository,
-            } as unknown as MockedObject<UnitOfWork>;
+            const unitOfWork = {} as unknown as MockedObject<UnitOfWork>;
 
             const encryptionService =
               {} as unknown as MockedObject<EncryptionService>;
@@ -95,9 +93,7 @@ describe('users', () => {
               getOne: jest.fn().mockReturnValue(user),
             } as unknown as MockedObject<UserRepository>;
 
-            const unitOfWork = {
-              userRepository: userRepository,
-            } as unknown as MockedObject<UnitOfWork>;
+            const unitOfWork = {} as unknown as MockedObject<UnitOfWork>;
 
             const encryptionService =
               {} as unknown as MockedObject<EncryptionService>;
@@ -164,9 +160,7 @@ describe('users', () => {
               getOne: jest.fn().mockReturnValue(user),
             } as unknown as MockedObject<UserRepository>;
 
-            const unitOfWork = {
-              userRepository: userRepository,
-            } as unknown as MockedObject<UnitOfWork>;
+            const unitOfWork = {} as unknown as MockedObject<UnitOfWork>;
 
             const encryptionService =
               {} as unknown as MockedObject<EncryptionService>;
@@ -233,9 +227,7 @@ describe('users', () => {
               getOne: jest.fn().mockReturnValue(user),
             } as unknown as MockedObject<UserRepository>;
 
-            const unitOfWork = {
-              userRepository: userRepository,
-            } as unknown as MockedObject<UnitOfWork>;
+            const unitOfWork = {} as unknown as MockedObject<UnitOfWork>;
 
             const encryptionService =
               {} as unknown as MockedObject<EncryptionService>;
@@ -306,7 +298,6 @@ describe('users', () => {
             } as unknown as MockedObject<UserRepository>;
 
             const unitOfWork = {
-              userRepository: userRepository,
               commitChanges: jest.fn(),
             } as unknown as MockedObject<UnitOfWork>;
 
