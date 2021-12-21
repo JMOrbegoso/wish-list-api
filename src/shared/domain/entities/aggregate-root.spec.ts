@@ -1,5 +1,4 @@
 import { MockedObject } from 'ts-jest/dist/utils/testing';
-import { mocked } from 'ts-jest/utils';
 import { DomainEvent } from '../domain-events';
 import { UniqueId } from '../value-objects';
 import { AggregateRoot } from '.';
@@ -38,31 +37,31 @@ class OrderAdded extends DomainEvent {
 
 const validValues = [
   [
-    mocked<UniqueId>({
+    {
       getId: 'id-0',
       equals: jest.fn(),
-    } as unknown as UniqueId),
+    } as unknown as MockedObject<UniqueId>,
     0,
   ],
   [
-    mocked<UniqueId>({
+    {
       getId: 'id-1',
       equals: jest.fn(),
-    } as unknown as UniqueId),
+    } as unknown as MockedObject<UniqueId>,
     10,
   ],
   [
-    mocked<UniqueId>({
+    {
       getId: 'id-2',
       equals: jest.fn(),
-    } as unknown as UniqueId),
+    } as unknown as MockedObject<UniqueId>,
     20,
   ],
   [
-    mocked<UniqueId>({
+    {
       getId: 'id-3',
       equals: jest.fn(),
-    } as unknown as UniqueId),
+    } as unknown as MockedObject<UniqueId>,
     30,
   ],
 ];

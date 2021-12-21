@@ -1,11 +1,11 @@
-import { mocked } from 'ts-jest/utils';
+import { MockedObject } from 'ts-jest/dist/utils/testing';
 import { WebUrl } from '../../../shared/domain/value-objects';
 import { WishStage } from '../../domain/entities';
 import { wishStageToOutputWishStageDto } from '.';
 
 const validValues = [
   [
-    mocked<WishStage>({
+    {
       id: {
         getId: 'id 0',
       },
@@ -20,10 +20,10 @@ const validValues = [
       },
       urls: [],
       imageUrls: [],
-    } as unknown as WishStage),
+    } as unknown as MockedObject<WishStage>,
   ],
   [
-    mocked<WishStage>({
+    {
       id: {
         getId: 'id 1',
       },
@@ -37,14 +37,14 @@ const validValues = [
         getMilliseconds: 2,
       },
       urls: [
-        mocked<WebUrl>({ getUrl: 'url 1' } as unknown as WebUrl),
-        mocked<WebUrl>({ getUrl: 'url 1 (1)' } as unknown as WebUrl),
+        { getUrl: 'url 1' } as unknown as MockedObject<WebUrl>,
+        { getUrl: 'url 1 (1)' } as unknown as MockedObject<WebUrl>,
       ],
       imageUrls: [
-        mocked<WebUrl>({ getUrl: 'image url 1' } as unknown as WebUrl),
-        mocked<WebUrl>({ getUrl: 'image url 1 (1)' } as unknown as WebUrl),
+        { getUrl: 'image url 1' } as unknown as MockedObject<WebUrl>,
+        { getUrl: 'image url 1 (1)' } as unknown as MockedObject<WebUrl>,
       ],
-    } as unknown as WishStage),
+    } as unknown as MockedObject<WishStage>,
   ],
 ];
 

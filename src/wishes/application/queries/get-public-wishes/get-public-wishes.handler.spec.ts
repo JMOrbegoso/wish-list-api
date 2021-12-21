@@ -1,4 +1,4 @@
-import { mocked } from 'ts-jest/utils';
+import { MockedObject } from 'ts-jest/dist/utils/testing';
 import { GetPublicWishesHandler, GetPublicWishesQuery } from '..';
 import { Wish } from '../../../domain/entities';
 import { WishRepository } from '../../../domain/repositories';
@@ -14,9 +14,9 @@ describe('wishes', () => {
           'should return an empty wishes array',
           async (query: GetPublicWishesQuery) => {
             // Arrange
-            const wishRepository = mocked<WishRepository>({
+            const wishRepository = {
               getAllPublicWishes: jest.fn().mockReturnValue([]),
-            } as unknown as WishRepository);
+            } as unknown as MockedObject<WishRepository>;
 
             const handler = new GetPublicWishesHandler(wishRepository);
 
@@ -32,7 +32,7 @@ describe('wishes', () => {
           'should return an array with one OutputWishDto',
           async (query: GetPublicWishesQuery) => {
             // Arrange
-            const wish = mocked<Wish>({
+            const wish = {
               id: {
                 getId: 'id 0',
               },
@@ -66,11 +66,11 @@ describe('wishes', () => {
               completedAt: {
                 getMilliseconds: 2,
               },
-            } as unknown as Wish);
+            } as unknown as MockedObject<Wish>;
 
-            const wishRepository = mocked<WishRepository>({
+            const wishRepository = {
               getAllPublicWishes: jest.fn().mockReturnValue([wish]),
-            } as unknown as WishRepository);
+            } as unknown as MockedObject<WishRepository>;
 
             const handler = new GetPublicWishesHandler(wishRepository);
 

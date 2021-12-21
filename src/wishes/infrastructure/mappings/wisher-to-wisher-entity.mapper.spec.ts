@@ -1,11 +1,11 @@
-import { mocked } from 'ts-jest/utils';
+import { MockedObject } from 'ts-jest/dist/utils/testing';
 import { Wisher } from '../../domain/entities';
 import { wisherToWisherEntity } from '.';
 
 const validValues = [
-  [mocked<Wisher>({ id: { getId: 'id-0' } } as unknown as Wisher)],
-  [mocked<Wisher>({ id: { getId: 'id-1' } } as unknown as Wisher)],
-  [mocked<Wisher>({ id: { getId: 'id-2' } } as unknown as Wisher)],
+  [{ id: { getId: 'id-0' } } as unknown as MockedObject<Wisher>],
+  [{ id: { getId: 'id-1' } } as unknown as MockedObject<Wisher>],
+  [{ id: { getId: 'id-2' } } as unknown as MockedObject<Wisher>],
 ];
 
 describe('wishes', () => {

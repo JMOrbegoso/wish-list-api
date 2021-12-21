@@ -1,5 +1,4 @@
 import { MockedObject } from 'ts-jest/dist/utils/testing';
-import { mocked } from 'ts-jest/utils';
 import { WebUrl } from '../../../shared/domain/value-objects';
 import { Wish, WishStage } from '../../domain/entities';
 import { CategoryName, PrivacyLevel } from '../../domain/value-objects';
@@ -8,7 +7,7 @@ import { wishToWishEntity } from '.';
 
 const validValues = [
   [
-    mocked<Wish>({
+    {
       id: {
         getId: 'id 0',
       },
@@ -33,32 +32,32 @@ const validValues = [
         },
       },
       urls: [
-        mocked<WebUrl>({ getUrl: 'url 0' } as unknown as WebUrl),
-        mocked<WebUrl>({ getUrl: 'url 0 (1)' } as unknown as WebUrl),
+        { getUrl: 'url 0' } as unknown as MockedObject<WebUrl>,
+        { getUrl: 'url 0 (1)' } as unknown as MockedObject<WebUrl>,
       ],
       imageUrls: [
-        mocked<WebUrl>({ getUrl: 'image url 0' } as unknown as WebUrl),
-        mocked<WebUrl>({ getUrl: 'image url 0 (1)' } as unknown as WebUrl),
+        { getUrl: 'image url 0' } as unknown as MockedObject<WebUrl>,
+        { getUrl: 'image url 0 (1)' } as unknown as MockedObject<WebUrl>,
       ],
       categories: [
-        mocked<CategoryName>({
+        {
           getName: 'category 0',
-        } as unknown as CategoryName),
-        mocked<CategoryName>({
+        } as unknown as MockedObject<CategoryName>,
+        {
           getName: 'category 0 (1)',
-        } as unknown as CategoryName),
+        } as unknown as MockedObject<CategoryName>,
       ],
       stages: [],
       deletedAt: null,
       completedAt: null,
-    } as unknown as Wish),
-    mocked<WisherEntity>({
+    } as unknown as MockedObject<Wish>,
+    {
       id: 'wisher id 0',
-    } as unknown as WisherEntity),
+    } as unknown as MockedObject<WisherEntity>,
     [],
   ],
   [
-    mocked<Wish>({
+    {
       id: {
         getId: 'id 0',
       },
@@ -86,7 +85,7 @@ const validValues = [
       imageUrls: [],
       categories: [],
       stages: [
-        mocked<WishStage>({
+        {
           id: {
             getId: 'wish-stage-id-0',
           },
@@ -101,8 +100,8 @@ const validValues = [
           },
           urls: [],
           imageUrls: [],
-        } as unknown as WishStage),
-        mocked<WishStage>({
+        } as unknown as MockedObject<WishStage>,
+        {
           id: {
             getId: 'wish-stage-id-1',
           },
@@ -117,7 +116,7 @@ const validValues = [
           },
           urls: [],
           imageUrls: [],
-        } as unknown as WishStage),
+        } as unknown as MockedObject<WishStage>,
       ],
       deletedAt: {
         getDate: new Date(1994, 5, 4),
@@ -125,19 +124,19 @@ const validValues = [
       completedAt: {
         getDate: new Date(1994, 5, 4),
       },
-    } as unknown as Wish),
-    mocked<WisherEntity>({
+    } as unknown as MockedObject<Wish>,
+    {
       id: 'wisher id 1',
-    } as unknown as WisherEntity),
+    } as unknown as MockedObject<WisherEntity>,
     [
-      mocked<WishStageEntity>({
+      {
         id: 'wish-stage-id-0',
         title: 'title 0',
-      } as unknown as WishStageEntity),
-      mocked<WishStageEntity>({
+      } as unknown as MockedObject<WishStageEntity>,
+      {
         id: 'wish-stage-id-1',
         title: 'title 1',
-      } as unknown as WishStageEntity),
+      } as unknown as MockedObject<WishStageEntity>,
     ],
   ],
 ];

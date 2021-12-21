@@ -1,5 +1,5 @@
 import { BadRequestException, NotFoundException } from '@nestjs/common';
-import { mocked } from 'ts-jest/utils';
+import { MockedObject } from 'ts-jest/dist/utils/testing';
 import { UpdateUserPasswordCommand, UpdateUserPasswordHandler } from '..';
 import { UnitOfWork } from '../../../../shared/domain/repositories';
 import { User } from '../../../domain/entities';
@@ -20,18 +20,16 @@ describe('users', () => {
           'should throw NotFoundException',
           (command: UpdateUserPasswordCommand) => {
             // Arrange
-            const userRepository = mocked<UserRepository>({
+            const userRepository = {
               getOne: jest.fn().mockReturnValue(null),
-            } as unknown as UserRepository);
+            } as unknown as MockedObject<UserRepository>;
 
-            const unitOfWork = mocked<UnitOfWork>({
+            const unitOfWork = {
               userRepository: userRepository,
-            } as unknown as UnitOfWork);
+            } as unknown as MockedObject<UnitOfWork>;
 
-            const encryptionService = mocked<EncryptionService>(
-              {} as unknown as EncryptionService,
-            );
-
+            const encryptionService =
+              {} as unknown as MockedObject<EncryptionService>;
             const handler = new UpdateUserPasswordHandler(
               unitOfWork,
               userRepository,
@@ -51,7 +49,7 @@ describe('users', () => {
           'should throw BadRequestException because the user is deleted',
           (command: UpdateUserPasswordCommand) => {
             // Arrange
-            const user = mocked<User>({
+            const user = {
               id: {
                 getId: 'id-0',
               },
@@ -91,20 +89,18 @@ describe('users', () => {
                 getMilliseconds: 4,
               },
               isDeleted: true,
-            } as unknown as User);
+            } as unknown as MockedObject<User>;
 
-            const userRepository = mocked<UserRepository>({
+            const userRepository = {
               getOne: jest.fn().mockReturnValue(user),
-            } as unknown as UserRepository);
+            } as unknown as MockedObject<UserRepository>;
 
-            const unitOfWork = mocked<UnitOfWork>({
+            const unitOfWork = {
               userRepository: userRepository,
-            } as unknown as UnitOfWork);
+            } as unknown as MockedObject<UnitOfWork>;
 
-            const encryptionService = mocked<EncryptionService>(
-              {} as unknown as EncryptionService,
-            );
-
+            const encryptionService =
+              {} as unknown as MockedObject<EncryptionService>;
             const handler = new UpdateUserPasswordHandler(
               unitOfWork,
               userRepository,
@@ -124,7 +120,7 @@ describe('users', () => {
           'should throw BadRequestException because the user is blocked',
           (command: UpdateUserPasswordCommand) => {
             // Arrange
-            const user = mocked<User>({
+            const user = {
               id: {
                 getId: 'id-0',
               },
@@ -162,20 +158,18 @@ describe('users', () => {
               },
               deletedAt: null,
               isDeleted: false,
-            } as unknown as User);
+            } as unknown as MockedObject<User>;
 
-            const userRepository = mocked<UserRepository>({
+            const userRepository = {
               getOne: jest.fn().mockReturnValue(user),
-            } as unknown as UserRepository);
+            } as unknown as MockedObject<UserRepository>;
 
-            const unitOfWork = mocked<UnitOfWork>({
+            const unitOfWork = {
               userRepository: userRepository,
-            } as unknown as UnitOfWork);
+            } as unknown as MockedObject<UnitOfWork>;
 
-            const encryptionService = mocked<EncryptionService>(
-              {} as unknown as EncryptionService,
-            );
-
+            const encryptionService =
+              {} as unknown as MockedObject<EncryptionService>;
             const handler = new UpdateUserPasswordHandler(
               unitOfWork,
               userRepository,
@@ -195,7 +189,7 @@ describe('users', () => {
           'should throw BadRequestException because the user is not verified',
           (command: UpdateUserPasswordCommand) => {
             // Arrange
-            const user = mocked<User>({
+            const user = {
               id: {
                 getId: 'id-0',
               },
@@ -233,20 +227,18 @@ describe('users', () => {
               },
               deletedAt: null,
               isDeleted: false,
-            } as unknown as User);
+            } as unknown as MockedObject<User>;
 
-            const userRepository = mocked<UserRepository>({
+            const userRepository = {
               getOne: jest.fn().mockReturnValue(user),
-            } as unknown as UserRepository);
+            } as unknown as MockedObject<UserRepository>;
 
-            const unitOfWork = mocked<UnitOfWork>({
+            const unitOfWork = {
               userRepository: userRepository,
-            } as unknown as UnitOfWork);
+            } as unknown as MockedObject<UnitOfWork>;
 
-            const encryptionService = mocked<EncryptionService>(
-              {} as unknown as EncryptionService,
-            );
-
+            const encryptionService =
+              {} as unknown as MockedObject<EncryptionService>;
             const handler = new UpdateUserPasswordHandler(
               unitOfWork,
               userRepository,
@@ -266,7 +258,7 @@ describe('users', () => {
           'should call the method updatePasswordHash of the User, call the method hashPassword of the EncryptionService, call the update method of the UserRepository and the commitChanges method of the UnitOfWork',
           async (command: UpdateUserPasswordCommand) => {
             // Arrange
-            const user = mocked<User>({
+            const user = {
               id: {
                 getId: 'id-0',
               },
@@ -306,21 +298,21 @@ describe('users', () => {
                 getMilliseconds: 4,
               },
               updatePasswordHash: jest.fn(),
-            } as unknown as User);
+            } as unknown as MockedObject<User>;
 
-            const userRepository = mocked<UserRepository>({
+            const userRepository = {
               getOne: jest.fn().mockReturnValue(user),
               update: jest.fn(),
-            } as unknown as UserRepository);
+            } as unknown as MockedObject<UserRepository>;
 
-            const unitOfWork = mocked<UnitOfWork>({
+            const unitOfWork = {
               userRepository: userRepository,
               commitChanges: jest.fn(),
-            } as unknown as UnitOfWork);
+            } as unknown as MockedObject<UnitOfWork>;
 
-            const encryptionService = mocked<EncryptionService>({
+            const encryptionService = {
               hashPassword: jest.fn().mockReturnValue('password hashed'),
-            } as unknown as EncryptionService);
+            } as unknown as MockedObject<EncryptionService>;
 
             const handler = new UpdateUserPasswordHandler(
               unitOfWork,

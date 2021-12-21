@@ -1,10 +1,10 @@
-import { mocked } from 'ts-jest/utils';
+import { MockedObject } from 'ts-jest/dist/utils/testing';
 import { CreateUserDto } from '../dtos';
 import { createUserDtoToCreateUserCommand } from '.';
 
 const validValues = [
   [
-    mocked<CreateUserDto>({
+    {
       id: 'id-0',
       email: 'email0@email.com',
       username: 'John_Doe_0',
@@ -13,10 +13,10 @@ const validValues = [
       lastName: 'LastName0',
       birthday: 1,
       biography: 'A nice person 0.',
-    } as unknown as CreateUserDto),
+    } as unknown as MockedObject<CreateUserDto>,
   ],
   [
-    mocked<CreateUserDto>({
+    {
       id: 'id-1',
       email: 'email1@email.com',
       username: 'John_Doe_1',
@@ -25,10 +25,10 @@ const validValues = [
       lastName: 'LastName1',
       birthday: 1,
       biography: 'A nice person 1.',
-    } as unknown as CreateUserDto),
+    } as unknown as MockedObject<CreateUserDto>,
   ],
   [
-    mocked<CreateUserDto>({
+    {
       id: 'id-2',
       email: 'email2@email.com',
       username: 'John_Doe_2',
@@ -37,10 +37,10 @@ const validValues = [
       lastName: 'LastName2',
       birthday: 1,
       biography: 'A nice person 2.',
-    } as unknown as CreateUserDto),
+    } as unknown as MockedObject<CreateUserDto>,
   ],
   [
-    mocked<CreateUserDto>({
+    {
       id: 'id-3',
       email: 'email3@email.com',
       username: 'John_Doe_3',
@@ -49,10 +49,10 @@ const validValues = [
       lastName: 'LastName3',
       birthday: 1,
       biography: 'A nice person 3.',
-    } as unknown as CreateUserDto),
+    } as unknown as MockedObject<CreateUserDto>,
   ],
   [
-    mocked<CreateUserDto>({
+    {
       id: 'id-4',
       email: 'email4@email.com',
       username: 'John_Doe_4',
@@ -61,10 +61,10 @@ const validValues = [
       lastName: 'LastName4',
       birthday: 1,
       biography: 'A nice person 4.',
-    } as unknown as CreateUserDto),
+    } as unknown as MockedObject<CreateUserDto>,
   ],
   [
-    mocked<CreateUserDto>({
+    {
       id: 'id-5',
       email: 'email5@email.com',
       username: 'John_Doe_5',
@@ -73,10 +73,10 @@ const validValues = [
       lastName: 'LastName5',
       birthday: 1,
       biography: 'A nice person 5.',
-    } as unknown as CreateUserDto),
+    } as unknown as MockedObject<CreateUserDto>,
   ],
   [
-    mocked<CreateUserDto>({
+    {
       id: 'id-6',
       email: 'email6@email.com',
       username: 'John_Doe_6',
@@ -85,10 +85,10 @@ const validValues = [
       lastName: 'LastName6',
       birthday: 1,
       biography: 'A nice person 6.',
-    } as unknown as CreateUserDto),
+    } as unknown as MockedObject<CreateUserDto>,
   ],
   [
-    mocked<CreateUserDto>({
+    {
       id: 'id-7',
       email: 'email7@email.com',
       username: 'John_Doe_7',
@@ -96,7 +96,7 @@ const validValues = [
       firstName: 'FirstName7',
       lastName: 'LastName7',
       birthday: 1,
-    } as unknown as CreateUserDto),
+    } as unknown as MockedObject<CreateUserDto>,
   ],
 ];
 

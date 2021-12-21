@@ -1,10 +1,10 @@
-import { mocked } from 'ts-jest/utils';
+import { MockedObject } from 'ts-jest/dist/utils/testing';
 import { RefreshToken } from '../../domain/entities';
 import { refreshTokenToRefreshTokenEntity } from '.';
 
 const validValues = [
   [
-    mocked<RefreshToken>({
+    {
       id: {
         getId: 'id-0',
       },
@@ -17,10 +17,10 @@ const validValues = [
       replacedAt: { getDate: new Date(2000, 5, 5) },
       replacedBy: { getId: 'user-id-1' },
       revokedAt: { getDate: new Date(2000, 5, 5) },
-    } as unknown as RefreshToken),
+    } as unknown as MockedObject<RefreshToken>,
   ],
   [
-    mocked<RefreshToken>({
+    {
       id: {
         getId: 'id-0',
       },
@@ -33,10 +33,10 @@ const validValues = [
       replacedAt: null,
       replacedBy: null,
       revokedAt: { getDate: new Date(2000, 5, 5) },
-    } as unknown as RefreshToken),
+    } as unknown as MockedObject<RefreshToken>,
   ],
   [
-    mocked<RefreshToken>({
+    {
       id: {
         getId: 'id-0',
       },
@@ -49,10 +49,10 @@ const validValues = [
       replacedAt: { getDate: new Date(2000, 5, 5) },
       replacedBy: { getId: 'user-id-1' },
       revokedAt: null,
-    } as unknown as RefreshToken),
+    } as unknown as MockedObject<RefreshToken>,
   ],
   [
-    mocked<RefreshToken>({
+    {
       id: {
         getId: 'id-0',
       },
@@ -65,7 +65,7 @@ const validValues = [
       replacedAt: null,
       replacedBy: null,
       revokedAt: null,
-    } as unknown as RefreshToken),
+    } as unknown as MockedObject<RefreshToken>,
   ],
 ];
 

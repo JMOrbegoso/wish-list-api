@@ -1,11 +1,11 @@
-import { mocked } from 'ts-jest/utils';
+import { MockedObject } from 'ts-jest/dist/utils/testing';
 import { User } from '../../domain/entities';
 import { Role } from '../../domain/value-objects';
 import { userToOutputUserDto } from '.';
 
 const validValues = [
   [
-    mocked<User>({
+    {
       id: {
         getId: 'id-0',
       },
@@ -39,8 +39,8 @@ const validValues = [
         getBiography: 'A nice person 0.',
       },
       roles: [
-        mocked<Role>({ getRole: 'Admin' } as unknown as Role),
-        mocked<Role>({ getRole: 'Moderator' } as unknown as Role),
+        { getRole: 'Admin' } as unknown as MockedObject<Role>,
+        { getRole: 'Moderator' } as unknown as MockedObject<Role>,
       ],
       profilePicture: {
         getUrl: 'https://www.example.com/0.jpg',
@@ -48,10 +48,10 @@ const validValues = [
       deletedAt: {
         getMilliseconds: 4,
       },
-    } as unknown as User),
+    } as unknown as MockedObject<User>,
   ],
   [
-    mocked<User>({
+    {
       id: {
         getId: 'id-1',
       },
@@ -85,8 +85,8 @@ const validValues = [
         getBiography: 'A nice person 1.',
       },
       roles: [
-        mocked<Role>({ getRole: 'Admin' } as unknown as Role),
-        mocked<Role>({ getRole: 'Basic' } as unknown as Role),
+        { getRole: 'Admin' } as unknown as MockedObject<Role>,
+        { getRole: 'Basic' } as unknown as MockedObject<Role>,
       ],
       profilePicture: {
         getUrl: 'https://www.example.com/1.jpg',
@@ -94,10 +94,10 @@ const validValues = [
       deletedAt: {
         getMilliseconds: 4,
       },
-    } as unknown as User),
+    } as unknown as MockedObject<User>,
   ],
   [
-    mocked<User>({
+    {
       id: {
         getId: 'id-2',
       },
@@ -130,15 +130,15 @@ const validValues = [
       biography: {
         getBiography: 'A nice person 2.',
       },
-      roles: [mocked<Role>({ getRole: 'Admin' } as unknown as Role)],
+      roles: [{ getRole: 'Admin' } as unknown as MockedObject<Role>],
       profilePicture: null,
       deletedAt: {
         getMilliseconds: 4,
       },
-    } as unknown as User),
+    } as unknown as MockedObject<User>,
   ],
   [
-    mocked<User>({
+    {
       id: {
         getId: 'id-3',
       },
@@ -171,15 +171,15 @@ const validValues = [
       biography: {
         getBiography: 'A nice person 3.',
       },
-      roles: [mocked<Role>({ getRole: 'Admin' } as unknown as Role)],
+      roles: [{ getRole: 'Admin' } as unknown as MockedObject<Role>],
       profilePicture: {
         getUrl: 'https://www.example.com/3.jpg',
       },
       deletedAt: null,
-    } as unknown as User),
+    } as unknown as MockedObject<User>,
   ],
   [
-    mocked<User>({
+    {
       id: {
         getId: 'id-4',
       },
@@ -212,15 +212,15 @@ const validValues = [
       biography: {
         getBiography: 'A nice person 4.',
       },
-      roles: [mocked<Role>({ getRole: 'Admin' } as unknown as Role)],
+      roles: [{ getRole: 'Admin' } as unknown as MockedObject<Role>],
       profilePicture: null,
       deletedAt: {
         getMilliseconds: 4,
       },
-    } as unknown as User),
+    } as unknown as MockedObject<User>,
   ],
   [
-    mocked<User>({
+    {
       id: {
         getId: 'id-5',
       },
@@ -253,15 +253,15 @@ const validValues = [
       biography: {
         getBiography: 'A nice person 5.',
       },
-      roles: [mocked<Role>({ getRole: 'Admin' } as unknown as Role)],
+      roles: [{ getRole: 'Admin' } as unknown as MockedObject<Role>],
       profilePicture: {
         getUrl: 'https://www.example.com/5.jpg',
       },
       deletedAt: null,
-    } as unknown as User),
+    } as unknown as MockedObject<User>,
   ],
   [
-    mocked<User>({
+    {
       id: {
         getId: 'id-6',
       },
@@ -294,13 +294,13 @@ const validValues = [
       biography: {
         getBiography: 'A nice person 6.',
       },
-      roles: [mocked<Role>({ getRole: 'Admin' } as unknown as Role)],
+      roles: [{ getRole: 'Admin' } as unknown as MockedObject<Role>],
       profilePicture: null,
       deletedAt: null,
-    } as unknown as User),
+    } as unknown as MockedObject<User>,
   ],
   [
-    mocked<User>({
+    {
       id: {
         getId: 'id-7',
       },
@@ -333,10 +333,10 @@ const validValues = [
       biography: {
         getBiography: 'A nice person 7.',
       },
-      roles: [mocked<Role>({ getRole: 'Admin' } as unknown as Role)],
+      roles: [{ getRole: 'Admin' } as unknown as MockedObject<Role>],
       profilePicture: null,
       deletedAt: null,
-    } as unknown as User),
+    } as unknown as MockedObject<User>,
   ],
 ];
 

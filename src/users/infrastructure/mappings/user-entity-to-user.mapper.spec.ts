@@ -1,10 +1,10 @@
-import { mocked } from 'ts-jest/utils';
+import { MockedObject } from 'ts-jest/dist/utils/testing';
 import { UserEntity } from '../persistence/entities';
 import { userEntityToUser } from '.';
 
 const validValues = [
   [
-    mocked<UserEntity>({
+    {
       id: 'id-0',
       email: 'email0@email.com',
       normalizedEmail: 'email0@email.com',
@@ -23,10 +23,10 @@ const validValues = [
       profilePicture: 'https://www.example.com/0.jpg',
       deletedAt: new Date(2000, 5, 5),
       roles: ['Admin'],
-    } as unknown as UserEntity),
+    } as unknown as MockedObject<UserEntity>,
   ],
   [
-    mocked<UserEntity>({
+    {
       id: 'id-1',
       email: 'email1@email.com',
       normalizedEmail: 'email1@email.com',
@@ -45,10 +45,10 @@ const validValues = [
       profilePicture: 'https://www.example.com/1.jpg',
       deletedAt: new Date(2000, 5, 5),
       roles: ['Moderator'],
-    } as unknown as UserEntity),
+    } as unknown as MockedObject<UserEntity>,
   ],
   [
-    mocked<UserEntity>({
+    {
       id: 'id-2',
       email: 'email2@email.com',
       normalizedEmail: 'email2@email.com',
@@ -67,10 +67,10 @@ const validValues = [
       profilePicture: null,
       deletedAt: new Date(2000, 5, 5),
       roles: ['Admin', 'Moderator'],
-    } as unknown as UserEntity),
+    } as unknown as MockedObject<UserEntity>,
   ],
   [
-    mocked<UserEntity>({
+    {
       id: 'id-3',
       email: 'email3@email.com',
       normalizedEmail: 'email3@email.com',
@@ -89,10 +89,10 @@ const validValues = [
       profilePicture: null,
       deletedAt: new Date(2000, 5, 5),
       roles: ['Basic'],
-    } as unknown as UserEntity),
+    } as unknown as MockedObject<UserEntity>,
   ],
   [
-    mocked<UserEntity>({
+    {
       id: 'id-4',
       email: 'email4@email.com',
       normalizedEmail: 'email4@email.com',
@@ -111,10 +111,10 @@ const validValues = [
       profilePicture: null,
       deletedAt: new Date(2000, 5, 5),
       roles: ['Admin', 'Moderator', 'Basic'],
-    } as unknown as UserEntity),
+    } as unknown as MockedObject<UserEntity>,
   ],
   [
-    mocked<UserEntity>({
+    {
       id: 'id-5',
       email: 'email5@email.com',
       normalizedEmail: 'email5@email.com',
@@ -133,10 +133,10 @@ const validValues = [
       profilePicture: 'https://www.example.com/5.jpg',
       deletedAt: new Date(2000, 5, 5),
       roles: [],
-    } as unknown as UserEntity),
+    } as unknown as MockedObject<UserEntity>,
   ],
   [
-    mocked<UserEntity>({
+    {
       id: 'id-6',
       email: 'email6@email.com',
       normalizedEmail: 'email6@email.com',
@@ -155,10 +155,10 @@ const validValues = [
       profilePicture: null,
       deletedAt: new Date(2000, 5, 5),
       roles: ['Admin'],
-    } as unknown as UserEntity),
+    } as unknown as MockedObject<UserEntity>,
   ],
   [
-    mocked<UserEntity>({
+    {
       id: 'id-7',
       email: 'email7@email.com',
       normalizedEmail: 'email7@email.com',
@@ -175,7 +175,7 @@ const validValues = [
       updatedAt: new Date(1990, 5, 5),
       biography: 'A nice person 7.',
       roles: ['Admin'],
-    } as unknown as UserEntity),
+    } as unknown as MockedObject<UserEntity>,
   ],
 ];
 

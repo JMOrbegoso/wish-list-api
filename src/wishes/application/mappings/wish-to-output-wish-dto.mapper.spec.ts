@@ -1,11 +1,11 @@
-import { mocked } from 'ts-jest/utils';
+import { MockedObject } from 'ts-jest/dist/utils/testing';
 import { WebUrl } from '../../../shared/domain/value-objects';
 import { Wish, WishStage } from '../../domain/entities';
 import { CategoryName, PrivacyLevel } from '../../domain/value-objects';
 import { wishToOutputWishDto } from '.';
 
 const validValues = [
-  mocked<Wish>({
+  {
     id: {
       getId: 'id 0',
     },
@@ -30,23 +30,23 @@ const validValues = [
       },
     },
     urls: [
-      mocked<WebUrl>({ getUrl: 'url 0' } as unknown as WebUrl),
-      mocked<WebUrl>({ getUrl: 'url 0 (1)' } as unknown as WebUrl),
+      { getUrl: 'url 0' } as unknown as MockedObject<WebUrl>,
+      { getUrl: 'url 0 (1)' } as unknown as MockedObject<WebUrl>,
     ],
     imageUrls: [
-      mocked<WebUrl>({ getUrl: 'image url 0' } as unknown as WebUrl),
-      mocked<WebUrl>({ getUrl: 'image url 0 (1)' } as unknown as WebUrl),
+      { getUrl: 'image url 0' } as unknown as MockedObject<WebUrl>,
+      { getUrl: 'image url 0 (1)' } as unknown as MockedObject<WebUrl>,
     ],
     categories: [
-      mocked<CategoryName>({
+      {
         getName: 'category 0',
-      } as unknown as CategoryName),
-      mocked<CategoryName>({
+      } as unknown as MockedObject<CategoryName>,
+      {
         getName: 'category 0 (1)',
-      } as unknown as CategoryName),
+      } as unknown as MockedObject<CategoryName>,
     ],
     stages: [
-      mocked<WishStage>({
+      {
         id: {
           getId: 'id 0',
         },
@@ -61,8 +61,8 @@ const validValues = [
         },
         urls: [],
         imageUrls: [],
-      } as unknown as WishStage),
-      mocked<WishStage>({
+      } as unknown as MockedObject<WishStage>,
+      {
         id: {
           getId: 'id 0',
         },
@@ -77,12 +77,12 @@ const validValues = [
         },
         urls: [],
         imageUrls: [],
-      } as unknown as WishStage),
+      } as unknown as MockedObject<WishStage>,
     ],
     deletedAt: null,
     completedAt: null,
-  } as unknown as Wish),
-  mocked<Wish>({
+  } as unknown as MockedObject<Wish>,
+  {
     id: {
       getId: 'id 0',
     },
@@ -116,7 +116,7 @@ const validValues = [
     completedAt: {
       getMilliseconds: 2,
     },
-  } as unknown as Wish),
+  } as unknown as MockedObject<Wish>,
 ];
 
 describe('wishes', () => {

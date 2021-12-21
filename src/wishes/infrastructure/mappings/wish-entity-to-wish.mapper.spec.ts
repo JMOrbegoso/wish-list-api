@@ -1,11 +1,11 @@
 import { Collection } from '@mikro-orm/core';
-import { mocked } from 'ts-jest/utils';
+import { MockedObject } from 'ts-jest/dist/utils/testing';
 import { PrivacyLevel } from '../../domain/value-objects';
 import { WishEntity, WishStageEntity } from '../persistence/entities';
 import { wishEntityToWish } from '.';
 
 const validValues = [
-  mocked<WishEntity>({
+  {
     id: 'id 0',
     title: 'title 0',
     description: 'description 0',
@@ -21,30 +21,30 @@ const validValues = [
       'https://www.example.net/1.jpg',
     ],
     categories: ['category 0', 'category 0 (1)'],
-    stages: mocked<Collection<WishStageEntity>>({
+    stages: {
       toArray: jest.fn().mockReturnValue([
-        mocked<WishStageEntity>({
+        {
           id: 'id 0',
           title: 'title 0',
           description: 'description 0',
           createdAt: new Date(1995, 5, 4),
           urls: [],
           imageUrls: [],
-        } as unknown as WishStageEntity),
-        mocked<WishStageEntity>({
+        } as unknown as MockedObject<WishStageEntity>,
+        {
           id: 'id 0',
           title: 'title 0',
           description: 'description 0',
           createdAt: new Date(1995, 5, 4),
           urls: [],
           imageUrls: [],
-        } as unknown as WishStageEntity),
+        } as unknown as MockedObject<WishStageEntity>,
       ]),
-    } as unknown as Collection<WishStageEntity>),
+    } as unknown as MockedObject<Collection<WishStageEntity>>,
     deletedAt: null,
     completedAt: null,
-  } as unknown as WishEntity),
-  mocked<WishEntity>({
+  } as unknown as MockedObject<WishEntity>,
+  {
     id: 'id 0',
     title: 'title 0',
     description: 'description 0',
@@ -62,7 +62,7 @@ const validValues = [
     stages: { toArray: jest.fn().mockReturnValue([]) },
     deletedAt: new Date(1994, 5, 4),
     completedAt: new Date(1994, 5, 4),
-  } as unknown as WishEntity),
+  } as unknown as MockedObject<WishEntity>,
 ];
 
 describe('wishes', () => {

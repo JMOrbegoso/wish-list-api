@@ -1,59 +1,59 @@
-import { mocked } from 'ts-jest/utils';
+import { MockedObject } from 'ts-jest/dist/utils/testing';
 import { WebUrl } from '../../../shared/domain/value-objects';
 import { WishStage } from '../../domain/entities';
 import { wishStageToWishStageEntity } from '.';
 
 const validValues = [
   [
-    mocked<WishStage>({
+    {
       id: { getId: 'id-0' },
       title: { getTitle: 'title 0' },
       description: { getDescription: 'description 0' },
       createdAt: { getDate: new Date(1995, 5, 5) },
       urls: [],
       imageUrls: [],
-    } as unknown as WishStage),
+    } as unknown as MockedObject<WishStage>,
   ],
   [
-    mocked<WishStage>({
+    {
       id: { getId: 'id-0' },
       title: { getTitle: 'title 0' },
       description: { getDescription: 'description 0' },
       createdAt: { getDate: new Date(2005, 5, 5) },
       urls: [
-        mocked<WebUrl>({
+        {
           getUrl: 'https://www.example.com',
-        } as unknown as WebUrl),
-        mocked<WebUrl>({
+        } as unknown as MockedObject<WebUrl>,
+        {
           getUrl: 'https://www.example.net',
-        } as unknown as WebUrl),
+        } as unknown as MockedObject<WebUrl>,
       ],
       imageUrls: [],
-    } as unknown as WishStage),
+    } as unknown as MockedObject<WishStage>,
   ],
   [
-    mocked<WishStage>({
+    {
       id: { getId: 'id-0' },
       title: { getTitle: 'title 0' },
       description: { getDescription: 'description 0' },
       createdAt: { getDate: new Date(1990, 5, 5) },
       urls: [
-        mocked<WebUrl>({
+        {
           getUrl: 'https://www.example.com',
-        } as unknown as WebUrl),
-        mocked<WebUrl>({
+        } as unknown as MockedObject<WebUrl>,
+        {
           getUrl: 'https://www.example.net',
-        } as unknown as WebUrl),
+        } as unknown as MockedObject<WebUrl>,
       ],
       imageUrls: [
-        mocked<WebUrl>({
+        {
           getUrl: 'https://www.example.com/1.jpg',
-        } as unknown as WebUrl),
-        mocked<WebUrl>({
+        } as unknown as MockedObject<WebUrl>,
+        {
           getUrl: 'https://www.example.net/2.jpg',
-        } as unknown as WebUrl),
+        } as unknown as MockedObject<WebUrl>,
       ],
-    } as unknown as WishStage),
+    } as unknown as MockedObject<WishStage>,
   ],
 ];
 

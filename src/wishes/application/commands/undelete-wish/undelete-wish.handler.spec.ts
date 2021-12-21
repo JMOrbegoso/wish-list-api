@@ -1,5 +1,5 @@
 import { BadRequestException, NotFoundException } from '@nestjs/common';
-import { mocked } from 'ts-jest/utils';
+import { MockedObject } from 'ts-jest/dist/utils/testing';
 import { UndeleteWishCommand, UndeleteWishHandler } from '..';
 import { UnitOfWork } from '../../../../shared/domain/repositories';
 import { Wish } from '../../../domain/entities';
@@ -19,11 +19,11 @@ describe('wishes', () => {
           'undelete a wish that does not exist should throw error',
           (command: UndeleteWishCommand) => {
             // Arrange
-            const wishRepository = mocked<WishRepository>({
+            const wishRepository = {
               getOne: jest.fn().mockReturnValue(null),
-            } as unknown as WishRepository);
+            } as unknown as MockedObject<WishRepository>;
 
-            const unitOfWork = mocked<UnitOfWork>({} as unknown as UnitOfWork);
+            const unitOfWork = {} as unknown as MockedObject<UnitOfWork>;
 
             const handler = new UndeleteWishHandler(wishRepository, unitOfWork);
 
@@ -40,15 +40,15 @@ describe('wishes', () => {
           'undelete a not deleted wish should throw error',
           (command: UndeleteWishCommand) => {
             // Arrange
-            const wish = mocked<Wish>({
+            const wish = {
               isDeleted: false,
-            } as unknown as Wish);
+            } as unknown as MockedObject<Wish>;
 
-            const wishRepository = mocked<WishRepository>({
+            const wishRepository = {
               getOne: jest.fn().mockReturnValue(wish),
-            } as unknown as WishRepository);
+            } as unknown as MockedObject<WishRepository>;
 
-            const unitOfWork = mocked<UnitOfWork>({} as unknown as UnitOfWork);
+            const unitOfWork = {} as unknown as MockedObject<UnitOfWork>;
 
             const handler = new UndeleteWishHandler(wishRepository, unitOfWork);
 
@@ -65,20 +65,20 @@ describe('wishes', () => {
           'should call the method update from the WishRepository, the method commitChanges from the UnitOfWork',
           async (command: UndeleteWishCommand) => {
             // Arrange
-            const wish = mocked<Wish>({
+            const wish = {
               id: { getId: 'id' },
               isDeleted: true,
               undelete: jest.fn(),
-            } as unknown as Wish);
+            } as unknown as MockedObject<Wish>;
 
-            const wishRepository = mocked<WishRepository>({
+            const wishRepository = {
               getOne: jest.fn().mockReturnValue(wish),
               update: jest.fn(),
-            } as unknown as WishRepository);
+            } as unknown as MockedObject<WishRepository>;
 
-            const unitOfWork = mocked<UnitOfWork>({
+            const unitOfWork = {
               commitChanges: jest.fn(),
-            } as unknown as UnitOfWork);
+            } as unknown as MockedObject<UnitOfWork>;
 
             const handler = new UndeleteWishHandler(wishRepository, unitOfWork);
 

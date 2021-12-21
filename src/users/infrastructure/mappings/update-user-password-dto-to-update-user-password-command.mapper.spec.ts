@@ -1,31 +1,31 @@
-import { mocked } from 'ts-jest/utils';
+import { MockedObject } from 'ts-jest/dist/utils/testing';
 import { UpdateUserPasswordDto } from '../dtos';
 import { updateUserPasswordDtoToUpdateUserPasswordCommand } from '.';
 
 const validValues = [
   [
-    mocked<UpdateUserPasswordDto>({
+    {
       id: 'id-0',
       password: 'password0',
-    } as unknown as UpdateUserPasswordDto),
+    } as unknown as MockedObject<UpdateUserPasswordDto>,
   ],
   [
-    mocked<UpdateUserPasswordDto>({
+    {
       id: 'id-1',
       password: 'password1',
-    } as unknown as UpdateUserPasswordDto),
+    } as unknown as MockedObject<UpdateUserPasswordDto>,
   ],
   [
-    mocked<UpdateUserPasswordDto>({
+    {
       id: 'id-2',
       password: 'password2',
-    } as unknown as UpdateUserPasswordDto),
+    } as unknown as MockedObject<UpdateUserPasswordDto>,
   ],
   [
-    mocked<UpdateUserPasswordDto>({
+    {
       id: 'id-3',
       password: 'password3',
-    } as unknown as UpdateUserPasswordDto),
+    } as unknown as MockedObject<UpdateUserPasswordDto>,
   ],
 ];
 

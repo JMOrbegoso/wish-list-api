@@ -1,5 +1,4 @@
 import { MockedObject } from 'ts-jest/dist/utils/testing';
-import { mocked } from 'ts-jest/utils';
 import {
   InvalidWishStageImagesError,
   InvalidWishStageUrlsError,
@@ -23,28 +22,28 @@ import {
 
 const validValues = [
   [
-    mocked<UniqueId>({
+    {
       getId: 'id-0',
       equals: jest.fn(),
-    } as unknown as UniqueId),
-    mocked<WishTitle>({
+    } as unknown as MockedObject<UniqueId>,
+    {
       getTitle: 'title',
-    } as unknown as WishTitle),
-    mocked<WishDescription>({
+    } as unknown as MockedObject<WishTitle>,
+    {
       getDescription: 'description',
-    } as unknown as WishDescription),
-    mocked<MillisecondsDate>({
+    } as unknown as MockedObject<WishDescription>,
+    {
       getMilliseconds: 1,
-    } as unknown as MillisecondsDate),
+    } as unknown as MockedObject<MillisecondsDate>,
     [
-      mocked<WebUrl>({
+      {
         getUrl: 'https://www.example.com',
-      } as unknown as WebUrl),
+      } as unknown as MockedObject<WebUrl>,
     ],
     [
-      mocked<WebUrl>({
+      {
         getUrl: 'https://www.example.com/1.jpg',
-      } as unknown as WebUrl),
+      } as unknown as MockedObject<WebUrl>,
     ],
   ],
 ];
@@ -199,11 +198,9 @@ describe('wishes', () => {
             // Arrange
 
             // Act
-            urls = Array(WishStage.MaxUrls + 1).fill(
-              mocked<WebUrl>({
-                getUrl: 'https://www.example.com',
-              } as unknown as WebUrl),
-            );
+            urls = Array(WishStage.MaxUrls + 1).fill({
+              getUrl: 'https://www.example.com',
+            } as unknown as MockedObject<WebUrl>);
 
             // Assert
             expect(() =>
@@ -259,11 +256,9 @@ describe('wishes', () => {
             // Arrange
 
             // Act
-            images = Array(WishStage.MaxImages + 1).fill(
-              mocked<WebUrl>({
-                getUrl: 'https://www.example.com/1.jpg',
-              } as unknown as WebUrl),
-            );
+            images = Array(WishStage.MaxImages + 1).fill({
+              getUrl: 'https://www.example.com/1.jpg',
+            } as unknown as MockedObject<WebUrl>);
 
             // Assert
             expect(() =>
@@ -364,9 +359,9 @@ describe('wishes', () => {
             );
 
             // Act
-            const newDescription = mocked<WishDescription>({
+            const newDescription = {
               getDescription: 'description',
-            } as unknown as WishDescription);
+            } as unknown as MockedObject<WishDescription>;
 
             // Assert
             expect(() => wishStage.update(null, newDescription)).toThrowError(
@@ -396,9 +391,9 @@ describe('wishes', () => {
             );
 
             // Act
-            const newTitle = mocked<WishTitle>({
+            const newTitle = {
               getTitle: 'title',
-            } as unknown as WishTitle);
+            } as unknown as MockedObject<WishTitle>;
 
             // Assert
             expect(() => wishStage.update(newTitle, null)).toThrowError(
@@ -457,11 +452,9 @@ describe('wishes', () => {
             );
 
             // Act
-            const newUrls = Array(WishStage.MaxUrls + 1).fill(
-              mocked<WebUrl>({
-                getUrl: 'https://www.example.com',
-              } as unknown as WebUrl),
-            );
+            const newUrls = Array(WishStage.MaxUrls + 1).fill({
+              getUrl: 'https://www.example.com',
+            } as unknown as MockedObject<WebUrl>);
 
             // Assert
             expect(() =>
@@ -520,11 +513,9 @@ describe('wishes', () => {
             );
 
             // Act
-            const newImages = Array(WishStage.MaxImages + 1).fill(
-              mocked<WebUrl>({
-                getUrl: 'https://www.example.com/1.jpg',
-              } as unknown as WebUrl),
-            );
+            const newImages = Array(WishStage.MaxImages + 1).fill({
+              getUrl: 'https://www.example.com/1.jpg',
+            } as unknown as MockedObject<WebUrl>);
 
             // Assert
             expect(() =>
@@ -554,12 +545,12 @@ describe('wishes', () => {
             );
 
             // Act
-            const newTitle = mocked<WishTitle>({
+            const newTitle = {
               getTitle: 'title',
-            } as unknown as WishTitle);
-            const newDescription = mocked<WishDescription>({
+            } as unknown as MockedObject<WishTitle>;
+            const newDescription = {
               getDescription: 'description',
-            } as unknown as WishDescription);
+            } as unknown as MockedObject<WishDescription>;
 
             wishStage.update(newTitle, newDescription);
 
@@ -594,21 +585,21 @@ describe('wishes', () => {
             );
 
             // Act
-            const newTitle = mocked<WishTitle>({
+            const newTitle = {
               getTitle: 'title',
-            } as unknown as WishTitle);
-            const newDescription = mocked<WishDescription>({
+            } as unknown as MockedObject<WishTitle>;
+            const newDescription = {
               getDescription: 'description',
-            } as unknown as WishDescription);
+            } as unknown as MockedObject<WishDescription>;
             const newUrls = [
-              mocked<WebUrl>({
+              {
                 getUrl: 'https://www.example.com',
-              } as unknown as WebUrl),
+              } as unknown as MockedObject<WebUrl>,
             ];
             const newImages = [
-              mocked<WebUrl>({
+              {
                 getUrl: 'https://www.example.com/1.jpg',
-              } as unknown as WebUrl),
+              } as unknown as MockedObject<WebUrl>,
             ];
 
             wishStage.update(newTitle, newDescription, newUrls, newImages);

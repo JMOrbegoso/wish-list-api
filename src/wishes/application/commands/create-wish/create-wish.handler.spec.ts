@@ -1,5 +1,5 @@
 import { BadRequestException, NotFoundException } from '@nestjs/common';
-import { mocked } from 'ts-jest/utils';
+import { MockedObject } from 'ts-jest/dist/utils/testing';
 import { CreateWishCommand, CreateWishHandler } from '..';
 import { UnitOfWork } from '../../../../shared/domain/repositories';
 import { UserRepository } from '../../../../users/domain/repositories';
@@ -47,15 +47,13 @@ describe('wishes', () => {
           'creating a wish with a user that does not exist should throw error',
           (command: CreateWishCommand) => {
             // Arrange
-            const wishRepository = mocked<WishRepository>(
-              {} as unknown as WishRepository,
-            );
-
-            const userRepository = mocked<UserRepository>({
+            const wishRepository =
+              {} as unknown as MockedObject<WishRepository>;
+            const userRepository = {
               getOne: jest.fn().mockReturnValue(false),
-            } as unknown as UserRepository);
+            } as unknown as MockedObject<UserRepository>;
 
-            const unitOfWork = mocked<UnitOfWork>({} as unknown as UnitOfWork);
+            const unitOfWork = {} as unknown as MockedObject<UnitOfWork>;
 
             const handler = new CreateWishHandler(
               wishRepository,
@@ -76,15 +74,15 @@ describe('wishes', () => {
           'creating a wish with an id that already exist should throw error',
           (command: CreateWishCommand) => {
             // Arrange
-            const wishRepository = mocked<WishRepository>({
+            const wishRepository = {
               getOne: jest.fn().mockReturnValue(true),
-            } as unknown as WishRepository);
+            } as unknown as MockedObject<WishRepository>;
 
-            const userRepository = mocked<UserRepository>({
+            const userRepository = {
               getOne: jest.fn().mockReturnValue(true),
-            } as unknown as UserRepository);
+            } as unknown as MockedObject<UserRepository>;
 
-            const unitOfWork = mocked<UnitOfWork>({} as unknown as UnitOfWork);
+            const unitOfWork = {} as unknown as MockedObject<UnitOfWork>;
 
             const handler = new CreateWishHandler(
               wishRepository,
@@ -104,15 +102,15 @@ describe('wishes', () => {
           'creating a wish with an id that already exist should throw error',
           (command: CreateWishCommand) => {
             // Arrange
-            const wishRepository = mocked<WishRepository>({
+            const wishRepository = {
               getOne: jest.fn().mockReturnValue(true),
-            } as unknown as WishRepository);
+            } as unknown as MockedObject<WishRepository>;
 
-            const userRepository = mocked<UserRepository>({
+            const userRepository = {
               getOne: jest.fn().mockReturnValue(true),
-            } as unknown as UserRepository);
+            } as unknown as MockedObject<UserRepository>;
 
-            const unitOfWork = mocked<UnitOfWork>({} as unknown as UnitOfWork);
+            const unitOfWork = {} as unknown as MockedObject<UnitOfWork>;
 
             const handler = new CreateWishHandler(
               wishRepository,
@@ -132,18 +130,18 @@ describe('wishes', () => {
           'should call the method add from the WishRepository, the method commitChanges from the UnitOfWork',
           async (command: CreateWishCommand) => {
             // Arrange
-            const wishRepository = mocked<WishRepository>({
+            const wishRepository = {
               getOne: jest.fn().mockReturnValue(null),
               add: jest.fn(),
-            } as unknown as WishRepository);
+            } as unknown as MockedObject<WishRepository>;
 
-            const userRepository = mocked<UserRepository>({
+            const userRepository = {
               getOne: jest.fn().mockReturnValue(true),
-            } as unknown as UserRepository);
+            } as unknown as MockedObject<UserRepository>;
 
-            const unitOfWork = mocked<UnitOfWork>({
+            const unitOfWork = {
               commitChanges: jest.fn(),
-            } as unknown as UnitOfWork);
+            } as unknown as MockedObject<UnitOfWork>;
 
             const handler = new CreateWishHandler(
               wishRepository,

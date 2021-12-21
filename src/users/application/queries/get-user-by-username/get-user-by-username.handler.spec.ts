@@ -1,5 +1,5 @@
 import { NotFoundException } from '@nestjs/common';
-import { mocked } from 'ts-jest/utils';
+import { MockedObject } from 'ts-jest/dist/utils/testing';
 import { GetUserByUsernameHandler, GetUserByUsernameQuery } from '..';
 import { User } from '../../../domain/entities';
 import { UserRepository } from '../../../domain/repositories';
@@ -18,9 +18,9 @@ describe('users', () => {
           'should throw NotFoundException',
           (query: GetUserByUsernameQuery) => {
             // Arrange
-            const userRepository = mocked<UserRepository>({
+            const userRepository = {
               getOneByUsername: jest.fn().mockReturnValue(null),
-            } as unknown as UserRepository);
+            } as unknown as MockedObject<UserRepository>;
 
             const handler = new GetUserByUsernameHandler(userRepository);
 
@@ -37,7 +37,7 @@ describe('users', () => {
           'should return OutputUserDto',
           async (query: GetUserByUsernameQuery) => {
             // Arrange
-            const user = mocked<User>({
+            const user = {
               id: {
                 getId: 'id-0',
               },
@@ -76,11 +76,11 @@ describe('users', () => {
               deletedAt: {
                 getMilliseconds: 4,
               },
-            } as unknown as User);
+            } as unknown as MockedObject<User>;
 
-            const userRepository = mocked<UserRepository>({
+            const userRepository = {
               getOneByUsername: jest.fn().mockReturnValue(user),
-            } as unknown as UserRepository);
+            } as unknown as MockedObject<UserRepository>;
 
             const handler = new GetUserByUsernameHandler(userRepository);
 
