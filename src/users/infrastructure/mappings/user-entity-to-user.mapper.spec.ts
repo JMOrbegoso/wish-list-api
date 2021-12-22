@@ -1,6 +1,45 @@
 import { MockedObject } from 'ts-jest/dist/utils/testing';
-import { UserEntity } from '../persistence/entities';
+import { RefreshTokenEntity, UserEntity } from '../persistence/entities';
 import { userEntityToUser } from '.';
+
+const validRefreshTokenEntities = [
+  {
+    id: 'id-0',
+    createdAt: new Date(2021, 5, 5),
+    duration: 100,
+    ipAddress: '192.168.0.1',
+    replacedAt: null,
+    replacedBy: null,
+    revokedAt: null,
+  } as MockedObject<RefreshTokenEntity>,
+  {
+    id: 'id-1',
+    createdAt: new Date(2021, 5, 5),
+    duration: 100,
+    ipAddress: '192.168.0.1',
+    replacedAt: null,
+    replacedBy: null,
+    revokedAt: new Date(2021, 5, 5),
+  } as MockedObject<RefreshTokenEntity>,
+  {
+    id: 'id-2',
+    createdAt: new Date(2021, 5, 5),
+    duration: 100,
+    ipAddress: '192.168.0.1',
+    replacedAt: new Date(2021, 5, 5),
+    replacedBy: 'id-1',
+    revokedAt: null,
+  } as MockedObject<RefreshTokenEntity>,
+  {
+    id: 'id-3',
+    createdAt: new Date(2021, 5, 5),
+    duration: 100,
+    ipAddress: '192.168.0.1',
+    replacedAt: new Date(2021, 5, 5),
+    replacedBy: 'id-1',
+    revokedAt: new Date(2021, 5, 5),
+  } as MockedObject<RefreshTokenEntity>,
+];
 
 const validValues = [
   {
@@ -22,6 +61,16 @@ const validValues = [
     profilePicture: 'https://www.example.com/0.jpg',
     deletedAt: new Date(2000, 5, 5),
     roles: ['Admin'],
+    refreshTokens: {
+      toArray: jest
+        .fn()
+        .mockReturnValue([
+          validRefreshTokenEntities[0],
+          validRefreshTokenEntities[1],
+          validRefreshTokenEntities[2],
+          validRefreshTokenEntities[3],
+        ] as MockedObject<RefreshTokenEntity[]>),
+    } as unknown,
   } as MockedObject<UserEntity>,
   {
     id: 'id-1',
@@ -42,6 +91,13 @@ const validValues = [
     profilePicture: 'https://www.example.com/1.jpg',
     deletedAt: new Date(2000, 5, 5),
     roles: ['Moderator'],
+    refreshTokens: {
+      toArray: jest
+        .fn()
+        .mockReturnValue([validRefreshTokenEntities[0]] as MockedObject<
+          RefreshTokenEntity[]
+        >),
+    } as unknown,
   } as MockedObject<UserEntity>,
   {
     id: 'id-2',
@@ -62,6 +118,14 @@ const validValues = [
     profilePicture: null,
     deletedAt: new Date(2000, 5, 5),
     roles: ['Admin', 'Moderator'],
+    refreshTokens: {
+      toArray: jest
+        .fn()
+        .mockReturnValue([
+          validRefreshTokenEntities[1],
+          validRefreshTokenEntities[2],
+        ] as MockedObject<RefreshTokenEntity[]>),
+    } as unknown,
   } as MockedObject<UserEntity>,
   {
     id: 'id-3',
@@ -82,6 +146,11 @@ const validValues = [
     profilePicture: null,
     deletedAt: new Date(2000, 5, 5),
     roles: ['Basic'],
+    refreshTokens: {
+      toArray: jest
+        .fn()
+        .mockReturnValue([] as MockedObject<RefreshTokenEntity[]>),
+    } as unknown,
   } as MockedObject<UserEntity>,
   {
     id: 'id-4',
@@ -102,6 +171,15 @@ const validValues = [
     profilePicture: null,
     deletedAt: new Date(2000, 5, 5),
     roles: ['Admin', 'Moderator', 'Basic'],
+    refreshTokens: {
+      toArray: jest
+        .fn()
+        .mockReturnValue([
+          validRefreshTokenEntities[1],
+          validRefreshTokenEntities[2],
+          validRefreshTokenEntities[3],
+        ] as MockedObject<RefreshTokenEntity[]>),
+    } as unknown,
   } as MockedObject<UserEntity>,
   {
     id: 'id-5',
@@ -122,6 +200,14 @@ const validValues = [
     profilePicture: 'https://www.example.com/5.jpg',
     deletedAt: new Date(2000, 5, 5),
     roles: [],
+    refreshTokens: {
+      toArray: jest
+        .fn()
+        .mockReturnValue([
+          validRefreshTokenEntities[0],
+          validRefreshTokenEntities[3],
+        ] as MockedObject<RefreshTokenEntity[]>),
+    } as unknown,
   } as MockedObject<UserEntity>,
   {
     id: 'id-6',
@@ -142,6 +228,11 @@ const validValues = [
     profilePicture: null,
     deletedAt: new Date(2000, 5, 5),
     roles: ['Admin'],
+    refreshTokens: {
+      toArray: jest
+        .fn()
+        .mockReturnValue([] as MockedObject<RefreshTokenEntity[]>),
+    } as unknown,
   } as MockedObject<UserEntity>,
   {
     id: 'id-7',
@@ -160,6 +251,14 @@ const validValues = [
     updatedAt: new Date(1990, 5, 5),
     biography: 'A nice person 7.',
     roles: ['Admin'],
+    refreshTokens: {
+      toArray: jest
+        .fn()
+        .mockReturnValue([
+          validRefreshTokenEntities[0],
+          validRefreshTokenEntities[2],
+        ] as MockedObject<RefreshTokenEntity[]>),
+    } as unknown,
   } as MockedObject<UserEntity>,
 ];
 
@@ -216,14 +315,15 @@ describe('users', () => {
             for (let i = 0; i < userEntity.roles.length; i++) {
               expect(user.roles[i]).toBe(userEntity.roles[i]);
             }
-            // TODO: Uncomment this when userEntity have the property refreshTokens
-            /*  
-            for (let i = 0; i < userEntity.roles.refreshTokens; i++) {
-              expect(user.refreshTokens[i].id).toBe(
-                userEntity.refreshTokens[i].id,
+            for (
+              let i = 0;
+              i < userEntity.refreshTokens.toArray().length;
+              i++
+            ) {
+              expect(user.refreshTokens[i].id.getId).toBe(
+                userEntity.refreshTokens.toArray()[i].id,
               );
             }
-            */
           },
         );
       });

@@ -1,6 +1,8 @@
 import {
+  Collection,
   Entity,
   EntityRepositoryType,
+  OneToMany,
   PrimaryKey,
   Property,
   SerializedPrimaryKey,
@@ -8,6 +10,7 @@ import {
 } from '@mikro-orm/core';
 import { ObjectId } from '@mikro-orm/mongodb';
 import { UserRepositoryMongoDb } from '../repositories';
+import { RefreshTokenEntity } from '.';
 
 @Entity({ collection: 'users' })
 export class UserEntity {
@@ -73,4 +76,7 @@ export class UserEntity {
 
   @Property()
   roles: string[];
+
+  @OneToMany(() => RefreshTokenEntity, (refreshToken) => refreshToken.user)
+  refreshTokens = new Collection<RefreshTokenEntity>(this);
 }

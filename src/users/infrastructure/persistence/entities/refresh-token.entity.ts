@@ -1,12 +1,15 @@
 import {
   Entity,
   EntityRepositoryType,
+  IdentifiedReference,
+  ManyToOne,
   PrimaryKey,
   Property,
   SerializedPrimaryKey,
 } from '@mikro-orm/core';
 import { ObjectId } from '@mikro-orm/mongodb';
 import { RefreshTokenRepositoryMongoDb } from '../repositories';
+import { UserEntity } from '.';
 
 @Entity({ collection: 'refresh-tokens' })
 export class RefreshTokenEntity {
@@ -18,8 +21,8 @@ export class RefreshTokenEntity {
   @SerializedPrimaryKey()
   id!: string;
 
-  @Property()
-  userId!: string;
+  @ManyToOne(() => UserEntity, { wrappedReference: true, nullable: false })
+  user: IdentifiedReference<UserEntity>;
 
   @Property()
   createdAt: Date;
