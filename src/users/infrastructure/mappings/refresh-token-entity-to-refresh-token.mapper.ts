@@ -10,7 +10,6 @@ export function refreshTokenEntityToRefreshToken(
   refreshTokenEntity: RefreshTokenEntity,
 ): RefreshToken {
   const id = UniqueId.create(refreshTokenEntity.id);
-  const userId = UniqueId.create(refreshTokenEntity.userId);
   const createdAt = MillisecondsDate.createFromDate(
     refreshTokenEntity.createdAt,
   );
@@ -28,7 +27,6 @@ export function refreshTokenEntityToRefreshToken(
 
   return RefreshToken.create(
     id,
-    userId,
     ipAddress,
     createdAt,
     secondsDuration,

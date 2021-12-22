@@ -58,7 +58,7 @@ describe('users', () => {
             const unitOfWork = {} as MockedObject<UnitOfWork>;
 
             const userRepository = {
-              getOne: jest.fn().mockReturnValue(null),
+              getOneByRefreshTokenId: jest.fn().mockReturnValue(null),
             } as MockedObject<UserRepository>;
 
             const refreshTokenToUse = {} as MockedObject<RefreshToken>;
@@ -99,7 +99,7 @@ describe('users', () => {
             } as MockedObject<User>;
 
             const userRepository = {
-              getOne: jest.fn().mockReturnValue(user),
+              getOneByRefreshTokenId: jest.fn().mockReturnValue(user),
             } as MockedObject<UserRepository>;
 
             const refreshTokenToUse = {
@@ -161,7 +161,7 @@ describe('users', () => {
             } as MockedObject<RefreshToken>;
 
             const userRepository = {
-              getOne: jest.fn().mockReturnValue(user),
+              getOneByRefreshTokenId: jest.fn().mockReturnValue(user),
               getAllRefreshTokensByUserId: jest
                 .fn()
                 .mockReturnValue([validRefreshTokenToRevoke, usedRefreshToken]),
@@ -240,7 +240,7 @@ describe('users', () => {
             } as MockedObject<RefreshToken>;
 
             const userRepository = {
-              getOne: jest.fn().mockReturnValue(user),
+              getOneByRefreshTokenId: jest.fn().mockReturnValue(user),
               getAllRefreshTokensByUserId: jest
                 .fn()
                 .mockReturnValue([validRefreshTokenToRevoke, usedRefreshToken]),
@@ -331,7 +331,7 @@ describe('users', () => {
             } as MockedObject<User>;
 
             const userRepository = {
-              getOne: jest.fn().mockReturnValue(user),
+              getOneByRefreshTokenId: jest.fn().mockReturnValue(user),
             } as MockedObject<UserRepository>;
 
             const refreshTokenToUse = {

@@ -61,7 +61,6 @@ describe('users', () => {
             // Assert
             expect(refreshToken.id.getId).toBe(refreshTokenEntity.id);
 
-            expect(refreshToken.userId.getId).toBe(refreshTokenEntity.userId);
             expect(refreshToken.createdAt.getMilliseconds).toBe(
               refreshTokenEntity.createdAt.getTime(),
             );

@@ -34,7 +34,9 @@ export class RefreshAccessTokenHandler
     );
     if (!refreshTokenToUse) throw new UnauthorizedException();
 
-    const user = await this.userRepository.getOne(refreshTokenToUse.userId);
+    const user = await this.userRepository.getOneByRefreshTokenId(
+      refreshTokenToUse.id,
+    );
     if (!user) throw new UnauthorizedException();
 
     // Check if the refresh token is valid
@@ -73,7 +75,6 @@ export class RefreshAccessTokenHandler
     // Generate the new refresh token
     const newRefreshToken = RefreshToken.create(
       this.uniqueIdGeneratorService.generateId(),
-      refreshTokenToUse.userId,
       ipAddress,
     );
     this.refreshTokenRepository.add(newRefreshToken);

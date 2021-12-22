@@ -7,9 +7,6 @@ const validValues = [
     id: {
       getId: 'id-0',
     },
-    userId: {
-      getId: 'user-id-0',
-    },
     createdAt: { getDate: new Date(2000, 5, 5) },
     duration: 100,
     ipAddress: '192.168.1.1',
@@ -20,9 +17,6 @@ const validValues = [
   {
     id: {
       getId: 'id-0',
-    },
-    userId: {
-      getId: 'user-id-0',
     },
     createdAt: { getDate: new Date(2000, 5, 5) },
     duration: 100,
@@ -35,9 +29,6 @@ const validValues = [
     id: {
       getId: 'id-0',
     },
-    userId: {
-      getId: 'user-id-0',
-    },
     createdAt: { getDate: new Date(2000, 5, 5) },
     duration: 100,
     ipAddress: '192.168.1.1',
@@ -48,9 +39,6 @@ const validValues = [
   {
     id: {
       getId: 'id-0',
-    },
-    userId: {
-      getId: 'user-id-0',
     },
     createdAt: { getDate: new Date(2000, 5, 5) },
     duration: 100,
@@ -77,7 +65,6 @@ describe('users', () => {
             // Assert
             expect(refreshTokenEntity.id).toBe(refreshToken.id.getId);
             expect(refreshTokenEntity.id).toBe(refreshToken.id.getId);
-            expect(refreshTokenEntity.userId).toBe(refreshToken.userId.getId);
             expect(refreshTokenEntity.createdAt).toBe(
               refreshToken.createdAt.getDate,
             );

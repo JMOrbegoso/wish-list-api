@@ -60,7 +60,6 @@ export class LocalLoginHandler implements ICommandHandler<LocalLoginCommand> {
     // Generate the new refresh token
     const newRefreshToken = RefreshToken.create(
       this.uniqueIdGeneratorService.generateId(),
-      user.id,
       ipAddress,
     );
     this.refreshTokenRepository.add(newRefreshToken);

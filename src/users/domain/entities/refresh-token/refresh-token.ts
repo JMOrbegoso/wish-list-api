@@ -8,7 +8,6 @@ import { IpAddress, SecondsDuration } from '../../value-objects';
 export class RefreshToken extends AggregateRoot {
   public static readonly defaultDuration = SecondsDuration.twoWeeks();
 
-  private _userId: UniqueId;
   private _createdAt: MillisecondsDate;
   private _secondsDuration: SecondsDuration;
   private _ipAddress: IpAddress;
@@ -18,7 +17,6 @@ export class RefreshToken extends AggregateRoot {
 
   private constructor(
     id: UniqueId,
-    userId: UniqueId,
     createdAt: MillisecondsDate,
     secondsDuration: SecondsDuration,
     ipAddress: IpAddress,
@@ -28,7 +26,6 @@ export class RefreshToken extends AggregateRoot {
   ) {
     super(id);
 
-    this._userId = userId;
     this._createdAt = createdAt;
     this._secondsDuration = secondsDuration;
     this._ipAddress = ipAddress;
@@ -39,7 +36,6 @@ export class RefreshToken extends AggregateRoot {
 
   public static create(
     id: UniqueId,
-    userId: UniqueId,
     ipAddress: IpAddress,
     createdAt: MillisecondsDate = MillisecondsDate.create(),
     secondsDuration: SecondsDuration = RefreshToken.defaultDuration,
@@ -49,7 +45,6 @@ export class RefreshToken extends AggregateRoot {
   ): RefreshToken {
     return new RefreshToken(
       id,
-      userId,
       createdAt,
       secondsDuration,
       ipAddress,
@@ -61,10 +56,6 @@ export class RefreshToken extends AggregateRoot {
 
   public get id(): UniqueId {
     return this._id;
-  }
-
-  public get userId(): UniqueId {
-    return this._userId;
   }
 
   public get createdAt(): MillisecondsDate {

@@ -7,7 +7,6 @@ export function refreshTokenToRefreshTokenEntity(
   const refreshTokenEntity = new RefreshTokenEntity();
 
   refreshTokenEntity.id = refreshToken.id.getId;
-  refreshTokenEntity.userId = refreshToken.userId.getId;
   refreshTokenEntity.createdAt = refreshToken.createdAt.getDate;
   refreshTokenEntity.duration = refreshToken.duration;
   refreshTokenEntity.ipAddress = refreshToken.ipAddress;
