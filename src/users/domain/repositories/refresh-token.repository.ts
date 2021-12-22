@@ -8,8 +8,6 @@ export abstract class RefreshTokenRepository
 {
   abstract getAll(): Promise<RefreshToken[]>;
 
-  abstract getAllByUserId(userId: UniqueId): Promise<RefreshToken[]>;
-
   abstract getAllByIpAddress(ipAddress: IpAddress): Promise<RefreshToken[]>;
 
   abstract getOne(id: UniqueId): Promise<RefreshToken>;

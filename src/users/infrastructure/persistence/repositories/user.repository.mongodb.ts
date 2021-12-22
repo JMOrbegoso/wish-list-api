@@ -5,18 +5,22 @@ import {
 } from '@mikro-orm/core';
 import { Query } from '@mikro-orm/core/typings';
 import { UniqueId } from '../../../../shared/domain/value-objects';
-import { User, VerificationCode } from '../../../domain/entities';
+import { RefreshToken, User, VerificationCode } from '../../../domain/entities';
 import { UserRepository } from '../../../domain/repositories';
 import { Email, Username } from '../../../domain/value-objects';
-import { userEntityToUser, userToUserEntity } from '../../mappings';
-import { UserEntity } from '../entities';
+import {
+  refreshTokenEntityToRefreshToken,
+  userEntityToUser,
+  userToUserEntity,
+} from '../../mappings';
+import { RefreshTokenEntity, UserEntity } from '../entities';
 
 @MikroOrmRepository(UserEntity)
 export class UserRepositoryMongoDb
   extends EntityRepository<UserEntity>
   implements UserRepository
 {
-  constructor(orm: MikroORM) {
+  constructor(private readonly orm: MikroORM) {
     super(orm.em, UserEntity);
   }
 
@@ -66,6 +70,16 @@ export class UserRepositoryMongoDb
     if (!userEntity) return null;
     const user = userEntityToUser(userEntity);
     return user;
+  }
+
+  async getAllRefreshTokensByUserId(id: UniqueId): Promise<RefreshToken[]> {
+    const refreshTokenEntities = await this.orm.em.find(RefreshTokenEntity, {
+      userId: id.getId,
+    });
+    const refreshTokens = refreshTokenEntities.map((rt) =>
+      refreshTokenEntityToRefreshToken(rt),
+    );
+    return refreshTokens;
   }
 
   async getAll(): Promise<User[]> {

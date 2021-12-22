@@ -144,16 +144,6 @@ describe('users', () => {
               },
             } as MockedObject<User>;
 
-            const userRepository = {
-              getOne: jest.fn().mockReturnValue(user),
-            } as MockedObject<UserRepository>;
-
-            const refreshTokenToUse = {
-              wasReplaced: false,
-              isRevoked: true,
-              isExpired: false,
-            } as MockedObject<RefreshToken>;
-
             const validRefreshTokenToRevoke = {
               isRevoked: false,
               wasReplaced: false,
@@ -170,11 +160,21 @@ describe('users', () => {
               revoke: jest.fn(),
             } as MockedObject<RefreshToken>;
 
-            const refreshTokenRepository = {
-              getOne: jest.fn().mockReturnValue(refreshTokenToUse),
-              getAllByUserId: jest
+            const userRepository = {
+              getOne: jest.fn().mockReturnValue(user),
+              getAllRefreshTokensByUserId: jest
                 .fn()
                 .mockReturnValue([validRefreshTokenToRevoke, usedRefreshToken]),
+            } as MockedObject<UserRepository>;
+
+            const refreshTokenToUse = {
+              wasReplaced: false,
+              isRevoked: true,
+              isExpired: false,
+            } as MockedObject<RefreshToken>;
+
+            const refreshTokenRepository = {
+              getOne: jest.fn().mockReturnValue(refreshTokenToUse),
               getAllByIpAddress: jest
                 .fn()
                 .mockReturnValue([validRefreshTokenToRevoke, usedRefreshToken]),
@@ -223,16 +223,6 @@ describe('users', () => {
               },
             } as MockedObject<User>;
 
-            const userRepository = {
-              getOne: jest.fn().mockReturnValue(user),
-            } as MockedObject<UserRepository>;
-
-            const refreshTokenToUse = {
-              wasReplaced: true,
-              isRevoked: false,
-              isExpired: false,
-            } as MockedObject<RefreshToken>;
-
             const validRefreshTokenToRevoke = {
               isRevoked: false,
               wasReplaced: false,
@@ -249,11 +239,21 @@ describe('users', () => {
               revoke: jest.fn(),
             } as MockedObject<RefreshToken>;
 
-            const refreshTokenRepository = {
-              getOne: jest.fn().mockReturnValue(refreshTokenToUse),
-              getAllByUserId: jest
+            const userRepository = {
+              getOne: jest.fn().mockReturnValue(user),
+              getAllRefreshTokensByUserId: jest
                 .fn()
                 .mockReturnValue([validRefreshTokenToRevoke, usedRefreshToken]),
+            } as MockedObject<UserRepository>;
+
+            const refreshTokenToUse = {
+              wasReplaced: true,
+              isRevoked: false,
+              isExpired: false,
+            } as MockedObject<RefreshToken>;
+
+            const refreshTokenRepository = {
+              getOne: jest.fn().mockReturnValue(refreshTokenToUse),
               getAllByIpAddress: jest
                 .fn()
                 .mockReturnValue([validRefreshTokenToRevoke, usedRefreshToken]),

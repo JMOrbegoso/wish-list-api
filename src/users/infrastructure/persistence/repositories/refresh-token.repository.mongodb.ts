@@ -30,14 +30,6 @@ export class RefreshTokenRepositoryMongoDb
     return refreshTokens;
   }
 
-  async getAllByUserId(userId: UniqueId): Promise<RefreshToken[]> {
-    const refreshTokenEntities = await this.find({ userId: userId.getId });
-    const refreshTokens = refreshTokenEntities.map((rt) =>
-      refreshTokenEntityToRefreshToken(rt),
-    );
-    return refreshTokens;
-  }
-
   async getAllByIpAddress(ipAddress: IpAddress): Promise<RefreshToken[]> {
     const refreshTokenEntities = await this.find({
       ipAddress: ipAddress.getIpAddress,
