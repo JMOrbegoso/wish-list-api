@@ -18,6 +18,8 @@ export abstract class UserRepository implements Repository<User> {
 
   abstract getOneByUsername(username: Username): Promise<User>;
 
+  abstract getOneByRefreshTokenId(refreshTokenId: UniqueId): Promise<User>;
+
   abstract getAll(): Promise<User[]>;
 
   abstract getAllRefreshTokensByUserId(id: UniqueId): Promise<RefreshToken[]>;

@@ -72,6 +72,10 @@ export class UserRepositoryMongoDb
     return user;
   }
 
+  getOneByRefreshTokenId(refreshTokenId: UniqueId): Promise<User> {
+    throw new Error('Method not implemented.');
+  }
+
   async getAllRefreshTokensByUserId(id: UniqueId): Promise<RefreshToken[]> {
     const refreshTokenEntities = await this.orm.em.find(RefreshTokenEntity, {
       userId: id.getId,
