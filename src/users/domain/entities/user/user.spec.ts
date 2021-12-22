@@ -1,5 +1,5 @@
 import { MockedObject } from 'ts-jest/dist/utils/testing';
-import { User, VerificationCode } from '..';
+import { RefreshToken, User, VerificationCode } from '..';
 import {
   MillisecondsDate,
   UniqueId,
@@ -70,7 +70,15 @@ const validValues = [
       getBiography: 'A nice person 0.',
       equals: jest.fn().mockReturnValue(true),
     } as MockedObject<Biography>,
-    {} as MockedObject<Role[]>,
+    [] as MockedObject<Role[]>,
+    [
+      { id: { getId: 'refresh-token-id-0' } },
+      { id: { getId: 'refresh-token-id-1' } },
+      { id: { getId: 'refresh-token-id-2' } },
+      { id: { getId: 'refresh-token-id-3' } },
+      { id: { getId: 'refresh-token-id-4' } },
+      { id: { getId: 'refresh-token-id-5' } },
+    ] as MockedObject<RefreshToken[]>,
     {
       getUrl: 'https://www.example.com/0.jpg',
       equals: jest.fn().mockReturnValue(true),
@@ -132,7 +140,11 @@ const validValues = [
       getBiography: 'A nice person 1.',
       equals: jest.fn().mockReturnValue(true),
     } as MockedObject<Biography>,
-    {} as MockedObject<Role[]>,
+    [] as MockedObject<Role[]>,
+    [
+      { id: { getId: 'refresh-token-id-0' } },
+      { id: { getId: 'refresh-token-id-1' } },
+    ] as MockedObject<RefreshToken[]>,
     {
       getUrl: 'https://www.example.com/1.jpg',
       equals: jest.fn().mockReturnValue(true),
@@ -194,7 +206,8 @@ const validValues = [
       getBiography: 'A nice person 2.',
       equals: jest.fn().mockReturnValue(true),
     } as MockedObject<Biography>,
-    {} as MockedObject<Role[]>,
+    [] as MockedObject<Role[]>,
+    [] as MockedObject<RefreshToken[]>,
     null,
     {
       getMilliseconds: 4,
@@ -253,7 +266,8 @@ const validValues = [
       getBiography: 'A nice person 3.',
       equals: jest.fn().mockReturnValue(true),
     } as MockedObject<Biography>,
-    {} as MockedObject<Role[]>,
+    [] as MockedObject<Role[]>,
+    [] as MockedObject<RefreshToken[]>,
     {
       getUrl: 'https://www.example.com/3.jpg',
       equals: jest.fn().mockReturnValue(true),
@@ -312,7 +326,8 @@ const validValues = [
       getBiography: 'A nice person 4.',
       equals: jest.fn().mockReturnValue(true),
     } as MockedObject<Biography>,
-    {} as MockedObject<Role[]>,
+    [] as MockedObject<Role[]>,
+    [] as MockedObject<RefreshToken[]>,
     null,
     {
       getMilliseconds: 4,
@@ -371,7 +386,8 @@ const validValues = [
       getBiography: 'A nice person 5.',
       equals: jest.fn().mockReturnValue(true),
     } as MockedObject<Biography>,
-    {} as MockedObject<Role[]>,
+    [] as MockedObject<Role[]>,
+    [] as MockedObject<RefreshToken[]>,
     {
       getUrl: 'https://www.example.com/5.jpg',
       equals: jest.fn().mockReturnValue(true),
@@ -430,7 +446,8 @@ const validValues = [
       getBiography: 'A nice person 6.',
       equals: jest.fn().mockReturnValue(true),
     } as MockedObject<Biography>,
-    {} as MockedObject<Role[]>,
+    [] as MockedObject<Role[]>,
+    [] as MockedObject<RefreshToken[]>,
     null,
     null,
   ],
@@ -486,7 +503,8 @@ const validValues = [
       getBiography: 'A nice person 7.',
       equals: jest.fn().mockReturnValue(true),
     } as MockedObject<Biography>,
-    {} as MockedObject<Role[]>,
+    [] as MockedObject<Role[]>,
+    [] as MockedObject<RefreshToken[]>,
     null,
     null,
   ],
@@ -497,7 +515,7 @@ describe('users', () => {
     describe('entities', () => {
       describe('user', () => {
         test.each(validValues)(
-          'should create an User with [id: %p], [email: %p], [username: %p], [passwordHash: %p], [isVerified: %p], [isBlocked: %p], [firstName: %p], [lastName: %p], [birthday: %p], [createdAt: %p], [updatedAt: %p], [biography: %p], [roles: %p], [profilePicture: %p] and [deletedAt: %p]',
+          'should create an User with [id: %p], [email: %p], [username: %p], [passwordHash: %p], [isVerified: %p], [isBlocked: %p], [firstName: %p], [lastName: %p], [birthday: %p], [createdAt: %p], [updatedAt: %p], [biography: %p], [roles: %p], [refreshTokens: %p], [profilePicture: %p] and [deletedAt: %p]',
           (
             uniqueId: MockedObject<UniqueId>,
             email: MockedObject<Email>,
@@ -513,6 +531,7 @@ describe('users', () => {
             updatedAt: MockedObject<MillisecondsDate>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
+            refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
             deletedAt: MockedObject<MillisecondsDate>,
           ) => {
@@ -534,6 +553,7 @@ describe('users', () => {
               updatedAt,
               biography,
               roles,
+              refreshTokens,
               profilePicture,
               deletedAt,
             );
@@ -570,6 +590,9 @@ describe('users', () => {
             for (let i = 0; i < roles.length; i++) {
               expect(user.roles[i]).toBe(roles[i]);
             }
+            for (let i = 0; i < refreshTokens.length; i++) {
+              expect(user.refreshTokens[i].id).toBe(refreshTokens[i].id);
+            }
           },
         );
 
@@ -590,6 +613,7 @@ describe('users', () => {
             updatedAt: MockedObject<MillisecondsDate>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
+            refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
             deletedAt: MockedObject<MillisecondsDate>,
           ) => {
@@ -609,6 +633,7 @@ describe('users', () => {
               updatedAt,
               biography,
               roles,
+              refreshTokens,
               profilePicture,
               deletedAt,
             );
@@ -638,6 +663,7 @@ describe('users', () => {
             updatedAt: MockedObject<MillisecondsDate>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
+            refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
             deletedAt: MockedObject<MillisecondsDate>,
           ) => {
@@ -657,6 +683,7 @@ describe('users', () => {
               updatedAt,
               biography,
               roles,
+              refreshTokens,
               profilePicture,
               deletedAt,
             );
@@ -690,6 +717,7 @@ describe('users', () => {
             updatedAt: MockedObject<MillisecondsDate>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
+            refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
             deletedAt: MockedObject<MillisecondsDate>,
           ) => {
@@ -709,6 +737,7 @@ describe('users', () => {
               updatedAt,
               biography,
               roles,
+              refreshTokens,
               profilePicture,
               deletedAt,
             );
@@ -738,6 +767,7 @@ describe('users', () => {
             updatedAt: MockedObject<MillisecondsDate>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
+            refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
             deletedAt: MockedObject<MillisecondsDate>,
           ) => {
@@ -757,6 +787,7 @@ describe('users', () => {
               updatedAt,
               biography,
               roles,
+              refreshTokens,
               profilePicture,
               deletedAt,
             );
@@ -786,6 +817,7 @@ describe('users', () => {
             updatedAt: MockedObject<MillisecondsDate>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
+            refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
             deletedAt: MockedObject<MillisecondsDate>,
           ) => {
@@ -805,6 +837,7 @@ describe('users', () => {
               updatedAt,
               biography,
               roles,
+              refreshTokens,
               profilePicture,
               deletedAt,
             );
@@ -834,6 +867,7 @@ describe('users', () => {
             updatedAt: MockedObject<MillisecondsDate>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
+            refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
             deletedAt: MockedObject<MillisecondsDate>,
           ) => {
@@ -853,6 +887,7 @@ describe('users', () => {
               updatedAt,
               biography,
               roles,
+              refreshTokens,
               profilePicture,
               deletedAt,
             );
@@ -909,6 +944,7 @@ describe('users', () => {
             updatedAt: MockedObject<MillisecondsDate>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
+            refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
             deletedAt: MockedObject<MillisecondsDate>,
           ) => {
@@ -928,6 +964,7 @@ describe('users', () => {
               updatedAt,
               biography,
               roles,
+              refreshTokens,
               profilePicture,
               deletedAt,
             );
@@ -961,6 +998,7 @@ describe('users', () => {
             updatedAt: MockedObject<MillisecondsDate>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
+            refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
             deletedAt: MockedObject<MillisecondsDate>,
           ) => {
@@ -980,6 +1018,7 @@ describe('users', () => {
               updatedAt,
               biography,
               roles,
+              refreshTokens,
               profilePicture,
               deletedAt,
             );
@@ -1009,6 +1048,7 @@ describe('users', () => {
             updatedAt: MockedObject<MillisecondsDate>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
+            refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
             deletedAt: MockedObject<MillisecondsDate>,
           ) => {
@@ -1028,6 +1068,7 @@ describe('users', () => {
               updatedAt,
               biography,
               roles,
+              refreshTokens,
               profilePicture,
               deletedAt,
             );
@@ -1058,6 +1099,7 @@ describe('users', () => {
             updatedAt: MockedObject<MillisecondsDate>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
+            refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
             deletedAt: MockedObject<MillisecondsDate>,
           ) => {
@@ -1077,6 +1119,7 @@ describe('users', () => {
               updatedAt,
               biography,
               roles,
+              refreshTokens,
               profilePicture,
               deletedAt,
             );
@@ -1107,6 +1150,7 @@ describe('users', () => {
             updatedAt: MockedObject<MillisecondsDate>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
+            refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
             deletedAt: MockedObject<MillisecondsDate>,
           ) => {
@@ -1135,6 +1179,7 @@ describe('users', () => {
               updatedAt,
               biography,
               customRoles,
+              refreshTokens,
               profilePicture,
               deletedAt,
             );
@@ -1165,6 +1210,7 @@ describe('users', () => {
             updatedAt: MockedObject<MillisecondsDate>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
+            refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
             deletedAt: MockedObject<MillisecondsDate>,
           ) => {
@@ -1193,6 +1239,7 @@ describe('users', () => {
               updatedAt,
               biography,
               customRoles,
+              refreshTokens,
               profilePicture,
               deletedAt,
             );
@@ -1224,6 +1271,7 @@ describe('users', () => {
             updatedAt: MockedObject<MillisecondsDate>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
+            refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
             deletedAt: MockedObject<MillisecondsDate>,
           ) => {
@@ -1252,6 +1300,7 @@ describe('users', () => {
               updatedAt,
               biography,
               customRoles,
+              refreshTokens,
               profilePicture,
               deletedAt,
             );
@@ -1282,6 +1331,7 @@ describe('users', () => {
             updatedAt: MockedObject<MillisecondsDate>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
+            refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
             deletedAt: MockedObject<MillisecondsDate>,
           ) => {
@@ -1310,6 +1360,7 @@ describe('users', () => {
               updatedAt,
               biography,
               customRoles,
+              refreshTokens,
               profilePicture,
               deletedAt,
             );
@@ -1339,6 +1390,7 @@ describe('users', () => {
             updatedAt: MockedObject<MillisecondsDate>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
+            refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
             deletedAt: MockedObject<MillisecondsDate>,
           ) => {
@@ -1371,6 +1423,7 @@ describe('users', () => {
               updatedAt,
               biography,
               customRoles,
+              refreshTokens,
               profilePicture,
               deletedAt,
             );
@@ -1381,6 +1434,65 @@ describe('users', () => {
             // Assert
             expect(user.roles.length).toBe(1);
             expect(user.roles[0]).toBe('Moderator');
+          },
+        );
+
+        test.each(validValues)(
+          'do changes on refreshTokens getter should make no changes on the original refreshTokens array',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            email: MockedObject<Email>,
+            username: MockedObject<Username>,
+            passwordHash: MockedObject<PasswordHash>,
+            isVerified: MockedObject<IsVerified>,
+            verificationCode: MockedObject<VerificationCode>,
+            isBlocked: MockedObject<IsBlocked>,
+            firstName: MockedObject<FirstName>,
+            lastName: MockedObject<LastName>,
+            birthday: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            biography: MockedObject<Biography>,
+            roles: MockedObject<Role[]>,
+            refreshTokens: MockedObject<RefreshToken[]>,
+            profilePicture: MockedObject<WebUrl>,
+            deletedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+            const user = User.create(
+              uniqueId,
+              email,
+              username,
+              passwordHash,
+              isVerified,
+              verificationCode,
+              isBlocked,
+              firstName,
+              lastName,
+              birthday,
+              createdAt,
+              updatedAt,
+              biography,
+              roles,
+              refreshTokens,
+              profilePicture,
+              deletedAt,
+            );
+
+            // Act
+            const refreshTokensLocal = user.refreshTokens;
+            const newRefreshToken = {
+              id: { getId: 'new-refresh-token-id' },
+            } as MockedObject<RefreshToken>;
+            refreshTokensLocal.push(newRefreshToken);
+
+            // Assert
+            expect(user.refreshTokens).toHaveLength(refreshTokens.length);
+            expect(refreshTokensLocal).toHaveLength(refreshTokens.length + 1);
+
+            for (let i = 0; i < refreshTokens.length; i++) {
+              expect(user.refreshTokens[i].id).toBe(refreshTokens[i].id);
+            }
           },
         );
       });

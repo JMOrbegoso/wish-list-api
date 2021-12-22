@@ -1,4 +1,4 @@
-import { VerificationCode } from '..';
+import { RefreshToken, VerificationCode } from '..';
 import { AggregateRoot } from '../../../../shared/domain/entities';
 import {
   MillisecondsDate,
@@ -31,6 +31,7 @@ export class User extends AggregateRoot {
   private _updatedAt: MillisecondsDate;
   private _biography: Biography;
   private _roles: Role[];
+  private _refreshTokens: RefreshToken[];
   private _profilePicture?: WebUrl;
   private _deletedAt?: MillisecondsDate;
 
@@ -49,6 +50,7 @@ export class User extends AggregateRoot {
     updatedAt: MillisecondsDate,
     biography: Biography,
     roles: Role[],
+    refreshTokens: RefreshToken[],
     profilePicture?: WebUrl,
     deletedAt?: MillisecondsDate,
   ) {
@@ -67,6 +69,7 @@ export class User extends AggregateRoot {
     this._updatedAt = updatedAt;
     this._biography = biography;
     this._roles = roles;
+    this._refreshTokens = refreshTokens;
     this._profilePicture = profilePicture;
     this._deletedAt = deletedAt;
   }
@@ -86,6 +89,7 @@ export class User extends AggregateRoot {
     updatedAt: MillisecondsDate,
     biography: Biography,
     roles: Role[] = [],
+    refreshTokens: RefreshToken[] = [],
     profilePicture: WebUrl = null,
     deletedAt: MillisecondsDate = null,
   ): User {
@@ -104,6 +108,7 @@ export class User extends AggregateRoot {
       updatedAt,
       biography,
       roles,
+      refreshTokens,
       profilePicture,
       deletedAt,
     );
@@ -217,6 +222,10 @@ export class User extends AggregateRoot {
 
   public get roles(): string[] {
     return this._roles.map((r) => r.getRole);
+  }
+
+  public get refreshTokens(): RefreshToken[] {
+    return [...this._refreshTokens];
   }
 
   public addRole(role: Role): void {

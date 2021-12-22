@@ -216,6 +216,14 @@ describe('users', () => {
             for (let i = 0; i < userEntity.roles.length; i++) {
               expect(user.roles[i]).toBe(userEntity.roles[i]);
             }
+            // TODO: Uncomment this when userEntity have the property refreshTokens
+            /*  
+            for (let i = 0; i < userEntity.roles.refreshTokens; i++) {
+              expect(user.refreshTokens[i].id).toBe(
+                userEntity.refreshTokens[i].id,
+              );
+            }
+            */
           },
         );
       });
