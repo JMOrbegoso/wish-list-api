@@ -4,6 +4,7 @@ import {
   DuplicatedRefreshTokenError,
   InvalidRefreshTokenError,
   RefreshToken,
+  RefreshTokenNotFoundError,
   UnverifiedUserCannotBeUpdatedError,
   VerificationCode,
 } from '..';
@@ -257,5 +258,25 @@ export class User extends AggregateRoot {
       throw new DuplicatedRefreshTokenError();
 
     this._refreshTokens.push(newRefreshToken);
+  }
+
+  public replaceRefreshToken(
+    refreshTokenIdToReplace: UniqueId,
+    replacedByToken: RefreshToken,
+  ): void {
+    if (this.isDeleted) throw new DeletedUserCannotBeUpdatedError();
+
+    if (this.isBlocked) throw new BlockedUserCannotBeUpdatedError();
+
+    if (!this.isVerified) throw new UnverifiedUserCannotBeUpdatedError();
+
+    if (!replacedByToken) throw new InvalidRefreshTokenError();
+
+    const refreshTokenToReplace = this._refreshTokens.find((refreshToken) =>
+      refreshToken.id.equals(refreshTokenIdToReplace),
+    );
+    if (!refreshTokenToReplace) throw new RefreshTokenNotFoundError();
+
+    refreshTokenToReplace.replace(replacedByToken.id);
   }
 }

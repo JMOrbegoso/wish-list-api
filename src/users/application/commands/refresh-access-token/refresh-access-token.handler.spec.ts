@@ -329,6 +329,7 @@ describe('users', () => {
               roles: ['Admin'],
               profilePicture: null,
               addRefreshToken: jest.fn(),
+              replaceRefreshToken: jest.fn(),
             } as MockedObject<User>;
 
             const userRepository = {
@@ -378,6 +379,7 @@ describe('users', () => {
               1,
             );
             expect(user.addRefreshToken.mock.calls).toHaveLength(1);
+            expect(user.replaceRefreshToken.mock.calls).toHaveLength(1);
 
             expect(userRepository.update.mock.calls).toHaveLength(1);
             expect(unitOfWork.commitChanges.mock.calls).toHaveLength(1);

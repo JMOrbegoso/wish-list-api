@@ -81,9 +81,8 @@ export class RefreshAccessTokenHandler
     // Update the user
     user.addRefreshToken(newRefreshToken);
 
-    // replace the origin refresh token
-    refreshTokenToUse.replace(newRefreshToken.id);
-    this.refreshTokenRepository.update(refreshTokenToUse);
+    // Update the Refresh Token to use
+    user.replaceRefreshToken(refreshTokenToUse.id, newRefreshToken);
 
     // Save changes in persistence
     this.userRepository.update(user);
