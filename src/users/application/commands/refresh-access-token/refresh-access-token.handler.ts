@@ -77,13 +77,16 @@ export class RefreshAccessTokenHandler
       this.uniqueIdGeneratorService.generateId(),
       ipAddress,
     );
-    this.refreshTokenRepository.add(newRefreshToken);
+
+    // Update the user
+    user.addRefreshToken(newRefreshToken);
 
     // replace the origin refresh token
     refreshTokenToUse.replace(newRefreshToken.id);
     this.refreshTokenRepository.update(refreshTokenToUse);
 
     // Save changes in persistence
+    this.userRepository.update(user);
     await this.unitOfWork.commitChanges();
 
     return {

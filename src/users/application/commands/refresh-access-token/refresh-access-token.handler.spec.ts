@@ -328,10 +328,12 @@ describe('users', () => {
               },
               roles: ['Admin'],
               profilePicture: null,
+              addRefreshToken: jest.fn(),
             } as MockedObject<User>;
 
             const userRepository = {
               getOneByRefreshTokenId: jest.fn().mockReturnValue(user),
+              update: jest.fn(),
             } as MockedObject<UserRepository>;
 
             const refreshTokenToUse = {
@@ -344,7 +346,6 @@ describe('users', () => {
 
             const refreshTokenRepository = {
               getOne: jest.fn().mockReturnValue(refreshTokenToUse),
-              add: jest.fn(),
               update: jest.fn(),
             } as MockedObject<RefreshTokenRepository>;
 
@@ -376,8 +377,9 @@ describe('users', () => {
             expect(uniqueIdGeneratorService.generateId.mock.calls).toHaveLength(
               1,
             );
-            expect(refreshTokenRepository.add.mock.calls).toHaveLength(1);
-            expect(refreshTokenRepository.update.mock.calls).toHaveLength(1);
+            expect(user.addRefreshToken.mock.calls).toHaveLength(1);
+
+            expect(userRepository.update.mock.calls).toHaveLength(1);
             expect(unitOfWork.commitChanges.mock.calls).toHaveLength(1);
 
             expect(authTokens.access_token).toBe('access-token');

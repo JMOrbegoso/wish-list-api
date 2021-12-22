@@ -62,9 +62,12 @@ export class LocalLoginHandler implements ICommandHandler<LocalLoginCommand> {
       this.uniqueIdGeneratorService.generateId(),
       ipAddress,
     );
-    this.refreshTokenRepository.add(newRefreshToken);
+
+    // Update the user
+    user.addRefreshToken(newRefreshToken);
 
     // Save changes in persistence
+    this.userRepository.update(user);
     await this.unitOfWork.commitChanges();
 
     return {

@@ -1,4 +1,12 @@
-import { RefreshToken, VerificationCode } from '..';
+import {
+  BlockedUserCannotBeUpdatedError,
+  DeletedUserCannotBeUpdatedError,
+  DuplicatedRefreshTokenError,
+  InvalidRefreshTokenError,
+  RefreshToken,
+  UnverifiedUserCannotBeUpdatedError,
+  VerificationCode,
+} from '..';
 import { AggregateRoot } from '../../../../shared/domain/entities';
 import {
   MillisecondsDate,
@@ -224,15 +232,30 @@ export class User extends AggregateRoot {
     return this._roles.map((r) => r.getRole);
   }
 
-  public get refreshTokens(): RefreshToken[] {
-    return [...this._refreshTokens];
-  }
-
   public addRole(role: Role): void {
     if (!this._roles.some((r) => r.equals(role))) this._roles.push(role);
   }
 
   public removeRole(role: Role): void {
     this._roles = this._roles.filter((r) => !r.equals(role));
+  }
+
+  public get refreshTokens(): RefreshToken[] {
+    return [...this._refreshTokens];
+  }
+
+  public addRefreshToken(newRefreshToken: RefreshToken): void {
+    if (this.isDeleted) throw new DeletedUserCannotBeUpdatedError();
+
+    if (this.isBlocked) throw new BlockedUserCannotBeUpdatedError();
+
+    if (!this.isVerified) throw new UnverifiedUserCannotBeUpdatedError();
+
+    if (!newRefreshToken) throw new InvalidRefreshTokenError();
+
+    if (this._refreshTokens.some((token) => token.equals(newRefreshToken)))
+      throw new DuplicatedRefreshTokenError();
+
+    this._refreshTokens.push(newRefreshToken);
   }
 }
