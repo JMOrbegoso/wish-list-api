@@ -7,7 +7,7 @@ import { Query } from '@mikro-orm/core/typings';
 import { UniqueId } from '../../../../shared/domain/value-objects';
 import { RefreshToken, User, VerificationCode } from '../../../domain/entities';
 import { UserRepository } from '../../../domain/repositories';
-import { Email, Username } from '../../../domain/value-objects';
+import { Email, IpAddress, Username } from '../../../domain/value-objects';
 import {
   refreshTokenEntityToRefreshToken,
   userEntityToUser,
@@ -75,6 +75,18 @@ export class UserRepositoryMongoDb
   async getAllRefreshTokensByUserId(id: UniqueId): Promise<RefreshToken[]> {
     const refreshTokenEntities = await this.orm.em.find(RefreshTokenEntity, {
       userId: id.getId,
+    });
+    const refreshTokens = refreshTokenEntities.map((rt) =>
+      refreshTokenEntityToRefreshToken(rt),
+    );
+    return refreshTokens;
+  }
+
+  async getAllRefreshTokensByIpAddress(
+    ipAddress: IpAddress,
+  ): Promise<RefreshToken[]> {
+    const refreshTokenEntities = await this.orm.em.find(RefreshTokenEntity, {
+      ipAddress: ipAddress.getIpAddress,
     });
     const refreshTokens = refreshTokenEntities.map((rt) =>
       refreshTokenEntityToRefreshToken(rt),

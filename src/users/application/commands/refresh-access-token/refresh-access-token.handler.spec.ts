@@ -165,6 +165,9 @@ describe('users', () => {
               getAllRefreshTokensByUserId: jest
                 .fn()
                 .mockReturnValue([validRefreshTokenToRevoke, usedRefreshToken]),
+              getAllRefreshTokensByIpAddress: jest
+                .fn()
+                .mockReturnValue([validRefreshTokenToRevoke, usedRefreshToken]),
             } as MockedObject<UserRepository>;
 
             const refreshTokenToUse = {
@@ -175,9 +178,6 @@ describe('users', () => {
 
             const refreshTokenRepository = {
               getOne: jest.fn().mockReturnValue(refreshTokenToUse),
-              getAllByIpAddress: jest
-                .fn()
-                .mockReturnValue([validRefreshTokenToRevoke, usedRefreshToken]),
               update: jest.fn(),
             } as MockedObject<RefreshTokenRepository>;
 
@@ -244,6 +244,9 @@ describe('users', () => {
               getAllRefreshTokensByUserId: jest
                 .fn()
                 .mockReturnValue([validRefreshTokenToRevoke, usedRefreshToken]),
+              getAllRefreshTokensByIpAddress: jest
+                .fn()
+                .mockReturnValue([validRefreshTokenToRevoke, usedRefreshToken]),
             } as MockedObject<UserRepository>;
 
             const refreshTokenToUse = {
@@ -254,9 +257,6 @@ describe('users', () => {
 
             const refreshTokenRepository = {
               getOne: jest.fn().mockReturnValue(refreshTokenToUse),
-              getAllByIpAddress: jest
-                .fn()
-                .mockReturnValue([validRefreshTokenToRevoke, usedRefreshToken]),
               update: jest.fn(),
             } as MockedObject<RefreshTokenRepository>;
 
