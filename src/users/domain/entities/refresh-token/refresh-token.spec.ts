@@ -1,10 +1,17 @@
 import { MockedObject } from 'ts-jest/dist/utils/testing';
 import { InvalidRefreshTokenError, RefreshToken } from '..';
 import {
+  InvalidMillisecondsDateError,
+  InvalidUniqueIdError,
   MillisecondsDate,
   UniqueId,
 } from '../../../../shared/domain/value-objects';
-import { IpAddress, SecondsDuration } from '../../value-objects';
+import {
+  InvalidIpAddressError,
+  InvalidSecondsDurationError,
+  IpAddress,
+  SecondsDuration,
+} from '../../value-objects';
 
 const validValues = [
   [
@@ -115,6 +122,126 @@ describe('users', () => {
   describe('domain', () => {
     describe('entities', () => {
       describe('refresh-token', () => {
+        test.each(validValues)(
+          'create a RefreshToken with invalid id should throw error',
+          (
+            id: MockedObject<UniqueId>,
+            createdAt: MockedObject<MillisecondsDate>,
+            secondsDuration: MockedObject<SecondsDuration>,
+            ipAddress: MockedObject<IpAddress>,
+            replacedAt: MockedObject<MillisecondsDate>,
+            replacedBy: MockedObject<UniqueId>,
+            revokedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+
+            // Act
+
+            // Assert
+            expect(() =>
+              RefreshToken.create(
+                null,
+                ipAddress,
+                createdAt,
+                secondsDuration,
+                replacedAt,
+                replacedBy,
+                revokedAt,
+              ),
+            ).toThrowError(InvalidUniqueIdError);
+          },
+        );
+
+        test.each(validValues)(
+          'create a RefreshToken with invalid ipAddress should throw error',
+          (
+            id: MockedObject<UniqueId>,
+            createdAt: MockedObject<MillisecondsDate>,
+            secondsDuration: MockedObject<SecondsDuration>,
+            ipAddress: MockedObject<IpAddress>,
+            replacedAt: MockedObject<MillisecondsDate>,
+            replacedBy: MockedObject<UniqueId>,
+            revokedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+
+            // Act
+
+            // Assert
+            expect(() =>
+              RefreshToken.create(
+                id,
+                null,
+                createdAt,
+                secondsDuration,
+                replacedAt,
+                replacedBy,
+                revokedAt,
+              ),
+            ).toThrowError(InvalidIpAddressError);
+          },
+        );
+
+        test.each(validValues)(
+          'create a RefreshToken with invalid createdAt should throw error',
+          (
+            id: MockedObject<UniqueId>,
+            createdAt: MockedObject<MillisecondsDate>,
+            secondsDuration: MockedObject<SecondsDuration>,
+            ipAddress: MockedObject<IpAddress>,
+            replacedAt: MockedObject<MillisecondsDate>,
+            replacedBy: MockedObject<UniqueId>,
+            revokedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+
+            // Act
+
+            // Assert
+            expect(() =>
+              RefreshToken.create(
+                id,
+                ipAddress,
+                null,
+                secondsDuration,
+                replacedAt,
+                replacedBy,
+                revokedAt,
+              ),
+            ).toThrowError(InvalidMillisecondsDateError);
+          },
+        );
+
+        test.each(validValues)(
+          'create a RefreshToken with invalid secondsDuration should throw error',
+          (
+            id: MockedObject<UniqueId>,
+            createdAt: MockedObject<MillisecondsDate>,
+            secondsDuration: MockedObject<SecondsDuration>,
+            ipAddress: MockedObject<IpAddress>,
+            replacedAt: MockedObject<MillisecondsDate>,
+            replacedBy: MockedObject<UniqueId>,
+            revokedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+
+            // Act
+
+            // Assert
+            expect(() =>
+              RefreshToken.create(
+                id,
+                ipAddress,
+                createdAt,
+                null,
+                replacedAt,
+                replacedBy,
+                revokedAt,
+              ),
+            ).toThrowError(InvalidSecondsDurationError);
+          },
+        );
+
         test.each(validValues)(
           'should create an RefreshToken with [id: %p], [createdAt: %p], [secondsDuration: %p], [ipAddress: %p], [replacedAt: %p], [replacedBy: %p], [revokedAt: %p]',
           (

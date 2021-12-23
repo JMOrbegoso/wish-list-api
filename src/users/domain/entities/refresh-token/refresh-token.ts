@@ -1,10 +1,16 @@
 import { InvalidRefreshTokenError } from '..';
 import { Entity } from '../../../../shared/domain/entities';
 import {
+  InvalidMillisecondsDateError,
   MillisecondsDate,
   UniqueId,
 } from '../../../../shared/domain/value-objects';
-import { IpAddress, SecondsDuration } from '../../value-objects';
+import {
+  InvalidIpAddressError,
+  InvalidSecondsDurationError,
+  IpAddress,
+  SecondsDuration,
+} from '../../value-objects';
 
 export class RefreshToken extends Entity {
   public static readonly defaultDuration = SecondsDuration.twoWeeks();
@@ -26,6 +32,18 @@ export class RefreshToken extends Entity {
     revokedAt?: MillisecondsDate,
   ) {
     super(id);
+
+    if (!createdAt) throw new InvalidMillisecondsDateError();
+
+    if (!secondsDuration) throw new InvalidSecondsDurationError();
+
+    if (!ipAddress) throw new InvalidIpAddressError();
+
+    if (!replacedAt) replacedAt = null;
+
+    if (!replacedBy) replacedBy = null;
+
+    if (!revokedAt) revokedAt = null;
 
     this._createdAt = createdAt;
     this._secondsDuration = secondsDuration;
