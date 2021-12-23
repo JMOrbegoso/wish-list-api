@@ -1507,6 +1507,137 @@ describe('users', () => {
         );
 
         test.each(validValues)(
+          'get RefreshToken from a User that do not have it should return null',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            email: MockedObject<Email>,
+            username: MockedObject<Username>,
+            passwordHash: MockedObject<PasswordHash>,
+            isVerified: MockedObject<IsVerified>,
+            verificationCode: MockedObject<VerificationCode>,
+            isBlocked: MockedObject<IsBlocked>,
+            firstName: MockedObject<FirstName>,
+            lastName: MockedObject<LastName>,
+            birthday: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            biography: MockedObject<Biography>,
+            roles: MockedObject<Role[]>,
+            refreshTokens: MockedObject<RefreshToken[]>,
+            profilePicture: MockedObject<WebUrl>,
+            deletedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+            const refreshTokenUniqueId = {
+              equals: jest.fn().mockReturnValue(false),
+            } as MockedObject<UniqueId>;
+            const refreshToken = {
+              id: refreshTokenUniqueId as UniqueId,
+            } as MockedObject<RefreshToken>;
+            refreshTokens = [refreshToken];
+
+            const user = User.create(
+              uniqueId,
+              email,
+              username,
+              passwordHash,
+              isVerified,
+              verificationCode,
+              isBlocked,
+              firstName,
+              lastName,
+              birthday,
+              createdAt,
+              updatedAt,
+              biography,
+              roles,
+              refreshTokens,
+              profilePicture,
+              deletedAt,
+            );
+
+            // Act
+            const refreshTokenUniqueIdToFind = {} as MockedObject<UniqueId>;
+            const refreshTokenFound = user.getRefreshToken(
+              refreshTokenUniqueIdToFind,
+            );
+
+            // Assert
+            expect(refreshTokenFound).toBeNull();
+          },
+        );
+
+        test.each(validValues)(
+          'get RefreshToken from a User that have it should return it',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            email: MockedObject<Email>,
+            username: MockedObject<Username>,
+            passwordHash: MockedObject<PasswordHash>,
+            isVerified: MockedObject<IsVerified>,
+            verificationCode: MockedObject<VerificationCode>,
+            isBlocked: MockedObject<IsBlocked>,
+            firstName: MockedObject<FirstName>,
+            lastName: MockedObject<LastName>,
+            birthday: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            biography: MockedObject<Biography>,
+            roles: MockedObject<Role[]>,
+            refreshTokens: MockedObject<RefreshToken[]>,
+            profilePicture: MockedObject<WebUrl>,
+            deletedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+            const refreshTokenUniqueId1 = {
+              equals: jest.fn().mockReturnValue(false),
+            } as MockedObject<UniqueId>;
+            const refreshToken1 = {
+              id: refreshTokenUniqueId1 as UniqueId,
+            } as MockedObject<RefreshToken>;
+
+            const refreshTokenUniqueId2 = {
+              equals: jest.fn().mockReturnValue(true),
+            } as MockedObject<UniqueId>;
+            const refreshToken2 = {
+              id: refreshTokenUniqueId2 as UniqueId,
+              ipAddress: '1.1.1.1',
+            } as MockedObject<RefreshToken>;
+
+            refreshTokens = [refreshToken1, refreshToken2];
+
+            const user = User.create(
+              uniqueId,
+              email,
+              username,
+              passwordHash,
+              isVerified,
+              verificationCode,
+              isBlocked,
+              firstName,
+              lastName,
+              birthday,
+              createdAt,
+              updatedAt,
+              biography,
+              roles,
+              refreshTokens,
+              profilePicture,
+              deletedAt,
+            );
+
+            // Act
+            const refreshTokenUniqueIdToFind = {} as MockedObject<UniqueId>;
+            const refreshTokenFound = user.getRefreshToken(
+              refreshTokenUniqueIdToFind,
+            );
+
+            // Assert
+            expect(refreshTokenFound.ipAddress).toBe('1.1.1.1');
+          },
+        );
+
+        test.each(validValues)(
           'add RefreshToken to a deleted User should throw exception',
           (
             uniqueId: MockedObject<UniqueId>,

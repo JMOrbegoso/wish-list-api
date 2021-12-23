@@ -21,15 +21,16 @@ describe('users', () => {
     describe('commands', () => {
       describe('refresh-access-token', () => {
         test.each(commands)(
-          'should throw UnauthorizedException because RefreshToken to use was not found',
+          'should throw UnauthorizedException because the User of the RefreshToken to use was not found',
           (command: RefreshAccessTokenCommand) => {
             // Arrange
             const unitOfWork = {} as MockedObject<UnitOfWork>;
 
-            const userRepository = {} as MockedObject<UserRepository>;
-            const refreshTokenRepository = {
-              getOne: jest.fn().mockReturnValue(null),
-            } as MockedObject<RefreshTokenRepository>;
+            const userRepository = {
+              getOneByRefreshTokenId: jest.fn().mockReturnValue(null),
+            } as MockedObject<UserRepository>;
+            const refreshTokenRepository =
+              {} as MockedObject<RefreshTokenRepository>;
 
             const tokenService = {} as MockedObject<TokenService>;
             const uniqueIdGeneratorService =
@@ -52,19 +53,21 @@ describe('users', () => {
         );
 
         test.each(commands)(
-          'should throw UnauthorizedException because the RefreshToken User was not found',
+          'should throw UnauthorizedException because the RefreshToken to use was not found in the User',
           (command: RefreshAccessTokenCommand) => {
             // Arrange
             const unitOfWork = {} as MockedObject<UnitOfWork>;
 
+            const user = {
+              getRefreshToken: jest.fn().mockReturnValue(null),
+            } as MockedObject<User>;
+
             const userRepository = {
-              getOneByRefreshTokenId: jest.fn().mockReturnValue(null),
+              getOneByRefreshTokenId: jest.fn().mockReturnValue(user),
             } as MockedObject<UserRepository>;
 
-            const refreshTokenToUse = {} as MockedObject<RefreshToken>;
-            const refreshTokenRepository = {
-              getOne: jest.fn().mockReturnValue(refreshTokenToUse),
-            } as MockedObject<RefreshTokenRepository>;
+            const refreshTokenRepository =
+              {} as MockedObject<RefreshTokenRepository>;
 
             const tokenService = {} as MockedObject<TokenService>;
             const uniqueIdGeneratorService =
@@ -92,23 +95,23 @@ describe('users', () => {
             // Arrange
             const unitOfWork = {} as MockedObject<UnitOfWork>;
 
+            const refreshTokenToUse = {
+              isExpired: true,
+            } as MockedObject<RefreshToken>;
+
             const user = {
               id: {
                 getId: 'id-0',
               },
+              getRefreshToken: jest.fn().mockReturnValue(refreshTokenToUse),
             } as MockedObject<User>;
 
             const userRepository = {
               getOneByRefreshTokenId: jest.fn().mockReturnValue(user),
             } as MockedObject<UserRepository>;
 
-            const refreshTokenToUse = {
-              isExpired: true,
-            } as MockedObject<RefreshToken>;
-
-            const refreshTokenRepository = {
-              getOne: jest.fn().mockReturnValue(refreshTokenToUse),
-            } as MockedObject<RefreshTokenRepository>;
+            const refreshTokenRepository =
+              {} as MockedObject<RefreshTokenRepository>;
 
             const tokenService = {} as MockedObject<TokenService>;
             const uniqueIdGeneratorService =
@@ -138,10 +141,17 @@ describe('users', () => {
               commitChanges: jest.fn(),
             } as MockedObject<UnitOfWork>;
 
+            const refreshTokenToUse = {
+              wasReplaced: false,
+              isRevoked: true,
+              isExpired: false,
+            } as MockedObject<RefreshToken>;
+
             const user = {
               id: {
                 getId: 'id-0',
               },
+              getRefreshToken: jest.fn().mockReturnValue(refreshTokenToUse),
             } as MockedObject<User>;
 
             const validRefreshTokenToRevoke = {
@@ -171,15 +181,8 @@ describe('users', () => {
               updateRefreshToken: jest.fn(),
             } as MockedObject<UserRepository>;
 
-            const refreshTokenToUse = {
-              wasReplaced: false,
-              isRevoked: true,
-              isExpired: false,
-            } as MockedObject<RefreshToken>;
-
-            const refreshTokenRepository = {
-              getOne: jest.fn().mockReturnValue(refreshTokenToUse),
-            } as MockedObject<RefreshTokenRepository>;
+            const refreshTokenRepository =
+              {} as MockedObject<RefreshTokenRepository>;
 
             const tokenService = {} as MockedObject<TokenService>;
             const uniqueIdGeneratorService =
@@ -219,10 +222,17 @@ describe('users', () => {
               commitChanges: jest.fn(),
             } as MockedObject<UnitOfWork>;
 
+            const refreshTokenToUse = {
+              wasReplaced: true,
+              isRevoked: false,
+              isExpired: false,
+            } as MockedObject<RefreshToken>;
+
             const user = {
               id: {
                 getId: 'id-0',
               },
+              getRefreshToken: jest.fn().mockReturnValue(refreshTokenToUse),
             } as MockedObject<User>;
 
             const validRefreshTokenToRevoke = {
@@ -252,15 +262,8 @@ describe('users', () => {
               updateRefreshToken: jest.fn(),
             } as MockedObject<UserRepository>;
 
-            const refreshTokenToUse = {
-              wasReplaced: true,
-              isRevoked: false,
-              isExpired: false,
-            } as MockedObject<RefreshToken>;
-
-            const refreshTokenRepository = {
-              getOne: jest.fn().mockReturnValue(refreshTokenToUse),
-            } as MockedObject<RefreshTokenRepository>;
+            const refreshTokenRepository =
+              {} as MockedObject<RefreshTokenRepository>;
 
             const tokenService = {} as MockedObject<TokenService>;
             const uniqueIdGeneratorService =
@@ -300,6 +303,14 @@ describe('users', () => {
               commitChanges: jest.fn(),
             } as MockedObject<UnitOfWork>;
 
+            const refreshTokenToUse = {
+              isExpired: false,
+              isRevoked: false,
+              wasReplaced: false,
+              isValid: true,
+              replace: jest.fn(),
+            } as MockedObject<RefreshToken>;
+
             const user = {
               id: {
                 getId: 'id-0',
@@ -334,6 +345,7 @@ describe('users', () => {
               profilePicture: null,
               addRefreshToken: jest.fn(),
               replaceRefreshToken: jest.fn(),
+              getRefreshToken: jest.fn().mockReturnValue(refreshTokenToUse),
             } as MockedObject<User>;
 
             const userRepository = {
@@ -341,17 +353,8 @@ describe('users', () => {
               update: jest.fn(),
             } as MockedObject<UserRepository>;
 
-            const refreshTokenToUse = {
-              isExpired: false,
-              isRevoked: false,
-              wasReplaced: false,
-              isValid: true,
-              replace: jest.fn(),
-            } as MockedObject<RefreshToken>;
-
-            const refreshTokenRepository = {
-              getOne: jest.fn().mockReturnValue(refreshTokenToUse),
-            } as MockedObject<RefreshTokenRepository>;
+            const refreshTokenRepository =
+              {} as MockedObject<RefreshTokenRepository>;
 
             const tokenService = {
               signPayload: jest.fn().mockReturnValue('access-token'),

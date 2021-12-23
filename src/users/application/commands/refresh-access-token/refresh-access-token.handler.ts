@@ -29,15 +29,13 @@ export class RefreshAccessTokenHandler
     const refreshTokenToUseId = UniqueId.create(command.refreshTokenToUse);
     const ipAddress = IpAddress.create(command.ipAddress);
 
-    const refreshTokenToUse = await this.refreshTokenRepository.getOne(
+    const user = await this.userRepository.getOneByRefreshTokenId(
       refreshTokenToUseId,
     );
-    if (!refreshTokenToUse) throw new UnauthorizedException();
-
-    const user = await this.userRepository.getOneByRefreshTokenId(
-      refreshTokenToUse.id,
-    );
     if (!user) throw new UnauthorizedException();
+
+    const refreshTokenToUse = user.getRefreshToken(refreshTokenToUseId);
+    if (!refreshTokenToUse) throw new UnauthorizedException();
 
     // Check if the refresh token is valid
     if (refreshTokenToUse.wasReplaced || refreshTokenToUse.isRevoked) {

@@ -245,6 +245,15 @@ export class User extends AggregateRoot {
     return [...this._refreshTokens];
   }
 
+  public getRefreshToken(refreshTokenId: UniqueId): RefreshToken {
+    const refreshToken = this._refreshTokens.find((token) =>
+      token.id.equals(refreshTokenId),
+    );
+    if (!refreshToken) return null;
+
+    return refreshToken;
+  }
+
   public addRefreshToken(newRefreshToken: RefreshToken): void {
     if (this.isDeleted) throw new DeletedUserCannotBeUpdatedError();
 
