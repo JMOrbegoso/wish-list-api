@@ -175,19 +175,19 @@ export class Wish extends AggregateRoot {
   }
 
   public get urls(): WebUrl[] {
-    return this._urls;
+    return [...this._urls];
   }
 
   public get imageUrls(): WebUrl[] {
-    return this._imageUrls;
+    return [...this._imageUrls];
   }
 
   public get categories(): CategoryName[] {
-    return this._categories;
+    return [...this._categories];
   }
 
   public get stages(): WishStage[] {
-    return this._stages;
+    return [...this._stages];
   }
 
   public get deletedAt(): MillisecondsDate {
