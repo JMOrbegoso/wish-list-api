@@ -1,11 +1,11 @@
-import { AggregateRoot } from '../../../../shared/domain/entities';
+import { Entity } from '../../../../shared/domain/entities';
 import {
   MillisecondsDate,
   UniqueId,
 } from '../../../../shared/domain/value-objects';
 import { IpAddress, SecondsDuration } from '../../value-objects';
 
-export class RefreshToken extends AggregateRoot {
+export class RefreshToken extends Entity {
   public static readonly defaultDuration = SecondsDuration.twoWeeks();
 
   private _createdAt: MillisecondsDate;
