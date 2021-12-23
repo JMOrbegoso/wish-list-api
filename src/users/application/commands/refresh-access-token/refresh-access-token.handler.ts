@@ -78,7 +78,7 @@ export class RefreshAccessTokenHandler
     user.replaceRefreshToken(refreshTokenToReplace.id, newRefreshToken);
 
     // Save changes in persistence
-    this.userRepository.update(user);
+    await this.userRepository.update(user);
     await this.unitOfWork.commitChanges();
 
     return {

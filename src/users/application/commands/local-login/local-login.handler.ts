@@ -63,7 +63,7 @@ export class LocalLoginHandler implements ICommandHandler<LocalLoginCommand> {
     user.addRefreshToken(newRefreshToken);
 
     // Save changes in persistence
-    this.userRepository.update(user);
+    await this.userRepository.update(user);
     await this.unitOfWork.commitChanges();
 
     return {

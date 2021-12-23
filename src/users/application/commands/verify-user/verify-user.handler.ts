@@ -31,7 +31,7 @@ export class VerifyUserHandler implements ICommandHandler<VerifyUserCommand> {
     user.verify();
 
     // Add the updated user to the users repository
-    this.userRepository.update(user);
+    await this.userRepository.update(user);
 
     // Save changes using Unit of Work
     await this.unitOfWork.commitChanges();
