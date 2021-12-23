@@ -4,10 +4,7 @@ import { LocalLoginCommand, LocalLoginHandler } from '..';
 import { UnitOfWork } from '../../../../shared/domain/repositories';
 import { UniqueId } from '../../../../shared/domain/value-objects';
 import { User } from '../../../domain/entities';
-import {
-  RefreshTokenRepository,
-  UserRepository,
-} from '../../../domain/repositories';
+import { UserRepository } from '../../../domain/repositories';
 import { InvalidIpAddressError } from '../../../domain/value-objects';
 import {
   EncryptionService,
@@ -35,9 +32,6 @@ describe('users', () => {
               getOneByUsername: jest.fn().mockReturnValue(null),
             } as MockedObject<UserRepository>;
 
-            const refreshTokenRepository =
-              {} as MockedObject<RefreshTokenRepository>;
-
             const unitOfWork = {} as MockedObject<UnitOfWork>;
 
             const encryptionService = {} as MockedObject<EncryptionService>;
@@ -46,7 +40,6 @@ describe('users', () => {
               {} as MockedObject<UniqueIdGeneratorService>;
             const handler = new LocalLoginHandler(
               userRepository,
-              refreshTokenRepository,
               unitOfWork,
               encryptionService,
               tokenService,
@@ -70,8 +63,6 @@ describe('users', () => {
               getOneByUsername: jest.fn().mockReturnValue(null),
             } as MockedObject<UserRepository>;
 
-            const refreshTokenRepository =
-              {} as MockedObject<RefreshTokenRepository>;
             const unitOfWork = {} as MockedObject<UnitOfWork>;
 
             const encryptionService = {} as MockedObject<EncryptionService>;
@@ -80,7 +71,6 @@ describe('users', () => {
               {} as MockedObject<UniqueIdGeneratorService>;
             const handler = new LocalLoginHandler(
               userRepository,
-              refreshTokenRepository,
               unitOfWork,
               encryptionService,
               tokenService,
@@ -143,8 +133,6 @@ describe('users', () => {
               getOneByUsername: jest.fn().mockReturnValue(user),
             } as MockedObject<UserRepository>;
 
-            const refreshTokenRepository =
-              {} as MockedObject<RefreshTokenRepository>;
             const unitOfWork = {} as MockedObject<UnitOfWork>;
 
             const encryptionService = {
@@ -156,7 +144,6 @@ describe('users', () => {
               {} as MockedObject<UniqueIdGeneratorService>;
             const handler = new LocalLoginHandler(
               userRepository,
-              refreshTokenRepository,
               unitOfWork,
               encryptionService,
               tokenService,
@@ -222,8 +209,6 @@ describe('users', () => {
               getOneByUsername: jest.fn().mockReturnValue(user),
             } as MockedObject<UserRepository>;
 
-            const refreshTokenRepository =
-              {} as MockedObject<RefreshTokenRepository>;
             const unitOfWork = {} as MockedObject<UnitOfWork>;
 
             const encryptionService = {
@@ -235,7 +220,6 @@ describe('users', () => {
               {} as MockedObject<UniqueIdGeneratorService>;
             const handler = new LocalLoginHandler(
               userRepository,
-              refreshTokenRepository,
               unitOfWork,
               encryptionService,
               tokenService,
@@ -299,8 +283,6 @@ describe('users', () => {
               getOneByUsername: jest.fn().mockReturnValue(user),
             } as MockedObject<UserRepository>;
 
-            const refreshTokenRepository =
-              {} as MockedObject<RefreshTokenRepository>;
             const unitOfWork = {} as MockedObject<UnitOfWork>;
 
             const encryptionService = {
@@ -312,7 +294,6 @@ describe('users', () => {
               {} as MockedObject<UniqueIdGeneratorService>;
             const handler = new LocalLoginHandler(
               userRepository,
-              refreshTokenRepository,
               unitOfWork,
               encryptionService,
               tokenService,
@@ -376,8 +357,6 @@ describe('users', () => {
               getOneByUsername: jest.fn().mockReturnValue(user),
             } as MockedObject<UserRepository>;
 
-            const refreshTokenRepository =
-              {} as MockedObject<RefreshTokenRepository>;
             const unitOfWork = {} as MockedObject<UnitOfWork>;
 
             const encryptionService = {
@@ -389,7 +368,6 @@ describe('users', () => {
               {} as MockedObject<UniqueIdGeneratorService>;
             const handler = new LocalLoginHandler(
               userRepository,
-              refreshTokenRepository,
               unitOfWork,
               encryptionService,
               tokenService,
@@ -455,10 +433,6 @@ describe('users', () => {
               update: jest.fn(),
             } as MockedObject<UserRepository>;
 
-            const refreshTokenRepository = {
-              add: jest.fn(),
-            } as MockedObject<RefreshTokenRepository>;
-
             const unitOfWork = {
               commitChanges: jest.fn(),
             } as MockedObject<UnitOfWork>;
@@ -481,7 +455,6 @@ describe('users', () => {
 
             const handler = new LocalLoginHandler(
               userRepository,
-              refreshTokenRepository,
               unitOfWork,
               encryptionService,
               tokenService,

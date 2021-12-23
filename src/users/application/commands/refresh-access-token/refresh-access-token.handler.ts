@@ -4,10 +4,7 @@ import { RefreshAccessTokenCommand } from '..';
 import { UnitOfWork } from '../../../../shared/domain/repositories';
 import { UniqueId } from '../../../../shared/domain/value-objects';
 import { RefreshToken, User } from '../../../domain/entities';
-import {
-  RefreshTokenRepository,
-  UserRepository,
-} from '../../../domain/repositories';
+import { UserRepository } from '../../../domain/repositories';
 import { IpAddress } from '../../../domain/value-objects';
 import { AuthTokensDto } from '../../dtos';
 import { userToOutputUserDto } from '../../mappings';
@@ -20,7 +17,6 @@ export class RefreshAccessTokenHandler
   constructor(
     private readonly unitOfWork: UnitOfWork,
     private readonly userRepository: UserRepository,
-    private readonly refreshTokenRepository: RefreshTokenRepository,
     private readonly tokenService: TokenService,
     private readonly uniqueIdGeneratorService: UniqueIdGeneratorService,
   ) {}

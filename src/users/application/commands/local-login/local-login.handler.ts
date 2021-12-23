@@ -3,10 +3,7 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { LocalLoginCommand } from '..';
 import { UnitOfWork } from '../../../../shared/domain/repositories';
 import { RefreshToken, User } from '../../../domain/entities';
-import {
-  RefreshTokenRepository,
-  UserRepository,
-} from '../../../domain/repositories';
+import { UserRepository } from '../../../domain/repositories';
 import { IpAddress, Username } from '../../../domain/value-objects';
 import { AuthTokensDto } from '../../dtos';
 import { userToOutputUserDto } from '../../mappings';
@@ -20,7 +17,6 @@ import {
 export class LocalLoginHandler implements ICommandHandler<LocalLoginCommand> {
   constructor(
     private readonly userRepository: UserRepository,
-    private readonly refreshTokenRepository: RefreshTokenRepository,
     private readonly unitOfWork: UnitOfWork,
     private readonly encryptionService: EncryptionService,
     private readonly tokenService: TokenService,
