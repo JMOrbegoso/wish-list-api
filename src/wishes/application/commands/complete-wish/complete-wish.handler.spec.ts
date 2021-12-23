@@ -1,5 +1,5 @@
 import { BadRequestException, NotFoundException } from '@nestjs/common';
-import { mocked } from 'ts-jest/utils';
+import { MockedObject } from 'ts-jest/dist/utils/testing';
 import { CompleteWishCommand, CompleteWishHandler } from '..';
 import { UnitOfWork } from '../../../../shared/domain/repositories';
 import { Wish } from '../../../domain/entities';
@@ -19,11 +19,11 @@ describe('wishes', () => {
           'complete a wish that does not exist should throw error',
           (command: CompleteWishCommand) => {
             // Arrange
-            const wishRepository = mocked<WishRepository>({
+            const wishRepository = {
               getOne: jest.fn().mockReturnValue(null),
-            } as unknown as WishRepository);
+            } as MockedObject<WishRepository>;
 
-            const unitOfWork = mocked<UnitOfWork>({} as unknown as UnitOfWork);
+            const unitOfWork = {} as MockedObject<UnitOfWork>;
 
             const handler = new CompleteWishHandler(wishRepository, unitOfWork);
 
@@ -40,13 +40,13 @@ describe('wishes', () => {
           'complete a deleted wish should throw error',
           (command: CompleteWishCommand) => {
             // Arrange
-            const wish = mocked<Wish>({ isDeleted: true } as unknown as Wish);
+            const wish = { isDeleted: true } as MockedObject<Wish>;
 
-            const wishRepository = mocked<WishRepository>({
+            const wishRepository = {
               getOne: jest.fn().mockReturnValue(wish),
-            } as unknown as WishRepository);
+            } as MockedObject<WishRepository>;
 
-            const unitOfWork = mocked<UnitOfWork>({} as unknown as UnitOfWork);
+            const unitOfWork = {} as MockedObject<UnitOfWork>;
 
             const handler = new CompleteWishHandler(wishRepository, unitOfWork);
 
@@ -63,16 +63,16 @@ describe('wishes', () => {
           'complete a already completed wish should throw error',
           (command: CompleteWishCommand) => {
             // Arrange
-            const wish = mocked<Wish>({
+            const wish = {
               isDeleted: false,
               isCompleted: true,
-            } as unknown as Wish);
+            } as MockedObject<Wish>;
 
-            const wishRepository = mocked<WishRepository>({
+            const wishRepository = {
               getOne: jest.fn().mockReturnValue(wish),
-            } as unknown as WishRepository);
+            } as MockedObject<WishRepository>;
 
-            const unitOfWork = mocked<UnitOfWork>({} as unknown as UnitOfWork);
+            const unitOfWork = {} as MockedObject<UnitOfWork>;
 
             const handler = new CompleteWishHandler(wishRepository, unitOfWork);
 
@@ -89,21 +89,21 @@ describe('wishes', () => {
           'should call the method update from the WishRepository, the method commitChanges from the UnitOfWork',
           async (command: CompleteWishCommand) => {
             // Arrange
-            const wish = mocked<Wish>({
+            const wish = {
               id: { getId: 'id' },
               isDeleted: false,
               isCompleted: false,
               complete: jest.fn(),
-            } as unknown as Wish);
+            } as MockedObject<Wish>;
 
-            const wishRepository = mocked<WishRepository>({
+            const wishRepository = {
               getOne: jest.fn().mockReturnValue(wish),
               update: jest.fn(),
-            } as unknown as WishRepository);
+            } as MockedObject<WishRepository>;
 
-            const unitOfWork = mocked<UnitOfWork>({
+            const unitOfWork = {
               commitChanges: jest.fn(),
-            } as unknown as UnitOfWork);
+            } as MockedObject<UnitOfWork>;
 
             const handler = new CompleteWishHandler(wishRepository, unitOfWork);
 

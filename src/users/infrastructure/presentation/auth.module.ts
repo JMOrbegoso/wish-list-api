@@ -15,16 +15,10 @@ import {
   TokenService,
   UniqueIdGeneratorService,
 } from '../../application/services';
-import {
-  RefreshTokenRepository,
-  UserRepository,
-} from '../../domain/repositories';
+import { UserRepository } from '../../domain/repositories';
 import { JwtPassportStrategy } from '../passport-strategies';
 import { UserEntity } from '../persistence/entities';
-import {
-  RefreshTokenRepositoryMongoDb,
-  UserRepositoryMongoDb,
-} from '../persistence/repositories';
+import { UserRepositoryMongoDb } from '../persistence/repositories';
 import {
   EncryptionServiceBcrypt,
   TokenServiceJwt,
@@ -54,10 +48,6 @@ const passportStrategies = [JwtPassportStrategy];
   ],
   providers: [
     { provide: UserRepository, useClass: UserRepositoryMongoDb },
-    {
-      provide: RefreshTokenRepository,
-      useClass: RefreshTokenRepositoryMongoDb,
-    },
     { provide: UnitOfWork, useClass: UnitOfWorkMongoDb },
     { provide: EncryptionService, useClass: EncryptionServiceBcrypt },
     {

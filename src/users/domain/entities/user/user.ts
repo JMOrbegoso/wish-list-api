@@ -1,4 +1,13 @@
-import { VerificationCode } from '..';
+import {
+  BlockedUserCannotBeUpdatedError,
+  DeletedUserCannotBeUpdatedError,
+  DuplicatedRefreshTokenError,
+  InvalidRefreshTokenError,
+  RefreshToken,
+  RefreshTokenNotFoundError,
+  UnverifiedUserCannotBeUpdatedError,
+  VerificationCode,
+} from '..';
 import { AggregateRoot } from '../../../../shared/domain/entities';
 import {
   MillisecondsDate,
@@ -31,6 +40,7 @@ export class User extends AggregateRoot {
   private _updatedAt: MillisecondsDate;
   private _biography: Biography;
   private _roles: Role[];
+  private _refreshTokens: RefreshToken[];
   private _profilePicture?: WebUrl;
   private _deletedAt?: MillisecondsDate;
 
@@ -49,6 +59,7 @@ export class User extends AggregateRoot {
     updatedAt: MillisecondsDate,
     biography: Biography,
     roles: Role[],
+    refreshTokens: RefreshToken[],
     profilePicture?: WebUrl,
     deletedAt?: MillisecondsDate,
   ) {
@@ -67,6 +78,7 @@ export class User extends AggregateRoot {
     this._updatedAt = updatedAt;
     this._biography = biography;
     this._roles = roles;
+    this._refreshTokens = refreshTokens;
     this._profilePicture = profilePicture;
     this._deletedAt = deletedAt;
   }
@@ -86,6 +98,7 @@ export class User extends AggregateRoot {
     updatedAt: MillisecondsDate,
     biography: Biography,
     roles: Role[] = [],
+    refreshTokens: RefreshToken[] = [],
     profilePicture: WebUrl = null,
     deletedAt: MillisecondsDate = null,
   ): User {
@@ -104,6 +117,7 @@ export class User extends AggregateRoot {
       updatedAt,
       biography,
       roles,
+      refreshTokens,
       profilePicture,
       deletedAt,
     );
@@ -225,5 +239,52 @@ export class User extends AggregateRoot {
 
   public removeRole(role: Role): void {
     this._roles = this._roles.filter((r) => !r.equals(role));
+  }
+
+  public get refreshTokens(): RefreshToken[] {
+    return [...this._refreshTokens];
+  }
+
+  public getRefreshToken(refreshTokenId: UniqueId): RefreshToken {
+    const refreshToken = this._refreshTokens.find((token) =>
+      token.id.equals(refreshTokenId),
+    );
+    if (!refreshToken) return null;
+
+    return refreshToken;
+  }
+
+  public addRefreshToken(newRefreshToken: RefreshToken): void {
+    if (this.isDeleted) throw new DeletedUserCannotBeUpdatedError();
+
+    if (this.isBlocked) throw new BlockedUserCannotBeUpdatedError();
+
+    if (!this.isVerified) throw new UnverifiedUserCannotBeUpdatedError();
+
+    if (!newRefreshToken) throw new InvalidRefreshTokenError();
+
+    if (this._refreshTokens.some((token) => token.equals(newRefreshToken)))
+      throw new DuplicatedRefreshTokenError();
+
+    this._refreshTokens.push(newRefreshToken);
+  }
+
+  public replaceRefreshToken(
+    refreshTokenIdToReplace: UniqueId,
+    replacedByToken: RefreshToken,
+  ): void {
+    if (this.isDeleted) throw new DeletedUserCannotBeUpdatedError();
+
+    if (this.isBlocked) throw new BlockedUserCannotBeUpdatedError();
+
+    if (!this.isVerified) throw new UnverifiedUserCannotBeUpdatedError();
+
+    if (!replacedByToken) throw new InvalidRefreshTokenError();
+
+    const refreshTokenToReplace = this.getRefreshToken(refreshTokenIdToReplace);
+    if (!refreshTokenToReplace) throw new RefreshTokenNotFoundError();
+
+    this.addRefreshToken(replacedByToken);
+    refreshTokenToReplace.replace(replacedByToken);
   }
 }

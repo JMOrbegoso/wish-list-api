@@ -1,11 +1,11 @@
-import { mocked } from 'ts-jest/utils';
+import { MockedObject } from 'ts-jest/dist/utils/testing';
 import { WisherEntity } from '../persistence/entities';
 import { wisherEntityToWisher } from '.';
 
 const validValues = [
-  [mocked<WisherEntity>({ id: 'id-0' } as unknown as WisherEntity)],
-  [mocked<WisherEntity>({ id: 'id-1' } as unknown as WisherEntity)],
-  [mocked<WisherEntity>({ id: 'id-2' } as unknown as WisherEntity)],
+  { id: 'id-0' } as MockedObject<WisherEntity>,
+  { id: 'id-1' } as MockedObject<WisherEntity>,
+  { id: 'id-2' } as MockedObject<WisherEntity>,
 ];
 
 describe('wishes', () => {

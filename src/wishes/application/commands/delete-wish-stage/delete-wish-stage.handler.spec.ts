@@ -1,7 +1,8 @@
 import { BadRequestException, NotFoundException } from '@nestjs/common';
-import { mocked } from 'ts-jest/utils';
+import { MockedObject } from 'ts-jest/dist/utils/testing';
 import { DeleteWishStageCommand, DeleteWishStageHandler } from '..';
 import { UnitOfWork } from '../../../../shared/domain/repositories';
+import { UniqueId } from '../../../../shared/domain/value-objects';
 import { Wish, WishStage } from '../../../domain/entities';
 import { WishRepository } from '../../../domain/repositories';
 
@@ -19,11 +20,11 @@ describe('wishes', () => {
           'delete a wish stage in a wish that does not exist should throw error',
           (command: DeleteWishStageCommand) => {
             // Arrange
-            const wishRepository = mocked<WishRepository>({
+            const wishRepository = {
               getWishByWishStageId: jest.fn().mockReturnValue(null),
-            } as unknown as WishRepository);
+            } as MockedObject<WishRepository>;
 
-            const unitOfWork = mocked<UnitOfWork>({} as unknown as UnitOfWork);
+            const unitOfWork = {} as MockedObject<UnitOfWork>;
 
             const handler = new DeleteWishStageHandler(
               wishRepository,
@@ -43,15 +44,23 @@ describe('wishes', () => {
           'delete a wish stage that not exist should throw error',
           (command: DeleteWishStageCommand) => {
             // Arrange
-            const wish = mocked<Wish>({
-              stages: { find: jest.fn().mockReturnValue(false) },
-            } as unknown as Wish);
+            const uniqueId = {
+              equals: jest.fn().mockReturnValue(false),
+            } as MockedObject<UniqueId>;
 
-            const wishRepository = mocked<WishRepository>({
+            const wishStage = {
+              id: uniqueId as UniqueId,
+            } as MockedObject<WishStage>;
+
+            const wish = {
+              stages: [wishStage] as MockedObject<WishStage[]>,
+            } as MockedObject<Wish>;
+
+            const wishRepository = {
               getWishByWishStageId: jest.fn().mockReturnValue(wish),
-            } as unknown as WishRepository);
+            } as MockedObject<WishRepository>;
 
-            const unitOfWork = mocked<UnitOfWork>({} as unknown as UnitOfWork);
+            const unitOfWork = {} as MockedObject<UnitOfWork>;
 
             const handler = new DeleteWishStageHandler(
               wishRepository,
@@ -71,18 +80,24 @@ describe('wishes', () => {
           'delete a wish stage that not exist should throw error',
           (command: DeleteWishStageCommand) => {
             // Arrange
-            const wishStage = mocked<WishStage>({} as unknown as WishStage);
+            const uniqueId = {
+              equals: jest.fn().mockReturnValue(true),
+            } as MockedObject<UniqueId>;
 
-            const wish = mocked<Wish>({
-              stages: { find: jest.fn().mockReturnValue(wishStage) },
+            const wishStage = {
+              id: uniqueId as UniqueId,
+            } as MockedObject<WishStage>;
+
+            const wish = {
+              stages: [wishStage] as MockedObject<WishStage[]>,
               isDeleted: true,
-            } as unknown as Wish);
+            } as MockedObject<Wish>;
 
-            const wishRepository = mocked<WishRepository>({
+            const wishRepository = {
               getWishByWishStageId: jest.fn().mockReturnValue(wish),
-            } as unknown as WishRepository);
+            } as MockedObject<WishRepository>;
 
-            const unitOfWork = mocked<UnitOfWork>({} as unknown as UnitOfWork);
+            const unitOfWork = {} as MockedObject<UnitOfWork>;
 
             const handler = new DeleteWishStageHandler(
               wishRepository,
@@ -102,25 +117,30 @@ describe('wishes', () => {
           'should call the method update from the WishRepository, the method commitChanges from the UnitOfWork',
           async (command: DeleteWishStageCommand) => {
             // Arrange
-            const wishStage = mocked<WishStage>({
-              id: { getId: command.id },
-            } as unknown as WishStage);
+            const uniqueId = {
+              getId: command.id,
+              equals: jest.fn().mockReturnValue(true),
+            } as MockedObject<UniqueId>;
 
-            const wish = mocked<Wish>({
+            const wishStage = {
+              id: uniqueId as UniqueId,
+            } as MockedObject<WishStage>;
+
+            const wish = {
               id: { getId: command.id },
-              stages: { find: jest.fn().mockReturnValue(wishStage) },
+              stages: [wishStage] as MockedObject<WishStage[]>,
               removeStage: jest.fn(),
               isDeleted: false,
-            } as unknown as Wish);
+            } as MockedObject<Wish>;
 
-            const wishRepository = mocked<WishRepository>({
+            const wishRepository = {
               getWishByWishStageId: jest.fn().mockReturnValue(wish),
               update: jest.fn(),
-            } as unknown as WishRepository);
+            } as MockedObject<WishRepository>;
 
-            const unitOfWork = mocked<UnitOfWork>({
+            const unitOfWork = {
               commitChanges: jest.fn(),
-            } as unknown as UnitOfWork);
+            } as MockedObject<UnitOfWork>;
 
             const handler = new DeleteWishStageHandler(
               wishRepository,

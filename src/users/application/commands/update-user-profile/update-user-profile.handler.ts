@@ -45,7 +45,7 @@ export class UpdateUserProfileHandler
     user.updateProfile(firstName, lastName, birthday, biography);
 
     // Add the new user to the users repository
-    this.userRepository.update(user);
+    await this.userRepository.update(user);
 
     // Save changes using Unit of Work
     await this.unitOfWork.commitChanges();

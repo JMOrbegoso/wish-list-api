@@ -1,5 +1,5 @@
 import { BadRequestException, NotFoundException } from '@nestjs/common';
-import { mocked } from 'ts-jest/utils';
+import { MockedObject } from 'ts-jest/dist/utils/testing';
 import { UpdateUserProfileCommand, UpdateUserProfileHandler } from '..';
 import { UnitOfWork } from '../../../../shared/domain/repositories';
 import { User } from '../../../domain/entities';
@@ -24,13 +24,11 @@ describe('users', () => {
           'should throw NotFoundException',
           (command: UpdateUserProfileCommand) => {
             // Arrange
-            const userRepository = mocked<UserRepository>({
+            const userRepository = {
               getOne: jest.fn().mockReturnValue(null),
-            } as unknown as UserRepository);
+            } as MockedObject<UserRepository>;
 
-            const unitOfWork = mocked<UnitOfWork>({
-              userRepository: userRepository,
-            } as unknown as UnitOfWork);
+            const unitOfWork = {} as MockedObject<UnitOfWork>;
 
             const handler = new UpdateUserProfileHandler(
               unitOfWork,
@@ -50,7 +48,7 @@ describe('users', () => {
           'should throw BadRequestException because the user is deleted',
           (command: UpdateUserProfileCommand) => {
             // Arrange
-            const user = mocked<User>({
+            const user = {
               id: {
                 getId: 'id-0',
               },
@@ -90,15 +88,13 @@ describe('users', () => {
                 getMilliseconds: 4,
               },
               isDeleted: true,
-            } as unknown as User);
+            } as MockedObject<User>;
 
-            const userRepository = mocked<UserRepository>({
+            const userRepository = {
               getOne: jest.fn().mockReturnValue(user),
-            } as unknown as UserRepository);
+            } as MockedObject<UserRepository>;
 
-            const unitOfWork = mocked<UnitOfWork>({
-              userRepository: userRepository,
-            } as unknown as UnitOfWork);
+            const unitOfWork = {} as MockedObject<UnitOfWork>;
 
             const handler = new UpdateUserProfileHandler(
               unitOfWork,
@@ -118,7 +114,7 @@ describe('users', () => {
           'should throw BadRequestException because the user is blocked',
           (command: UpdateUserProfileCommand) => {
             // Arrange
-            const user = mocked<User>({
+            const user = {
               id: {
                 getId: 'id-0',
               },
@@ -156,15 +152,13 @@ describe('users', () => {
               },
               deletedAt: null,
               isDeleted: false,
-            } as unknown as User);
+            } as MockedObject<User>;
 
-            const userRepository = mocked<UserRepository>({
+            const userRepository = {
               getOne: jest.fn().mockReturnValue(user),
-            } as unknown as UserRepository);
+            } as MockedObject<UserRepository>;
 
-            const unitOfWork = mocked<UnitOfWork>({
-              userRepository: userRepository,
-            } as unknown as UnitOfWork);
+            const unitOfWork = {} as MockedObject<UnitOfWork>;
 
             const handler = new UpdateUserProfileHandler(
               unitOfWork,
@@ -184,7 +178,7 @@ describe('users', () => {
           'should throw BadRequestException because the user is not verified',
           (command: UpdateUserProfileCommand) => {
             // Arrange
-            const user = mocked<User>({
+            const user = {
               id: {
                 getId: 'id-0',
               },
@@ -222,15 +216,13 @@ describe('users', () => {
               },
               deletedAt: null,
               isDeleted: false,
-            } as unknown as User);
+            } as MockedObject<User>;
 
-            const userRepository = mocked<UserRepository>({
+            const userRepository = {
               getOne: jest.fn().mockReturnValue(user),
-            } as unknown as UserRepository);
+            } as MockedObject<UserRepository>;
 
-            const unitOfWork = mocked<UnitOfWork>({
-              userRepository: userRepository,
-            } as unknown as UnitOfWork);
+            const unitOfWork = {} as MockedObject<UnitOfWork>;
 
             const handler = new UpdateUserProfileHandler(
               unitOfWork,
@@ -250,7 +242,7 @@ describe('users', () => {
           'should call the method hashPassword of the EncryptionService, call the update method of the UserRepository and the commitChanges method of the UnitOfWork',
           async (command: UpdateUserProfileCommand) => {
             // Arrange
-            const user = mocked<User>({
+            const user = {
               id: {
                 getId: 'id-0',
               },
@@ -290,17 +282,16 @@ describe('users', () => {
                 getMilliseconds: 4,
               },
               updateProfile: jest.fn(),
-            } as unknown as User);
+            } as MockedObject<User>;
 
-            const userRepository = mocked<UserRepository>({
+            const userRepository = {
               getOne: jest.fn().mockReturnValue(user),
               update: jest.fn(),
-            } as unknown as UserRepository);
+            } as MockedObject<UserRepository>;
 
-            const unitOfWork = mocked<UnitOfWork>({
-              userRepository: userRepository,
+            const unitOfWork = {
               commitChanges: jest.fn(),
-            } as unknown as UnitOfWork);
+            } as MockedObject<UnitOfWork>;
 
             const handler = new UpdateUserProfileHandler(
               unitOfWork,

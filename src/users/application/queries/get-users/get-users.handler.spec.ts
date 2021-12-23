@@ -1,4 +1,4 @@
-import { mocked } from 'ts-jest/utils';
+import { MockedObject } from 'ts-jest/dist/utils/testing';
 import { GetUsersHandler, GetUsersQuery } from '..';
 import { User } from '../../../domain/entities';
 import { UserRepository } from '../../../domain/repositories';
@@ -13,9 +13,9 @@ describe('users', () => {
           'should return an empty users array',
           async (query: GetUsersQuery) => {
             // Arrange
-            const userRepository = mocked<UserRepository>({
+            const userRepository = {
               getAll: jest.fn().mockReturnValue([]),
-            } as unknown as UserRepository);
+            } as MockedObject<UserRepository>;
 
             const handler = new GetUsersHandler(userRepository);
 
@@ -31,7 +31,7 @@ describe('users', () => {
           'should return an array with one OutputUserDto',
           async (query: GetUsersQuery) => {
             // Arrange
-            const user = mocked<User>({
+            const user = {
               id: {
                 getId: 'id-0',
               },
@@ -70,11 +70,11 @@ describe('users', () => {
               deletedAt: {
                 getMilliseconds: 4,
               },
-            } as unknown as User);
+            } as MockedObject<User>;
 
-            const userRepository = mocked<UserRepository>({
+            const userRepository = {
               getAll: jest.fn().mockReturnValue([user]),
-            } as unknown as UserRepository);
+            } as MockedObject<UserRepository>;
 
             const handler = new GetUsersHandler(userRepository);
 

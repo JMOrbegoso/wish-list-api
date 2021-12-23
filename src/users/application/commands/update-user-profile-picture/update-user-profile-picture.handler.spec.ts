@@ -1,5 +1,5 @@
 import { BadRequestException, NotFoundException } from '@nestjs/common';
-import { mocked } from 'ts-jest/utils';
+import { MockedObject } from 'ts-jest/dist/utils/testing';
 import {
   UpdateUserProfilePictureCommand,
   UpdateUserProfilePictureHandler,
@@ -21,13 +21,11 @@ describe('users', () => {
           'should throw NotFoundException',
           (command: UpdateUserProfilePictureCommand) => {
             // Arrange
-            const userRepository = mocked<UserRepository>({
+            const userRepository = {
               getOne: jest.fn().mockReturnValue(null),
-            } as unknown as UserRepository);
+            } as MockedObject<UserRepository>;
 
-            const unitOfWork = mocked<UnitOfWork>({
-              userRepository: userRepository,
-            } as unknown as UnitOfWork);
+            const unitOfWork = {} as MockedObject<UnitOfWork>;
 
             const handler = new UpdateUserProfilePictureHandler(
               unitOfWork,
@@ -47,7 +45,7 @@ describe('users', () => {
           'should throw BadRequestException because the user is deleted',
           (command: UpdateUserProfilePictureCommand) => {
             // Arrange
-            const user = mocked<User>({
+            const user = {
               id: {
                 getId: 'id-0',
               },
@@ -87,15 +85,13 @@ describe('users', () => {
                 getMilliseconds: 4,
               },
               isDeleted: true,
-            } as unknown as User);
+            } as MockedObject<User>;
 
-            const userRepository = mocked<UserRepository>({
+            const userRepository = {
               getOne: jest.fn().mockReturnValue(user),
-            } as unknown as UserRepository);
+            } as MockedObject<UserRepository>;
 
-            const unitOfWork = mocked<UnitOfWork>({
-              userRepository: userRepository,
-            } as unknown as UnitOfWork);
+            const unitOfWork = {} as MockedObject<UnitOfWork>;
 
             const handler = new UpdateUserProfilePictureHandler(
               unitOfWork,
@@ -115,7 +111,7 @@ describe('users', () => {
           'should throw BadRequestException because the user is blocked',
           (command: UpdateUserProfilePictureCommand) => {
             // Arrange
-            const user = mocked<User>({
+            const user = {
               id: {
                 getId: 'id-0',
               },
@@ -153,15 +149,13 @@ describe('users', () => {
               },
               deletedAt: null,
               isDeleted: false,
-            } as unknown as User);
+            } as MockedObject<User>;
 
-            const userRepository = mocked<UserRepository>({
+            const userRepository = {
               getOne: jest.fn().mockReturnValue(user),
-            } as unknown as UserRepository);
+            } as MockedObject<UserRepository>;
 
-            const unitOfWork = mocked<UnitOfWork>({
-              userRepository: userRepository,
-            } as unknown as UnitOfWork);
+            const unitOfWork = {} as MockedObject<UnitOfWork>;
 
             const handler = new UpdateUserProfilePictureHandler(
               unitOfWork,
@@ -181,7 +175,7 @@ describe('users', () => {
           'should throw BadRequestException because the user is not verified',
           (command: UpdateUserProfilePictureCommand) => {
             // Arrange
-            const user = mocked<User>({
+            const user = {
               id: {
                 getId: 'id-0',
               },
@@ -219,15 +213,13 @@ describe('users', () => {
               },
               deletedAt: null,
               isDeleted: false,
-            } as unknown as User);
+            } as MockedObject<User>;
 
-            const userRepository = mocked<UserRepository>({
+            const userRepository = {
               getOne: jest.fn().mockReturnValue(user),
-            } as unknown as UserRepository);
+            } as MockedObject<UserRepository>;
 
-            const unitOfWork = mocked<UnitOfWork>({
-              userRepository: userRepository,
-            } as unknown as UnitOfWork);
+            const unitOfWork = {} as MockedObject<UnitOfWork>;
 
             const handler = new UpdateUserProfilePictureHandler(
               unitOfWork,
@@ -247,7 +239,7 @@ describe('users', () => {
           'Update user profile picture with an image url should call the method updateProfilePicture of the User, call the update method of the UserRepository and the commitChanges method of the UnitOfWork',
           async (command: UpdateUserProfilePictureCommand) => {
             // Arrange
-            const user = mocked<User>({
+            const user = {
               id: {
                 getId: 'id-0',
               },
@@ -287,17 +279,16 @@ describe('users', () => {
                 getMilliseconds: 4,
               },
               updateProfilePicture: jest.fn(),
-            } as unknown as User);
+            } as MockedObject<User>;
 
-            const userRepository = mocked<UserRepository>({
+            const userRepository = {
               getOne: jest.fn().mockReturnValue(user),
               update: jest.fn(),
-            } as unknown as UserRepository);
+            } as MockedObject<UserRepository>;
 
-            const unitOfWork = mocked<UnitOfWork>({
-              userRepository: userRepository,
+            const unitOfWork = {
               commitChanges: jest.fn(),
-            } as unknown as UnitOfWork);
+            } as MockedObject<UnitOfWork>;
 
             const handler = new UpdateUserProfilePictureHandler(
               unitOfWork,
@@ -321,7 +312,7 @@ describe('users', () => {
           // Arrange
           command = new UpdateUserProfilePictureCommand('id 0', null);
 
-          const user = mocked<User>({
+          const user = {
             id: {
               getId: 'id-0',
             },
@@ -361,17 +352,16 @@ describe('users', () => {
               getMilliseconds: 4,
             },
             updateProfilePicture: jest.fn(),
-          } as unknown as User);
+          } as MockedObject<User>;
 
-          const userRepository = mocked<UserRepository>({
+          const userRepository = {
             getOne: jest.fn().mockReturnValue(user),
             update: jest.fn(),
-          } as unknown as UserRepository);
+          } as MockedObject<UserRepository>;
 
-          const unitOfWork = mocked<UnitOfWork>({
-            userRepository: userRepository,
+          const unitOfWork = {
             commitChanges: jest.fn(),
-          } as unknown as UnitOfWork);
+          } as MockedObject<UnitOfWork>;
 
           const handler = new UpdateUserProfilePictureHandler(
             unitOfWork,

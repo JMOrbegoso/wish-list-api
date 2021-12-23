@@ -1,11 +1,50 @@
-import { mocked } from 'ts-jest/utils';
+import { MockedObject } from 'ts-jest/dist/utils/testing';
 import { User } from '../../domain/entities';
-import { Role } from '../../domain/value-objects';
+import { RefreshTokenEntity } from '../persistence/entities';
 import { userToUserEntity } from '.';
+
+const validRefreshTokenEntities = [
+  {
+    id: 'id-0',
+    createdAt: new Date(2021, 5, 5),
+    duration: 100,
+    ipAddress: '192.168.0.1',
+    replacedAt: null,
+    replacedBy: null,
+    revokedAt: null,
+  } as MockedObject<RefreshTokenEntity>,
+  {
+    id: 'id-1',
+    createdAt: new Date(2021, 5, 5),
+    duration: 100,
+    ipAddress: '192.168.0.1',
+    replacedAt: null,
+    replacedBy: null,
+    revokedAt: new Date(2021, 5, 5),
+  } as MockedObject<RefreshTokenEntity>,
+  {
+    id: 'id-2',
+    createdAt: new Date(2021, 5, 5),
+    duration: 100,
+    ipAddress: '192.168.0.1',
+    replacedAt: new Date(2021, 5, 5),
+    replacedBy: 'id-1',
+    revokedAt: null,
+  } as MockedObject<RefreshTokenEntity>,
+  {
+    id: 'id-3',
+    createdAt: new Date(2021, 5, 5),
+    duration: 100,
+    ipAddress: '192.168.0.1',
+    replacedAt: new Date(2021, 5, 5),
+    replacedBy: 'id-1',
+    revokedAt: new Date(2021, 5, 5),
+  } as MockedObject<RefreshTokenEntity>,
+];
 
 const validValues = [
   [
-    mocked<User>({
+    {
       id: {
         getId: 'id-0',
       },
@@ -39,17 +78,23 @@ const validValues = [
       biography: {
         getBiography: 'A nice person 0.',
       },
-      roles: [mocked<Role>({ getRole: 'Admin' } as unknown as Role)],
+      roles: ['Admin'],
       profilePicture: {
         getUrl: 'https://www.example.com/0.jpg',
       },
       deletedAt: {
         getDate: new Date(2001, 5, 5),
       },
-    } as unknown as User),
+    } as MockedObject<User>,
+    [
+      validRefreshTokenEntities[0],
+      validRefreshTokenEntities[1],
+      validRefreshTokenEntities[2],
+      validRefreshTokenEntities[3],
+    ] as MockedObject<RefreshTokenEntity[]>,
   ],
   [
-    mocked<User>({
+    {
       id: {
         getId: 'id-1',
       },
@@ -83,20 +128,21 @@ const validValues = [
       biography: {
         getBiography: 'A nice person 1.',
       },
-      roles: [
-        mocked<Role>({ getRole: 'Admin' } as unknown as Role),
-        mocked<Role>({ getRole: 'Moderator' } as unknown as Role),
-      ],
+      roles: ['Admin', 'Moderator'],
       profilePicture: {
         getUrl: 'https://www.example.com/1.jpg',
       },
       deletedAt: {
         getDate: new Date(2001, 5, 5),
       },
-    } as unknown as User),
+    } as MockedObject<User>,
+    [
+      validRefreshTokenEntities[0],
+      validRefreshTokenEntities[3],
+    ] as MockedObject<RefreshTokenEntity[]>,
   ],
   [
-    mocked<User>({
+    {
       id: {
         getId: 'id-2',
       },
@@ -130,18 +176,20 @@ const validValues = [
       biography: {
         getBiography: 'A nice person 2.',
       },
-      roles: [
-        mocked<Role>({ getRole: 'Admin' } as unknown as Role),
-        mocked<Role>({ getRole: 'Moderator' } as unknown as Role),
-      ],
+      roles: ['Admin', 'Moderator'],
       profilePicture: null,
       deletedAt: {
         getDate: new Date(2001, 5, 5),
       },
-    } as unknown as User),
+    } as MockedObject<User>,
+    [
+      validRefreshTokenEntities[1],
+      validRefreshTokenEntities[2],
+      validRefreshTokenEntities[3],
+    ] as MockedObject<RefreshTokenEntity[]>,
   ],
   [
-    mocked<User>({
+    {
       id: {
         getId: 'id-3',
       },
@@ -175,18 +223,20 @@ const validValues = [
       biography: {
         getBiography: 'A nice person 3.',
       },
-      roles: [
-        mocked<Role>({ getRole: 'Admin' } as unknown as Role),
-        mocked<Role>({ getRole: 'Moderator' } as unknown as Role),
-      ],
+      roles: ['Admin', 'Moderator'],
       profilePicture: {
         getUrl: 'https://www.example.com/3.jpg',
       },
       deletedAt: null,
-    } as unknown as User),
+    } as MockedObject<User>,
+    [
+      validRefreshTokenEntities[0],
+      validRefreshTokenEntities[1],
+      validRefreshTokenEntities[2],
+    ] as MockedObject<RefreshTokenEntity[]>,
   ],
   [
-    mocked<User>({
+    {
       id: {
         getId: 'id-4',
       },
@@ -220,18 +270,19 @@ const validValues = [
       biography: {
         getBiography: 'A nice person 4.',
       },
-      roles: [
-        mocked<Role>({ getRole: 'Admin' } as unknown as Role),
-        mocked<Role>({ getRole: 'Moderator' } as unknown as Role),
-      ],
+      roles: ['Admin', 'Moderator'],
       profilePicture: null,
       deletedAt: {
         getDate: new Date(2001, 5, 5),
       },
-    } as unknown as User),
+    } as MockedObject<User>,
+    [
+      validRefreshTokenEntities[1],
+      validRefreshTokenEntities[3],
+    ] as MockedObject<RefreshTokenEntity[]>,
   ],
   [
-    mocked<User>({
+    {
       id: {
         getId: 'id-5',
       },
@@ -265,18 +316,16 @@ const validValues = [
       biography: {
         getBiography: 'A nice person 5.',
       },
-      roles: [
-        mocked<Role>({ getRole: 'Admin' } as unknown as Role),
-        mocked<Role>({ getRole: 'Moderator' } as unknown as Role),
-      ],
+      roles: ['Admin', 'Moderator'],
       profilePicture: {
         getUrl: 'https://www.example.com/5.jpg',
       },
       deletedAt: null,
-    } as unknown as User),
+    } as MockedObject<User>,
+    [validRefreshTokenEntities[0]] as MockedObject<RefreshTokenEntity[]>,
   ],
   [
-    mocked<User>({
+    {
       id: {
         getId: 'id-6',
       },
@@ -310,17 +359,14 @@ const validValues = [
       biography: {
         getBiography: 'A nice person 6.',
       },
-      roles: [
-        mocked<Role>({ getRole: 'Admin' } as unknown as Role),
-        mocked<Role>({ getRole: 'Moderator' } as unknown as Role),
-        mocked<Role>({ getRole: 'Basic' } as unknown as Role),
-      ],
+      roles: ['Admin', 'Moderator', 'Basic'],
       profilePicture: null,
       deletedAt: null,
-    } as unknown as User),
+    } as MockedObject<User>,
+    [validRefreshTokenEntities[3]] as MockedObject<RefreshTokenEntity[]>,
   ],
   [
-    mocked<User>({
+    {
       id: {
         getId: 'id-7',
       },
@@ -357,7 +403,8 @@ const validValues = [
       roles: [],
       profilePicture: null,
       deletedAt: null,
-    } as unknown as User),
+    } as MockedObject<User>,
+    [] as MockedObject<RefreshTokenEntity[]>,
   ],
 ];
 
@@ -367,11 +414,14 @@ describe('users', () => {
       describe('User to UserEntity', () => {
         test.each(validValues)(
           'should map User to UserEntity keeping all the property values',
-          (user: User) => {
+          (
+            user: MockedObject<User>,
+            refreshTokenEntities: MockedObject<RefreshTokenEntity[]>,
+          ) => {
             // Arrange
 
             // Act
-            const userEntity = userToUserEntity(user);
+            const userEntity = userToUserEntity(user, refreshTokenEntities);
 
             // Assert
             expect(userEntity.id).toBe(user.id.getId);
@@ -395,16 +445,25 @@ describe('users', () => {
             expect(userEntity.createdAt).toBe(user.createdAt.getDate);
             expect(userEntity.updatedAt).toBe(user.updatedAt.getDate);
             expect(userEntity.biography).toBe(user.biography.getBiography);
+
             if (user.profilePicture)
               expect(userEntity.profilePicture).toBe(
                 user.profilePicture.getUrl,
               );
             else expect(userEntity.profilePicture).toBeNull();
+
             if (user.deletedAt)
               expect(userEntity.deletedAt).toBe(user.deletedAt.getDate);
             else expect(userEntity.deletedAt).toBeNull();
+
             for (let i = 0; i < user.roles.length; i++) {
               expect(userEntity.roles[i]).toBe(user.roles[i]);
+            }
+
+            for (let i = 0; i < refreshTokenEntities.length; i++) {
+              expect(userEntity.refreshTokens.getItems()[i].id).toBe(
+                refreshTokenEntities[i].id,
+              );
             }
           },
         );

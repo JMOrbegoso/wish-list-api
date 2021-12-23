@@ -3,10 +3,7 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { LocalLoginCommand } from '..';
 import { UnitOfWork } from '../../../../shared/domain/repositories';
 import { RefreshToken, User } from '../../../domain/entities';
-import {
-  RefreshTokenRepository,
-  UserRepository,
-} from '../../../domain/repositories';
+import { UserRepository } from '../../../domain/repositories';
 import { IpAddress, Username } from '../../../domain/value-objects';
 import { AuthTokensDto } from '../../dtos';
 import { userToOutputUserDto } from '../../mappings';
@@ -20,7 +17,6 @@ import {
 export class LocalLoginHandler implements ICommandHandler<LocalLoginCommand> {
   constructor(
     private readonly userRepository: UserRepository,
-    private readonly refreshTokenRepository: RefreshTokenRepository,
     private readonly unitOfWork: UnitOfWork,
     private readonly encryptionService: EncryptionService,
     private readonly tokenService: TokenService,
@@ -60,12 +56,14 @@ export class LocalLoginHandler implements ICommandHandler<LocalLoginCommand> {
     // Generate the new refresh token
     const newRefreshToken = RefreshToken.create(
       this.uniqueIdGeneratorService.generateId(),
-      user.id,
       ipAddress,
     );
-    this.refreshTokenRepository.add(newRefreshToken);
+
+    // Update the user
+    user.addRefreshToken(newRefreshToken);
 
     // Save changes in persistence
+    await this.userRepository.update(user);
     await this.unitOfWork.commitChanges();
 
     return {

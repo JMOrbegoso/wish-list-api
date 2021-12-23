@@ -1,6 +1,15 @@
 import { MockedObject } from 'ts-jest/dist/utils/testing';
-import { mocked } from 'ts-jest/utils';
-import { User, VerificationCode } from '..';
+import {
+  BlockedUserCannotBeUpdatedError,
+  DeletedUserCannotBeUpdatedError,
+  DuplicatedRefreshTokenError,
+  InvalidRefreshTokenError,
+  RefreshToken,
+  RefreshTokenNotFoundError,
+  UnverifiedUserCannotBeUpdatedError,
+  User,
+  VerificationCode,
+} from '..';
 import {
   MillisecondsDate,
   UniqueId,
@@ -20,482 +29,492 @@ import {
 
 const validValues = [
   [
-    mocked<UniqueId>({
+    {
       getId: 'id-0',
       equals: jest.fn(),
-    } as unknown as UniqueId),
-    mocked<Email>({
+    } as MockedObject<UniqueId>,
+    {
       getEmail: 'email0@email.com',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as Email),
-    mocked<Username>({
+    } as MockedObject<Email>,
+    {
       getUsername: 'John_Doe_0',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as Username),
-    mocked<PasswordHash>({
+    } as MockedObject<Username>,
+    {
       getPasswordHash: 'hash0',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as PasswordHash),
-    mocked<IsVerified>({
+    } as MockedObject<PasswordHash>,
+    {
       getStatus: true,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as IsVerified),
-    mocked<VerificationCode>({
-      getStatus: true,
+    } as MockedObject<IsVerified>,
+    {
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as VerificationCode),
-    mocked<IsBlocked>({
+    } as MockedObject<VerificationCode>,
+    {
       getStatus: false,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as IsBlocked),
-    mocked<FirstName>({
+    } as MockedObject<IsBlocked>,
+    {
       getFirstName: 'FirstName0',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as FirstName),
-    mocked<LastName>({
+    } as MockedObject<FirstName>,
+    {
       getLastName: 'LastName0',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as LastName),
-    mocked<MillisecondsDate>({
+    } as MockedObject<LastName>,
+    {
       getMilliseconds: 1,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as MillisecondsDate),
-    mocked<MillisecondsDate>({
+    } as MockedObject<MillisecondsDate>,
+    {
       getMilliseconds: 2,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as MillisecondsDate),
-    mocked<MillisecondsDate>({
+    } as MockedObject<MillisecondsDate>,
+    {
       getMilliseconds: 3,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as MillisecondsDate),
-    mocked<Biography>({
+    } as MockedObject<MillisecondsDate>,
+    {
       getBiography: 'A nice person 0.',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as Biography),
-    mocked<Role[]>({} as unknown as Role[]),
-    mocked<WebUrl>({
+    } as MockedObject<Biography>,
+    [] as MockedObject<Role[]>,
+    [
+      { id: { getId: 'refresh-token-id-0' } },
+      { id: { getId: 'refresh-token-id-1' } },
+      { id: { getId: 'refresh-token-id-2' } },
+      { id: { getId: 'refresh-token-id-3' } },
+      { id: { getId: 'refresh-token-id-4' } },
+      { id: { getId: 'refresh-token-id-5' } },
+    ] as MockedObject<RefreshToken[]>,
+    {
       getUrl: 'https://www.example.com/0.jpg',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as WebUrl),
-    mocked<MillisecondsDate>({
+    } as MockedObject<WebUrl>,
+    {
       getMilliseconds: 4,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as MillisecondsDate),
+    } as MockedObject<MillisecondsDate>,
   ],
   [
-    mocked<UniqueId>({
+    {
       getId: 'id-1',
       equals: jest.fn(),
-    } as unknown as UniqueId),
-    mocked<Email>({
+    } as MockedObject<UniqueId>,
+    {
       getEmail: 'email1@email.com',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as Email),
-    mocked<Username>({
+    } as MockedObject<Email>,
+    {
       getUsername: 'John_Doe_1',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as Username),
-    mocked<PasswordHash>({
+    } as MockedObject<Username>,
+    {
       getPasswordHash: 'hash1',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as PasswordHash),
-    mocked<IsVerified>({
+    } as MockedObject<PasswordHash>,
+    {
       getStatus: true,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as IsVerified),
-    mocked<VerificationCode>({
-      getStatus: true,
+    } as MockedObject<IsVerified>,
+    {
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as VerificationCode),
-    mocked<IsBlocked>({
+    } as MockedObject<VerificationCode>,
+    {
       getStatus: false,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as IsBlocked),
-    mocked<FirstName>({
+    } as MockedObject<IsBlocked>,
+    {
       getFirstName: 'FirstName1',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as FirstName),
-    mocked<LastName>({
+    } as MockedObject<FirstName>,
+    {
       getLastName: 'LastName1',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as LastName),
-    mocked<MillisecondsDate>({
+    } as MockedObject<LastName>,
+    {
       getMilliseconds: 1,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as MillisecondsDate),
-    mocked<MillisecondsDate>({
+    } as MockedObject<MillisecondsDate>,
+    {
       getMilliseconds: 2,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as MillisecondsDate),
-    mocked<MillisecondsDate>({
+    } as MockedObject<MillisecondsDate>,
+    {
       getMilliseconds: 3,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as MillisecondsDate),
-    mocked<Biography>({
+    } as MockedObject<MillisecondsDate>,
+    {
       getBiography: 'A nice person 1.',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as Biography),
-    mocked<Role[]>({} as unknown as Role[]),
-    mocked<WebUrl>({
+    } as MockedObject<Biography>,
+    [] as MockedObject<Role[]>,
+    [
+      { id: { getId: 'refresh-token-id-0' } },
+      { id: { getId: 'refresh-token-id-1' } },
+    ] as MockedObject<RefreshToken[]>,
+    {
       getUrl: 'https://www.example.com/1.jpg',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as WebUrl),
-    mocked<MillisecondsDate>({
+    } as MockedObject<WebUrl>,
+    {
       getMilliseconds: 4,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as MillisecondsDate),
+    } as MockedObject<MillisecondsDate>,
   ],
   [
-    mocked<UniqueId>({
+    {
       getId: 'id-2',
       equals: jest.fn(),
-    } as unknown as UniqueId),
-    mocked<Email>({
+    } as MockedObject<UniqueId>,
+    {
       getEmail: 'email2@email.com',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as Email),
-    mocked<Username>({
+    } as MockedObject<Email>,
+    {
       getUsername: 'John_Doe_2',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as Username),
-    mocked<PasswordHash>({
+    } as MockedObject<Username>,
+    {
       getPasswordHash: 'hash2',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as PasswordHash),
-    mocked<IsVerified>({
+    } as MockedObject<PasswordHash>,
+    {
       getStatus: true,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as IsVerified),
-    mocked<VerificationCode>({
-      getStatus: true,
+    } as MockedObject<IsVerified>,
+    {
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as VerificationCode),
-    mocked<IsBlocked>({
+    } as MockedObject<VerificationCode>,
+    {
       getStatus: false,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as IsBlocked),
-    mocked<FirstName>({
+    } as MockedObject<IsBlocked>,
+    {
       getFirstName: 'FirstName2',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as FirstName),
-    mocked<LastName>({
+    } as MockedObject<FirstName>,
+    {
       getLastName: 'LastName2',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as LastName),
-    mocked<MillisecondsDate>({
+    } as MockedObject<LastName>,
+    {
       getMilliseconds: 1,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as MillisecondsDate),
-    mocked<MillisecondsDate>({
+    } as MockedObject<MillisecondsDate>,
+    {
       getMilliseconds: 2,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as MillisecondsDate),
-    mocked<MillisecondsDate>({
+    } as MockedObject<MillisecondsDate>,
+    {
       getMilliseconds: 3,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as MillisecondsDate),
-    mocked<Biography>({
+    } as MockedObject<MillisecondsDate>,
+    {
       getBiography: 'A nice person 2.',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as Biography),
-    mocked<Role[]>({} as unknown as Role[]),
+    } as MockedObject<Biography>,
+    [] as MockedObject<Role[]>,
+    [] as MockedObject<RefreshToken[]>,
     null,
-    mocked<MillisecondsDate>({
+    {
       getMilliseconds: 4,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as MillisecondsDate),
+    } as MockedObject<MillisecondsDate>,
   ],
   [
-    mocked<UniqueId>({
+    {
       getId: 'id-3',
       equals: jest.fn(),
-    } as unknown as UniqueId),
-    mocked<Email>({
+    } as MockedObject<UniqueId>,
+    {
       getEmail: 'email3@email.com',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as Email),
-    mocked<Username>({
+    } as MockedObject<Email>,
+    {
       getUsername: 'John_Doe_3',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as Username),
-    mocked<PasswordHash>({
+    } as MockedObject<Username>,
+    {
       getPasswordHash: 'hash3',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as PasswordHash),
-    mocked<IsVerified>({
+    } as MockedObject<PasswordHash>,
+    {
       getStatus: true,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as IsVerified),
-    mocked<VerificationCode>({
-      getStatus: true,
+    } as MockedObject<IsVerified>,
+    {
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as VerificationCode),
-    mocked<IsBlocked>({
+    } as MockedObject<VerificationCode>,
+    {
       getStatus: false,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as IsBlocked),
-    mocked<FirstName>({
+    } as MockedObject<IsBlocked>,
+    {
       getFirstName: 'FirstName3',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as FirstName),
-    mocked<LastName>({
+    } as MockedObject<FirstName>,
+    {
       getLastName: 'LastName3',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as LastName),
-    mocked<MillisecondsDate>({
+    } as MockedObject<LastName>,
+    {
       getMilliseconds: 1,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as MillisecondsDate),
-    mocked<MillisecondsDate>({
+    } as MockedObject<MillisecondsDate>,
+    {
       getMilliseconds: 2,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as MillisecondsDate),
-    mocked<MillisecondsDate>({
+    } as MockedObject<MillisecondsDate>,
+    {
       getMilliseconds: 3,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as MillisecondsDate),
-    mocked<Biography>({
+    } as MockedObject<MillisecondsDate>,
+    {
       getBiography: 'A nice person 3.',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as Biography),
-    mocked<Role[]>({} as unknown as Role[]),
-    mocked<WebUrl>({
+    } as MockedObject<Biography>,
+    [] as MockedObject<Role[]>,
+    [] as MockedObject<RefreshToken[]>,
+    {
       getUrl: 'https://www.example.com/3.jpg',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as WebUrl),
+    } as MockedObject<WebUrl>,
     null,
   ],
   [
-    mocked<UniqueId>({
+    {
       getId: 'id-4',
       equals: jest.fn(),
-    } as unknown as UniqueId),
-    mocked<Email>({
+    } as MockedObject<UniqueId>,
+    {
       getEmail: 'email4@email.com',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as Email),
-    mocked<Username>({
+    } as MockedObject<Email>,
+    {
       getUsername: 'John_Doe_4',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as Username),
-    mocked<PasswordHash>({
+    } as MockedObject<Username>,
+    {
       getPasswordHash: 'hash4',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as PasswordHash),
-    mocked<IsVerified>({
+    } as MockedObject<PasswordHash>,
+    {
       getStatus: true,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as IsVerified),
-    mocked<VerificationCode>({
-      getStatus: true,
+    } as MockedObject<IsVerified>,
+    {
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as VerificationCode),
-    mocked<IsBlocked>({
+    } as MockedObject<VerificationCode>,
+    {
       getStatus: false,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as IsBlocked),
-    mocked<FirstName>({
+    } as MockedObject<IsBlocked>,
+    {
       getFirstName: 'FirstName4',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as FirstName),
-    mocked<LastName>({
+    } as MockedObject<FirstName>,
+    {
       getLastName: 'LastName4',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as LastName),
-    mocked<MillisecondsDate>({
+    } as MockedObject<LastName>,
+    {
       getMilliseconds: 1,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as MillisecondsDate),
-    mocked<MillisecondsDate>({
+    } as MockedObject<MillisecondsDate>,
+    {
       getMilliseconds: 2,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as MillisecondsDate),
-    mocked<MillisecondsDate>({
+    } as MockedObject<MillisecondsDate>,
+    {
       getMilliseconds: 3,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as MillisecondsDate),
-    mocked<Biography>({
+    } as MockedObject<MillisecondsDate>,
+    {
       getBiography: 'A nice person 4.',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as Biography),
-    mocked<Role[]>({} as unknown as Role[]),
+    } as MockedObject<Biography>,
+    [] as MockedObject<Role[]>,
+    [] as MockedObject<RefreshToken[]>,
     null,
-    mocked<MillisecondsDate>({
+    {
       getMilliseconds: 4,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as MillisecondsDate),
+    } as MockedObject<MillisecondsDate>,
   ],
   [
-    mocked<UniqueId>({
+    {
       getId: 'id-5',
       equals: jest.fn(),
-    } as unknown as UniqueId),
-    mocked<Email>({
+    } as MockedObject<UniqueId>,
+    {
       getEmail: 'email5@email.com',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as Email),
-    mocked<Username>({
+    } as MockedObject<Email>,
+    {
       getUsername: 'John_Doe_5',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as Username),
-    mocked<PasswordHash>({
+    } as MockedObject<Username>,
+    {
       getPasswordHash: 'hash5',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as PasswordHash),
-    mocked<IsVerified>({
+    } as MockedObject<PasswordHash>,
+    {
       getStatus: true,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as IsVerified),
-    mocked<VerificationCode>({
-      getStatus: true,
+    } as MockedObject<IsVerified>,
+    {
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as VerificationCode),
-    mocked<IsBlocked>({
+    } as MockedObject<VerificationCode>,
+    {
       getStatus: false,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as IsBlocked),
-    mocked<FirstName>({
+    } as MockedObject<IsBlocked>,
+    {
       getFirstName: 'FirstName5',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as FirstName),
-    mocked<LastName>({
+    } as MockedObject<FirstName>,
+    {
       getLastName: 'LastName5',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as LastName),
-    mocked<MillisecondsDate>({
+    } as MockedObject<LastName>,
+    {
       getMilliseconds: 1,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as MillisecondsDate),
-    mocked<MillisecondsDate>({
+    } as MockedObject<MillisecondsDate>,
+    {
       getMilliseconds: 2,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as MillisecondsDate),
-    mocked<MillisecondsDate>({
+    } as MockedObject<MillisecondsDate>,
+    {
       getMilliseconds: 3,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as MillisecondsDate),
-    mocked<Biography>({
+    } as MockedObject<MillisecondsDate>,
+    {
       getBiography: 'A nice person 5.',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as Biography),
-    mocked<Role[]>({} as unknown as Role[]),
-    mocked<WebUrl>({
+    } as MockedObject<Biography>,
+    [] as MockedObject<Role[]>,
+    [] as MockedObject<RefreshToken[]>,
+    {
       getUrl: 'https://www.example.com/5.jpg',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as WebUrl),
+    } as MockedObject<WebUrl>,
     null,
   ],
   [
-    mocked<UniqueId>({
+    {
       getId: 'id-6',
       equals: jest.fn(),
-    } as unknown as UniqueId),
-    mocked<Email>({
+    } as MockedObject<UniqueId>,
+    {
       getEmail: 'email6@email.com',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as Email),
-    mocked<Username>({
+    } as MockedObject<Email>,
+    {
       getUsername: 'John_Doe_6',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as Username),
-    mocked<PasswordHash>({
+    } as MockedObject<Username>,
+    {
       getPasswordHash: 'hash6',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as PasswordHash),
-    mocked<IsVerified>({
+    } as MockedObject<PasswordHash>,
+    {
       getStatus: true,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as IsVerified),
-    mocked<VerificationCode>({
-      getStatus: true,
+    } as MockedObject<IsVerified>,
+    {
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as VerificationCode),
-    mocked<IsBlocked>({
+    } as MockedObject<VerificationCode>,
+    {
       getStatus: false,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as IsBlocked),
-    mocked<FirstName>({
+    } as MockedObject<IsBlocked>,
+    {
       getFirstName: 'FirstName6',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as FirstName),
-    mocked<LastName>({
+    } as MockedObject<FirstName>,
+    {
       getLastName: 'LastName6',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as LastName),
-    mocked<MillisecondsDate>({
+    } as MockedObject<LastName>,
+    {
       getMilliseconds: 1,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as MillisecondsDate),
-    mocked<MillisecondsDate>({
+    } as MockedObject<MillisecondsDate>,
+    {
       getMilliseconds: 2,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as MillisecondsDate),
-    mocked<MillisecondsDate>({
+    } as MockedObject<MillisecondsDate>,
+    {
       getMilliseconds: 3,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as MillisecondsDate),
-    mocked<Biography>({
+    } as MockedObject<MillisecondsDate>,
+    {
       getBiography: 'A nice person 6.',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as Biography),
-    mocked<Role[]>({} as unknown as Role[]),
+    } as MockedObject<Biography>,
+    [] as MockedObject<Role[]>,
+    [] as MockedObject<RefreshToken[]>,
     null,
     null,
   ],
   [
-    mocked<UniqueId>({
+    {
       getId: 'id-7',
       equals: jest.fn(),
-    } as unknown as UniqueId),
-    mocked<Email>({
+    } as MockedObject<UniqueId>,
+    {
       getEmail: 'email7@email.com',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as Email),
-    mocked<Username>({
+    } as MockedObject<Email>,
+    {
       getUsername: 'John_Doe_7',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as Username),
-    mocked<PasswordHash>({
+    } as MockedObject<Username>,
+    {
       getPasswordHash: 'hash7',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as PasswordHash),
-    mocked<IsVerified>({
+    } as MockedObject<PasswordHash>,
+    {
       getStatus: true,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as IsVerified),
-    mocked<VerificationCode>({
-      getStatus: true,
+    } as MockedObject<IsVerified>,
+    {
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as VerificationCode),
-    mocked<IsBlocked>({
+    } as MockedObject<VerificationCode>,
+    {
       getStatus: false,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as IsBlocked),
-    mocked<FirstName>({
+    } as MockedObject<IsBlocked>,
+    {
       getFirstName: 'FirstName7',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as FirstName),
-    mocked<LastName>({
+    } as MockedObject<FirstName>,
+    {
       getLastName: 'LastName7',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as LastName),
-    mocked<MillisecondsDate>({
+    } as MockedObject<LastName>,
+    {
       getMilliseconds: 1,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as MillisecondsDate),
-    mocked<MillisecondsDate>({
+    } as MockedObject<MillisecondsDate>,
+    {
       getMilliseconds: 2,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as MillisecondsDate),
-    mocked<MillisecondsDate>({
+    } as MockedObject<MillisecondsDate>,
+    {
       getMilliseconds: 3,
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as MillisecondsDate),
-    mocked<Biography>({
+    } as MockedObject<MillisecondsDate>,
+    {
       getBiography: 'A nice person 7.',
       equals: jest.fn().mockReturnValue(true),
-    } as unknown as Biography),
-    mocked<Role[]>({} as unknown as Role[]),
+    } as MockedObject<Biography>,
+    [] as MockedObject<Role[]>,
+    [] as MockedObject<RefreshToken[]>,
     null,
     null,
   ],
@@ -506,7 +525,7 @@ describe('users', () => {
     describe('entities', () => {
       describe('user', () => {
         test.each(validValues)(
-          'should create an User with [id: %p], [email: %p], [username: %p], [passwordHash: %p], [isVerified: %p], [isBlocked: %p], [firstName: %p], [lastName: %p], [birthday: %p], [createdAt: %p], [updatedAt: %p], [biography: %p], [roles: %p], [profilePicture: %p] and [deletedAt: %p]',
+          'should create an User with [id: %p], [email: %p], [username: %p], [passwordHash: %p], [isVerified: %p], [isBlocked: %p], [firstName: %p], [lastName: %p], [birthday: %p], [createdAt: %p], [updatedAt: %p], [biography: %p], [roles: %p], [refreshTokens: %p], [profilePicture: %p] and [deletedAt: %p]',
           (
             uniqueId: MockedObject<UniqueId>,
             email: MockedObject<Email>,
@@ -522,6 +541,7 @@ describe('users', () => {
             updatedAt: MockedObject<MillisecondsDate>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
+            refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
             deletedAt: MockedObject<MillisecondsDate>,
           ) => {
@@ -543,6 +563,7 @@ describe('users', () => {
               updatedAt,
               biography,
               roles,
+              refreshTokens,
               profilePicture,
               deletedAt,
             );
@@ -579,6 +600,9 @@ describe('users', () => {
             for (let i = 0; i < roles.length; i++) {
               expect(user.roles[i]).toBe(roles[i]);
             }
+            for (let i = 0; i < refreshTokens.length; i++) {
+              expect(user.refreshTokens[i].id).toBe(refreshTokens[i].id);
+            }
           },
         );
 
@@ -599,6 +623,7 @@ describe('users', () => {
             updatedAt: MockedObject<MillisecondsDate>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
+            refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
             deletedAt: MockedObject<MillisecondsDate>,
           ) => {
@@ -618,6 +643,7 @@ describe('users', () => {
               updatedAt,
               biography,
               roles,
+              refreshTokens,
               profilePicture,
               deletedAt,
             );
@@ -647,6 +673,7 @@ describe('users', () => {
             updatedAt: MockedObject<MillisecondsDate>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
+            refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
             deletedAt: MockedObject<MillisecondsDate>,
           ) => {
@@ -666,13 +693,14 @@ describe('users', () => {
               updatedAt,
               biography,
               roles,
+              refreshTokens,
               profilePicture,
               deletedAt,
             );
             const newPasswordHashText = 'newHash';
-            const newPasswordHash = mocked<PasswordHash>({
+            const newPasswordHash = {
               getPasswordHash: newPasswordHashText,
-            } as unknown as PasswordHash);
+            } as MockedObject<PasswordHash>;
 
             // Act
             user.updatePasswordHash(newPasswordHash);
@@ -699,6 +727,7 @@ describe('users', () => {
             updatedAt: MockedObject<MillisecondsDate>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
+            refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
             deletedAt: MockedObject<MillisecondsDate>,
           ) => {
@@ -718,6 +747,7 @@ describe('users', () => {
               updatedAt,
               biography,
               roles,
+              refreshTokens,
               profilePicture,
               deletedAt,
             );
@@ -747,6 +777,7 @@ describe('users', () => {
             updatedAt: MockedObject<MillisecondsDate>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
+            refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
             deletedAt: MockedObject<MillisecondsDate>,
           ) => {
@@ -766,6 +797,7 @@ describe('users', () => {
               updatedAt,
               biography,
               roles,
+              refreshTokens,
               profilePicture,
               deletedAt,
             );
@@ -795,6 +827,7 @@ describe('users', () => {
             updatedAt: MockedObject<MillisecondsDate>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
+            refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
             deletedAt: MockedObject<MillisecondsDate>,
           ) => {
@@ -814,6 +847,7 @@ describe('users', () => {
               updatedAt,
               biography,
               roles,
+              refreshTokens,
               profilePicture,
               deletedAt,
             );
@@ -843,6 +877,7 @@ describe('users', () => {
             updatedAt: MockedObject<MillisecondsDate>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
+            refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
             deletedAt: MockedObject<MillisecondsDate>,
           ) => {
@@ -862,26 +897,27 @@ describe('users', () => {
               updatedAt,
               biography,
               roles,
+              refreshTokens,
               profilePicture,
               deletedAt,
             );
 
             const newFirstNameText = 'new FirstName';
-            const newFirstName = mocked<FirstName>({
+            const newFirstName = {
               getFirstName: newFirstNameText,
-            } as unknown as FirstName);
+            } as MockedObject<FirstName>;
             const newLastNameText = 'new LastName';
-            const newLastName = mocked<LastName>({
+            const newLastName = {
               getLastName: newLastNameText,
-            } as unknown as LastName);
+            } as MockedObject<LastName>;
             const newBirthdayMillisecondsDate = new Date(2005, 1, 1).getTime();
-            const newBirthday = mocked<MillisecondsDate>({
+            const newBirthday = {
               getMilliseconds: newBirthdayMillisecondsDate,
-            } as unknown as MillisecondsDate);
+            } as MockedObject<MillisecondsDate>;
             const newBiographyText = 'new Biography';
-            const newBiography = mocked<Biography>({
+            const newBiography = {
               getBiography: newBiographyText,
-            } as unknown as Biography);
+            } as MockedObject<Biography>;
 
             // Act
             user.updateProfile(
@@ -918,6 +954,7 @@ describe('users', () => {
             updatedAt: MockedObject<MillisecondsDate>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
+            refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
             deletedAt: MockedObject<MillisecondsDate>,
           ) => {
@@ -937,13 +974,14 @@ describe('users', () => {
               updatedAt,
               biography,
               roles,
+              refreshTokens,
               profilePicture,
               deletedAt,
             );
 
-            const newProfilePicture = mocked<WebUrl>({
-              getWebUrl: 'https://www.example.com/new_image.jpg',
-            } as unknown as WebUrl);
+            const newProfilePicture = {
+              getUrl: 'https://www.example.com/new_image.jpg',
+            } as MockedObject<WebUrl>;
 
             // Act
             user.updateProfilePicture(newProfilePicture);
@@ -970,6 +1008,7 @@ describe('users', () => {
             updatedAt: MockedObject<MillisecondsDate>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
+            refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
             deletedAt: MockedObject<MillisecondsDate>,
           ) => {
@@ -989,6 +1028,7 @@ describe('users', () => {
               updatedAt,
               biography,
               roles,
+              refreshTokens,
               profilePicture,
               deletedAt,
             );
@@ -1018,6 +1058,7 @@ describe('users', () => {
             updatedAt: MockedObject<MillisecondsDate>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
+            refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
             deletedAt: MockedObject<MillisecondsDate>,
           ) => {
@@ -1037,6 +1078,7 @@ describe('users', () => {
               updatedAt,
               biography,
               roles,
+              refreshTokens,
               profilePicture,
               deletedAt,
             );
@@ -1067,6 +1109,7 @@ describe('users', () => {
             updatedAt: MockedObject<MillisecondsDate>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
+            refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
             deletedAt: MockedObject<MillisecondsDate>,
           ) => {
@@ -1086,6 +1129,7 @@ describe('users', () => {
               updatedAt,
               biography,
               roles,
+              refreshTokens,
               profilePicture,
               deletedAt,
             );
@@ -1116,19 +1160,20 @@ describe('users', () => {
             updatedAt: MockedObject<MillisecondsDate>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
+            refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
             deletedAt: MockedObject<MillisecondsDate>,
           ) => {
             // Arrange
             const customRoles = [
-              mocked<Role>({
+              {
                 getRole: 'Admin',
                 equals: jest.fn().mockReturnValue(true),
-              } as unknown as Role),
+              } as MockedObject<Role>,
             ];
-            const roleToAdd = mocked<Role>({
+            const roleToAdd = {
               getRole: 'Admin',
-            } as unknown as Role);
+            } as MockedObject<Role>;
             const user = User.create(
               uniqueId,
               email,
@@ -1144,6 +1189,7 @@ describe('users', () => {
               updatedAt,
               biography,
               customRoles,
+              refreshTokens,
               profilePicture,
               deletedAt,
             );
@@ -1174,19 +1220,20 @@ describe('users', () => {
             updatedAt: MockedObject<MillisecondsDate>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
+            refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
             deletedAt: MockedObject<MillisecondsDate>,
           ) => {
             // Arrange
             const customRoles = [
-              mocked<Role>({
+              {
                 getRole: 'Admin',
                 equals: jest.fn().mockReturnValue(false),
-              } as unknown as Role),
+              } as MockedObject<Role>,
             ];
-            const roleToAdd = mocked<Role>({
+            const roleToAdd = {
               getRole: 'Moderator',
-            } as unknown as Role);
+            } as MockedObject<Role>;
             const user = User.create(
               uniqueId,
               email,
@@ -1202,6 +1249,7 @@ describe('users', () => {
               updatedAt,
               biography,
               customRoles,
+              refreshTokens,
               profilePicture,
               deletedAt,
             );
@@ -1233,19 +1281,20 @@ describe('users', () => {
             updatedAt: MockedObject<MillisecondsDate>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
+            refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
             deletedAt: MockedObject<MillisecondsDate>,
           ) => {
             // Arrange
             const customRoles = [
-              mocked<Role>({
+              {
                 getRole: 'Admin',
                 equals: jest.fn().mockReturnValue(false),
-              } as unknown as Role),
+              } as MockedObject<Role>,
             ];
-            const roleToRemove = mocked<Role>({
+            const roleToRemove = {
               getRole: 'Moderator',
-            } as unknown as Role);
+            } as MockedObject<Role>;
             const user = User.create(
               uniqueId,
               email,
@@ -1261,6 +1310,7 @@ describe('users', () => {
               updatedAt,
               biography,
               customRoles,
+              refreshTokens,
               profilePicture,
               deletedAt,
             );
@@ -1291,19 +1341,20 @@ describe('users', () => {
             updatedAt: MockedObject<MillisecondsDate>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
+            refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
             deletedAt: MockedObject<MillisecondsDate>,
           ) => {
             // Arrange
             const customRoles = [
-              mocked<Role>({
+              {
                 getRole: 'Admin',
                 equals: jest.fn().mockReturnValue(true),
-              } as unknown as Role),
+              } as MockedObject<Role>,
             ];
-            const roleToRemove = mocked<Role>({
+            const roleToRemove = {
               getRole: 'Admin',
-            } as unknown as Role);
+            } as MockedObject<Role>;
             const user = User.create(
               uniqueId,
               email,
@@ -1319,6 +1370,7 @@ describe('users', () => {
               updatedAt,
               biography,
               customRoles,
+              refreshTokens,
               profilePicture,
               deletedAt,
             );
@@ -1348,23 +1400,24 @@ describe('users', () => {
             updatedAt: MockedObject<MillisecondsDate>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
+            refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
             deletedAt: MockedObject<MillisecondsDate>,
           ) => {
             // Arrange
             const customRoles = [
-              mocked<Role>({
+              {
                 getRole: 'Admin',
                 equals: jest.fn().mockReturnValue(true),
-              } as unknown as Role),
-              mocked<Role>({
+              } as MockedObject<Role>,
+              {
                 getRole: 'Moderator',
                 equals: jest.fn().mockReturnValue(false),
-              } as unknown as Role),
+              } as MockedObject<Role>,
             ];
-            const roleToRemove = mocked<Role>({
+            const roleToRemove = {
               getRole: 'Admin',
-            } as unknown as Role);
+            } as MockedObject<Role>;
             const user = User.create(
               uniqueId,
               email,
@@ -1380,6 +1433,7 @@ describe('users', () => {
               updatedAt,
               biography,
               customRoles,
+              refreshTokens,
               profilePicture,
               deletedAt,
             );
@@ -1390,6 +1444,986 @@ describe('users', () => {
             // Assert
             expect(user.roles.length).toBe(1);
             expect(user.roles[0]).toBe('Moderator');
+          },
+        );
+
+        test.each(validValues)(
+          'do changes on refreshTokens getter should make no changes on the original refreshTokens array',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            email: MockedObject<Email>,
+            username: MockedObject<Username>,
+            passwordHash: MockedObject<PasswordHash>,
+            isVerified: MockedObject<IsVerified>,
+            verificationCode: MockedObject<VerificationCode>,
+            isBlocked: MockedObject<IsBlocked>,
+            firstName: MockedObject<FirstName>,
+            lastName: MockedObject<LastName>,
+            birthday: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            biography: MockedObject<Biography>,
+            roles: MockedObject<Role[]>,
+            refreshTokens: MockedObject<RefreshToken[]>,
+            profilePicture: MockedObject<WebUrl>,
+            deletedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+            const user = User.create(
+              uniqueId,
+              email,
+              username,
+              passwordHash,
+              isVerified,
+              verificationCode,
+              isBlocked,
+              firstName,
+              lastName,
+              birthday,
+              createdAt,
+              updatedAt,
+              biography,
+              roles,
+              refreshTokens,
+              profilePicture,
+              deletedAt,
+            );
+
+            // Act
+            const refreshTokensLocal = user.refreshTokens;
+            const newRefreshToken = {
+              id: { getId: 'new-refresh-token-id' },
+            } as MockedObject<RefreshToken>;
+            refreshTokensLocal.push(newRefreshToken);
+
+            // Assert
+            expect(user.refreshTokens).toHaveLength(refreshTokens.length);
+            expect(refreshTokensLocal).toHaveLength(refreshTokens.length + 1);
+
+            for (let i = 0; i < refreshTokens.length; i++) {
+              expect(user.refreshTokens[i].id).toBe(refreshTokens[i].id);
+            }
+          },
+        );
+
+        test.each(validValues)(
+          'get RefreshToken from a User that do not have it should return null',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            email: MockedObject<Email>,
+            username: MockedObject<Username>,
+            passwordHash: MockedObject<PasswordHash>,
+            isVerified: MockedObject<IsVerified>,
+            verificationCode: MockedObject<VerificationCode>,
+            isBlocked: MockedObject<IsBlocked>,
+            firstName: MockedObject<FirstName>,
+            lastName: MockedObject<LastName>,
+            birthday: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            biography: MockedObject<Biography>,
+            roles: MockedObject<Role[]>,
+            refreshTokens: MockedObject<RefreshToken[]>,
+            profilePicture: MockedObject<WebUrl>,
+            deletedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+            const refreshTokenUniqueId = {
+              equals: jest.fn().mockReturnValue(false),
+            } as MockedObject<UniqueId>;
+            const refreshToken = {
+              id: refreshTokenUniqueId as UniqueId,
+            } as MockedObject<RefreshToken>;
+            refreshTokens = [refreshToken];
+
+            const user = User.create(
+              uniqueId,
+              email,
+              username,
+              passwordHash,
+              isVerified,
+              verificationCode,
+              isBlocked,
+              firstName,
+              lastName,
+              birthday,
+              createdAt,
+              updatedAt,
+              biography,
+              roles,
+              refreshTokens,
+              profilePicture,
+              deletedAt,
+            );
+
+            // Act
+            const refreshTokenUniqueIdToFind = {} as MockedObject<UniqueId>;
+            const refreshTokenFound = user.getRefreshToken(
+              refreshTokenUniqueIdToFind,
+            );
+
+            // Assert
+            expect(refreshTokenFound).toBeNull();
+          },
+        );
+
+        test.each(validValues)(
+          'get RefreshToken from a User that have it should return it',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            email: MockedObject<Email>,
+            username: MockedObject<Username>,
+            passwordHash: MockedObject<PasswordHash>,
+            isVerified: MockedObject<IsVerified>,
+            verificationCode: MockedObject<VerificationCode>,
+            isBlocked: MockedObject<IsBlocked>,
+            firstName: MockedObject<FirstName>,
+            lastName: MockedObject<LastName>,
+            birthday: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            biography: MockedObject<Biography>,
+            roles: MockedObject<Role[]>,
+            refreshTokens: MockedObject<RefreshToken[]>,
+            profilePicture: MockedObject<WebUrl>,
+            deletedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+            const refreshTokenUniqueId1 = {
+              equals: jest.fn().mockReturnValue(false),
+            } as MockedObject<UniqueId>;
+            const refreshToken1 = {
+              id: refreshTokenUniqueId1 as UniqueId,
+            } as MockedObject<RefreshToken>;
+
+            const refreshTokenUniqueId2 = {
+              equals: jest.fn().mockReturnValue(true),
+            } as MockedObject<UniqueId>;
+            const refreshToken2 = {
+              id: refreshTokenUniqueId2 as UniqueId,
+              ipAddress: '1.1.1.1',
+            } as MockedObject<RefreshToken>;
+
+            refreshTokens = [refreshToken1, refreshToken2];
+
+            const user = User.create(
+              uniqueId,
+              email,
+              username,
+              passwordHash,
+              isVerified,
+              verificationCode,
+              isBlocked,
+              firstName,
+              lastName,
+              birthday,
+              createdAt,
+              updatedAt,
+              biography,
+              roles,
+              refreshTokens,
+              profilePicture,
+              deletedAt,
+            );
+
+            // Act
+            const refreshTokenUniqueIdToFind = {} as MockedObject<UniqueId>;
+            const refreshTokenFound = user.getRefreshToken(
+              refreshTokenUniqueIdToFind,
+            );
+
+            // Assert
+            expect(refreshTokenFound.ipAddress).toBe('1.1.1.1');
+          },
+        );
+
+        test.each(validValues)(
+          'add RefreshToken to a deleted User should throw exception',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            email: MockedObject<Email>,
+            username: MockedObject<Username>,
+            passwordHash: MockedObject<PasswordHash>,
+            isVerified: MockedObject<IsVerified>,
+            verificationCode: MockedObject<VerificationCode>,
+            isBlocked: MockedObject<IsBlocked>,
+            firstName: MockedObject<FirstName>,
+            lastName: MockedObject<LastName>,
+            birthday: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            biography: MockedObject<Biography>,
+            roles: MockedObject<Role[]>,
+            refreshTokens: MockedObject<RefreshToken[]>,
+            profilePicture: MockedObject<WebUrl>,
+            deletedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+            deletedAt = {
+              getMilliseconds: 4,
+            } as MockedObject<MillisecondsDate>;
+
+            const user = User.create(
+              uniqueId,
+              email,
+              username,
+              passwordHash,
+              isVerified,
+              verificationCode,
+              isBlocked,
+              firstName,
+              lastName,
+              birthday,
+              createdAt,
+              updatedAt,
+              biography,
+              roles,
+              refreshTokens,
+              profilePicture,
+              deletedAt,
+            );
+
+            // Act
+            const refreshToken = {} as MockedObject<RefreshToken>;
+            // Assert
+            expect(() => user.addRefreshToken(refreshToken)).toThrowError(
+              DeletedUserCannotBeUpdatedError,
+            );
+          },
+        );
+
+        test.each(validValues)(
+          'add RefreshToken to a blocked User should throw exception',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            email: MockedObject<Email>,
+            username: MockedObject<Username>,
+            passwordHash: MockedObject<PasswordHash>,
+            isVerified: MockedObject<IsVerified>,
+            verificationCode: MockedObject<VerificationCode>,
+            isBlocked: MockedObject<IsBlocked>,
+            firstName: MockedObject<FirstName>,
+            lastName: MockedObject<LastName>,
+            birthday: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            biography: MockedObject<Biography>,
+            roles: MockedObject<Role[]>,
+            refreshTokens: MockedObject<RefreshToken[]>,
+            profilePicture: MockedObject<WebUrl>,
+            deletedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+            isBlocked = {
+              getStatus: true,
+            } as MockedObject<IsBlocked>;
+            deletedAt = null;
+
+            const user = User.create(
+              uniqueId,
+              email,
+              username,
+              passwordHash,
+              isVerified,
+              verificationCode,
+              isBlocked,
+              firstName,
+              lastName,
+              birthday,
+              createdAt,
+              updatedAt,
+              biography,
+              roles,
+              refreshTokens,
+              profilePicture,
+              deletedAt,
+            );
+
+            // Act
+            const refreshToken = {} as MockedObject<RefreshToken>;
+
+            // Assert
+            expect(() => user.addRefreshToken(refreshToken)).toThrowError(
+              BlockedUserCannotBeUpdatedError,
+            );
+          },
+        );
+
+        test.each(validValues)(
+          'add RefreshToken to a unverified User should throw exception',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            email: MockedObject<Email>,
+            username: MockedObject<Username>,
+            passwordHash: MockedObject<PasswordHash>,
+            isVerified: MockedObject<IsVerified>,
+            verificationCode: MockedObject<VerificationCode>,
+            isBlocked: MockedObject<IsBlocked>,
+            firstName: MockedObject<FirstName>,
+            lastName: MockedObject<LastName>,
+            birthday: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            biography: MockedObject<Biography>,
+            roles: MockedObject<Role[]>,
+            refreshTokens: MockedObject<RefreshToken[]>,
+            profilePicture: MockedObject<WebUrl>,
+            deletedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+            isVerified = {
+              getStatus: false,
+            } as MockedObject<IsVerified>;
+            isBlocked = {
+              getStatus: false,
+            } as MockedObject<IsBlocked>;
+            deletedAt = null;
+
+            const user = User.create(
+              uniqueId,
+              email,
+              username,
+              passwordHash,
+              isVerified,
+              verificationCode,
+              isBlocked,
+              firstName,
+              lastName,
+              birthday,
+              createdAt,
+              updatedAt,
+              biography,
+              roles,
+              refreshTokens,
+              profilePicture,
+              deletedAt,
+            );
+
+            // Act
+            const refreshToken = {} as MockedObject<RefreshToken>;
+
+            // Assert
+            expect(() => user.addRefreshToken(refreshToken)).toThrowError(
+              UnverifiedUserCannotBeUpdatedError,
+            );
+          },
+        );
+
+        test.each(validValues)(
+          'add a null RefreshToken to a User should throw exception',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            email: MockedObject<Email>,
+            username: MockedObject<Username>,
+            passwordHash: MockedObject<PasswordHash>,
+            isVerified: MockedObject<IsVerified>,
+            verificationCode: MockedObject<VerificationCode>,
+            isBlocked: MockedObject<IsBlocked>,
+            firstName: MockedObject<FirstName>,
+            lastName: MockedObject<LastName>,
+            birthday: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            biography: MockedObject<Biography>,
+            roles: MockedObject<Role[]>,
+            refreshTokens: MockedObject<RefreshToken[]>,
+            profilePicture: MockedObject<WebUrl>,
+            deletedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+            isVerified = {
+              getStatus: true,
+            } as MockedObject<IsVerified>;
+            isBlocked = {
+              getStatus: false,
+            } as MockedObject<IsBlocked>;
+            deletedAt = null;
+
+            const user = User.create(
+              uniqueId,
+              email,
+              username,
+              passwordHash,
+              isVerified,
+              verificationCode,
+              isBlocked,
+              firstName,
+              lastName,
+              birthday,
+              createdAt,
+              updatedAt,
+              biography,
+              roles,
+              refreshTokens,
+              profilePicture,
+              deletedAt,
+            );
+
+            // Act
+
+            // Assert
+            expect(() => user.addRefreshToken(null)).toThrowError(
+              InvalidRefreshTokenError,
+            );
+          },
+        );
+
+        test.each(validValues)(
+          'add a RefreshToken to a User that already have it should throw exception',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            email: MockedObject<Email>,
+            username: MockedObject<Username>,
+            passwordHash: MockedObject<PasswordHash>,
+            isVerified: MockedObject<IsVerified>,
+            verificationCode: MockedObject<VerificationCode>,
+            isBlocked: MockedObject<IsBlocked>,
+            firstName: MockedObject<FirstName>,
+            lastName: MockedObject<LastName>,
+            birthday: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            biography: MockedObject<Biography>,
+            roles: MockedObject<Role[]>,
+            refreshTokens: MockedObject<RefreshToken[]>,
+            profilePicture: MockedObject<WebUrl>,
+            deletedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+            const refreshToken = {
+              equals: jest.fn().mockReturnValue(true),
+            } as MockedObject<RefreshToken>;
+            refreshTokens = [refreshToken];
+            isVerified = {
+              getStatus: true,
+            } as MockedObject<IsVerified>;
+            isBlocked = {
+              getStatus: false,
+            } as MockedObject<IsBlocked>;
+            deletedAt = null;
+
+            const user = User.create(
+              uniqueId,
+              email,
+              username,
+              passwordHash,
+              isVerified,
+              verificationCode,
+              isBlocked,
+              firstName,
+              lastName,
+              birthday,
+              createdAt,
+              updatedAt,
+              biography,
+              roles,
+              refreshTokens,
+              profilePicture,
+              deletedAt,
+            );
+
+            // Act
+            const newRefreshToken = {} as MockedObject<RefreshToken>;
+
+            // Assert
+            expect(() => user.addRefreshToken(newRefreshToken)).toThrowError(
+              DuplicatedRefreshTokenError,
+            );
+          },
+        );
+
+        test.each(validValues)(
+          'add a RefreshToken to a User should add it',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            email: MockedObject<Email>,
+            username: MockedObject<Username>,
+            passwordHash: MockedObject<PasswordHash>,
+            isVerified: MockedObject<IsVerified>,
+            verificationCode: MockedObject<VerificationCode>,
+            isBlocked: MockedObject<IsBlocked>,
+            firstName: MockedObject<FirstName>,
+            lastName: MockedObject<LastName>,
+            birthday: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            biography: MockedObject<Biography>,
+            roles: MockedObject<Role[]>,
+            refreshTokens: MockedObject<RefreshToken[]>,
+            profilePicture: MockedObject<WebUrl>,
+            deletedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+            const refreshToken = {
+              equals: jest.fn().mockReturnValue(false),
+            } as MockedObject<RefreshToken>;
+            refreshTokens = [refreshToken];
+            isVerified = {
+              getStatus: true,
+            } as MockedObject<IsVerified>;
+            isBlocked = {
+              getStatus: false,
+            } as MockedObject<IsBlocked>;
+            deletedAt = null;
+
+            const user = User.create(
+              uniqueId,
+              email,
+              username,
+              passwordHash,
+              isVerified,
+              verificationCode,
+              isBlocked,
+              firstName,
+              lastName,
+              birthday,
+              createdAt,
+              updatedAt,
+              biography,
+              roles,
+              refreshTokens,
+              profilePicture,
+              deletedAt,
+            );
+
+            // Act
+            const newRefreshToken = {} as MockedObject<RefreshToken>;
+            user.addRefreshToken(newRefreshToken);
+
+            // Assert
+            expect(refreshToken.equals.mock.calls.length).toBe(1);
+          },
+        );
+
+        test.each(validValues)(
+          'replace RefreshToken of a deleted User should throw exception',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            email: MockedObject<Email>,
+            username: MockedObject<Username>,
+            passwordHash: MockedObject<PasswordHash>,
+            isVerified: MockedObject<IsVerified>,
+            verificationCode: MockedObject<VerificationCode>,
+            isBlocked: MockedObject<IsBlocked>,
+            firstName: MockedObject<FirstName>,
+            lastName: MockedObject<LastName>,
+            birthday: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            biography: MockedObject<Biography>,
+            roles: MockedObject<Role[]>,
+            refreshTokens: MockedObject<RefreshToken[]>,
+            profilePicture: MockedObject<WebUrl>,
+            deletedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+            deletedAt = {
+              getMilliseconds: 4,
+            } as MockedObject<MillisecondsDate>;
+
+            const user = User.create(
+              uniqueId,
+              email,
+              username,
+              passwordHash,
+              isVerified,
+              verificationCode,
+              isBlocked,
+              firstName,
+              lastName,
+              birthday,
+              createdAt,
+              updatedAt,
+              biography,
+              roles,
+              refreshTokens,
+              profilePicture,
+              deletedAt,
+            );
+
+            // Act
+
+            // Assert
+            expect(() => user.replaceRefreshToken(null, null)).toThrowError(
+              DeletedUserCannotBeUpdatedError,
+            );
+          },
+        );
+
+        test.each(validValues)(
+          'replace a RefreshToken of a blocked User should throw exception',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            email: MockedObject<Email>,
+            username: MockedObject<Username>,
+            passwordHash: MockedObject<PasswordHash>,
+            isVerified: MockedObject<IsVerified>,
+            verificationCode: MockedObject<VerificationCode>,
+            isBlocked: MockedObject<IsBlocked>,
+            firstName: MockedObject<FirstName>,
+            lastName: MockedObject<LastName>,
+            birthday: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            biography: MockedObject<Biography>,
+            roles: MockedObject<Role[]>,
+            refreshTokens: MockedObject<RefreshToken[]>,
+            profilePicture: MockedObject<WebUrl>,
+            deletedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+            isBlocked = {
+              getStatus: true,
+            } as MockedObject<IsBlocked>;
+            deletedAt = null;
+
+            const user = User.create(
+              uniqueId,
+              email,
+              username,
+              passwordHash,
+              isVerified,
+              verificationCode,
+              isBlocked,
+              firstName,
+              lastName,
+              birthday,
+              createdAt,
+              updatedAt,
+              biography,
+              roles,
+              refreshTokens,
+              profilePicture,
+              deletedAt,
+            );
+
+            // Act
+
+            // Assert
+            expect(() => user.replaceRefreshToken(null, null)).toThrowError(
+              BlockedUserCannotBeUpdatedError,
+            );
+          },
+        );
+
+        test.each(validValues)(
+          'replace a RefreshToken of a unverified User should throw exception',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            email: MockedObject<Email>,
+            username: MockedObject<Username>,
+            passwordHash: MockedObject<PasswordHash>,
+            isVerified: MockedObject<IsVerified>,
+            verificationCode: MockedObject<VerificationCode>,
+            isBlocked: MockedObject<IsBlocked>,
+            firstName: MockedObject<FirstName>,
+            lastName: MockedObject<LastName>,
+            birthday: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            biography: MockedObject<Biography>,
+            roles: MockedObject<Role[]>,
+            refreshTokens: MockedObject<RefreshToken[]>,
+            profilePicture: MockedObject<WebUrl>,
+            deletedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+            isVerified = {
+              getStatus: false,
+            } as MockedObject<IsVerified>;
+            isBlocked = {
+              getStatus: false,
+            } as MockedObject<IsBlocked>;
+            deletedAt = null;
+
+            const user = User.create(
+              uniqueId,
+              email,
+              username,
+              passwordHash,
+              isVerified,
+              verificationCode,
+              isBlocked,
+              firstName,
+              lastName,
+              birthday,
+              createdAt,
+              updatedAt,
+              biography,
+              roles,
+              refreshTokens,
+              profilePicture,
+              deletedAt,
+            );
+
+            // Act
+
+            // Assert
+            expect(() => user.replaceRefreshToken(null, null)).toThrowError(
+              UnverifiedUserCannotBeUpdatedError,
+            );
+          },
+        );
+
+        test.each(validValues)(
+          'replace a null RefreshToken of a User should throw exception',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            email: MockedObject<Email>,
+            username: MockedObject<Username>,
+            passwordHash: MockedObject<PasswordHash>,
+            isVerified: MockedObject<IsVerified>,
+            verificationCode: MockedObject<VerificationCode>,
+            isBlocked: MockedObject<IsBlocked>,
+            firstName: MockedObject<FirstName>,
+            lastName: MockedObject<LastName>,
+            birthday: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            biography: MockedObject<Biography>,
+            roles: MockedObject<Role[]>,
+            refreshTokens: MockedObject<RefreshToken[]>,
+            profilePicture: MockedObject<WebUrl>,
+            deletedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+            isVerified = {
+              getStatus: true,
+            } as MockedObject<IsVerified>;
+            isBlocked = {
+              getStatus: false,
+            } as MockedObject<IsBlocked>;
+            deletedAt = null;
+
+            const user = User.create(
+              uniqueId,
+              email,
+              username,
+              passwordHash,
+              isVerified,
+              verificationCode,
+              isBlocked,
+              firstName,
+              lastName,
+              birthday,
+              createdAt,
+              updatedAt,
+              biography,
+              roles,
+              refreshTokens,
+              profilePicture,
+              deletedAt,
+            );
+
+            // Act
+
+            // Assert
+            expect(() => user.replaceRefreshToken(null, null)).toThrowError(
+              InvalidRefreshTokenError,
+            );
+          },
+        );
+
+        test.each(validValues)(
+          'replace a RefreshToken to a User that not have it should throw exception',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            email: MockedObject<Email>,
+            username: MockedObject<Username>,
+            passwordHash: MockedObject<PasswordHash>,
+            isVerified: MockedObject<IsVerified>,
+            verificationCode: MockedObject<VerificationCode>,
+            isBlocked: MockedObject<IsBlocked>,
+            firstName: MockedObject<FirstName>,
+            lastName: MockedObject<LastName>,
+            birthday: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            biography: MockedObject<Biography>,
+            roles: MockedObject<Role[]>,
+            refreshTokens: MockedObject<RefreshToken[]>,
+            profilePicture: MockedObject<WebUrl>,
+            deletedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+            const refreshTokenUniqueId = {
+              equals: jest.fn().mockReturnValue(false),
+            } as MockedObject<UniqueId>;
+            const refreshTokenToReplace = {
+              id: refreshTokenUniqueId as UniqueId,
+            } as MockedObject<RefreshToken>;
+            refreshTokens = [refreshTokenToReplace];
+            isVerified = {
+              getStatus: true,
+            } as MockedObject<IsVerified>;
+            isBlocked = {
+              getStatus: false,
+            } as MockedObject<IsBlocked>;
+            deletedAt = null;
+
+            const user = User.create(
+              uniqueId,
+              email,
+              username,
+              passwordHash,
+              isVerified,
+              verificationCode,
+              isBlocked,
+              firstName,
+              lastName,
+              birthday,
+              createdAt,
+              updatedAt,
+              biography,
+              roles,
+              refreshTokens,
+              profilePicture,
+              deletedAt,
+            );
+
+            // Act
+            const newRefreshToken = {} as MockedObject<RefreshToken>;
+
+            // Assert
+            expect(() =>
+              user.replaceRefreshToken(null, newRefreshToken),
+            ).toThrowError(RefreshTokenNotFoundError);
+          },
+        );
+
+        test.each(validValues)(
+          'replace a RefreshToken to a User that already have it should throw exception',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            email: MockedObject<Email>,
+            username: MockedObject<Username>,
+            passwordHash: MockedObject<PasswordHash>,
+            isVerified: MockedObject<IsVerified>,
+            verificationCode: MockedObject<VerificationCode>,
+            isBlocked: MockedObject<IsBlocked>,
+            firstName: MockedObject<FirstName>,
+            lastName: MockedObject<LastName>,
+            birthday: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            biography: MockedObject<Biography>,
+            roles: MockedObject<Role[]>,
+            refreshTokens: MockedObject<RefreshToken[]>,
+            profilePicture: MockedObject<WebUrl>,
+            deletedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+            const refreshTokenUniqueId = {
+              equals: jest.fn().mockReturnValue(true),
+            } as MockedObject<UniqueId>;
+            const refreshTokenToReplace = {
+              id: refreshTokenUniqueId as UniqueId,
+              equals: jest.fn().mockReturnValue(true),
+            } as MockedObject<RefreshToken>;
+            refreshTokens = [refreshTokenToReplace];
+            isVerified = {
+              getStatus: true,
+            } as MockedObject<IsVerified>;
+            isBlocked = {
+              getStatus: false,
+            } as MockedObject<IsBlocked>;
+            deletedAt = null;
+
+            const user = User.create(
+              uniqueId,
+              email,
+              username,
+              passwordHash,
+              isVerified,
+              verificationCode,
+              isBlocked,
+              firstName,
+              lastName,
+              birthday,
+              createdAt,
+              updatedAt,
+              biography,
+              roles,
+              refreshTokens,
+              profilePicture,
+              deletedAt,
+            );
+
+            // Act
+            const newRefreshToken = {} as MockedObject<RefreshToken>;
+
+            // Assert
+            expect(() =>
+              user.replaceRefreshToken(null, newRefreshToken),
+            ).toThrowError(DuplicatedRefreshTokenError);
+          },
+        );
+
+        test.each(validValues)(
+          'replace a RefreshToken of a User should update it',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            email: MockedObject<Email>,
+            username: MockedObject<Username>,
+            passwordHash: MockedObject<PasswordHash>,
+            isVerified: MockedObject<IsVerified>,
+            verificationCode: MockedObject<VerificationCode>,
+            isBlocked: MockedObject<IsBlocked>,
+            firstName: MockedObject<FirstName>,
+            lastName: MockedObject<LastName>,
+            birthday: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            biography: MockedObject<Biography>,
+            roles: MockedObject<Role[]>,
+            refreshTokens: MockedObject<RefreshToken[]>,
+            profilePicture: MockedObject<WebUrl>,
+            deletedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+            const refreshTokenUniqueId = {
+              equals: jest.fn().mockReturnValue(true),
+            } as MockedObject<UniqueId>;
+            const refreshTokenToReplace = {
+              id: refreshTokenUniqueId as UniqueId,
+              equals: jest.fn().mockReturnValue(false),
+              replace: jest.fn(),
+            } as MockedObject<RefreshToken>;
+            refreshTokens = [refreshTokenToReplace];
+            isVerified = {
+              getStatus: true,
+            } as MockedObject<IsVerified>;
+            isBlocked = {
+              getStatus: false,
+            } as MockedObject<IsBlocked>;
+            deletedAt = null;
+
+            const user = User.create(
+              uniqueId,
+              email,
+              username,
+              passwordHash,
+              isVerified,
+              verificationCode,
+              isBlocked,
+              firstName,
+              lastName,
+              birthday,
+              createdAt,
+              updatedAt,
+              biography,
+              roles,
+              refreshTokens,
+              profilePicture,
+              deletedAt,
+            );
+
+            // Act
+            const newRefreshToken = {} as MockedObject<RefreshToken>;
+            user.replaceRefreshToken(refreshTokenToReplace.id, newRefreshToken);
+
+            // Assert
+            expect(refreshTokenToReplace.replace.mock.calls.length).toBe(1);
           },
         );
       });

@@ -1,72 +1,52 @@
-import { mocked } from 'ts-jest/utils';
+import { MockedObject } from 'ts-jest/dist/utils/testing';
 import { RefreshToken } from '../../domain/entities';
 import { refreshTokenToRefreshTokenEntity } from '.';
 
 const validValues = [
-  [
-    mocked<RefreshToken>({
-      id: {
-        getId: 'id-0',
-      },
-      userId: {
-        getId: 'user-id-0',
-      },
-      createdAt: { getDate: new Date(2000, 5, 5) },
-      duration: { getDuration: 100 },
-      ipAddress: { getIpAddress: '192.168.1.1' },
-      replacedAt: { getDate: new Date(2000, 5, 5) },
-      replacedBy: { getId: 'user-id-1' },
-      revokedAt: { getDate: new Date(2000, 5, 5) },
-    } as unknown as RefreshToken),
-  ],
-  [
-    mocked<RefreshToken>({
-      id: {
-        getId: 'id-0',
-      },
-      userId: {
-        getId: 'user-id-0',
-      },
-      createdAt: { getDate: new Date(2000, 5, 5) },
-      duration: { getDuration: 100 },
-      ipAddress: { getIpAddress: '192.168.1.1' },
-      replacedAt: null,
-      replacedBy: null,
-      revokedAt: { getDate: new Date(2000, 5, 5) },
-    } as unknown as RefreshToken),
-  ],
-  [
-    mocked<RefreshToken>({
-      id: {
-        getId: 'id-0',
-      },
-      userId: {
-        getId: 'user-id-0',
-      },
-      createdAt: { getDate: new Date(2000, 5, 5) },
-      duration: { getDuration: 100 },
-      ipAddress: { getIpAddress: '192.168.1.1' },
-      replacedAt: { getDate: new Date(2000, 5, 5) },
-      replacedBy: { getId: 'user-id-1' },
-      revokedAt: null,
-    } as unknown as RefreshToken),
-  ],
-  [
-    mocked<RefreshToken>({
-      id: {
-        getId: 'id-0',
-      },
-      userId: {
-        getId: 'user-id-0',
-      },
-      createdAt: { getDate: new Date(2000, 5, 5) },
-      duration: { getDuration: 100 },
-      ipAddress: { getIpAddress: '192.168.1.1' },
-      replacedAt: null,
-      replacedBy: null,
-      revokedAt: null,
-    } as unknown as RefreshToken),
-  ],
+  {
+    id: {
+      getId: 'id-0',
+    },
+    createdAt: { getDate: new Date(2000, 5, 5) },
+    duration: 100,
+    ipAddress: '192.168.1.1',
+    replacedAt: { getDate: new Date(2000, 5, 5) },
+    replacedBy: { getId: 'user-id-1' },
+    revokedAt: { getDate: new Date(2000, 5, 5) },
+  } as MockedObject<RefreshToken>,
+  {
+    id: {
+      getId: 'id-0',
+    },
+    createdAt: { getDate: new Date(2000, 5, 5) },
+    duration: 100,
+    ipAddress: '192.168.1.1',
+    replacedAt: null,
+    replacedBy: null,
+    revokedAt: { getDate: new Date(2000, 5, 5) },
+  } as MockedObject<RefreshToken>,
+  {
+    id: {
+      getId: 'id-0',
+    },
+    createdAt: { getDate: new Date(2000, 5, 5) },
+    duration: 100,
+    ipAddress: '192.168.1.1',
+    replacedAt: { getDate: new Date(2000, 5, 5) },
+    replacedBy: { getId: 'user-id-1' },
+    revokedAt: null,
+  } as MockedObject<RefreshToken>,
+  {
+    id: {
+      getId: 'id-0',
+    },
+    createdAt: { getDate: new Date(2000, 5, 5) },
+    duration: 100,
+    ipAddress: '192.168.1.1',
+    replacedAt: null,
+    replacedBy: null,
+    revokedAt: null,
+  } as MockedObject<RefreshToken>,
 ];
 
 describe('users', () => {
@@ -85,7 +65,6 @@ describe('users', () => {
             // Assert
             expect(refreshTokenEntity.id).toBe(refreshToken.id.getId);
             expect(refreshTokenEntity.id).toBe(refreshToken.id.getId);
-            expect(refreshTokenEntity.userId).toBe(refreshToken.userId.getId);
             expect(refreshTokenEntity.createdAt).toBe(
               refreshToken.createdAt.getDate,
             );
