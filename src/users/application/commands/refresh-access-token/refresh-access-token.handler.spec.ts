@@ -168,6 +168,7 @@ describe('users', () => {
               getAllRefreshTokensByIpAddress: jest
                 .fn()
                 .mockReturnValue([validRefreshTokenToRevoke, usedRefreshToken]),
+              updateRefreshToken: jest.fn(),
             } as MockedObject<UserRepository>;
 
             const refreshTokenToUse = {
@@ -178,7 +179,6 @@ describe('users', () => {
 
             const refreshTokenRepository = {
               getOne: jest.fn().mockReturnValue(refreshTokenToUse),
-              update: jest.fn(),
             } as MockedObject<RefreshTokenRepository>;
 
             const tokenService = {} as MockedObject<TokenService>;
@@ -198,7 +198,9 @@ describe('users', () => {
             try {
               await handler.execute(command);
             } catch (error) {
-              expect(refreshTokenRepository.update.mock.calls).toHaveLength(2);
+              expect(userRepository.updateRefreshToken.mock.calls).toHaveLength(
+                2,
+              );
               expect(unitOfWork.commitChanges.mock.calls).toHaveLength(1);
 
               expect(validRefreshTokenToRevoke.revoke.mock.calls).toHaveLength(
@@ -247,6 +249,7 @@ describe('users', () => {
               getAllRefreshTokensByIpAddress: jest
                 .fn()
                 .mockReturnValue([validRefreshTokenToRevoke, usedRefreshToken]),
+              updateRefreshToken: jest.fn(),
             } as MockedObject<UserRepository>;
 
             const refreshTokenToUse = {
@@ -257,7 +260,6 @@ describe('users', () => {
 
             const refreshTokenRepository = {
               getOne: jest.fn().mockReturnValue(refreshTokenToUse),
-              update: jest.fn(),
             } as MockedObject<RefreshTokenRepository>;
 
             const tokenService = {} as MockedObject<TokenService>;
@@ -277,7 +279,9 @@ describe('users', () => {
             try {
               await handler.execute(command);
             } catch (error) {
-              expect(refreshTokenRepository.update.mock.calls).toHaveLength(2);
+              expect(userRepository.updateRefreshToken.mock.calls).toHaveLength(
+                2,
+              );
               expect(unitOfWork.commitChanges.mock.calls).toHaveLength(1);
 
               expect(validRefreshTokenToRevoke.revoke.mock.calls).toHaveLength(
@@ -347,7 +351,6 @@ describe('users', () => {
 
             const refreshTokenRepository = {
               getOne: jest.fn().mockReturnValue(refreshTokenToUse),
-              update: jest.fn(),
             } as MockedObject<RefreshTokenRepository>;
 
             const tokenService = {

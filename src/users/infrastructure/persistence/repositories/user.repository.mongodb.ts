@@ -175,6 +175,15 @@ export class UserRepositoryMongoDb
     this.assign(userFromDb, userEntity);
   }
 
+  updateRefreshToken(refreshToken: RefreshToken): void {
+    const refreshTokenEntity = refreshTokenToRefreshTokenEntity(refreshToken);
+    const refreshTokenFromDb = this.orm.em.getReference(
+      RefreshTokenEntity,
+      refreshToken.id.getId,
+    );
+    this.orm.em.assign(refreshTokenFromDb, refreshTokenEntity);
+  }
+
   delete(id: UniqueId): void {
     const userFromDb = this.getReference(id.getId);
     this.remove(userFromDb);
