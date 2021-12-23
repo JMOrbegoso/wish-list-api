@@ -146,14 +146,6 @@ export class UserRepositoryMongoDb
           (refreshTokenToUpdate) => refreshToken.id === refreshTokenToUpdate.id,
         ),
     );
-    const refreshTokensToDelete = userFromDb.refreshTokens
-      .getItems()
-      .filter(
-        (refreshTokenDb) =>
-          !refreshTokensToUpdate.some(
-            (refreshToken) => refreshToken.id.getId === refreshTokenDb.id,
-          ),
-      );
 
     // Persist user refreshTokens to add
     refreshTokensToAdd.forEach((refreshToken) =>
@@ -163,11 +155,6 @@ export class UserRepositoryMongoDb
     // Persist user refreshTokens to update
     refreshTokensToUpdate.forEach((refreshToken) =>
       this.updateRefreshTokenFromPersist(refreshToken),
-    );
-
-    // Persist user refreshTokens to delete
-    refreshTokensToDelete.forEach((refreshToken) =>
-      this.deleteRefreshTokenFromPersist(refreshToken),
     );
 
     // Update user
@@ -221,14 +208,6 @@ export class UserRepositoryMongoDb
     this.orm.em.assign(
       refreshTokenReference,
       refreshTokenToRefreshTokenEntity(refreshToken),
-    );
-  }
-
-  private deleteRefreshTokenFromPersist(
-    refreshTokenEntity: RefreshTokenEntity,
-  ): void {
-    throw new Error(
-      `Can't delete ${refreshTokenEntity.id} because refresh tokens should not be deleted.`,
     );
   }
 }
