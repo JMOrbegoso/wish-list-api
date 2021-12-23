@@ -281,11 +281,10 @@ export class User extends AggregateRoot {
 
     if (!replacedByToken) throw new InvalidRefreshTokenError();
 
-    const refreshTokenToReplace = this._refreshTokens.find((refreshToken) =>
-      refreshToken.id.equals(refreshTokenIdToReplace),
-    );
+    const refreshTokenToReplace = this.getRefreshToken(refreshTokenIdToReplace);
     if (!refreshTokenToReplace) throw new RefreshTokenNotFoundError();
 
+    this.addRefreshToken(replacedByToken);
     refreshTokenToReplace.replace(replacedByToken);
   }
 }

@@ -2249,10 +2249,10 @@ describe('users', () => {
             const refreshTokenUniqueId = {
               equals: jest.fn().mockReturnValue(false),
             } as MockedObject<UniqueId>;
-            const refreshToken = {
+            const refreshTokenToReplace = {
               id: refreshTokenUniqueId as UniqueId,
             } as MockedObject<RefreshToken>;
-            refreshTokens = [refreshToken];
+            refreshTokens = [refreshTokenToReplace];
             isVerified = {
               getStatus: true,
             } as MockedObject<IsVerified>;
@@ -2292,7 +2292,7 @@ describe('users', () => {
         );
 
         test.each(validValues)(
-          'replace a RefreshToken of a User should update it',
+          'replace a RefreshToken to a User that already have it should throw exception',
           (
             uniqueId: MockedObject<UniqueId>,
             email: MockedObject<Email>,
@@ -2316,11 +2316,11 @@ describe('users', () => {
             const refreshTokenUniqueId = {
               equals: jest.fn().mockReturnValue(true),
             } as MockedObject<UniqueId>;
-            const refreshToken = {
+            const refreshTokenToReplace = {
               id: refreshTokenUniqueId as UniqueId,
-              replace: jest.fn(),
+              equals: jest.fn().mockReturnValue(true),
             } as MockedObject<RefreshToken>;
-            refreshTokens = [refreshToken];
+            refreshTokens = [refreshTokenToReplace];
             isVerified = {
               getStatus: true,
             } as MockedObject<IsVerified>;
@@ -2351,10 +2351,79 @@ describe('users', () => {
 
             // Act
             const newRefreshToken = {} as MockedObject<RefreshToken>;
-            user.replaceRefreshToken(refreshToken.id, newRefreshToken);
 
             // Assert
-            expect(refreshToken.replace.mock.calls.length).toBe(1);
+            expect(() =>
+              user.replaceRefreshToken(null, newRefreshToken),
+            ).toThrowError(DuplicatedRefreshTokenError);
+          },
+        );
+
+        test.each(validValues)(
+          'replace a RefreshToken of a User should update it',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            email: MockedObject<Email>,
+            username: MockedObject<Username>,
+            passwordHash: MockedObject<PasswordHash>,
+            isVerified: MockedObject<IsVerified>,
+            verificationCode: MockedObject<VerificationCode>,
+            isBlocked: MockedObject<IsBlocked>,
+            firstName: MockedObject<FirstName>,
+            lastName: MockedObject<LastName>,
+            birthday: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            biography: MockedObject<Biography>,
+            roles: MockedObject<Role[]>,
+            refreshTokens: MockedObject<RefreshToken[]>,
+            profilePicture: MockedObject<WebUrl>,
+            deletedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+            const refreshTokenUniqueId = {
+              equals: jest.fn().mockReturnValue(true),
+            } as MockedObject<UniqueId>;
+            const refreshTokenToReplace = {
+              id: refreshTokenUniqueId as UniqueId,
+              equals: jest.fn().mockReturnValue(false),
+              replace: jest.fn(),
+            } as MockedObject<RefreshToken>;
+            refreshTokens = [refreshTokenToReplace];
+            isVerified = {
+              getStatus: true,
+            } as MockedObject<IsVerified>;
+            isBlocked = {
+              getStatus: false,
+            } as MockedObject<IsBlocked>;
+            deletedAt = null;
+
+            const user = User.create(
+              uniqueId,
+              email,
+              username,
+              passwordHash,
+              isVerified,
+              verificationCode,
+              isBlocked,
+              firstName,
+              lastName,
+              birthday,
+              createdAt,
+              updatedAt,
+              biography,
+              roles,
+              refreshTokens,
+              profilePicture,
+              deletedAt,
+            );
+
+            // Act
+            const newRefreshToken = {} as MockedObject<RefreshToken>;
+            user.replaceRefreshToken(refreshTokenToReplace.id, newRefreshToken);
+
+            // Assert
+            expect(refreshTokenToReplace.replace.mock.calls.length).toBe(1);
           },
         );
       });

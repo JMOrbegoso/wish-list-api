@@ -72,10 +72,7 @@ export class RefreshAccessTokenHandler
       ipAddress,
     );
 
-    // Update the user
-    user.addRefreshToken(newRefreshToken);
-
-    // Update the Refresh Token to use
+    // Update the User refresh Tokens
     user.replaceRefreshToken(refreshTokenToUse.id, newRefreshToken);
 
     // Save changes in persistence
