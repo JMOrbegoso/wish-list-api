@@ -69,7 +69,7 @@ export class RefreshToken extends Entity {
 
   public get expireAt(): MillisecondsDate {
     return MillisecondsDate.createFromMilliseconds(
-      this.createdAt.getMilliseconds + this.duration,
+      this.createdAt.getMilliseconds + 1000 * this.duration,
     );
   }
 
