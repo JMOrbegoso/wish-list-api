@@ -85,7 +85,7 @@ describe('users', () => {
             // Arrange
             const unitOfWork = {} as MockedObject<UnitOfWork>;
 
-            const refreshTokenToUse = {
+            const refreshTokenToReplace = {
               isExpired: true,
             } as MockedObject<RefreshToken>;
 
@@ -93,7 +93,7 @@ describe('users', () => {
               id: {
                 getId: 'id-0',
               },
-              getRefreshToken: jest.fn().mockReturnValue(refreshTokenToUse),
+              getRefreshToken: jest.fn().mockReturnValue(refreshTokenToReplace),
             } as MockedObject<User>;
 
             const userRepository = {
@@ -127,7 +127,7 @@ describe('users', () => {
               commitChanges: jest.fn(),
             } as MockedObject<UnitOfWork>;
 
-            const refreshTokenToUse = {
+            const refreshTokenToReplace = {
               wasReplaced: false,
               isRevoked: true,
               isExpired: false,
@@ -137,7 +137,7 @@ describe('users', () => {
               id: {
                 getId: 'id-0',
               },
-              getRefreshToken: jest.fn().mockReturnValue(refreshTokenToUse),
+              getRefreshToken: jest.fn().mockReturnValue(refreshTokenToReplace),
             } as MockedObject<User>;
 
             const validRefreshTokenToRevoke = {
@@ -204,7 +204,7 @@ describe('users', () => {
               commitChanges: jest.fn(),
             } as MockedObject<UnitOfWork>;
 
-            const refreshTokenToUse = {
+            const refreshTokenToReplace = {
               wasReplaced: true,
               isRevoked: false,
               isExpired: false,
@@ -214,7 +214,7 @@ describe('users', () => {
               id: {
                 getId: 'id-0',
               },
-              getRefreshToken: jest.fn().mockReturnValue(refreshTokenToUse),
+              getRefreshToken: jest.fn().mockReturnValue(refreshTokenToReplace),
             } as MockedObject<User>;
 
             const validRefreshTokenToRevoke = {
@@ -281,7 +281,7 @@ describe('users', () => {
               commitChanges: jest.fn(),
             } as MockedObject<UnitOfWork>;
 
-            const refreshTokenToUse = {
+            const refreshTokenToReplace = {
               isExpired: false,
               isRevoked: false,
               wasReplaced: false,
@@ -322,7 +322,7 @@ describe('users', () => {
               roles: ['Admin'],
               profilePicture: null,
               replaceRefreshToken: jest.fn(),
-              getRefreshToken: jest.fn().mockReturnValue(refreshTokenToUse),
+              getRefreshToken: jest.fn().mockReturnValue(refreshTokenToReplace),
             } as MockedObject<User>;
 
             const userRepository = {
