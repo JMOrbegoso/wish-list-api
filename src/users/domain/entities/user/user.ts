@@ -286,6 +286,6 @@ export class User extends AggregateRoot {
     );
     if (!refreshTokenToReplace) throw new RefreshTokenNotFoundError();
 
-    refreshTokenToReplace.replace(replacedByToken.id);
+    refreshTokenToReplace.replace(replacedByToken);
   }
 }

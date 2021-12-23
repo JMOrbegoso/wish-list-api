@@ -1,3 +1,4 @@
+import { InvalidRefreshTokenError } from '..';
 import { Entity } from '../../../../shared/domain/entities';
 import {
   MillisecondsDate,
@@ -88,8 +89,10 @@ export class RefreshToken extends Entity {
     return this._replacedBy;
   }
 
-  public replace(replacedByTokenId: UniqueId): void {
-    this._replacedBy = replacedByTokenId;
+  public replace(replacedByToken: RefreshToken): void {
+    if (!replacedByToken) throw new InvalidRefreshTokenError();
+
+    this._replacedBy = replacedByToken.id;
     this._replacedAt = MillisecondsDate.create();
   }
 

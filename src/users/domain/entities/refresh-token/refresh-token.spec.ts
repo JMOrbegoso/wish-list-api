@@ -1,5 +1,5 @@
 import { MockedObject } from 'ts-jest/dist/utils/testing';
-import { RefreshToken } from '..';
+import { InvalidRefreshTokenError, RefreshToken } from '..';
 import {
   MillisecondsDate,
   UniqueId,
@@ -196,6 +196,37 @@ describe('users', () => {
         );
 
         test.each(validValues)(
+          'replace RefreshToken with a invalid one should throw error',
+          (
+            id: MockedObject<UniqueId>,
+            createdAt: MockedObject<MillisecondsDate>,
+            secondsDuration: MockedObject<SecondsDuration>,
+            ipAddress: MockedObject<IpAddress>,
+            replacedAt: MockedObject<MillisecondsDate>,
+            replacedBy: MockedObject<UniqueId>,
+            revokedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+            const refreshToken = RefreshToken.create(
+              id,
+              ipAddress,
+              createdAt,
+              secondsDuration,
+              replacedAt,
+              replacedBy,
+              revokedAt,
+            );
+
+            // Act
+
+            // Assert
+            expect(() => refreshToken.replace(null)).toThrowError(
+              InvalidRefreshTokenError,
+            );
+          },
+        );
+
+        test.each(validValues)(
           'replace RefreshToken should change the property value',
           (
             id: MockedObject<UniqueId>,
@@ -218,14 +249,16 @@ describe('users', () => {
             );
 
             const newRefreshToken = {
-              getId: 'newHash',
-            } as MockedObject<UniqueId>;
+              id: { getId: 'newHash' },
+            } as MockedObject<RefreshToken>;
 
             // Act
             refreshToken.replace(newRefreshToken);
 
             // Assert
-            expect(refreshToken.replacedBy.getId).toBe(newRefreshToken.getId);
+            expect(refreshToken.replacedBy.getId).toBe(
+              newRefreshToken.id.getId,
+            );
             expect(refreshToken.replacedAt).not.toBeNull();
             expect(refreshToken.wasReplaced).toBeTruthy();
           },
