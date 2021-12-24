@@ -1093,6 +1093,57 @@ export const swaggerDocument: OpenAPIObject = {
         type: 'string',
         enum: ['Public', 'JustFriends', 'OnlyMe'],
       },
+      OutputWishStageDto: {
+        type: 'object',
+        properties: {
+          id: {
+            type: 'string',
+            description: 'Wish stage id.',
+            example: '61872ad79452fa50b7b70f80',
+          },
+          title: {
+            type: 'string',
+            description: 'Wish stage title.',
+            example: 'Found the laptop model',
+          },
+          description: {
+            type: 'string',
+            description: 'Wish stage description.',
+            example: 'Find a nice laptop model to buy.',
+          },
+          createdAt: {
+            type: 'number',
+            description: 'Wish stage creation date in milliseconds.',
+            example: 1636128526164,
+          },
+          urls: {
+            type: 'array',
+            items: { type: 'string' },
+            description: 'Wish stage urls.',
+            example: [
+              'https://www.example.com/0/',
+              'https://www.example.com/1/',
+            ],
+          },
+          imageUrls: {
+            type: 'array',
+            items: { type: 'string' },
+            description: 'Wish stage images.',
+            example: [
+              'https://www.example.com/0.jpg',
+              'https://www.example.com/1.jpg',
+            ],
+          },
+        },
+        required: [
+          'id',
+          'title',
+          'description',
+          'createdAt',
+          'urls',
+          'imageUrls',
+        ],
+      },
       OutputWishDto: {
         type: 'object',
         properties: {
@@ -1156,7 +1207,7 @@ export const swaggerDocument: OpenAPIObject = {
           },
           stages: {
             type: 'array',
-            items: { type: 'array' },
+            items: { $ref: '#/components/schemas/OutputWishStageDto' },
             description: 'Wish stages.',
           },
           deletedAt: {
