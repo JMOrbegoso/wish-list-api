@@ -21,7 +21,7 @@ export * from './biography/invalid-biography.error';
 export * from './biography/biography-is-too-long.error';
 
 export * from './is-verified/is-verified';
-export * from './is-verified/invalid-is-verified-status.error';
+export * from './is-verified/invalid-verification-status.error';
 
 export * from './password-hash/password-hash';
 export * from './password-hash/invalid-password-hash.error';

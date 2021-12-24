@@ -1,4 +1,4 @@
-import { InvalidIsVerifiedStatus, IsVerified } from '..';
+import { InvalidVerificationStatusError, IsVerified } from '..';
 
 const validValues = [true, false];
 
@@ -15,7 +15,7 @@ describe('users', () => {
 
             // Assert
             expect(() => IsVerified.create(invalid)).toThrowError(
-              InvalidIsVerifiedStatus,
+              InvalidVerificationStatusError,
             );
           },
         );
