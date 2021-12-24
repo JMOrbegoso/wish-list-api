@@ -19,7 +19,7 @@ describe('users', () => {
           (query: GetUserByIdQuery) => {
             // Arrange
             const userRepository = {
-              getOne: jest.fn().mockReturnValue(null),
+              getOneById: jest.fn().mockReturnValue(null),
             } as MockedObject<UserRepository>;
 
             const handler = new GetUserByIdHandler(userRepository);
@@ -79,7 +79,7 @@ describe('users', () => {
             } as MockedObject<User>;
 
             const userRepository = {
-              getOne: jest.fn().mockReturnValue(user),
+              getOneById: jest.fn().mockReturnValue(user),
             } as MockedObject<UserRepository>;
 
             const handler = new GetUserByIdHandler(userRepository);

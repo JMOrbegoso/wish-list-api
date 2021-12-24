@@ -78,7 +78,7 @@ export class WishRepositoryMongoDb
     return wishes;
   }
 
-  async getOne(id: UniqueId): Promise<Wish> {
+  async getOneById(id: UniqueId): Promise<Wish> {
     const wishEntity = await this.findOne(id.getId, { populate: true });
     if (!wishEntity) return null;
     const wish = wishEntityToWish(wishEntity);
@@ -128,11 +128,6 @@ export class WishRepositoryMongoDb
     const wisherEntity = this.getOrCreateWisherEntity(wish.wisher);
     const wishEntity = wishToWishEntity(wish, wisherEntity, []);
     this.assign(wishFromDb, wishEntity);
-  }
-
-  delete(id: UniqueId): void {
-    const wishFromDb = this.getReference(id.getId);
-    this.remove(wishFromDb);
   }
 
   private getOrCreateWisherEntity(wisher: Wisher): WisherEntity {

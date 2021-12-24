@@ -20,7 +20,7 @@ describe('wishes', () => {
           (command: DeleteWishCommand) => {
             // Arrange
             const wishRepository = {
-              getOne: jest.fn().mockReturnValue(null),
+              getOneById: jest.fn().mockReturnValue(null),
             } as MockedObject<WishRepository>;
 
             const unitOfWork = {} as MockedObject<UnitOfWork>;
@@ -45,7 +45,7 @@ describe('wishes', () => {
             } as MockedObject<Wish>;
 
             const wishRepository = {
-              getOne: jest.fn().mockReturnValue(wish),
+              getOneById: jest.fn().mockReturnValue(wish),
             } as MockedObject<WishRepository>;
 
             const unitOfWork = {} as MockedObject<UnitOfWork>;
@@ -72,7 +72,7 @@ describe('wishes', () => {
             } as MockedObject<Wish>;
 
             const wishRepository = {
-              getOne: jest.fn().mockReturnValue(wish),
+              getOneById: jest.fn().mockReturnValue(wish),
               update: jest.fn(),
             } as MockedObject<WishRepository>;
 

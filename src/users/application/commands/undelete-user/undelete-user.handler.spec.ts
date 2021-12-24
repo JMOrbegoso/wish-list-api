@@ -20,7 +20,7 @@ describe('users', () => {
           (command: UndeleteUserCommand) => {
             // Arrange
             const userRepository = {
-              getOne: jest.fn().mockReturnValue(null),
+              getOneById: jest.fn().mockReturnValue(null),
             } as MockedObject<UserRepository>;
 
             const unitOfWork = {} as MockedObject<UnitOfWork>;
@@ -81,7 +81,7 @@ describe('users', () => {
             } as MockedObject<User>;
 
             const userRepository = {
-              getOne: jest.fn().mockReturnValue(user),
+              getOneById: jest.fn().mockReturnValue(user),
             } as MockedObject<UserRepository>;
 
             const unitOfWork = {} as MockedObject<UnitOfWork>;
@@ -145,7 +145,7 @@ describe('users', () => {
             } as MockedObject<User>;
 
             const userRepository = {
-              getOne: jest.fn().mockReturnValue(user),
+              getOneById: jest.fn().mockReturnValue(user),
               update: jest.fn(),
             } as MockedObject<UserRepository>;
 

@@ -19,7 +19,7 @@ export class UndeleteWishHandler
     const id = UniqueId.create(command.id);
 
     // Get the wish  by id
-    const wish = await this.wishRepository.getOne(id);
+    const wish = await this.wishRepository.getOneById(id);
     if (!wish) throw new NotFoundException();
 
     // Check if the wish is not deleted

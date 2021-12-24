@@ -10,13 +10,15 @@ export abstract class UserRepository implements Repository<User> {
     username: Username,
   ): Promise<boolean>;
 
-  abstract getOneByVerificationCode(
-    verificationCode: VerificationCode,
-  ): Promise<User>;
+  abstract getOneById(id: UniqueId): Promise<User>;
 
   abstract getOneByEmail(email: Email): Promise<User>;
 
   abstract getOneByUsername(username: Username): Promise<User>;
+
+  abstract getOneByVerificationCode(
+    verificationCode: VerificationCode,
+  ): Promise<User>;
 
   abstract getOneByRefreshTokenId(refreshTokenId: UniqueId): Promise<User>;
 
@@ -28,13 +30,9 @@ export abstract class UserRepository implements Repository<User> {
     ipAddress: IpAddress,
   ): Promise<RefreshToken[]>;
 
-  abstract getOne(id: UniqueId): Promise<User>;
-
   abstract add(user: User): void;
 
-  abstract update(user: User): void;
+  abstract update(user: User): Promise<void>;
 
   abstract updateRefreshToken(refreshToken: RefreshToken): void;
-
-  abstract delete(id: UniqueId): void;
 }
