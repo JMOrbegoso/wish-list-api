@@ -6,7 +6,7 @@ import {
   InvalidWishImagesError,
   InvalidWishStagesError,
   InvalidWishUrlsError,
-  InvalidWishWisherError,
+  InvalidWisherError,
   NonExistentWishStageError,
   TooManyWishCategoriesError,
   TooManyWishImagesError,
@@ -527,7 +527,7 @@ describe('wishes', () => {
                 deletedAt,
                 completedAt,
               ),
-            ).toThrowError(InvalidWishWisherError);
+            ).toThrowError(InvalidWisherError);
           },
         );
 
@@ -947,6 +947,210 @@ describe('wishes', () => {
                 completedAt.getMilliseconds,
               );
             else expect(wish.completedAt).toBeNull();
+          },
+        );
+
+        test.each(validValues)(
+          'do changes on urls array getter should make no changes on the original urls array',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            title: MockedObject<WishTitle>,
+            description: MockedObject<WishDescription>,
+            privacyLevel: MockedObject<WishPrivacyLevel>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            wisher: MockedObject<Wisher>,
+            urls: MockedObject<WebUrl>[],
+            images: MockedObject<WebUrl>[],
+            categories: MockedObject<CategoryName>[],
+            stages: MockedObject<WishStage>[],
+            deletedAt: MockedObject<MillisecondsDate>,
+            completedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+            const wish = Wish.create(
+              uniqueId,
+              title,
+              description,
+              privacyLevel,
+              createdAt,
+              updatedAt,
+              wisher,
+              urls,
+              images,
+              categories,
+              stages,
+              deletedAt,
+              completedAt,
+            );
+
+            // Act
+            const urlsLocal = wish.urls;
+            const newUrl = {
+              getUrl: 'https://www.example.com',
+            } as MockedObject<WebUrl>;
+            urlsLocal.push(newUrl);
+
+            // Assert
+            expect(wish.urls).toHaveLength(urls.length);
+            expect(urlsLocal).toHaveLength(urls.length + 1);
+
+            for (let i = 0; i < urls.length; i++) {
+              expect(wish.urls[i].getUrl).toBe(urls[i].getUrl);
+            }
+          },
+        );
+
+        test.each(validValues)(
+          'do changes on images array getter should make no changes on the original images array',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            title: MockedObject<WishTitle>,
+            description: MockedObject<WishDescription>,
+            privacyLevel: MockedObject<WishPrivacyLevel>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            wisher: MockedObject<Wisher>,
+            urls: MockedObject<WebUrl>[],
+            images: MockedObject<WebUrl>[],
+            categories: MockedObject<CategoryName>[],
+            stages: MockedObject<WishStage>[],
+            deletedAt: MockedObject<MillisecondsDate>,
+            completedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+            const wish = Wish.create(
+              uniqueId,
+              title,
+              description,
+              privacyLevel,
+              createdAt,
+              updatedAt,
+              wisher,
+              urls,
+              images,
+              categories,
+              stages,
+              deletedAt,
+              completedAt,
+            );
+
+            // Act
+            const imagesLocal = wish.imageUrls;
+            const newImage = {
+              getUrl: 'https://www.example.com/1.jpg',
+            } as MockedObject<WebUrl>;
+            imagesLocal.push(newImage);
+
+            // Assert
+            expect(wish.imageUrls).toHaveLength(images.length);
+            expect(imagesLocal).toHaveLength(images.length + 1);
+
+            for (let i = 0; i < images.length; i++) {
+              expect(wish.imageUrls[i].getUrl).toBe(images[i].getUrl);
+            }
+          },
+        );
+
+        test.each(validValues)(
+          'do changes on categories array getter should make no changes on the original categories array',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            title: MockedObject<WishTitle>,
+            description: MockedObject<WishDescription>,
+            privacyLevel: MockedObject<WishPrivacyLevel>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            wisher: MockedObject<Wisher>,
+            urls: MockedObject<WebUrl>[],
+            images: MockedObject<WebUrl>[],
+            categories: MockedObject<CategoryName>[],
+            stages: MockedObject<WishStage>[],
+            deletedAt: MockedObject<MillisecondsDate>,
+            completedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+            const wish = Wish.create(
+              uniqueId,
+              title,
+              description,
+              privacyLevel,
+              createdAt,
+              updatedAt,
+              wisher,
+              urls,
+              images,
+              categories,
+              stages,
+              deletedAt,
+              completedAt,
+            );
+
+            // Act
+            const categoriesLocal = wish.categories;
+            const newCategory = {
+              getName: 'new-stage-id',
+            } as MockedObject<CategoryName>;
+            categoriesLocal.push(newCategory);
+
+            // Assert
+            expect(wish.categories).toHaveLength(categories.length);
+            expect(categoriesLocal).toHaveLength(categories.length + 1);
+
+            for (let i = 0; i < categories.length; i++) {
+              expect(wish.categories[i].getName).toBe(categories[i].getName);
+            }
+          },
+        );
+
+        test.each(validValues)(
+          'do changes on stages array getter should make no changes on the original stages array',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            title: MockedObject<WishTitle>,
+            description: MockedObject<WishDescription>,
+            privacyLevel: MockedObject<WishPrivacyLevel>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            wisher: MockedObject<Wisher>,
+            urls: MockedObject<WebUrl>[],
+            images: MockedObject<WebUrl>[],
+            categories: MockedObject<CategoryName>[],
+            stages: MockedObject<WishStage>[],
+            deletedAt: MockedObject<MillisecondsDate>,
+            completedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+            const wish = Wish.create(
+              uniqueId,
+              title,
+              description,
+              privacyLevel,
+              createdAt,
+              updatedAt,
+              wisher,
+              urls,
+              images,
+              categories,
+              stages,
+              deletedAt,
+              completedAt,
+            );
+
+            // Act
+            const stagesLocal = wish.stages;
+            const newStage = {
+              id: { getId: 'new-stage-id' },
+            } as MockedObject<WishStage>;
+            stagesLocal.push(newStage);
+
+            // Assert
+            expect(wish.stages).toHaveLength(stages.length);
+            expect(stagesLocal).toHaveLength(stages.length + 1);
+
+            for (let i = 0; i < stages.length; i++) {
+              expect(wish.stages[i].id).toBe(stages[i].id);
+            }
           },
         );
 
