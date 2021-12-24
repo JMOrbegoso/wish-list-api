@@ -1089,10 +1089,6 @@ export const swaggerDocument: OpenAPIObject = {
         },
         required: ['id', 'password'],
       },
-      'Privacy level.': {
-        type: 'string',
-        enum: ['Public', 'JustFriends', 'OnlyMe'],
-      },
       OutputWishStageDto: {
         type: 'object',
         properties: {
@@ -1163,8 +1159,7 @@ export const swaggerDocument: OpenAPIObject = {
             example: 'A nice laptop.',
           },
           privacyLevel: {
-            description: 'Wish privacy level.',
-            $ref: '#/components/schemas/Privacy level.',
+            $ref: '#/components/schemas/PrivacyLevel',
           },
           createdAt: {
             type: 'number',
@@ -1240,6 +1235,8 @@ export const swaggerDocument: OpenAPIObject = {
       PrivacyLevel: {
         type: 'string',
         enum: ['Public', 'JustFriends', 'OnlyMe'],
+        description: 'Wish privacy level.',
+        example: 'Public',
       },
       CreateWishDto: {
         type: 'object',
@@ -1260,9 +1257,7 @@ export const swaggerDocument: OpenAPIObject = {
             example: 'A brand new laptop.',
           },
           privacyLevel: {
-            description: 'Wish privacy level.',
             $ref: '#/components/schemas/PrivacyLevel',
-            example: 'Public',
           },
           wisherId: {
             type: 'string',
