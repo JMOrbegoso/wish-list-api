@@ -2,6 +2,16 @@ import { OpenAPIObject } from '@nestjs/swagger';
 
 export const swaggerDocument: OpenAPIObject = {
   openapi: '3.0.0',
+  info: {
+    title: 'Wish List API',
+    description:
+      'Wish List API is a backend API to post wishes, you can publish and keep track of them, recording the progress you make, until you fulfill them.',
+    version: '0.0.1',
+    contact: {
+      name: 'JM Orbegoso',
+      url: 'https://www.jmorbegoso.com/',
+    },
+  },
   paths: {
     '/api/login': {
       post: {
@@ -833,12 +843,6 @@ export const swaggerDocument: OpenAPIObject = {
         security: [{ bearer: [] }],
       },
     },
-  },
-  info: {
-    title: 'Wish List API',
-    description: 'API of Wish List.',
-    version: '0.0.1',
-    contact: {},
   },
   tags: [],
   servers: [],
