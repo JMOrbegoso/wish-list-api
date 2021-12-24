@@ -9,3 +9,4 @@ export * from './refresh-token/duplicated-refresh-token.error';
 export * from './refresh-token/refresh-token-not-found.error';
 
 export * from './verification-code/verification-code';
+export * from './verification-code/invalid-verification-code.error';
