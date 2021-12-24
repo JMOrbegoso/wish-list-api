@@ -4,6 +4,8 @@ import {
   DeletedUserCannotBeUpdatedError,
   DuplicatedRefreshTokenError,
   InvalidRefreshTokenError,
+  InvalidRefreshTokensError,
+  InvalidVerificationCodeError,
   RefreshToken,
   RefreshTokenNotFoundError,
   UnverifiedUserCannotBeUpdatedError,
@@ -11,6 +13,8 @@ import {
   VerificationCode,
 } from '..';
 import {
+  InvalidMillisecondsDateError,
+  InvalidUniqueIdError,
   MillisecondsDate,
   UniqueId,
   WebUrl,
@@ -19,6 +23,15 @@ import {
   Biography,
   Email,
   FirstName,
+  InvalidBiographyError,
+  InvalidBlockedStatusError,
+  InvalidEmailError,
+  InvalidFirstNameError,
+  InvalidLastNameError,
+  InvalidPasswordHashError,
+  InvalidRolesError,
+  InvalidUsernameError,
+  InvalidVerificationStatusError,
   IsBlocked,
   IsVerified,
   LastName,
@@ -524,6 +537,756 @@ describe('users', () => {
   describe('domain', () => {
     describe('entities', () => {
       describe('user', () => {
+        test.each(validValues)(
+          'create a User with invalid id should throw error',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            email: MockedObject<Email>,
+            username: MockedObject<Username>,
+            passwordHash: MockedObject<PasswordHash>,
+            isVerified: MockedObject<IsVerified>,
+            verificationCode: MockedObject<VerificationCode>,
+            isBlocked: MockedObject<IsBlocked>,
+            firstName: MockedObject<FirstName>,
+            lastName: MockedObject<LastName>,
+            birthday: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            biography: MockedObject<Biography>,
+            roles: MockedObject<Role[]>,
+            refreshTokens: MockedObject<RefreshToken[]>,
+            profilePicture: MockedObject<WebUrl>,
+            deletedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+
+            // Act
+
+            // Assert
+            expect(() =>
+              User.create(
+                null,
+                email,
+                username,
+                passwordHash,
+                isVerified,
+                verificationCode,
+                isBlocked,
+                firstName,
+                lastName,
+                birthday,
+                createdAt,
+                updatedAt,
+                biography,
+                roles,
+                refreshTokens,
+                profilePicture,
+                deletedAt,
+              ),
+            ).toThrowError(InvalidUniqueIdError);
+          },
+        );
+
+        test.each(validValues)(
+          'create a User with invalid email should throw error',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            email: MockedObject<Email>,
+            username: MockedObject<Username>,
+            passwordHash: MockedObject<PasswordHash>,
+            isVerified: MockedObject<IsVerified>,
+            verificationCode: MockedObject<VerificationCode>,
+            isBlocked: MockedObject<IsBlocked>,
+            firstName: MockedObject<FirstName>,
+            lastName: MockedObject<LastName>,
+            birthday: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            biography: MockedObject<Biography>,
+            roles: MockedObject<Role[]>,
+            refreshTokens: MockedObject<RefreshToken[]>,
+            profilePicture: MockedObject<WebUrl>,
+            deletedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+
+            // Act
+
+            // Assert
+            expect(() =>
+              User.create(
+                uniqueId,
+                null,
+                username,
+                passwordHash,
+                isVerified,
+                verificationCode,
+                isBlocked,
+                firstName,
+                lastName,
+                birthday,
+                createdAt,
+                updatedAt,
+                biography,
+                roles,
+                refreshTokens,
+                profilePicture,
+                deletedAt,
+              ),
+            ).toThrowError(InvalidEmailError);
+          },
+        );
+
+        test.each(validValues)(
+          'create a User with invalid username should throw error',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            email: MockedObject<Email>,
+            username: MockedObject<Username>,
+            passwordHash: MockedObject<PasswordHash>,
+            isVerified: MockedObject<IsVerified>,
+            verificationCode: MockedObject<VerificationCode>,
+            isBlocked: MockedObject<IsBlocked>,
+            firstName: MockedObject<FirstName>,
+            lastName: MockedObject<LastName>,
+            birthday: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            biography: MockedObject<Biography>,
+            roles: MockedObject<Role[]>,
+            refreshTokens: MockedObject<RefreshToken[]>,
+            profilePicture: MockedObject<WebUrl>,
+            deletedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+
+            // Act
+
+            // Assert
+            expect(() =>
+              User.create(
+                uniqueId,
+                email,
+                null,
+                passwordHash,
+                isVerified,
+                verificationCode,
+                isBlocked,
+                firstName,
+                lastName,
+                birthday,
+                createdAt,
+                updatedAt,
+                biography,
+                roles,
+                refreshTokens,
+                profilePicture,
+                deletedAt,
+              ),
+            ).toThrowError(InvalidUsernameError);
+          },
+        );
+
+        test.each(validValues)(
+          'create a User with invalid passwordHash should throw error',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            email: MockedObject<Email>,
+            username: MockedObject<Username>,
+            passwordHash: MockedObject<PasswordHash>,
+            isVerified: MockedObject<IsVerified>,
+            verificationCode: MockedObject<VerificationCode>,
+            isBlocked: MockedObject<IsBlocked>,
+            firstName: MockedObject<FirstName>,
+            lastName: MockedObject<LastName>,
+            birthday: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            biography: MockedObject<Biography>,
+            roles: MockedObject<Role[]>,
+            refreshTokens: MockedObject<RefreshToken[]>,
+            profilePicture: MockedObject<WebUrl>,
+            deletedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+
+            // Act
+
+            // Assert
+            expect(() =>
+              User.create(
+                uniqueId,
+                email,
+                username,
+                null,
+                isVerified,
+                verificationCode,
+                isBlocked,
+                firstName,
+                lastName,
+                birthday,
+                createdAt,
+                updatedAt,
+                biography,
+                roles,
+                refreshTokens,
+                profilePicture,
+                deletedAt,
+              ),
+            ).toThrowError(InvalidPasswordHashError);
+          },
+        );
+
+        test.each(validValues)(
+          'create a User with invalid isVerified should throw error',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            email: MockedObject<Email>,
+            username: MockedObject<Username>,
+            passwordHash: MockedObject<PasswordHash>,
+            isVerified: MockedObject<IsVerified>,
+            verificationCode: MockedObject<VerificationCode>,
+            isBlocked: MockedObject<IsBlocked>,
+            firstName: MockedObject<FirstName>,
+            lastName: MockedObject<LastName>,
+            birthday: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            biography: MockedObject<Biography>,
+            roles: MockedObject<Role[]>,
+            refreshTokens: MockedObject<RefreshToken[]>,
+            profilePicture: MockedObject<WebUrl>,
+            deletedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+
+            // Act
+
+            // Assert
+            expect(() =>
+              User.create(
+                uniqueId,
+                email,
+                username,
+                passwordHash,
+                null,
+                verificationCode,
+                isBlocked,
+                firstName,
+                lastName,
+                birthday,
+                createdAt,
+                updatedAt,
+                biography,
+                roles,
+                refreshTokens,
+                profilePicture,
+                deletedAt,
+              ),
+            ).toThrowError(InvalidVerificationStatusError);
+          },
+        );
+
+        test.each(validValues)(
+          'create a User with invalid verificationCode should throw error',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            email: MockedObject<Email>,
+            username: MockedObject<Username>,
+            passwordHash: MockedObject<PasswordHash>,
+            isVerified: MockedObject<IsVerified>,
+            verificationCode: MockedObject<VerificationCode>,
+            isBlocked: MockedObject<IsBlocked>,
+            firstName: MockedObject<FirstName>,
+            lastName: MockedObject<LastName>,
+            birthday: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            biography: MockedObject<Biography>,
+            roles: MockedObject<Role[]>,
+            refreshTokens: MockedObject<RefreshToken[]>,
+            profilePicture: MockedObject<WebUrl>,
+            deletedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+
+            // Act
+
+            // Assert
+            expect(() =>
+              User.create(
+                uniqueId,
+                email,
+                username,
+                passwordHash,
+                isVerified,
+                null,
+                isBlocked,
+                firstName,
+                lastName,
+                birthday,
+                createdAt,
+                updatedAt,
+                biography,
+                roles,
+                refreshTokens,
+                profilePicture,
+                deletedAt,
+              ),
+            ).toThrowError(InvalidVerificationCodeError);
+          },
+        );
+
+        test.each(validValues)(
+          'create a User with invalid isBlocked should throw error',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            email: MockedObject<Email>,
+            username: MockedObject<Username>,
+            passwordHash: MockedObject<PasswordHash>,
+            isVerified: MockedObject<IsVerified>,
+            verificationCode: MockedObject<VerificationCode>,
+            isBlocked: MockedObject<IsBlocked>,
+            firstName: MockedObject<FirstName>,
+            lastName: MockedObject<LastName>,
+            birthday: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            biography: MockedObject<Biography>,
+            roles: MockedObject<Role[]>,
+            refreshTokens: MockedObject<RefreshToken[]>,
+            profilePicture: MockedObject<WebUrl>,
+            deletedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+
+            // Act
+
+            // Assert
+            expect(() =>
+              User.create(
+                uniqueId,
+                email,
+                username,
+                passwordHash,
+                isVerified,
+                verificationCode,
+                null,
+                firstName,
+                lastName,
+                birthday,
+                createdAt,
+                updatedAt,
+                biography,
+                roles,
+                refreshTokens,
+                profilePicture,
+                deletedAt,
+              ),
+            ).toThrowError(InvalidBlockedStatusError);
+          },
+        );
+
+        test.each(validValues)(
+          'create a User with invalid firstName should throw error',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            email: MockedObject<Email>,
+            username: MockedObject<Username>,
+            passwordHash: MockedObject<PasswordHash>,
+            isVerified: MockedObject<IsVerified>,
+            verificationCode: MockedObject<VerificationCode>,
+            isBlocked: MockedObject<IsBlocked>,
+            firstName: MockedObject<FirstName>,
+            lastName: MockedObject<LastName>,
+            birthday: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            biography: MockedObject<Biography>,
+            roles: MockedObject<Role[]>,
+            refreshTokens: MockedObject<RefreshToken[]>,
+            profilePicture: MockedObject<WebUrl>,
+            deletedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+
+            // Act
+
+            // Assert
+            expect(() =>
+              User.create(
+                uniqueId,
+                email,
+                username,
+                passwordHash,
+                isVerified,
+                verificationCode,
+                isBlocked,
+                null,
+                lastName,
+                birthday,
+                createdAt,
+                updatedAt,
+                biography,
+                roles,
+                refreshTokens,
+                profilePicture,
+                deletedAt,
+              ),
+            ).toThrowError(InvalidFirstNameError);
+          },
+        );
+
+        test.each(validValues)(
+          'create a User with invalid lastName should throw error',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            email: MockedObject<Email>,
+            username: MockedObject<Username>,
+            passwordHash: MockedObject<PasswordHash>,
+            isVerified: MockedObject<IsVerified>,
+            verificationCode: MockedObject<VerificationCode>,
+            isBlocked: MockedObject<IsBlocked>,
+            firstName: MockedObject<FirstName>,
+            lastName: MockedObject<LastName>,
+            birthday: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            biography: MockedObject<Biography>,
+            roles: MockedObject<Role[]>,
+            refreshTokens: MockedObject<RefreshToken[]>,
+            profilePicture: MockedObject<WebUrl>,
+            deletedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+
+            // Act
+
+            // Assert
+            expect(() =>
+              User.create(
+                uniqueId,
+                email,
+                username,
+                passwordHash,
+                isVerified,
+                verificationCode,
+                isBlocked,
+                firstName,
+                null,
+                birthday,
+                createdAt,
+                updatedAt,
+                biography,
+                roles,
+                refreshTokens,
+                profilePicture,
+                deletedAt,
+              ),
+            ).toThrowError(InvalidLastNameError);
+          },
+        );
+
+        test.each(validValues)(
+          'create a User with invalid birthday should throw error',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            email: MockedObject<Email>,
+            username: MockedObject<Username>,
+            passwordHash: MockedObject<PasswordHash>,
+            isVerified: MockedObject<IsVerified>,
+            verificationCode: MockedObject<VerificationCode>,
+            isBlocked: MockedObject<IsBlocked>,
+            firstName: MockedObject<FirstName>,
+            lastName: MockedObject<LastName>,
+            birthday: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            biography: MockedObject<Biography>,
+            roles: MockedObject<Role[]>,
+            refreshTokens: MockedObject<RefreshToken[]>,
+            profilePicture: MockedObject<WebUrl>,
+            deletedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+
+            // Act
+
+            // Assert
+            expect(() =>
+              User.create(
+                uniqueId,
+                email,
+                username,
+                passwordHash,
+                isVerified,
+                verificationCode,
+                isBlocked,
+                firstName,
+                lastName,
+                null,
+                createdAt,
+                updatedAt,
+                biography,
+                roles,
+                refreshTokens,
+                profilePicture,
+                deletedAt,
+              ),
+            ).toThrowError(InvalidMillisecondsDateError);
+          },
+        );
+
+        test.each(validValues)(
+          'create a User with invalid createdAt should throw error',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            email: MockedObject<Email>,
+            username: MockedObject<Username>,
+            passwordHash: MockedObject<PasswordHash>,
+            isVerified: MockedObject<IsVerified>,
+            verificationCode: MockedObject<VerificationCode>,
+            isBlocked: MockedObject<IsBlocked>,
+            firstName: MockedObject<FirstName>,
+            lastName: MockedObject<LastName>,
+            birthday: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            biography: MockedObject<Biography>,
+            roles: MockedObject<Role[]>,
+            refreshTokens: MockedObject<RefreshToken[]>,
+            profilePicture: MockedObject<WebUrl>,
+            deletedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+
+            // Act
+
+            // Assert
+            expect(() =>
+              User.create(
+                uniqueId,
+                email,
+                username,
+                passwordHash,
+                isVerified,
+                verificationCode,
+                isBlocked,
+                firstName,
+                lastName,
+                birthday,
+                null,
+                updatedAt,
+                biography,
+                roles,
+                refreshTokens,
+                profilePicture,
+                deletedAt,
+              ),
+            ).toThrowError(InvalidMillisecondsDateError);
+          },
+        );
+
+        test.each(validValues)(
+          'create a User with invalid updatedAt should throw error',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            email: MockedObject<Email>,
+            username: MockedObject<Username>,
+            passwordHash: MockedObject<PasswordHash>,
+            isVerified: MockedObject<IsVerified>,
+            verificationCode: MockedObject<VerificationCode>,
+            isBlocked: MockedObject<IsBlocked>,
+            firstName: MockedObject<FirstName>,
+            lastName: MockedObject<LastName>,
+            birthday: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            biography: MockedObject<Biography>,
+            roles: MockedObject<Role[]>,
+            refreshTokens: MockedObject<RefreshToken[]>,
+            profilePicture: MockedObject<WebUrl>,
+            deletedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+
+            // Act
+
+            // Assert
+            expect(() =>
+              User.create(
+                uniqueId,
+                email,
+                username,
+                passwordHash,
+                isVerified,
+                verificationCode,
+                isBlocked,
+                firstName,
+                lastName,
+                birthday,
+                createdAt,
+                null,
+                biography,
+                roles,
+                refreshTokens,
+                profilePicture,
+                deletedAt,
+              ),
+            ).toThrowError(InvalidMillisecondsDateError);
+          },
+        );
+
+        test.each(validValues)(
+          'create a User with invalid biography should throw error',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            email: MockedObject<Email>,
+            username: MockedObject<Username>,
+            passwordHash: MockedObject<PasswordHash>,
+            isVerified: MockedObject<IsVerified>,
+            verificationCode: MockedObject<VerificationCode>,
+            isBlocked: MockedObject<IsBlocked>,
+            firstName: MockedObject<FirstName>,
+            lastName: MockedObject<LastName>,
+            birthday: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            biography: MockedObject<Biography>,
+            roles: MockedObject<Role[]>,
+            refreshTokens: MockedObject<RefreshToken[]>,
+            profilePicture: MockedObject<WebUrl>,
+            deletedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+
+            // Act
+
+            // Assert
+            expect(() =>
+              User.create(
+                uniqueId,
+                email,
+                username,
+                passwordHash,
+                isVerified,
+                verificationCode,
+                isBlocked,
+                firstName,
+                lastName,
+                birthday,
+                createdAt,
+                updatedAt,
+                null,
+                roles,
+                refreshTokens,
+                profilePicture,
+                deletedAt,
+              ),
+            ).toThrowError(InvalidBiographyError);
+          },
+        );
+
+        test.each(validValues)(
+          'create a User with invalid roles should throw error',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            email: MockedObject<Email>,
+            username: MockedObject<Username>,
+            passwordHash: MockedObject<PasswordHash>,
+            isVerified: MockedObject<IsVerified>,
+            verificationCode: MockedObject<VerificationCode>,
+            isBlocked: MockedObject<IsBlocked>,
+            firstName: MockedObject<FirstName>,
+            lastName: MockedObject<LastName>,
+            birthday: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            biography: MockedObject<Biography>,
+            roles: MockedObject<Role[]>,
+            refreshTokens: MockedObject<RefreshToken[]>,
+            profilePicture: MockedObject<WebUrl>,
+            deletedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+
+            // Act
+
+            // Assert
+            expect(() =>
+              User.create(
+                uniqueId,
+                email,
+                username,
+                passwordHash,
+                isVerified,
+                verificationCode,
+                isBlocked,
+                firstName,
+                lastName,
+                birthday,
+                createdAt,
+                updatedAt,
+                biography,
+                null,
+                refreshTokens,
+                profilePicture,
+                deletedAt,
+              ),
+            ).toThrowError(InvalidRolesError);
+          },
+        );
+
+        test.each(validValues)(
+          'create a User with invalid refreshTokens should throw error',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            email: MockedObject<Email>,
+            username: MockedObject<Username>,
+            passwordHash: MockedObject<PasswordHash>,
+            isVerified: MockedObject<IsVerified>,
+            verificationCode: MockedObject<VerificationCode>,
+            isBlocked: MockedObject<IsBlocked>,
+            firstName: MockedObject<FirstName>,
+            lastName: MockedObject<LastName>,
+            birthday: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            biography: MockedObject<Biography>,
+            roles: MockedObject<Role[]>,
+            refreshTokens: MockedObject<RefreshToken[]>,
+            profilePicture: MockedObject<WebUrl>,
+            deletedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+
+            // Act
+
+            // Assert
+            expect(() =>
+              User.create(
+                uniqueId,
+                email,
+                username,
+                passwordHash,
+                isVerified,
+                verificationCode,
+                isBlocked,
+                firstName,
+                lastName,
+                birthday,
+                createdAt,
+                updatedAt,
+                biography,
+                roles,
+                null,
+                profilePicture,
+                deletedAt,
+              ),
+            ).toThrowError(InvalidRefreshTokensError);
+          },
+        );
+
         test.each(validValues)(
           'should create an User with [id: %p], [email: %p], [username: %p], [passwordHash: %p], [isVerified: %p], [isBlocked: %p], [firstName: %p], [lastName: %p], [birthday: %p], [createdAt: %p], [updatedAt: %p], [biography: %p], [roles: %p], [refreshTokens: %p], [profilePicture: %p] and [deletedAt: %p]',
           (

@@ -3,6 +3,8 @@ import {
   DeletedUserCannotBeUpdatedError,
   DuplicatedRefreshTokenError,
   InvalidRefreshTokenError,
+  InvalidRefreshTokensError,
+  InvalidVerificationCodeError,
   RefreshToken,
   RefreshTokenNotFoundError,
   UnverifiedUserCannotBeUpdatedError,
@@ -10,6 +12,7 @@ import {
 } from '..';
 import { AggregateRoot } from '../../../../shared/domain/entities';
 import {
+  InvalidMillisecondsDateError,
   MillisecondsDate,
   UniqueId,
   WebUrl,
@@ -18,6 +21,15 @@ import {
   Biography,
   Email,
   FirstName,
+  InvalidBiographyError,
+  InvalidBlockedStatusError,
+  InvalidEmailError,
+  InvalidFirstNameError,
+  InvalidLastNameError,
+  InvalidPasswordHashError,
+  InvalidRolesError,
+  InvalidUsernameError,
+  InvalidVerificationStatusError,
   IsBlocked,
   IsVerified,
   LastName,
@@ -64,6 +76,23 @@ export class User extends AggregateRoot {
     deletedAt?: MillisecondsDate,
   ) {
     super(id);
+
+    if (!email) throw new InvalidEmailError();
+    if (!username) throw new InvalidUsernameError();
+    if (!passwordHash) throw new InvalidPasswordHashError();
+    if (!isVerified) throw new InvalidVerificationStatusError();
+    if (!verificationCode) throw new InvalidVerificationCodeError();
+    if (!isBlocked) throw new InvalidBlockedStatusError();
+    if (!firstName) throw new InvalidFirstNameError();
+    if (!lastName) throw new InvalidLastNameError();
+    if (!birthday) throw new InvalidMillisecondsDateError();
+    if (!createdAt) throw new InvalidMillisecondsDateError();
+    if (!updatedAt) throw new InvalidMillisecondsDateError();
+    if (!biography) throw new InvalidBiographyError();
+    if (!roles) throw new InvalidRolesError();
+    if (!refreshTokens) throw new InvalidRefreshTokensError();
+    if (!profilePicture) profilePicture = null;
+    if (!deletedAt) deletedAt = null;
 
     this._email = email;
     this._username = username;
