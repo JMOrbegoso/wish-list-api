@@ -32,7 +32,7 @@ export abstract class UserRepository implements Repository<User> {
 
   abstract add(user: User): void;
 
-  abstract update(user: User): void;
+  abstract update(user: User): Promise<void>;
 
   abstract updateRefreshToken(refreshToken: RefreshToken): void;
 }
