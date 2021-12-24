@@ -25,17 +25,6 @@ export class UserRepositoryMongoDb
     super(orm.em, UserEntity);
   }
 
-  async getOneByVerificationCode(
-    verificationCode: VerificationCode,
-  ): Promise<User> {
-    const userEntity = await this.findOne({
-      verificationCode: verificationCode.id.getId,
-    });
-    if (!userEntity) return null;
-    const user = userEntityToUser(userEntity);
-    return user;
-  }
-
   async userExists(
     id: UniqueId,
     email: Email,
@@ -53,6 +42,13 @@ export class UserRepositoryMongoDb
     });
 
     return count > 0;
+  }
+
+  async getOneById(id: UniqueId): Promise<User> {
+    const userEntity = await this.findOne(id.getId);
+    if (!userEntity) return null;
+    const user = userEntityToUser(userEntity);
+    return user;
   }
 
   async getOneByEmail(email: Email): Promise<User> {
@@ -73,6 +69,17 @@ export class UserRepositoryMongoDb
     return user;
   }
 
+  async getOneByVerificationCode(
+    verificationCode: VerificationCode,
+  ): Promise<User> {
+    const userEntity = await this.findOne({
+      verificationCode: verificationCode.id.getId,
+    });
+    if (!userEntity) return null;
+    const user = userEntityToUser(userEntity);
+    return user;
+  }
+
   async getOneByRefreshTokenId(refreshTokenId: UniqueId): Promise<User> {
     const refreshTokenEntity = await this.orm.em.findOne(
       RefreshTokenEntity,
@@ -84,6 +91,12 @@ export class UserRepositoryMongoDb
     const userEntity = refreshTokenEntity.user.getEntity();
 
     return userEntityToUser(userEntity);
+  }
+
+  async getAll(): Promise<User[]> {
+    const usersEntities = await this.findAll();
+    const users = usersEntities.map((u) => userEntityToUser(u));
+    return users;
   }
 
   async getAllRefreshTokensByUserId(id: UniqueId): Promise<RefreshToken[]> {
@@ -107,19 +120,6 @@ export class UserRepositoryMongoDb
       refreshTokenEntityToRefreshToken(rt),
     );
     return refreshTokens;
-  }
-
-  async getAll(): Promise<User[]> {
-    const usersEntities = await this.findAll();
-    const users = usersEntities.map((u) => userEntityToUser(u));
-    return users;
-  }
-
-  async getOneById(id: UniqueId): Promise<User> {
-    const userEntity = await this.findOne(id.getId);
-    if (!userEntity) return null;
-    const user = userEntityToUser(userEntity);
-    return user;
   }
 
   add(user: User): void {
