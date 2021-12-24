@@ -1,5 +1,5 @@
+import { InvalidBlockedStatusError } from '..';
 import { ValueObject } from '../../../../shared/domain/value-objects';
-import { InvalidIsBlockedStatus } from './invalid-is-blocked-status';
 
 export class IsBlocked extends ValueObject<boolean> {
   static blocked(): IsBlocked {
@@ -11,9 +11,9 @@ export class IsBlocked extends ValueObject<boolean> {
   }
 
   protected validate(value: boolean): void {
-    if (value === undefined) throw new InvalidIsBlockedStatus();
+    if (value === undefined) throw new InvalidBlockedStatusError();
 
-    if (value === null) throw new InvalidIsBlockedStatus();
+    if (value === null) throw new InvalidBlockedStatusError();
   }
 
   static create(value: boolean): IsBlocked {

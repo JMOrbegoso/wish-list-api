@@ -27,7 +27,7 @@ export * from './password-hash/password-hash';
 export * from './password-hash/invalid-password-hash.error';
 
 export * from './is-blocked/is-blocked';
-export * from './is-blocked/invalid-is-blocked-status';
+export * from './is-blocked/invalid-blocked-status.error';
 
 export * from './password/password';
 export * from './password/invalid-password.error';

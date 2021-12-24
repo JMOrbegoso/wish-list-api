@@ -1,4 +1,4 @@
-import { InvalidIsBlockedStatus, IsBlocked } from '..';
+import { InvalidBlockedStatusError, IsBlocked } from '..';
 
 const validValues = [true, false];
 
@@ -15,7 +15,7 @@ describe('users', () => {
 
             // Assert
             expect(() => IsBlocked.create(invalid)).toThrowError(
-              InvalidIsBlockedStatus,
+              InvalidBlockedStatusError,
             );
           },
         );
