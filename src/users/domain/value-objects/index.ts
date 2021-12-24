@@ -37,6 +37,7 @@ export * from './password/malformed-password.error';
 
 export * from './role/role';
 export * from './role/invalid-role.error';
+export * from './role/invalid-roles.error';
 
 export * from './seconds-duration/seconds-duration';
 export * from './seconds-duration/invalid-seconds-duration.error';
