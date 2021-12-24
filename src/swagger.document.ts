@@ -15,7 +15,7 @@ export const swaggerDocument: OpenAPIObject = {
   paths: {
     '/api/login': {
       post: {
-        operationId: 'AuthController_login',
+        operationId: 'Login',
         parameters: [],
         requestBody: {
           required: true,
@@ -45,7 +45,7 @@ export const swaggerDocument: OpenAPIObject = {
     },
     '/api/refresh': {
       post: {
-        operationId: 'AuthController_refresh',
+        operationId: 'Refresh',
         parameters: [],
         requestBody: {
           required: true,
@@ -71,7 +71,7 @@ export const swaggerDocument: OpenAPIObject = {
     },
     '/api/verify': {
       get: {
-        operationId: 'AuthController_verify',
+        operationId: 'Verify',
         parameters: [
           {
             name: 'code',
@@ -90,7 +90,7 @@ export const swaggerDocument: OpenAPIObject = {
     },
     '/api/users': {
       get: {
-        operationId: 'UsersController_getAllUsers',
+        operationId: 'GetAllUsers',
         parameters: [],
         responses: {
           200: {
@@ -108,7 +108,7 @@ export const swaggerDocument: OpenAPIObject = {
         tags: ['UsersController'],
       },
       post: {
-        operationId: 'UsersController_register',
+        operationId: 'Register',
         parameters: [],
         requestBody: {
           required: true,
@@ -127,7 +127,7 @@ export const swaggerDocument: OpenAPIObject = {
     },
     '/api/users/{id}': {
       get: {
-        operationId: 'UsersController_getUserById',
+        operationId: 'GetUserById',
         parameters: [
           {
             name: 'id',
@@ -153,7 +153,7 @@ export const swaggerDocument: OpenAPIObject = {
         tags: ['UsersController'],
       },
       delete: {
-        operationId: 'UsersController_deleteUser',
+        operationId: 'DeleteUser',
         parameters: [
           {
             name: 'id',
@@ -180,7 +180,7 @@ export const swaggerDocument: OpenAPIObject = {
     },
     '/api/users/email/{email}': {
       get: {
-        operationId: 'UsersController_getUserByEmail',
+        operationId: 'GetUserByEmail',
         parameters: [
           {
             name: 'email',
@@ -208,7 +208,7 @@ export const swaggerDocument: OpenAPIObject = {
     },
     '/api/users/username/{username}': {
       get: {
-        operationId: 'UsersController_getUserByUsername',
+        operationId: 'GetUserByUsername',
         parameters: [
           {
             name: 'username',
@@ -236,7 +236,7 @@ export const swaggerDocument: OpenAPIObject = {
     },
     '/api/users/profile/{id}': {
       patch: {
-        operationId: 'UsersController_updateProfile',
+        operationId: 'UpdateProfile',
         parameters: [
           {
             name: 'id',
@@ -271,7 +271,7 @@ export const swaggerDocument: OpenAPIObject = {
     },
     '/api/users/profile-picture/{id}': {
       patch: {
-        operationId: 'UsersController_updateProfilePicture',
+        operationId: 'UpdateProfilePicture',
         parameters: [
           {
             name: 'id',
@@ -315,7 +315,7 @@ export const swaggerDocument: OpenAPIObject = {
         security: [{ bearer: [] }],
       },
       delete: {
-        operationId: 'UsersController_deleteProfilePicture',
+        operationId: 'DeleteProfilePicture',
         parameters: [
           {
             name: 'id',
@@ -344,7 +344,7 @@ export const swaggerDocument: OpenAPIObject = {
     },
     '/api/users/update-password/{id}': {
       patch: {
-        operationId: 'UsersController_updatePassword',
+        operationId: 'UpdatePassword',
         parameters: [
           {
             name: 'id',
@@ -379,7 +379,7 @@ export const swaggerDocument: OpenAPIObject = {
     },
     '/api/users/block/{id}': {
       patch: {
-        operationId: 'UsersController_blockUser',
+        operationId: 'BlockUser',
         parameters: [
           {
             name: 'id',
@@ -406,7 +406,7 @@ export const swaggerDocument: OpenAPIObject = {
     },
     '/api/users/unblock/{id}': {
       patch: {
-        operationId: 'UsersController_unblockUser',
+        operationId: 'UnblockUser',
         parameters: [
           {
             name: 'id',
@@ -433,7 +433,7 @@ export const swaggerDocument: OpenAPIObject = {
     },
     '/api/users/undelete/{id}': {
       patch: {
-        operationId: 'UsersController_undeleteUser',
+        operationId: 'UndeleteUser',
         parameters: [
           {
             name: 'id',
@@ -460,7 +460,7 @@ export const swaggerDocument: OpenAPIObject = {
     },
     '/api/wishes': {
       get: {
-        operationId: 'WishesController_getAllWishes',
+        operationId: 'GetAllWishes',
         parameters: [],
         responses: {
           200: {
@@ -484,7 +484,7 @@ export const swaggerDocument: OpenAPIObject = {
         security: [{ bearer: [] }],
       },
       post: {
-        operationId: 'WishesController_post',
+        operationId: 'Post',
         parameters: [],
         requestBody: {
           required: true,
@@ -507,7 +507,7 @@ export const swaggerDocument: OpenAPIObject = {
         security: [{ bearer: [] }],
       },
       patch: {
-        operationId: 'WishesController_update',
+        operationId: 'Update',
         parameters: [],
         requestBody: {
           required: true,
@@ -532,7 +532,7 @@ export const swaggerDocument: OpenAPIObject = {
     },
     '/api/wishes/public': {
       get: {
-        operationId: 'WishesController_getPublicWishes',
+        operationId: 'GetPublicWishes',
         parameters: [],
         responses: {
           200: {
@@ -552,7 +552,7 @@ export const swaggerDocument: OpenAPIObject = {
     },
     '/api/wishes/wisherId/{wisherId}': {
       get: {
-        operationId: 'WishesController_getWishesByWisherId',
+        operationId: 'GetWishesByWisherId',
         parameters: [
           {
             name: 'wisherId',
@@ -587,7 +587,7 @@ export const swaggerDocument: OpenAPIObject = {
     },
     '/api/wishes/{id}': {
       get: {
-        operationId: 'WishesController_getWishById',
+        operationId: 'GetWishById',
         parameters: [
           {
             name: 'id',
@@ -619,7 +619,7 @@ export const swaggerDocument: OpenAPIObject = {
         security: [{ bearer: [] }],
       },
       delete: {
-        operationId: 'WishesController_deleteWish',
+        operationId: 'DeleteWish',
         parameters: [
           {
             name: 'id',
@@ -646,7 +646,7 @@ export const swaggerDocument: OpenAPIObject = {
     },
     '/api/wishes/undelete/{id}': {
       patch: {
-        operationId: 'WishesController_undeleteWish',
+        operationId: 'UndeleteWish',
         parameters: [
           {
             name: 'id',
@@ -673,7 +673,7 @@ export const swaggerDocument: OpenAPIObject = {
     },
     '/api/wishes/complete/{id}/{completionDate}': {
       patch: {
-        operationId: 'WishesController_completeWish',
+        operationId: 'CompleteWish',
         parameters: [
           {
             name: 'id',
@@ -708,7 +708,7 @@ export const swaggerDocument: OpenAPIObject = {
     },
     '/api/wishes/uncomplete/{id}': {
       patch: {
-        operationId: 'WishesController_uncompleteWish',
+        operationId: 'UncompleteWish',
         parameters: [
           {
             name: 'id',
@@ -735,7 +735,7 @@ export const swaggerDocument: OpenAPIObject = {
     },
     '/api/wishes/change-privacy-level/{id}/{privacyLevel}': {
       patch: {
-        operationId: 'WishesController_changeWishPrivacyLevel',
+        operationId: 'ChangeWishPrivacyLevel',
         parameters: [
           {
             name: 'id',
@@ -770,7 +770,7 @@ export const swaggerDocument: OpenAPIObject = {
     },
     '/api/wishes/stage': {
       post: {
-        operationId: 'WishesController_createWishStage',
+        operationId: 'CreateWishStage',
         parameters: [],
         requestBody: {
           required: true,
@@ -793,7 +793,7 @@ export const swaggerDocument: OpenAPIObject = {
         security: [{ bearer: [] }],
       },
       patch: {
-        operationId: 'WishesController_updateWishStage',
+        operationId: 'UpdateWishStage',
         parameters: [],
         requestBody: {
           required: true,
@@ -818,7 +818,7 @@ export const swaggerDocument: OpenAPIObject = {
     },
     '/api/wishes/stage/{wishStageId}': {
       delete: {
-        operationId: 'WishesController_deleteWishStage',
+        operationId: 'DeleteWishStage',
         parameters: [
           {
             name: 'wishStageId',
