@@ -6,7 +6,7 @@ import {
   InvalidWishImagesError,
   InvalidWishStagesError,
   InvalidWishUrlsError,
-  InvalidWishWisherError,
+  InvalidWisherError,
   NonExistentWishStageError,
   TooManyWishCategoriesError,
   TooManyWishImagesError,
@@ -527,7 +527,7 @@ describe('wishes', () => {
                 deletedAt,
                 completedAt,
               ),
-            ).toThrowError(InvalidWishWisherError);
+            ).toThrowError(InvalidWisherError);
           },
         );
 

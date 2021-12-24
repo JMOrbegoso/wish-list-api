@@ -1,5 +1,4 @@
 export * from './wish/wish';
-export * from './wish/invalid-wish-wisher.error';
 export * from './wish/invalid-wish-categories.error';
 export * from './wish/invalid-wish-urls.error';
 export * from './wish/invalid-wish-images.error';
@@ -23,3 +22,4 @@ export * from './wish-stage/too-many-wish-stage-urls.error';
 export * from './wish-stage/too-many-wish-stage-images.error';
 
 export * from './wisher/wisher';
+export * from './wisher/invalid-wisher.error';

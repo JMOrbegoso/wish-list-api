@@ -5,7 +5,7 @@ import {
   InvalidWishImagesError,
   InvalidWishStagesError,
   InvalidWishUrlsError,
-  InvalidWishWisherError,
+  InvalidWisherError,
   NonExistentWishStageError,
   TooManyWishCategoriesError,
   TooManyWishImagesError,
@@ -81,7 +81,7 @@ export class Wish extends AggregateRoot {
 
     if (!updatedAt) throw new InvalidMillisecondsDateError();
 
-    if (!wisher) throw new InvalidWishWisherError();
+    if (!wisher) throw new InvalidWisherError();
 
     if (!urls) throw new InvalidWishUrlsError();
 
