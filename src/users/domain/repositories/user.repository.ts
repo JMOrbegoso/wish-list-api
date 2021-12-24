@@ -35,6 +35,4 @@ export abstract class UserRepository implements Repository<User> {
   abstract update(user: User): void;
 
   abstract updateRefreshToken(refreshToken: RefreshToken): void;
-
-  abstract delete(id: UniqueId): void;
 }

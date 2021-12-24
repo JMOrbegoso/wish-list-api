@@ -130,11 +130,6 @@ export class WishRepositoryMongoDb
     this.assign(wishFromDb, wishEntity);
   }
 
-  delete(id: UniqueId): void {
-    const wishFromDb = this.getReference(id.getId);
-    this.remove(wishFromDb);
-  }
-
   private getOrCreateWisherEntity(wisher: Wisher): WisherEntity {
     let wisherEntity = this.orm.em.getReference(WisherEntity, wisher.id.getId);
 

@@ -171,11 +171,6 @@ export class UserRepositoryMongoDb
     this.orm.em.assign(refreshTokenFromDb, refreshTokenEntity);
   }
 
-  delete(id: UniqueId): void {
-    const userFromDb = this.getReference(id.getId);
-    this.remove(userFromDb);
-  }
-
   private getOrCreateRefreshTokenEntity(
     refreshToken: RefreshToken,
   ): RefreshTokenEntity {

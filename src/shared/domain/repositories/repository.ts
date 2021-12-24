@@ -9,6 +9,4 @@ export interface Repository<T extends AggregateRoot> {
   add(t: T): void;
 
   update(t: T): void;
-
-  delete(id: UniqueId): void;
 }
