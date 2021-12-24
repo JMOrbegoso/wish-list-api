@@ -7,6 +7,4 @@ export interface Repository<T extends AggregateRoot> {
   getOne(id: UniqueId): Promise<T>;
 
   add(t: T): void;
-
-  update(t: T): void;
 }
