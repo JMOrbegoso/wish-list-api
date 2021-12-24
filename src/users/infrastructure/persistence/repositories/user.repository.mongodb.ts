@@ -115,7 +115,7 @@ export class UserRepositoryMongoDb
     return users;
   }
 
-  async getOne(id: UniqueId): Promise<User> {
+  async getOneById(id: UniqueId): Promise<User> {
     const userEntity = await this.findOne(id.getId);
     if (!userEntity) return null;
     const user = userEntityToUser(userEntity);

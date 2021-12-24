@@ -78,7 +78,7 @@ export class WishRepositoryMongoDb
     return wishes;
   }
 
-  async getOne(id: UniqueId): Promise<Wish> {
+  async getOneById(id: UniqueId): Promise<Wish> {
     const wishEntity = await this.findOne(id.getId, { populate: true });
     if (!wishEntity) return null;
     const wish = wishEntityToWish(wishEntity);

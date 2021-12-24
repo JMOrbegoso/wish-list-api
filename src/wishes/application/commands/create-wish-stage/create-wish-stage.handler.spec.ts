@@ -65,7 +65,7 @@ describe('wishes', () => {
             // Arrange
             const wishRepository = {
               getWishStageById: jest.fn().mockReturnValue(null),
-              getOne: jest.fn().mockReturnValue(null),
+              getOneById: jest.fn().mockReturnValue(null),
             } as MockedObject<WishRepository>;
 
             const unitOfWork = {} as MockedObject<UnitOfWork>;
@@ -97,7 +97,7 @@ describe('wishes', () => {
 
             const wishRepository = {
               getWishStageById: jest.fn().mockReturnValue(null),
-              getOne: jest.fn().mockReturnValue(wish),
+              getOneById: jest.fn().mockReturnValue(wish),
             } as MockedObject<WishRepository>;
 
             const unitOfWork = {} as MockedObject<UnitOfWork>;
@@ -130,7 +130,7 @@ describe('wishes', () => {
 
             const wishRepository = {
               getWishStageById: jest.fn().mockReturnValue(null),
-              getOne: jest.fn().mockReturnValue(wish),
+              getOneById: jest.fn().mockReturnValue(wish),
             } as MockedObject<WishRepository>;
 
             const unitOfWork = {} as MockedObject<UnitOfWork>;
@@ -164,7 +164,7 @@ describe('wishes', () => {
 
             const wishRepository = {
               getWishStageById: jest.fn().mockReturnValue(null),
-              getOne: jest.fn().mockReturnValue(wish),
+              getOneById: jest.fn().mockReturnValue(wish),
               update: jest.fn(),
             } as MockedObject<WishRepository>;
 

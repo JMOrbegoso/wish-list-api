@@ -49,7 +49,7 @@ describe('wishes', () => {
             // Arrange
             const wishRepository = {} as MockedObject<WishRepository>;
             const userRepository = {
-              getOne: jest.fn().mockReturnValue(false),
+              getOneById: jest.fn().mockReturnValue(false),
             } as MockedObject<UserRepository>;
 
             const unitOfWork = {} as MockedObject<UnitOfWork>;
@@ -74,11 +74,11 @@ describe('wishes', () => {
           (command: CreateWishCommand) => {
             // Arrange
             const wishRepository = {
-              getOne: jest.fn().mockReturnValue(true),
+              getOneById: jest.fn().mockReturnValue(true),
             } as MockedObject<WishRepository>;
 
             const userRepository = {
-              getOne: jest.fn().mockReturnValue(true),
+              getOneById: jest.fn().mockReturnValue(true),
             } as MockedObject<UserRepository>;
 
             const unitOfWork = {} as MockedObject<UnitOfWork>;
@@ -102,11 +102,11 @@ describe('wishes', () => {
           (command: CreateWishCommand) => {
             // Arrange
             const wishRepository = {
-              getOne: jest.fn().mockReturnValue(true),
+              getOneById: jest.fn().mockReturnValue(true),
             } as MockedObject<WishRepository>;
 
             const userRepository = {
-              getOne: jest.fn().mockReturnValue(true),
+              getOneById: jest.fn().mockReturnValue(true),
             } as MockedObject<UserRepository>;
 
             const unitOfWork = {} as MockedObject<UnitOfWork>;
@@ -130,12 +130,12 @@ describe('wishes', () => {
           async (command: CreateWishCommand) => {
             // Arrange
             const wishRepository = {
-              getOne: jest.fn().mockReturnValue(null),
+              getOneById: jest.fn().mockReturnValue(null),
               add: jest.fn(),
             } as MockedObject<WishRepository>;
 
             const userRepository = {
-              getOne: jest.fn().mockReturnValue(true),
+              getOneById: jest.fn().mockReturnValue(true),
             } as MockedObject<UserRepository>;
 
             const unitOfWork = {

@@ -40,11 +40,11 @@ export class CreateWishHandler implements ICommandHandler<CreateWishCommand> {
     );
 
     // Check if the user exist
-    const user = await this.userRepository.getOne(wisherId);
+    const user = await this.userRepository.getOneById(wisherId);
     if (!user) throw new NotFoundException();
 
     // Check if the id is already in use by other wish
-    const wishExists = await this.wishRepository.getOne(id);
+    const wishExists = await this.wishRepository.getOneById(id);
     if (wishExists) throw new BadRequestException('Id already in use.');
 
     // Create the new wish

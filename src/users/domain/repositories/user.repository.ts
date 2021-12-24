@@ -28,7 +28,7 @@ export abstract class UserRepository implements Repository<User> {
     ipAddress: IpAddress,
   ): Promise<RefreshToken[]>;
 
-  abstract getOne(id: UniqueId): Promise<User>;
+  abstract getOneById(id: UniqueId): Promise<User>;
 
   abstract add(user: User): void;
 

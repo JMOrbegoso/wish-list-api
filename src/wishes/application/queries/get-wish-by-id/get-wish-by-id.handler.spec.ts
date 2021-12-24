@@ -20,7 +20,7 @@ describe('wishes', () => {
           async (query: GetWishByIdQuery) => {
             // Arrange
             const wishRepository = {
-              getOne: jest.fn().mockReturnValue(null),
+              getOneById: jest.fn().mockReturnValue(null),
             } as MockedObject<WishRepository>;
 
             const handler = new GetWishByIdHandler(wishRepository);
@@ -75,7 +75,7 @@ describe('wishes', () => {
             } as MockedObject<Wish>;
 
             const wishRepository = {
-              getOne: jest.fn().mockReturnValue(wish),
+              getOneById: jest.fn().mockReturnValue(wish),
             } as MockedObject<WishRepository>;
 
             const handler = new GetWishByIdHandler(wishRepository);
