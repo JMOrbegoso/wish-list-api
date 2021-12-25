@@ -52,7 +52,6 @@ import {
   UserIdDto,
   UsernameDto,
 } from '../dtos';
-import { updateUserPasswordDtoToUpdateUserPasswordCommand } from '../mappings';
 import { RoleOwnershipGuard, RoleOwnershipKey } from './guards';
 
 @Controller('users')
@@ -214,8 +213,7 @@ export class UsersController {
     @Param() params: UserIdDto,
     @Body() dto: UpdateUserPasswordDto,
   ): Promise<void> {
-    const command: UpdateUserPasswordCommand =
-      updateUserPasswordDtoToUpdateUserPasswordCommand(dto);
+    const command = new UpdateUserPasswordCommand(dto.id, dto.password);
     await this.commandBus.execute(command);
   }
 
