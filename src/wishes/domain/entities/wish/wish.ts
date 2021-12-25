@@ -86,6 +86,8 @@ export class Wish extends AggregateRoot {
       throw new TooManyWishCategoriesError();
     if (!stages) throw new InvalidWishStagesError();
     if (stages.length > Wish.MaxStages) throw new TooManyWishStagesError();
+    if (!deletedAt) deletedAt = null;
+    if (!completedAt) completedAt = null;
 
     this._title = title;
     this._description = description;
