@@ -7,6 +7,7 @@ import {
 import { Entity } from '../../../../shared/domain/entities';
 import {
   InvalidMillisecondsDateError,
+  InvalidWebUrlError,
   MillisecondsDate,
   UniqueId,
   WebUrl,
@@ -43,9 +44,15 @@ export class WishStage extends Entity {
     if (!createdAt) throw new InvalidMillisecondsDateError();
     if (!urls) throw new InvalidWishStageUrlsError();
     if (urls.length > WishStage.MaxUrls) throw new TooManyWishStageUrlsError();
+    urls.forEach((url) => {
+      if (!url) throw new InvalidWebUrlError();
+    });
     if (!imageUrls) throw new InvalidWishStageImagesError();
     if (imageUrls.length > WishStage.MaxImages)
       throw new TooManyWishStageImagesError();
+    imageUrls.forEach((imageUrl) => {
+      if (!imageUrl) throw new InvalidWebUrlError();
+    });
 
     this._title = title;
     this._description = description;

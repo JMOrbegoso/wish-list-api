@@ -9,6 +9,7 @@ import {
 import {
   InvalidMillisecondsDateError,
   InvalidUniqueIdError,
+  InvalidWebUrlError,
   MillisecondsDate,
   UniqueId,
   WebUrl,
@@ -217,6 +218,35 @@ describe('wishes', () => {
         );
 
         test.each(validValues)(
+          'create a WishStage with a invalid url inside a valid urls array should throw error',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            title: MockedObject<WishTitle>,
+            description: MockedObject<WishDescription>,
+            createdAt: MockedObject<MillisecondsDate>,
+            urls: MockedObject<WebUrl>[],
+            images: MockedObject<WebUrl>[],
+          ) => {
+            // Arrange
+
+            // Act
+            urls = [{} as MockedObject<WebUrl>, null];
+
+            // Assert
+            expect(() =>
+              WishStage.create(
+                uniqueId,
+                title,
+                description,
+                createdAt,
+                urls,
+                images,
+              ),
+            ).toThrowError(InvalidWebUrlError);
+          },
+        );
+
+        test.each(validValues)(
           'create a WishStage with invalid images array should throw error',
           (
             uniqueId: MockedObject<UniqueId>,
@@ -271,6 +301,35 @@ describe('wishes', () => {
                 images,
               ),
             ).toThrowError(TooManyWishStageImagesError);
+          },
+        );
+
+        test.each(validValues)(
+          'create a WishStage with a invalid image inside a valid images array should throw error',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            title: MockedObject<WishTitle>,
+            description: MockedObject<WishDescription>,
+            createdAt: MockedObject<MillisecondsDate>,
+            urls: MockedObject<WebUrl>[],
+            images: MockedObject<WebUrl>[],
+          ) => {
+            // Arrange
+
+            // Act
+            images = [{} as MockedObject<WebUrl>, null];
+
+            // Assert
+            expect(() =>
+              WishStage.create(
+                uniqueId,
+                title,
+                description,
+                createdAt,
+                urls,
+                images,
+              ),
+            ).toThrowError(InvalidWebUrlError);
           },
         );
 
