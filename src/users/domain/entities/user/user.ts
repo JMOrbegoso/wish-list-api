@@ -27,6 +27,7 @@ import {
   InvalidFirstNameError,
   InvalidLastNameError,
   InvalidPasswordHashError,
+  InvalidRoleError,
   InvalidRolesError,
   InvalidUsernameError,
   InvalidVerificationStatusError,
@@ -90,7 +91,13 @@ export class User extends AggregateRoot {
     if (!updatedAt) throw new InvalidMillisecondsDateError();
     if (!biography) throw new InvalidBiographyError();
     if (!roles) throw new InvalidRolesError();
+    roles.forEach((role) => {
+      if (!role) throw new InvalidRoleError();
+    });
     if (!refreshTokens) throw new InvalidRefreshTokensError();
+    refreshTokens.forEach((refreshToken) => {
+      if (!refreshToken) throw new InvalidRefreshTokenError();
+    });
     if (!profilePicture) profilePicture = null;
     if (!deletedAt) deletedAt = null;
 

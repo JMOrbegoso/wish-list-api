@@ -29,6 +29,7 @@ import {
   InvalidFirstNameError,
   InvalidLastNameError,
   InvalidPasswordHashError,
+  InvalidRoleError,
   InvalidRolesError,
   InvalidUsernameError,
   InvalidVerificationStatusError,
@@ -1238,6 +1239,57 @@ describe('users', () => {
         );
 
         test.each(validValues)(
+          'create a User with a invalid role inside a valid roles array should throw error',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            email: MockedObject<Email>,
+            username: MockedObject<Username>,
+            passwordHash: MockedObject<PasswordHash>,
+            isVerified: MockedObject<IsVerified>,
+            verificationCode: MockedObject<VerificationCode>,
+            isBlocked: MockedObject<IsBlocked>,
+            firstName: MockedObject<FirstName>,
+            lastName: MockedObject<LastName>,
+            birthday: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            biography: MockedObject<Biography>,
+            roles: MockedObject<Role[]>,
+            refreshTokens: MockedObject<RefreshToken[]>,
+            profilePicture: MockedObject<WebUrl>,
+            deletedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+            roles = [{} as Role, null];
+
+            // Act
+
+            // Assert
+            expect(() =>
+              User.create(
+                uniqueId,
+                email,
+                username,
+                passwordHash,
+                isVerified,
+                verificationCode,
+                isBlocked,
+                firstName,
+                lastName,
+                birthday,
+                createdAt,
+                updatedAt,
+                biography,
+                roles,
+                refreshTokens,
+                profilePicture,
+                deletedAt,
+              ),
+            ).toThrowError(InvalidRoleError);
+          },
+        );
+
+        test.each(validValues)(
           'create a User with invalid refreshTokens should throw error',
           (
             uniqueId: MockedObject<UniqueId>,
@@ -1284,6 +1336,57 @@ describe('users', () => {
                 deletedAt,
               ),
             ).toThrowError(InvalidRefreshTokensError);
+          },
+        );
+
+        test.each(validValues)(
+          'create a User with a invalid refreshToken inside a valid refreshTokens array should throw error',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            email: MockedObject<Email>,
+            username: MockedObject<Username>,
+            passwordHash: MockedObject<PasswordHash>,
+            isVerified: MockedObject<IsVerified>,
+            verificationCode: MockedObject<VerificationCode>,
+            isBlocked: MockedObject<IsBlocked>,
+            firstName: MockedObject<FirstName>,
+            lastName: MockedObject<LastName>,
+            birthday: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            biography: MockedObject<Biography>,
+            roles: MockedObject<Role[]>,
+            refreshTokens: MockedObject<RefreshToken[]>,
+            profilePicture: MockedObject<WebUrl>,
+            deletedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+            refreshTokens = [{} as RefreshToken, null];
+
+            // Act
+
+            // Assert
+            expect(() =>
+              User.create(
+                uniqueId,
+                email,
+                username,
+                passwordHash,
+                isVerified,
+                verificationCode,
+                isBlocked,
+                firstName,
+                lastName,
+                birthday,
+                createdAt,
+                updatedAt,
+                biography,
+                roles,
+                refreshTokens,
+                profilePicture,
+                deletedAt,
+              ),
+            ).toThrowError(InvalidRefreshTokenError);
           },
         );
 
