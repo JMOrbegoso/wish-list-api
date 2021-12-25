@@ -4,6 +4,7 @@ import {
   DuplicatedWishStageError,
   InvalidWishCategoriesError,
   InvalidWishImagesError,
+  InvalidWishStageError,
   InvalidWishStagesError,
   InvalidWishUrlsError,
   InvalidWisherError,
@@ -23,12 +24,14 @@ import {
 import {
   InvalidMillisecondsDateError,
   InvalidUniqueIdError,
+  InvalidWebUrlError,
   MillisecondsDate,
   UniqueId,
   WebUrl,
 } from '../../../../shared/domain/value-objects';
 import {
   CategoryName,
+  InvalidCategoryNameError,
   InvalidWishDescriptionError,
   InvalidWishPrivacyLevelError,
   InvalidWishTitleError,
@@ -619,6 +622,49 @@ describe('wishes', () => {
         );
 
         test.each(validValues)(
+          'create a Wish with a invalid url inside a valid urls array should throw error',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            title: MockedObject<WishTitle>,
+            description: MockedObject<WishDescription>,
+            privacyLevel: MockedObject<WishPrivacyLevel>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            wisher: MockedObject<Wisher>,
+            urls: MockedObject<WebUrl>[],
+            images: MockedObject<WebUrl>[],
+            categories: MockedObject<CategoryName>[],
+            stages: MockedObject<WishStage>[],
+            deletedAt: MockedObject<MillisecondsDate>,
+            completedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+
+            // Act
+            urls = [{} as MockedObject<WebUrl>, null];
+
+            // Assert
+            expect(() =>
+              Wish.create(
+                uniqueId,
+                title,
+                description,
+                privacyLevel,
+                createdAt,
+                updatedAt,
+                wisher,
+                urls,
+                images,
+                categories,
+                stages,
+                deletedAt,
+                completedAt,
+              ),
+            ).toThrowError(InvalidWebUrlError);
+          },
+        );
+
+        test.each(validValues)(
           'create a Wish with invalid images should throw error',
           (
             uniqueId: MockedObject<UniqueId>,
@@ -702,6 +748,49 @@ describe('wishes', () => {
                 completedAt,
               ),
             ).toThrowError(TooManyWishImagesError);
+          },
+        );
+
+        test.each(validValues)(
+          'create a Wish with a invalid image url inside a valid image urls array should throw error',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            title: MockedObject<WishTitle>,
+            description: MockedObject<WishDescription>,
+            privacyLevel: MockedObject<WishPrivacyLevel>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            wisher: MockedObject<Wisher>,
+            urls: MockedObject<WebUrl>[],
+            images: MockedObject<WebUrl>[],
+            categories: MockedObject<CategoryName>[],
+            stages: MockedObject<WishStage>[],
+            deletedAt: MockedObject<MillisecondsDate>,
+            completedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+
+            // Act
+            images = [{} as MockedObject<WebUrl>, null];
+
+            // Assert
+            expect(() =>
+              Wish.create(
+                uniqueId,
+                title,
+                description,
+                privacyLevel,
+                createdAt,
+                updatedAt,
+                wisher,
+                urls,
+                images,
+                categories,
+                stages,
+                deletedAt,
+                completedAt,
+              ),
+            ).toThrowError(InvalidWebUrlError);
           },
         );
 
@@ -793,6 +882,49 @@ describe('wishes', () => {
         );
 
         test.each(validValues)(
+          'create a Wish with a invalid category inside a valid categories array should throw error',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            title: MockedObject<WishTitle>,
+            description: MockedObject<WishDescription>,
+            privacyLevel: MockedObject<WishPrivacyLevel>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            wisher: MockedObject<Wisher>,
+            urls: MockedObject<WebUrl>[],
+            images: MockedObject<WebUrl>[],
+            categories: MockedObject<CategoryName>[],
+            stages: MockedObject<WishStage>[],
+            deletedAt: MockedObject<MillisecondsDate>,
+            completedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+
+            // Act
+            categories = [{} as MockedObject<CategoryName>, null];
+
+            // Assert
+            expect(() =>
+              Wish.create(
+                uniqueId,
+                title,
+                description,
+                privacyLevel,
+                createdAt,
+                updatedAt,
+                wisher,
+                urls,
+                images,
+                categories,
+                stages,
+                deletedAt,
+                completedAt,
+              ),
+            ).toThrowError(InvalidCategoryNameError);
+          },
+        );
+
+        test.each(validValues)(
           'create a Wish with invalid stages should throw error',
           (
             uniqueId: MockedObject<UniqueId>,
@@ -876,6 +1008,49 @@ describe('wishes', () => {
                 completedAt,
               ),
             ).toThrowError(TooManyWishStagesError);
+          },
+        );
+
+        test.each(validValues)(
+          'create a Wish with a invalid stage inside a valid stages array should throw error',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            title: MockedObject<WishTitle>,
+            description: MockedObject<WishDescription>,
+            privacyLevel: MockedObject<WishPrivacyLevel>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            wisher: MockedObject<Wisher>,
+            urls: MockedObject<WebUrl>[],
+            images: MockedObject<WebUrl>[],
+            categories: MockedObject<CategoryName>[],
+            stages: MockedObject<WishStage>[],
+            deletedAt: MockedObject<MillisecondsDate>,
+            completedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+
+            // Act
+            stages = [{} as MockedObject<WishStage>, null];
+
+            // Assert
+            expect(() =>
+              Wish.create(
+                uniqueId,
+                title,
+                description,
+                privacyLevel,
+                createdAt,
+                updatedAt,
+                wisher,
+                urls,
+                images,
+                categories,
+                stages,
+                deletedAt,
+                completedAt,
+              ),
+            ).toThrowError(InvalidWishStageError);
           },
         );
 
