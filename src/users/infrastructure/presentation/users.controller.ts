@@ -53,7 +53,6 @@ import {
   UsernameDto,
 } from '../dtos';
 import {
-  createUserDtoToCreateUserCommand,
   updateUserPasswordDtoToUpdateUserPasswordCommand,
   updateUserProfileDtoToUpdateUserProfileCommand,
 } from '../mappings';
@@ -91,7 +90,16 @@ export class UsersController {
 
   @Post()
   async register(@Body() dto: CreateUserDto): Promise<void> {
-    const command: CreateUserCommand = createUserDtoToCreateUserCommand(dto);
+    const command = new CreateUserCommand(
+      dto.id,
+      dto.email,
+      dto.username,
+      dto.password,
+      dto.firstName,
+      dto.lastName,
+      dto.birthday,
+      dto.biography,
+    );
     await this.commandBus.execute(command);
   }
 
