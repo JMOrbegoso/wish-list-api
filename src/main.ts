@@ -1,10 +1,7 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import { SwaggerModule } from '@nestjs/swagger';
 import { config as initDotenv } from 'dotenv';
-import {
-  serve as serveSwagger,
-  setup as setupSwagger,
-} from 'swagger-ui-express';
 import { AppModule } from './app.module';
 import { swaggerDocument } from './swagger.document';
 
@@ -19,7 +16,7 @@ async function bootstrap(): Promise<void> {
   app.setGlobalPrefix('api');
 
   // Setup Swagger documentation
-  app.use('', serveSwagger, setupSwagger(swaggerDocument));
+  SwaggerModule.setup('/', app, swaggerDocument);
 
   // Enable Auto-validation
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
