@@ -89,11 +89,11 @@ export class WishStage extends Entity {
   }
 
   public get urls(): WebUrl[] {
-    return this._urls;
+    return [...this._urls];
   }
 
   public get imageUrls(): WebUrl[] {
-    return this._imageUrls;
+    return [...this._imageUrls];
   }
 
   public update(

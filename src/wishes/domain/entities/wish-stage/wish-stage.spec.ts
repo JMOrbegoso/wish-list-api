@@ -370,6 +370,86 @@ describe('wishes', () => {
         );
 
         test.each(validValues)(
+          'do changes on urls array getter should make no changes on the original urls array',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            title: MockedObject<WishTitle>,
+            description: MockedObject<WishDescription>,
+            createdAt: MockedObject<MillisecondsDate>,
+            urls: MockedObject<WebUrl>[],
+            images: MockedObject<WebUrl>[],
+          ) => {
+            // Arrange
+            const wishStage = WishStage.create(
+              uniqueId,
+              title,
+              description,
+              createdAt,
+              urls,
+              images,
+            );
+
+            // Act
+            const urlsLocal = wishStage.urls;
+            const newUrl = {
+              getUrl: 'https://www.example.com',
+            } as MockedObject<WebUrl>;
+            urlsLocal.push(newUrl);
+            urlsLocal[0] = {
+              getUrl: 'https://www.example.com/edited',
+            } as MockedObject<WebUrl>;
+
+            // Assert
+            expect(wishStage.urls).toHaveLength(urls.length);
+            expect(urlsLocal).toHaveLength(urls.length + 1);
+
+            for (let i = 0; i < urls.length; i++) {
+              expect(wishStage.urls[i].getUrl).toBe(urls[i].getUrl);
+            }
+          },
+        );
+
+        test.each(validValues)(
+          'do changes on images array getter should make no changes on the original images array',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            title: MockedObject<WishTitle>,
+            description: MockedObject<WishDescription>,
+            createdAt: MockedObject<MillisecondsDate>,
+            urls: MockedObject<WebUrl>[],
+            images: MockedObject<WebUrl>[],
+          ) => {
+            // Arrange
+            const wishStage = WishStage.create(
+              uniqueId,
+              title,
+              description,
+              createdAt,
+              urls,
+              images,
+            );
+
+            // Act
+            const imageUrlsLocal = wishStage.imageUrls;
+            const newImageUrl = {
+              getUrl: 'https://www.example.com',
+            } as MockedObject<WebUrl>;
+            imageUrlsLocal.push(newImageUrl);
+            imageUrlsLocal[0] = {
+              getUrl: 'https://www.example.com/edited',
+            } as MockedObject<WebUrl>;
+
+            // Assert
+            expect(wishStage.imageUrls).toHaveLength(images.length);
+            expect(imageUrlsLocal).toHaveLength(images.length + 1);
+
+            for (let i = 0; i < images.length; i++) {
+              expect(wishStage.imageUrls[i].getUrl).toBe(images[i].getUrl);
+            }
+          },
+        );
+
+        test.each(validValues)(
           'comparing two entities should call "equals" method from UniqueId',
           (
             uniqueId: MockedObject<UniqueId>,
