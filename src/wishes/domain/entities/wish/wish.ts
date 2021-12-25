@@ -72,32 +72,19 @@ export class Wish extends AggregateRoot {
     super(id);
 
     if (!title) throw new InvalidWishTitleError();
-
     if (!description) throw new InvalidWishDescriptionError();
-
     if (!privacyLevel) throw new InvalidWishPrivacyLevelError();
-
     if (!createdAt) throw new InvalidMillisecondsDateError();
-
     if (!updatedAt) throw new InvalidMillisecondsDateError();
-
     if (!wisher) throw new InvalidWisherError();
-
     if (!urls) throw new InvalidWishUrlsError();
-
     if (urls.length > Wish.MaxUrls) throw new TooManyWishUrlsError();
-
     if (!imageUrls) throw new InvalidWishImagesError();
-
     if (imageUrls.length > Wish.MaxImages) throw new TooManyWishImagesError();
-
     if (!categories) throw new InvalidWishCategoriesError();
-
     if (categories.length > Wish.MaxCategories)
       throw new TooManyWishCategoriesError();
-
     if (!stages) throw new InvalidWishStagesError();
-
     if (stages.length > Wish.MaxStages) throw new TooManyWishStagesError();
 
     this._title = title;

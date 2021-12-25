@@ -34,15 +34,10 @@ export class RefreshToken extends Entity {
     super(id);
 
     if (!createdAt) throw new InvalidMillisecondsDateError();
-
     if (!secondsDuration) throw new InvalidSecondsDurationError();
-
     if (!ipAddress) throw new InvalidIpAddressError();
-
     if (!replacedAt) replacedAt = null;
-
     if (!replacedBy) replacedBy = null;
-
     if (!revokedAt) revokedAt = null;
 
     this._createdAt = createdAt;

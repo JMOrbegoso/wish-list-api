@@ -39,17 +39,11 @@ export class WishStage extends Entity {
     super(id);
 
     if (!title) throw new InvalidWishTitleError();
-
     if (!description) throw new InvalidWishDescriptionError();
-
     if (!createdAt) throw new InvalidMillisecondsDateError();
-
     if (!urls) throw new InvalidWishStageUrlsError();
-
     if (urls.length > WishStage.MaxUrls) throw new TooManyWishStageUrlsError();
-
     if (!imageUrls) throw new InvalidWishStageImagesError();
-
     if (imageUrls.length > WishStage.MaxImages)
       throw new TooManyWishStageImagesError();
 
