@@ -52,11 +52,6 @@ import {
   UserIdDto,
   UsernameDto,
 } from '../dtos';
-import {
-  createUserDtoToCreateUserCommand,
-  updateUserPasswordDtoToUpdateUserPasswordCommand,
-  updateUserProfileDtoToUpdateUserProfileCommand,
-} from '../mappings';
 import { RoleOwnershipGuard, RoleOwnershipKey } from './guards';
 
 @Controller('users')
@@ -91,7 +86,16 @@ export class UsersController {
 
   @Post()
   async register(@Body() dto: CreateUserDto): Promise<void> {
-    const command: CreateUserCommand = createUserDtoToCreateUserCommand(dto);
+    const command = new CreateUserCommand(
+      dto.id,
+      dto.email,
+      dto.username,
+      dto.password,
+      dto.firstName,
+      dto.lastName,
+      dto.birthday,
+      dto.biography,
+    );
     await this.commandBus.execute(command);
   }
 
@@ -116,8 +120,13 @@ export class UsersController {
     @Param() params: UserIdDto,
     @Body() dto: UpdateUserProfileDto,
   ): Promise<void> {
-    const command: UpdateUserProfileCommand =
-      updateUserProfileDtoToUpdateUserProfileCommand(dto);
+    const command = new UpdateUserProfileCommand(
+      dto.id,
+      dto.firstName,
+      dto.lastName,
+      dto.birthday,
+      dto.biography,
+    );
     await this.commandBus.execute(command);
   }
 
@@ -204,8 +213,7 @@ export class UsersController {
     @Param() params: UserIdDto,
     @Body() dto: UpdateUserPasswordDto,
   ): Promise<void> {
-    const command: UpdateUserPasswordCommand =
-      updateUserPasswordDtoToUpdateUserPasswordCommand(dto);
+    const command = new UpdateUserPasswordCommand(dto.id, dto.password);
     await this.commandBus.execute(command);
   }
 
