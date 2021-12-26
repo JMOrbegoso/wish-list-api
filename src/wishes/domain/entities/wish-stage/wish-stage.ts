@@ -1,23 +1,21 @@
-import {
-  InvalidWishStageImagesError,
-  InvalidWishStageUrlsError,
-  TooManyWishStageImagesError,
-  TooManyWishStageUrlsError,
-} from '..';
 import { Entity } from '../../../../shared/domain/entities';
 import {
-  InvalidMillisecondsDateError,
-  InvalidWebUrlError,
   MillisecondsDate,
   UniqueId,
   WebUrl,
 } from '../../../../shared/domain/value-objects';
+import { WishDescription, WishTitle } from '../../value-objects';
 import {
-  InvalidWishDescriptionError,
-  InvalidWishTitleError,
-  WishDescription,
-  WishTitle,
-} from '../../value-objects';
+  InvalidWishStageCreatedAtError,
+  InvalidWishStageDescriptionError,
+  InvalidWishStageImageError,
+  InvalidWishStageImagesError,
+  InvalidWishStageTitleError,
+  InvalidWishStageUrlError,
+  InvalidWishStageUrlsError,
+  TooManyWishStageImagesError,
+  TooManyWishStageUrlsError,
+} from './exceptions';
 
 export class WishStage extends Entity {
   public static readonly MaxUrls = 5;
@@ -39,19 +37,19 @@ export class WishStage extends Entity {
   ) {
     super(id);
 
-    if (!title) throw new InvalidWishTitleError();
-    if (!description) throw new InvalidWishDescriptionError();
-    if (!createdAt) throw new InvalidMillisecondsDateError();
+    if (!title) throw new InvalidWishStageTitleError();
+    if (!description) throw new InvalidWishStageDescriptionError();
+    if (!createdAt) throw new InvalidWishStageCreatedAtError();
     if (!urls) throw new InvalidWishStageUrlsError();
     if (urls.length > WishStage.MaxUrls) throw new TooManyWishStageUrlsError();
     urls.forEach((url) => {
-      if (!url) throw new InvalidWebUrlError();
+      if (!url) throw new InvalidWishStageUrlError();
     });
     if (!imageUrls) throw new InvalidWishStageImagesError();
     if (imageUrls.length > WishStage.MaxImages)
       throw new TooManyWishStageImagesError();
     imageUrls.forEach((imageUrl) => {
-      if (!imageUrl) throw new InvalidWebUrlError();
+      if (!imageUrl) throw new InvalidWishStageImageError();
     });
 
     this._title = title;
@@ -110,9 +108,9 @@ export class WishStage extends Entity {
     urls: WebUrl[] = [],
     imageUrls: WebUrl[] = [],
   ): void {
-    if (!title) throw new InvalidWishTitleError();
+    if (!title) throw new InvalidWishStageTitleError();
 
-    if (!description) throw new InvalidWishDescriptionError();
+    if (!description) throw new InvalidWishStageDescriptionError();
 
     if (!urls) throw new InvalidWishStageUrlsError();
 

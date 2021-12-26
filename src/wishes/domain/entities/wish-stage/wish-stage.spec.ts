@@ -1,25 +1,23 @@
 import { MockedObject } from 'ts-jest/dist/utils/testing';
+import { WishStage } from '..';
 import {
-  InvalidWishStageImagesError,
-  InvalidWishStageUrlsError,
-  TooManyWishStageImagesError,
-  TooManyWishStageUrlsError,
-  WishStage,
-} from '..';
-import {
-  InvalidMillisecondsDateError,
   InvalidUniqueIdError,
-  InvalidWebUrlError,
   MillisecondsDate,
   UniqueId,
   WebUrl,
 } from '../../../../shared/domain/value-objects';
+import { WishDescription, WishTitle } from '../../value-objects';
 import {
-  InvalidWishDescriptionError,
-  InvalidWishTitleError,
-  WishDescription,
-  WishTitle,
-} from '../../value-objects';
+  InvalidWishStageCreatedAtError,
+  InvalidWishStageDescriptionError,
+  InvalidWishStageImageError,
+  InvalidWishStageImagesError,
+  InvalidWishStageTitleError,
+  InvalidWishStageUrlError,
+  InvalidWishStageUrlsError,
+  TooManyWishStageImagesError,
+  TooManyWishStageUrlsError,
+} from './exceptions';
 
 const validValues = [
   [
@@ -105,7 +103,7 @@ describe('wishes', () => {
                 urls,
                 images,
               ),
-            ).toThrowError(InvalidWishTitleError);
+            ).toThrowError(InvalidWishStageTitleError);
           },
         );
 
@@ -126,7 +124,7 @@ describe('wishes', () => {
             // Assert
             expect(() =>
               WishStage.create(uniqueId, title, null, createdAt, urls, images),
-            ).toThrowError(InvalidWishDescriptionError);
+            ).toThrowError(InvalidWishStageDescriptionError);
           },
         );
 
@@ -154,7 +152,7 @@ describe('wishes', () => {
                 urls,
                 images,
               ),
-            ).toThrowError(InvalidMillisecondsDateError);
+            ).toThrowError(InvalidWishStageCreatedAtError);
           },
         );
 
@@ -242,7 +240,7 @@ describe('wishes', () => {
                 urls,
                 images,
               ),
-            ).toThrowError(InvalidWebUrlError);
+            ).toThrowError(InvalidWishStageUrlError);
           },
         );
 
@@ -329,7 +327,7 @@ describe('wishes', () => {
                 urls,
                 images,
               ),
-            ).toThrowError(InvalidWebUrlError);
+            ).toThrowError(InvalidWishStageImageError);
           },
         );
 
@@ -506,7 +504,7 @@ describe('wishes', () => {
 
             // Assert
             expect(() => wishStage.update(null, newDescription)).toThrowError(
-              InvalidWishTitleError,
+              InvalidWishStageTitleError,
             );
           },
         );
@@ -538,7 +536,7 @@ describe('wishes', () => {
 
             // Assert
             expect(() => wishStage.update(newTitle, null)).toThrowError(
-              InvalidWishDescriptionError,
+              InvalidWishStageDescriptionError,
             );
           },
         );

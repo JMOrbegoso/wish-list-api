@@ -1,5 +1,5 @@
 export class InvalidWishStageUrlsError extends Error {
   constructor() {
-    super('Invalid WishStage Urls.');
+    super('Invalid Wish Stage urls.');
   }
 }

@@ -1,5 +1,5 @@
 export class InvalidWishStageImagesError extends Error {
   constructor() {
-    super('Invalid WishStage Images.');
+    super('Invalid Wish Stage images.');
   }
 }
