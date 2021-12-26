@@ -83,6 +83,11 @@ const validValues = [
     [
       {
         id: { getId: 'id-0' },
+        title: {},
+        description: {},
+        createdAt: {},
+        urls: [],
+        imageUrls: [],
       } as MockedObject<WishStage>,
     ],
     {
@@ -133,6 +138,19 @@ const validValues = [
     [
       {
         id: { getId: 'id-0' },
+        title: {},
+        description: {},
+        createdAt: {},
+        urls: [],
+        imageUrls: [],
+      } as MockedObject<WishStage>,
+      {
+        id: { getId: 'id-1' },
+        title: {},
+        description: {},
+        createdAt: {},
+        urls: [],
+        imageUrls: [],
       } as MockedObject<WishStage>,
     ],
     null,
@@ -178,11 +196,7 @@ const validValues = [
         getName: 'category name',
       } as MockedObject<CategoryName>,
     ],
-    [
-      {
-        id: { getId: 'id-0' },
-      } as MockedObject<WishStage>,
-    ],
+    [],
     {
       getMilliseconds: 1,
     } as MockedObject<MillisecondsDate>,
@@ -226,11 +240,7 @@ const validValues = [
         getName: 'category name',
       } as MockedObject<CategoryName>,
     ],
-    [
-      {
-        id: { getId: 'id-0' },
-      } as MockedObject<WishStage>,
-    ],
+    [],
     null,
     null,
   ],
@@ -1322,6 +1332,9 @@ describe('wishes', () => {
             stages = [
               {
                 id: { getId: wishStageOriginalId },
+                title: {},
+                description: {},
+                createdAt: {},
                 urls: [{ getUrl: wishStageOriginalUrl } as WebUrl],
                 imageUrls: [{ getUrl: wishStageOriginalImage } as WebUrl],
               } as MockedObject<WishStage>,

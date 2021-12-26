@@ -203,7 +203,16 @@ export class Wish extends AggregateRoot {
   }
 
   public get stages(): WishStage[] {
-    return [...this._stages];
+    return this._stages.map((stage) =>
+      WishStage.create(
+        stage.id,
+        stage.title,
+        stage.description,
+        stage.createdAt,
+        stage.urls,
+        stage.imageUrls,
+      ),
+    );
   }
 
   public get stagesLength(): number {
