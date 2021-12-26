@@ -1105,15 +1105,21 @@ describe('wishes', () => {
             expect(wish.updatedAt.getMilliseconds).toBe(
               updatedAt.getMilliseconds,
             );
+
             expect(wish.wisher.id.getId).toBe(wisher.id.getId);
+
             expect(wish.urlsLength).toBe(urls.length);
-            expect(wish.urls[0].getUrl).toBe(urls[0].getUrl);
+            for (let i = 0; i < urls.length; i++)
+              expect(wish.urls[i].getUrl).toBe(urls[i].getUrl);
             expect(wish.imageUrlsLength).toBe(images.length);
-            expect(wish.imageUrls[0].getUrl).toBe(images[0].getUrl);
+            for (let i = 0; i < images.length; i++)
+              expect(wish.imageUrls[i].getUrl).toBe(images[i].getUrl);
             expect(wish.categoriesLength).toBe(categories.length);
-            expect(wish.categories[0].getName).toBe(categories[0].getName);
+            for (let i = 0; i < categories.length; i++)
+              expect(wish.categories[i].getName).toBe(categories[i].getName);
             expect(wish.stagesLength).toBe(stages.length);
-            expect(wish.stages[0].id.getId).toBe(stages[0].id.getId);
+            for (let i = 0; i < stages.length; i++)
+              expect(wish.stages[i].id.getId).toBe(stages[i].id.getId);
 
             if (deletedAt)
               expect(wish.deletedAt.getMilliseconds).toBe(
