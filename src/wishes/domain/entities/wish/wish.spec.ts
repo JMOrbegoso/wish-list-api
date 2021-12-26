@@ -1,45 +1,46 @@
 import { MockedObject } from 'ts-jest/dist/utils/testing';
+import { Wish, WishStage, Wisher } from '..';
 import {
-  DeletedWishCannotBeUpdatedError,
-  DuplicatedWishStageError,
-  InvalidWishCategoriesError,
-  InvalidWishImagesError,
-  InvalidWishStageError,
-  InvalidWishStagesError,
-  InvalidWishUrlsError,
-  InvalidWisherError,
-  NonExistentWishStageError,
-  TooManyWishCategoriesError,
-  TooManyWishImagesError,
-  TooManyWishStagesError,
-  TooManyWishUrlsError,
-  Wish,
-  WishIsAlreadyCompletedError,
-  WishIsAlreadyDeletedError,
-  WishIsAlreadyUncompletedError,
-  WishIsNotDeletedError,
-  WishStage,
-  Wisher,
-} from '..';
-import {
-  InvalidMillisecondsDateError,
   InvalidUniqueIdError,
-  InvalidWebUrlError,
   MillisecondsDate,
   UniqueId,
   WebUrl,
 } from '../../../../shared/domain/value-objects';
 import {
   CategoryName,
-  InvalidCategoryNameError,
-  InvalidWishDescriptionError,
-  InvalidWishPrivacyLevelError,
-  InvalidWishTitleError,
   PrivacyLevel,
   WishDescription,
   WishPrivacyLevel,
   WishTitle,
 } from '../../value-objects';
+import {
+  DeletedWishCannotBeUpdatedError,
+  DuplicatedWishStageError,
+  InvalidWishCategoriesError,
+  InvalidWishCategoryNameError,
+  InvalidWishCompletedAtError,
+  InvalidWishCreatedAtError,
+  InvalidWishDescriptionError,
+  InvalidWishImageError,
+  InvalidWishImagesError,
+  InvalidWishPrivacyLevelError,
+  InvalidWishStageError,
+  InvalidWishStagesError,
+  InvalidWishTitleError,
+  InvalidWishUpdatedAtError,
+  InvalidWishUrlError,
+  InvalidWishUrlsError,
+  InvalidWishWisherError,
+  NonExistentWishStageError,
+  TooManyWishCategoriesError,
+  TooManyWishImagesError,
+  TooManyWishStagesError,
+  TooManyWishUrlsError,
+  WishIsAlreadyCompletedError,
+  WishIsAlreadyDeletedError,
+  WishIsAlreadyUncompletedError,
+  WishIsNotDeletedError,
+} from './exceptions';
 
 const validValues = [
   [
@@ -456,7 +457,7 @@ describe('wishes', () => {
                 deletedAt,
                 completedAt,
               ),
-            ).toThrowError(InvalidMillisecondsDateError);
+            ).toThrowError(InvalidWishCreatedAtError);
           },
         );
 
@@ -498,7 +499,7 @@ describe('wishes', () => {
                 deletedAt,
                 completedAt,
               ),
-            ).toThrowError(InvalidMillisecondsDateError);
+            ).toThrowError(InvalidWishUpdatedAtError);
           },
         );
 
@@ -540,7 +541,7 @@ describe('wishes', () => {
                 deletedAt,
                 completedAt,
               ),
-            ).toThrowError(InvalidWisherError);
+            ).toThrowError(InvalidWishWisherError);
           },
         );
 
@@ -670,7 +671,7 @@ describe('wishes', () => {
                 deletedAt,
                 completedAt,
               ),
-            ).toThrowError(InvalidWebUrlError);
+            ).toThrowError(InvalidWishUrlError);
           },
         );
 
@@ -800,7 +801,7 @@ describe('wishes', () => {
                 deletedAt,
                 completedAt,
               ),
-            ).toThrowError(InvalidWebUrlError);
+            ).toThrowError(InvalidWishImageError);
           },
         );
 
@@ -930,7 +931,7 @@ describe('wishes', () => {
                 deletedAt,
                 completedAt,
               ),
-            ).toThrowError(InvalidCategoryNameError);
+            ).toThrowError(InvalidWishCategoryNameError);
           },
         );
 
@@ -1746,7 +1747,7 @@ describe('wishes', () => {
 
             // Assert
             expect(() => wish.complete(null)).toThrowError(
-              InvalidMillisecondsDateError,
+              InvalidWishCompletedAtError,
             );
           },
         );
