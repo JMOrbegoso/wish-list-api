@@ -1106,9 +1106,13 @@ describe('wishes', () => {
               updatedAt.getMilliseconds,
             );
             expect(wish.wisher.id.getId).toBe(wisher.id.getId);
+            expect(wish.urlsLength).toBe(urls.length);
             expect(wish.urls[0].getUrl).toBe(urls[0].getUrl);
+            expect(wish.imageUrlsLength).toBe(images.length);
             expect(wish.imageUrls[0].getUrl).toBe(images[0].getUrl);
+            expect(wish.categoriesLength).toBe(categories.length);
             expect(wish.categories[0].getName).toBe(categories[0].getName);
+            expect(wish.stagesLength).toBe(stages.length);
             expect(wish.stages[0].id.getId).toBe(stages[0].id.getId);
 
             if (deletedAt)
@@ -1174,7 +1178,7 @@ describe('wishes', () => {
             } as MockedObject<WebUrl>;
 
             // Assert
-            expect(wish.urls).toHaveLength(1);
+            expect(wish.urlsLength).toBe(1);
             expect(wish.urls[0].getUrl).toBe(originalUrl);
           },
         );
@@ -1228,7 +1232,7 @@ describe('wishes', () => {
             } as MockedObject<WebUrl>;
 
             // Assert
-            expect(wish.imageUrls).toHaveLength(1);
+            expect(wish.imageUrlsLength).toBe(1);
             expect(wish.imageUrls[0].getUrl).toBe(originalImageUrl);
           },
         );
@@ -1282,7 +1286,7 @@ describe('wishes', () => {
             } as MockedObject<CategoryName>;
 
             // Assert
-            expect(wish.categories).toHaveLength(1);
+            expect(wish.categoriesLength).toBe(1);
             expect(wish.categories[0].getName).toBe(originalCategoryName);
           },
         );
@@ -1365,9 +1369,9 @@ describe('wishes', () => {
             } as WebUrl;
 
             // Assert
-            expect(wish.stages).toHaveLength(1);
-            expect(wish.stages[0].urls).toHaveLength(1);
-            expect(wish.stages[0].imageUrls).toHaveLength(1);
+            expect(wish.stagesLength).toBe(1);
+            expect(wish.stages[0].urlsLength).toBe(1);
+            expect(wish.stages[0].imageUrlsLength).toBe(1);
 
             expect(wish.stages[0].id.getId).toBe(wishStageOriginalId);
             expect(wish.stages[0].urls[0].getUrl).toBe(wishStageOriginalUrl);
@@ -2516,10 +2520,13 @@ describe('wishes', () => {
             expect(wish.description.getDescription).toBe(
               newDescription.getDescription,
             );
+            expect(wish.urlsLength).toBe(newUrls.length);
             for (let i = 0; i < newUrls.length; i++)
               expect(wish.urls[i].getUrl).toBe(newUrls[i].getUrl);
+            expect(wish.imageUrlsLength).toBe(newImages.length);
             for (let i = 0; i < newImages.length; i++)
               expect(wish.imageUrls[i].getUrl).toBe(newImages[i].getUrl);
+            expect(wish.categoriesLength).toBe(newCategories.length);
             for (let i = 0; i < newCategories.length; i++)
               expect(wish.categories[i].getName).toBe(newCategories[i].getName);
             expect(wish.updatedAt.getMilliseconds).not.toBe(
@@ -2755,7 +2762,7 @@ describe('wishes', () => {
             wish.addStage(newStage);
 
             // Assert
-            expect(wish.stages.length).toBe(finalStagesLength);
+            expect(wish.stagesLength).toBe(finalStagesLength);
             expect(wish.updatedAt.getMilliseconds).not.toBe(
               updatedAt.getMilliseconds,
             );
@@ -2944,7 +2951,7 @@ describe('wishes', () => {
             wish.removeStage(stageToRemove);
 
             // Assert
-            expect(wish.stages.length).toBe(finalStagesLength);
+            expect(wish.stagesLength).toBe(finalStagesLength);
             expect(wish.updatedAt.getMilliseconds).not.toBe(
               updatedAt.getMilliseconds,
             );

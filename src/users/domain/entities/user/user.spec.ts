@@ -2064,7 +2064,7 @@ describe('users', () => {
             user.addRole(roleToAdd);
 
             // Assert
-            expect(user.roles.length).toBe(1);
+            expect(user.rolesLength).toBe(1);
             expect(user.roles[0]).toBe('Admin');
           },
         );
@@ -2124,7 +2124,7 @@ describe('users', () => {
             user.addRole(roleToAdd);
 
             // Assert
-            expect(user.roles.length).toBe(2);
+            expect(user.rolesLength).toBe(2);
             expect(user.roles[0]).toBe('Admin');
             expect(user.roles[1]).toBe('Moderator');
           },
@@ -2185,7 +2185,7 @@ describe('users', () => {
             user.removeRole(roleToRemove);
 
             // Assert
-            expect(user.roles.length).toBe(1);
+            expect(user.rolesLength).toBe(1);
             expect(user.roles[0]).toBe('Admin');
           },
         );
@@ -2245,7 +2245,7 @@ describe('users', () => {
             user.removeRole(roleToRemove);
 
             // Assert
-            expect(user.roles.length).toBe(0);
+            expect(user.rolesLength).toBe(0);
           },
         );
 
@@ -2308,7 +2308,7 @@ describe('users', () => {
             user.removeRole(roleToRemove);
 
             // Assert
-            expect(user.roles.length).toBe(1);
+            expect(user.rolesLength).toBe(1);
             expect(user.roles[0]).toBe('Moderator');
           },
         );
@@ -2370,7 +2370,7 @@ describe('users', () => {
             } as MockedObject<RefreshToken>;
 
             // Assert
-            expect(user.refreshTokens).toHaveLength(1);
+            expect(user.refreshTokensLength).toBe(1);
             expect(user.refreshTokens[0].id.getId).toBe(originalId);
           },
         );

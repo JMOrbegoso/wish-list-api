@@ -182,16 +182,32 @@ export class Wish extends AggregateRoot {
     return [...this._urls];
   }
 
+  public get urlsLength(): number {
+    return this._urls.length;
+  }
+
   public get imageUrls(): WebUrl[] {
     return [...this._imageUrls];
+  }
+
+  public get imageUrlsLength(): number {
+    return this._imageUrls.length;
   }
 
   public get categories(): CategoryName[] {
     return [...this._categories];
   }
 
+  public get categoriesLength(): number {
+    return this._categories.length;
+  }
+
   public get stages(): WishStage[] {
     return [...this._stages];
+  }
+
+  public get stagesLength(): number {
+    return this._stages.length;
   }
 
   public get deletedAt(): MillisecondsDate {

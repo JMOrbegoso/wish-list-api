@@ -364,7 +364,9 @@ describe('wishes', () => {
             expect(wishStage.createdAt.getMilliseconds).toBe(
               createdAt.getMilliseconds,
             );
+            expect(wishStage.urlsLength).toBe(urls.length);
             expect(wishStage.urls[0].getUrl).toBe(urls[0].getUrl);
+            expect(wishStage.imageUrlsLength).toBe(images.length);
             expect(wishStage.imageUrls[0].getUrl).toBe(images[0].getUrl);
           },
         );
@@ -404,7 +406,7 @@ describe('wishes', () => {
             } as MockedObject<WebUrl>;
 
             // Assert
-            expect(wishStage.urls).toHaveLength(1);
+            expect(wishStage.urlsLength).toBe(1);
             expect(wishStage.urls[0].getUrl).toBe(originalUrl);
           },
         );
@@ -444,7 +446,7 @@ describe('wishes', () => {
             } as MockedObject<WebUrl>;
 
             // Assert
-            expect(wishStage.imageUrls).toHaveLength(1);
+            expect(wishStage.imageUrlsLength).toBe(1);
             expect(wishStage.imageUrls[0].getUrl).toBe(originalImageUrl);
           },
         );
@@ -698,8 +700,8 @@ describe('wishes', () => {
             expect(wishStage.description.getDescription).toBe(
               newDescription.getDescription,
             );
-            expect(wishStage.urls.length).toBe(0);
-            expect(wishStage.imageUrls.length).toBe(0);
+            expect(wishStage.urlsLength).toBe(0);
+            expect(wishStage.imageUrlsLength).toBe(0);
           },
         );
 
@@ -748,8 +750,10 @@ describe('wishes', () => {
             expect(wishStage.description.getDescription).toBe(
               newDescription.getDescription,
             );
+            expect(wishStage.urlsLength).toBe(newUrls.length);
             for (let i = 0; i < newUrls.length; i++)
               expect(wishStage.urls[i].getUrl).toBe(newUrls[i].getUrl);
+            expect(wishStage.imageUrlsLength).toBe(newImages.length);
             for (let i = 0; i < newImages.length; i++)
               expect(wishStage.imageUrls[i].getUrl).toBe(newImages[i].getUrl);
           },

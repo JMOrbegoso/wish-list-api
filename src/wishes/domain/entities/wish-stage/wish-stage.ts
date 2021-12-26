@@ -92,8 +92,16 @@ export class WishStage extends Entity {
     return [...this._urls];
   }
 
+  public get urlsLength(): number {
+    return this._urls.length;
+  }
+
   public get imageUrls(): WebUrl[] {
     return [...this._imageUrls];
+  }
+
+  public get imageUrlsLength(): number {
+    return this._imageUrls.length;
   }
 
   public update(
