@@ -1126,7 +1126,7 @@ describe('wishes', () => {
         );
 
         test.each(validValues)(
-          'do changes on urls array getter should make no changes on the original urls array',
+          'make changes on urls array getter should make no changes on the original urls array',
           (
             uniqueId: MockedObject<UniqueId>,
             title: MockedObject<WishTitle>,
@@ -1143,6 +1143,12 @@ describe('wishes', () => {
             completedAt: MockedObject<MillisecondsDate>,
           ) => {
             // Arrange
+            const originalUrl = 'https://www.example.com/original';
+            urls = [
+              {
+                getUrl: originalUrl,
+              } as MockedObject<WebUrl>,
+            ];
             const wish = Wish.create(
               uniqueId,
               title,
@@ -1160,24 +1166,21 @@ describe('wishes', () => {
             );
 
             // Act
-            const urlsLocal = wish.urls;
-            const newUrl = {
-              getUrl: 'https://www.example.com',
+            wish.urls.push({
+              getUrl: 'https://www.example.com/new/1',
+            } as MockedObject<WebUrl>);
+            wish.urls[0] = {
+              getUrl: 'https://www.example.com/new/2',
             } as MockedObject<WebUrl>;
-            urlsLocal.push(newUrl);
 
             // Assert
-            expect(wish.urls).toHaveLength(urls.length);
-            expect(urlsLocal).toHaveLength(urls.length + 1);
-
-            for (let i = 0; i < urls.length; i++) {
-              expect(wish.urls[i].getUrl).toBe(urls[i].getUrl);
-            }
+            expect(wish.urls).toHaveLength(1);
+            expect(wish.urls[0].getUrl).toBe(originalUrl);
           },
         );
 
         test.each(validValues)(
-          'do changes on images array getter should make no changes on the original images array',
+          'make changes on images array getter should make no changes on the original images array',
           (
             uniqueId: MockedObject<UniqueId>,
             title: MockedObject<WishTitle>,
@@ -1194,6 +1197,12 @@ describe('wishes', () => {
             completedAt: MockedObject<MillisecondsDate>,
           ) => {
             // Arrange
+            const originalImageUrl = 'https://www.example.com/original.jpg';
+            images = [
+              {
+                getUrl: originalImageUrl,
+              } as MockedObject<WebUrl>,
+            ];
             const wish = Wish.create(
               uniqueId,
               title,
@@ -1211,24 +1220,21 @@ describe('wishes', () => {
             );
 
             // Act
-            const imagesLocal = wish.imageUrls;
-            const newImage = {
-              getUrl: 'https://www.example.com/1.jpg',
+            wish.imageUrls.push({
+              getUrl: 'https://www.example.com/new/1.jpg',
+            } as MockedObject<WebUrl>);
+            wish.imageUrls[0] = {
+              getUrl: 'https://www.example.com/new/2.jpg',
             } as MockedObject<WebUrl>;
-            imagesLocal.push(newImage);
 
             // Assert
-            expect(wish.imageUrls).toHaveLength(images.length);
-            expect(imagesLocal).toHaveLength(images.length + 1);
-
-            for (let i = 0; i < images.length; i++) {
-              expect(wish.imageUrls[i].getUrl).toBe(images[i].getUrl);
-            }
+            expect(wish.imageUrls).toHaveLength(1);
+            expect(wish.imageUrls[0].getUrl).toBe(originalImageUrl);
           },
         );
 
         test.each(validValues)(
-          'do changes on categories array getter should make no changes on the original categories array',
+          'make changes on categories array getter should make no changes on the original categories array',
           (
             uniqueId: MockedObject<UniqueId>,
             title: MockedObject<WishTitle>,
@@ -1245,6 +1251,12 @@ describe('wishes', () => {
             completedAt: MockedObject<MillisecondsDate>,
           ) => {
             // Arrange
+            const originalCategoryName = 'original category';
+            categories = [
+              {
+                getName: originalCategoryName,
+              } as MockedObject<CategoryName>,
+            ];
             const wish = Wish.create(
               uniqueId,
               title,
@@ -1262,24 +1274,21 @@ describe('wishes', () => {
             );
 
             // Act
-            const categoriesLocal = wish.categories;
-            const newCategory = {
-              getName: 'new-stage-id',
+            wish.categories.push({
+              getName: 'new category 1',
+            } as MockedObject<CategoryName>);
+            wish.categories[0] = {
+              getName: 'new category 2',
             } as MockedObject<CategoryName>;
-            categoriesLocal.push(newCategory);
 
             // Assert
-            expect(wish.categories).toHaveLength(categories.length);
-            expect(categoriesLocal).toHaveLength(categories.length + 1);
-
-            for (let i = 0; i < categories.length; i++) {
-              expect(wish.categories[i].getName).toBe(categories[i].getName);
-            }
+            expect(wish.categories).toHaveLength(1);
+            expect(wish.categories[0].getName).toBe(originalCategoryName);
           },
         );
 
         test.each(validValues)(
-          'do changes on stages array getter should make no changes on the original stages array',
+          'make changes on stages array getter should make no changes on the original stages array',
           (
             uniqueId: MockedObject<UniqueId>,
             title: MockedObject<WishTitle>,
@@ -1296,6 +1305,17 @@ describe('wishes', () => {
             completedAt: MockedObject<MillisecondsDate>,
           ) => {
             // Arrange
+            const wishStageOriginalId = 'wish-stage-original-id';
+            const wishStageOriginalUrl = 'https://www.example.com/original';
+            const wishStageOriginalImage =
+              'https://www.example.com/original.jpg';
+            stages = [
+              {
+                id: { getId: wishStageOriginalId },
+                urls: [{ getUrl: wishStageOriginalUrl } as WebUrl],
+                imageUrls: [{ getUrl: wishStageOriginalImage } as WebUrl],
+              } as MockedObject<WishStage>,
+            ];
             const wish = Wish.create(
               uniqueId,
               title,
@@ -1313,19 +1333,47 @@ describe('wishes', () => {
             );
 
             // Act
-            const stagesLocal = wish.stages;
-            const newStage = {
-              id: { getId: 'new-stage-id' },
+            wish.stages.push({
+              id: { getId: 'new-wish-stage-1' },
+              urls: [
+                { getUrl: 'https://www.example.com/new/stage/1' } as WebUrl,
+              ],
+              imageUrls: [
+                { getUrl: 'https://www.example.com/new/stage/1.jpg' } as WebUrl,
+              ],
+            } as MockedObject<WishStage>);
+            wish.stages[0] = {
+              id: { getId: 'new-wish-stage-2' },
+              urls: [
+                { getUrl: 'https://www.example.com/new/stage/2' } as WebUrl,
+              ],
+              imageUrls: [
+                { getUrl: 'https://www.example.com/new/stage/2.jpg' } as WebUrl,
+              ],
             } as MockedObject<WishStage>;
-            stagesLocal.push(newStage);
+            wish.stages[0].urls.push({
+              getUrl: 'https://www.example.com/new/stage/3',
+            } as WebUrl);
+            wish.stages[0].imageUrls.push({
+              getUrl: 'https://www.example.com/new/stage/3.jpg',
+            } as WebUrl);
+            wish.stages[0].urls[0] = {
+              getUrl: 'https://www.example.com/new/stage/4',
+            } as WebUrl;
+            wish.stages[0].imageUrls[0] = {
+              getUrl: 'https://www.example.com/new/stage/4.jpg',
+            } as WebUrl;
 
             // Assert
-            expect(wish.stages).toHaveLength(stages.length);
-            expect(stagesLocal).toHaveLength(stages.length + 1);
+            expect(wish.stages).toHaveLength(1);
+            expect(wish.stages[0].urls).toHaveLength(1);
+            expect(wish.stages[0].imageUrls).toHaveLength(1);
 
-            for (let i = 0; i < stages.length; i++) {
-              expect(wish.stages[i].id).toBe(stages[i].id);
-            }
+            expect(wish.stages[0].id.getId).toBe(wishStageOriginalId);
+            expect(wish.stages[0].urls[0].getUrl).toBe(wishStageOriginalUrl);
+            expect(wish.stages[0].imageUrls[0].getUrl).toBe(
+              wishStageOriginalImage,
+            );
           },
         );
 

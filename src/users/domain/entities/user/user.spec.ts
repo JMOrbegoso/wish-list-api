@@ -2314,7 +2314,7 @@ describe('users', () => {
         );
 
         test.each(validValues)(
-          'do changes on refreshTokens getter should make no changes on the original refreshTokens array',
+          'make changes on refreshTokens getter should make no changes on the original refreshTokens array',
           (
             uniqueId: MockedObject<UniqueId>,
             email: MockedObject<Email>,
@@ -2335,6 +2335,12 @@ describe('users', () => {
             deletedAt: MockedObject<MillisecondsDate>,
           ) => {
             // Arrange
+            const originalId = 'refresh-token-id';
+            refreshTokens = [
+              {
+                id: { getId: originalId },
+              } as MockedObject<RefreshToken>,
+            ];
             const user = User.create(
               uniqueId,
               email,
@@ -2356,19 +2362,16 @@ describe('users', () => {
             );
 
             // Act
-            const refreshTokensLocal = user.refreshTokens;
-            const newRefreshToken = {
-              id: { getId: 'new-refresh-token-id' },
+            user.refreshTokens.push({
+              id: { getId: 'new-refresh-token-1' },
+            } as MockedObject<RefreshToken>);
+            user.refreshTokens[0] = {
+              id: { getId: 'new-refresh-token-2' },
             } as MockedObject<RefreshToken>;
-            refreshTokensLocal.push(newRefreshToken);
 
             // Assert
-            expect(user.refreshTokens).toHaveLength(refreshTokens.length);
-            expect(refreshTokensLocal).toHaveLength(refreshTokens.length + 1);
-
-            for (let i = 0; i < refreshTokens.length; i++) {
-              expect(user.refreshTokens[i].id).toBe(refreshTokens[i].id);
-            }
+            expect(user.refreshTokens).toHaveLength(1);
+            expect(user.refreshTokens[0].id.getId).toBe(originalId);
           },
         );
 

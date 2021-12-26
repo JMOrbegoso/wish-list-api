@@ -370,7 +370,7 @@ describe('wishes', () => {
         );
 
         test.each(validValues)(
-          'do changes on urls array getter should make no changes on the original urls array',
+          'make changes on urls array getter should make no changes on the original urls array',
           (
             uniqueId: MockedObject<UniqueId>,
             title: MockedObject<WishTitle>,
@@ -380,6 +380,12 @@ describe('wishes', () => {
             images: MockedObject<WebUrl>[],
           ) => {
             // Arrange
+            const originalUrl = 'https://www.example.com/original';
+            urls = [
+              {
+                getUrl: originalUrl,
+              } as MockedObject<WebUrl>,
+            ];
             const wishStage = WishStage.create(
               uniqueId,
               title,
@@ -390,27 +396,21 @@ describe('wishes', () => {
             );
 
             // Act
-            const urlsLocal = wishStage.urls;
-            const newUrl = {
-              getUrl: 'https://www.example.com',
-            } as MockedObject<WebUrl>;
-            urlsLocal.push(newUrl);
-            urlsLocal[0] = {
-              getUrl: 'https://www.example.com/edited',
+            wishStage.urls.push({
+              getUrl: 'https://www.example.com/new/1',
+            } as MockedObject<WebUrl>);
+            wishStage.urls[0] = {
+              getUrl: 'https://www.example.com/new/2',
             } as MockedObject<WebUrl>;
 
             // Assert
-            expect(wishStage.urls).toHaveLength(urls.length);
-            expect(urlsLocal).toHaveLength(urls.length + 1);
-
-            for (let i = 0; i < urls.length; i++) {
-              expect(wishStage.urls[i].getUrl).toBe(urls[i].getUrl);
-            }
+            expect(wishStage.urls).toHaveLength(1);
+            expect(wishStage.urls[0].getUrl).toBe(originalUrl);
           },
         );
 
         test.each(validValues)(
-          'do changes on images array getter should make no changes on the original images array',
+          'make changes on images array getter should make no changes on the original images array',
           (
             uniqueId: MockedObject<UniqueId>,
             title: MockedObject<WishTitle>,
@@ -420,6 +420,12 @@ describe('wishes', () => {
             images: MockedObject<WebUrl>[],
           ) => {
             // Arrange
+            const originalImageUrl = 'https://www.example.com/original.jpg';
+            images = [
+              {
+                getUrl: originalImageUrl,
+              } as MockedObject<WebUrl>,
+            ];
             const wishStage = WishStage.create(
               uniqueId,
               title,
@@ -430,22 +436,16 @@ describe('wishes', () => {
             );
 
             // Act
-            const imageUrlsLocal = wishStage.imageUrls;
-            const newImageUrl = {
-              getUrl: 'https://www.example.com',
-            } as MockedObject<WebUrl>;
-            imageUrlsLocal.push(newImageUrl);
-            imageUrlsLocal[0] = {
-              getUrl: 'https://www.example.com/edited',
+            wishStage.imageUrls.push({
+              getUrl: 'https://www.example.com/new/1.jpg',
+            } as MockedObject<WebUrl>);
+            wishStage.imageUrls[0] = {
+              getUrl: 'https://www.example.com/new/2.jpg',
             } as MockedObject<WebUrl>;
 
             // Assert
-            expect(wishStage.imageUrls).toHaveLength(images.length);
-            expect(imageUrlsLocal).toHaveLength(images.length + 1);
-
-            for (let i = 0; i < images.length; i++) {
-              expect(wishStage.imageUrls[i].getUrl).toBe(images[i].getUrl);
-            }
+            expect(wishStage.imageUrls).toHaveLength(1);
+            expect(wishStage.imageUrls[0].getUrl).toBe(originalImageUrl);
           },
         );
 
