@@ -1,19 +1,6 @@
 import { MockedObject } from 'ts-jest/dist/utils/testing';
+import { RefreshToken, User, VerificationCode } from '..';
 import {
-  BlockedUserCannotBeUpdatedError,
-  DeletedUserCannotBeUpdatedError,
-  DuplicatedRefreshTokenError,
-  InvalidRefreshTokenError,
-  InvalidRefreshTokensError,
-  InvalidVerificationCodeError,
-  RefreshToken,
-  RefreshTokenNotFoundError,
-  UnverifiedUserCannotBeUpdatedError,
-  User,
-  VerificationCode,
-} from '..';
-import {
-  InvalidMillisecondsDateError,
   InvalidUniqueIdError,
   MillisecondsDate,
   UniqueId,
@@ -23,16 +10,6 @@ import {
   Biography,
   Email,
   FirstName,
-  InvalidBiographyError,
-  InvalidBlockedStatusError,
-  InvalidEmailError,
-  InvalidFirstNameError,
-  InvalidLastNameError,
-  InvalidPasswordHashError,
-  InvalidRoleError,
-  InvalidRolesError,
-  InvalidUsernameError,
-  InvalidVerificationStatusError,
   IsBlocked,
   IsVerified,
   LastName,
@@ -40,6 +17,29 @@ import {
   Role,
   Username,
 } from '../../value-objects';
+import {
+  BlockedUserCannotBeUpdatedError,
+  DeletedUserCannotBeUpdatedError,
+  DuplicatedUserRefreshTokenError,
+  InvalidUserBiographyError,
+  InvalidUserBirthdayError,
+  InvalidUserBlockedStatusError,
+  InvalidUserCreatedAtError,
+  InvalidUserEmailError,
+  InvalidUserFirstNameError,
+  InvalidUserLastNameError,
+  InvalidUserPasswordHashError,
+  InvalidUserRefreshTokenError,
+  InvalidUserRefreshTokensError,
+  InvalidUserRoleError,
+  InvalidUserRolesError,
+  InvalidUserUpdatedAtError,
+  InvalidUserUsernameError,
+  InvalidUserVerificationCodeError,
+  InvalidUserVerificationStatusError,
+  RefreshTokenNotFoundError,
+  UnverifiedUserCannotBeUpdatedError,
+} from './exceptions';
 
 const validValues = [
   [
@@ -634,7 +634,7 @@ describe('users', () => {
                 profilePicture,
                 deletedAt,
               ),
-            ).toThrowError(InvalidEmailError);
+            ).toThrowError(InvalidUserEmailError);
           },
         );
 
@@ -684,7 +684,7 @@ describe('users', () => {
                 profilePicture,
                 deletedAt,
               ),
-            ).toThrowError(InvalidUsernameError);
+            ).toThrowError(InvalidUserUsernameError);
           },
         );
 
@@ -734,7 +734,7 @@ describe('users', () => {
                 profilePicture,
                 deletedAt,
               ),
-            ).toThrowError(InvalidPasswordHashError);
+            ).toThrowError(InvalidUserPasswordHashError);
           },
         );
 
@@ -784,7 +784,7 @@ describe('users', () => {
                 profilePicture,
                 deletedAt,
               ),
-            ).toThrowError(InvalidVerificationStatusError);
+            ).toThrowError(InvalidUserVerificationStatusError);
           },
         );
 
@@ -834,7 +834,7 @@ describe('users', () => {
                 profilePicture,
                 deletedAt,
               ),
-            ).toThrowError(InvalidVerificationCodeError);
+            ).toThrowError(InvalidUserVerificationCodeError);
           },
         );
 
@@ -884,7 +884,7 @@ describe('users', () => {
                 profilePicture,
                 deletedAt,
               ),
-            ).toThrowError(InvalidBlockedStatusError);
+            ).toThrowError(InvalidUserBlockedStatusError);
           },
         );
 
@@ -934,7 +934,7 @@ describe('users', () => {
                 profilePicture,
                 deletedAt,
               ),
-            ).toThrowError(InvalidFirstNameError);
+            ).toThrowError(InvalidUserFirstNameError);
           },
         );
 
@@ -984,7 +984,7 @@ describe('users', () => {
                 profilePicture,
                 deletedAt,
               ),
-            ).toThrowError(InvalidLastNameError);
+            ).toThrowError(InvalidUserLastNameError);
           },
         );
 
@@ -1034,7 +1034,7 @@ describe('users', () => {
                 profilePicture,
                 deletedAt,
               ),
-            ).toThrowError(InvalidMillisecondsDateError);
+            ).toThrowError(InvalidUserBirthdayError);
           },
         );
 
@@ -1084,7 +1084,7 @@ describe('users', () => {
                 profilePicture,
                 deletedAt,
               ),
-            ).toThrowError(InvalidMillisecondsDateError);
+            ).toThrowError(InvalidUserCreatedAtError);
           },
         );
 
@@ -1134,7 +1134,7 @@ describe('users', () => {
                 profilePicture,
                 deletedAt,
               ),
-            ).toThrowError(InvalidMillisecondsDateError);
+            ).toThrowError(InvalidUserUpdatedAtError);
           },
         );
 
@@ -1184,7 +1184,7 @@ describe('users', () => {
                 profilePicture,
                 deletedAt,
               ),
-            ).toThrowError(InvalidBiographyError);
+            ).toThrowError(InvalidUserBiographyError);
           },
         );
 
@@ -1234,7 +1234,7 @@ describe('users', () => {
                 profilePicture,
                 deletedAt,
               ),
-            ).toThrowError(InvalidRolesError);
+            ).toThrowError(InvalidUserRolesError);
           },
         );
 
@@ -1285,7 +1285,7 @@ describe('users', () => {
                 profilePicture,
                 deletedAt,
               ),
-            ).toThrowError(InvalidRoleError);
+            ).toThrowError(InvalidUserRoleError);
           },
         );
 
@@ -1335,7 +1335,7 @@ describe('users', () => {
                 profilePicture,
                 deletedAt,
               ),
-            ).toThrowError(InvalidRefreshTokensError);
+            ).toThrowError(InvalidUserRefreshTokensError);
           },
         );
 
@@ -1386,7 +1386,7 @@ describe('users', () => {
                 profilePicture,
                 deletedAt,
               ),
-            ).toThrowError(InvalidRefreshTokenError);
+            ).toThrowError(InvalidUserRefreshTokenError);
           },
         );
 
@@ -2732,7 +2732,7 @@ describe('users', () => {
 
             // Assert
             expect(() => user.addRefreshToken(null)).toThrowError(
-              InvalidRefreshTokenError,
+              InvalidUserRefreshTokenError,
             );
           },
         );
@@ -2796,7 +2796,7 @@ describe('users', () => {
 
             // Assert
             expect(() => user.addRefreshToken(newRefreshToken)).toThrowError(
-              DuplicatedRefreshTokenError,
+              DuplicatedUserRefreshTokenError,
             );
           },
         );
@@ -3088,7 +3088,7 @@ describe('users', () => {
 
             // Assert
             expect(() => user.replaceRefreshToken(null, null)).toThrowError(
-              InvalidRefreshTokenError,
+              InvalidUserRefreshTokenError,
             );
           },
         );
@@ -3224,7 +3224,7 @@ describe('users', () => {
             // Assert
             expect(() =>
               user.replaceRefreshToken(null, newRefreshToken),
-            ).toThrowError(DuplicatedRefreshTokenError);
+            ).toThrowError(DuplicatedUserRefreshTokenError);
           },
         );
 

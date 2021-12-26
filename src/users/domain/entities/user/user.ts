@@ -1,18 +1,6 @@
-import {
-  BlockedUserCannotBeUpdatedError,
-  DeletedUserCannotBeUpdatedError,
-  DuplicatedRefreshTokenError,
-  InvalidRefreshTokenError,
-  InvalidRefreshTokensError,
-  InvalidVerificationCodeError,
-  RefreshToken,
-  RefreshTokenNotFoundError,
-  UnverifiedUserCannotBeUpdatedError,
-  VerificationCode,
-} from '..';
+import { RefreshToken, VerificationCode } from '..';
 import { AggregateRoot } from '../../../../shared/domain/entities';
 import {
-  InvalidMillisecondsDateError,
   MillisecondsDate,
   UniqueId,
   WebUrl,
@@ -21,16 +9,6 @@ import {
   Biography,
   Email,
   FirstName,
-  InvalidBiographyError,
-  InvalidBlockedStatusError,
-  InvalidEmailError,
-  InvalidFirstNameError,
-  InvalidLastNameError,
-  InvalidPasswordHashError,
-  InvalidRoleError,
-  InvalidRolesError,
-  InvalidUsernameError,
-  InvalidVerificationStatusError,
   IsBlocked,
   IsVerified,
   LastName,
@@ -38,6 +16,29 @@ import {
   Role,
   Username,
 } from '../../value-objects';
+import {
+  BlockedUserCannotBeUpdatedError,
+  DeletedUserCannotBeUpdatedError,
+  DuplicatedUserRefreshTokenError,
+  InvalidUserBiographyError,
+  InvalidUserBirthdayError,
+  InvalidUserBlockedStatusError,
+  InvalidUserCreatedAtError,
+  InvalidUserEmailError,
+  InvalidUserFirstNameError,
+  InvalidUserLastNameError,
+  InvalidUserPasswordHashError,
+  InvalidUserRefreshTokenError,
+  InvalidUserRefreshTokensError,
+  InvalidUserRoleError,
+  InvalidUserRolesError,
+  InvalidUserUpdatedAtError,
+  InvalidUserUsernameError,
+  InvalidUserVerificationCodeError,
+  InvalidUserVerificationStatusError,
+  RefreshTokenNotFoundError,
+  UnverifiedUserCannotBeUpdatedError,
+} from './exceptions';
 
 export class User extends AggregateRoot {
   private _email: Email;
@@ -78,25 +79,25 @@ export class User extends AggregateRoot {
   ) {
     super(id);
 
-    if (!email) throw new InvalidEmailError();
-    if (!username) throw new InvalidUsernameError();
-    if (!passwordHash) throw new InvalidPasswordHashError();
-    if (!isVerified) throw new InvalidVerificationStatusError();
-    if (!verificationCode) throw new InvalidVerificationCodeError();
-    if (!isBlocked) throw new InvalidBlockedStatusError();
-    if (!firstName) throw new InvalidFirstNameError();
-    if (!lastName) throw new InvalidLastNameError();
-    if (!birthday) throw new InvalidMillisecondsDateError();
-    if (!createdAt) throw new InvalidMillisecondsDateError();
-    if (!updatedAt) throw new InvalidMillisecondsDateError();
-    if (!biography) throw new InvalidBiographyError();
-    if (!roles) throw new InvalidRolesError();
+    if (!email) throw new InvalidUserEmailError();
+    if (!username) throw new InvalidUserUsernameError();
+    if (!passwordHash) throw new InvalidUserPasswordHashError();
+    if (!isVerified) throw new InvalidUserVerificationStatusError();
+    if (!verificationCode) throw new InvalidUserVerificationCodeError();
+    if (!isBlocked) throw new InvalidUserBlockedStatusError();
+    if (!firstName) throw new InvalidUserFirstNameError();
+    if (!lastName) throw new InvalidUserLastNameError();
+    if (!birthday) throw new InvalidUserBirthdayError();
+    if (!createdAt) throw new InvalidUserCreatedAtError();
+    if (!updatedAt) throw new InvalidUserUpdatedAtError();
+    if (!biography) throw new InvalidUserBiographyError();
+    if (!roles) throw new InvalidUserRolesError();
     roles.forEach((role) => {
-      if (!role) throw new InvalidRoleError();
+      if (!role) throw new InvalidUserRoleError();
     });
-    if (!refreshTokens) throw new InvalidRefreshTokensError();
+    if (!refreshTokens) throw new InvalidUserRefreshTokensError();
     refreshTokens.forEach((refreshToken) => {
-      if (!refreshToken) throw new InvalidRefreshTokenError();
+      if (!refreshToken) throw new InvalidUserRefreshTokenError();
     });
     if (!profilePicture) profilePicture = null;
     if (!deletedAt) deletedAt = null;
@@ -305,10 +306,10 @@ export class User extends AggregateRoot {
 
     if (!this.isVerified) throw new UnverifiedUserCannotBeUpdatedError();
 
-    if (!newRefreshToken) throw new InvalidRefreshTokenError();
+    if (!newRefreshToken) throw new InvalidUserRefreshTokenError();
 
     if (this._refreshTokens.some((token) => token.equals(newRefreshToken)))
-      throw new DuplicatedRefreshTokenError();
+      throw new DuplicatedUserRefreshTokenError();
 
     this._refreshTokens.push(newRefreshToken);
   }
@@ -323,7 +324,7 @@ export class User extends AggregateRoot {
 
     if (!this.isVerified) throw new UnverifiedUserCannotBeUpdatedError();
 
-    if (!replacedByToken) throw new InvalidRefreshTokenError();
+    if (!replacedByToken) throw new InvalidUserRefreshTokenError();
 
     const refreshTokenToReplace = this.getRefreshToken(refreshTokenIdToReplace);
     if (!refreshTokenToReplace) throw new RefreshTokenNotFoundError();
