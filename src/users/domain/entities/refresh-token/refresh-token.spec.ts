@@ -1,17 +1,17 @@
 import { MockedObject } from 'ts-jest/dist/utils/testing';
-import { InvalidRefreshTokenError, RefreshToken } from '..';
+import { RefreshToken } from '..';
 import {
-  InvalidMillisecondsDateError,
   InvalidUniqueIdError,
   MillisecondsDate,
   UniqueId,
 } from '../../../../shared/domain/value-objects';
+import { IpAddress, SecondsDuration } from '../../value-objects';
 import {
-  InvalidIpAddressError,
-  InvalidSecondsDurationError,
-  IpAddress,
-  SecondsDuration,
-} from '../../value-objects';
+  InvalidRefreshTokenCreatedAtError,
+  InvalidRefreshTokenDurationError,
+  InvalidRefreshTokenError,
+  InvalidRefreshTokenIpAddressError,
+} from './exceptions';
 
 const validValues = [
   [
@@ -178,7 +178,7 @@ describe('users', () => {
                 replacedBy,
                 revokedAt,
               ),
-            ).toThrowError(InvalidIpAddressError);
+            ).toThrowError(InvalidRefreshTokenIpAddressError);
           },
         );
 
@@ -208,7 +208,7 @@ describe('users', () => {
                 replacedBy,
                 revokedAt,
               ),
-            ).toThrowError(InvalidMillisecondsDateError);
+            ).toThrowError(InvalidRefreshTokenCreatedAtError);
           },
         );
 
@@ -238,7 +238,7 @@ describe('users', () => {
                 replacedBy,
                 revokedAt,
               ),
-            ).toThrowError(InvalidSecondsDurationError);
+            ).toThrowError(InvalidRefreshTokenDurationError);
           },
         );
 
