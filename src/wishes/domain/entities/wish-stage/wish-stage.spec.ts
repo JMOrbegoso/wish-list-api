@@ -38,12 +38,80 @@ const validValues = [
       {
         getUrl: 'https://www.example.com',
       } as MockedObject<WebUrl>,
+      {
+        getUrl: 'https://www.example.net',
+      } as MockedObject<WebUrl>,
     ],
     [
       {
         getUrl: 'https://www.example.com/1.jpg',
       } as MockedObject<WebUrl>,
+      {
+        getUrl: 'https://www.example.com/2.jpg',
+      } as MockedObject<WebUrl>,
+      {
+        getUrl: 'https://www.example.com/3.jpg',
+      } as MockedObject<WebUrl>,
     ],
+  ],
+  [
+    {
+      getId: 'id-1',
+      equals: jest.fn(),
+    } as MockedObject<UniqueId>,
+    {
+      getTitle: 'title',
+    } as MockedObject<WishTitle>,
+    {
+      getDescription: 'description',
+    } as MockedObject<WishDescription>,
+    {
+      getMilliseconds: 1,
+    } as MockedObject<MillisecondsDate>,
+    [],
+    [
+      {
+        getUrl: 'https://www.example.com/1.jpg',
+      } as MockedObject<WebUrl>,
+    ],
+  ],
+  [
+    {
+      getId: 'id-2',
+      equals: jest.fn(),
+    } as MockedObject<UniqueId>,
+    {
+      getTitle: 'title',
+    } as MockedObject<WishTitle>,
+    {
+      getDescription: 'description',
+    } as MockedObject<WishDescription>,
+    {
+      getMilliseconds: 1,
+    } as MockedObject<MillisecondsDate>,
+    [
+      {
+        getUrl: 'https://www.example.com',
+      } as MockedObject<WebUrl>,
+    ],
+    [],
+  ],
+  [
+    {
+      getId: 'id-3',
+      equals: jest.fn(),
+    } as MockedObject<UniqueId>,
+    {
+      getTitle: 'title',
+    } as MockedObject<WishTitle>,
+    {
+      getDescription: 'description',
+    } as MockedObject<WishDescription>,
+    {
+      getMilliseconds: 1,
+    } as MockedObject<MillisecondsDate>,
+    [],
+    [],
   ],
 ];
 
@@ -395,9 +463,11 @@ describe('wishes', () => {
               createdAt.getMilliseconds,
             );
             expect(wishStage.urlsLength).toBe(urls.length);
-            expect(wishStage.urls[0].getUrl).toBe(urls[0].getUrl);
+            for (let i = 0; i < urls.length; i++)
+              expect(wishStage.urls[i].getUrl).toBe(urls[i].getUrl);
             expect(wishStage.imageUrlsLength).toBe(images.length);
-            expect(wishStage.imageUrls[0].getUrl).toBe(images[0].getUrl);
+            for (let i = 0; i < images.length; i++)
+              expect(wishStage.imageUrls[i].getUrl).toBe(images[i].getUrl);
           },
         );
 
