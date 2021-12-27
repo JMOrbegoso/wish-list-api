@@ -27,11 +27,7 @@ import {
 } from '../../../shared/infrastructure/presentation/decorators';
 import { SameIdRequestGuard } from '../../../shared/infrastructure/presentation/guards';
 import {
-  BlockUserCommand,
   CreateUserCommand,
-  DeleteUserCommand,
-  UnblockUserCommand,
-  UndeleteUserCommand,
   UpdateUserPasswordCommand,
   UpdateUserProfileCommand,
   UpdateUserProfilePictureCommand,
@@ -214,74 +210,6 @@ export class UsersController {
     @Body() dto: UpdateUserPasswordDto,
   ): Promise<void> {
     const command = new UpdateUserPasswordCommand(dto.id, dto.password);
-    await this.commandBus.execute(command);
-  }
-
-  @SetMetadata<string, RoleOwnership>(RoleOwnershipKey, {
-    ownerships: [
-      { role: Role.admin(), ownership: Ownership.Any },
-      { role: Role.moderator(), ownership: Ownership.Any },
-    ],
-    idProperty: {
-      target: 'params',
-      name: 'id',
-    },
-  })
-  @UseGuards(AuthGuard('jwt'), RoleOwnershipGuard)
-  @Patch('block/:id')
-  async blockUser(@Param() params: UserIdDto): Promise<void> {
-    const command = new BlockUserCommand(params.id);
-    await this.commandBus.execute(command);
-  }
-
-  @SetMetadata<string, RoleOwnership>(RoleOwnershipKey, {
-    ownerships: [
-      { role: Role.admin(), ownership: Ownership.Any },
-      { role: Role.moderator(), ownership: Ownership.Any },
-    ],
-    idProperty: {
-      target: 'params',
-      name: 'id',
-    },
-  })
-  @UseGuards(AuthGuard('jwt'), RoleOwnershipGuard)
-  @Patch('unblock/:id')
-  async unblockUser(@Param() params: UserIdDto): Promise<void> {
-    const command = new UnblockUserCommand(params.id);
-    await this.commandBus.execute(command);
-  }
-
-  @SetMetadata<string, RoleOwnership>(RoleOwnershipKey, {
-    ownerships: [
-      { role: Role.admin(), ownership: Ownership.Any },
-      { role: Role.moderator(), ownership: Ownership.Any },
-    ],
-    idProperty: {
-      target: 'params',
-      name: 'id',
-    },
-  })
-  @UseGuards(AuthGuard('jwt'), RoleOwnershipGuard)
-  @Delete(':id')
-  async deleteUser(@Param() params: UserIdDto): Promise<void> {
-    const command = new DeleteUserCommand(params.id);
-    await this.commandBus.execute(command);
-  }
-
-  @SetMetadata<string, RoleOwnership>(RoleOwnershipKey, {
-    ownerships: [
-      { role: Role.admin(), ownership: Ownership.Any },
-      { role: Role.moderator(), ownership: Ownership.Any },
-    ],
-    idProperty: {
-      target: 'params',
-      name: 'id',
-    },
-  })
-  @UseGuards(AuthGuard('jwt'), RoleOwnershipGuard)
-  @Patch('undelete/:id')
-  async undeleteUser(@Param() params: UserIdDto): Promise<void> {
-    const command = new UndeleteUserCommand(params.id);
     await this.commandBus.execute(command);
   }
 }

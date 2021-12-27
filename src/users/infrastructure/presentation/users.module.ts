@@ -42,6 +42,7 @@ import {
   UniqueIdGeneratorServiceMongoDb,
 } from '../services';
 import { AuthController } from './auth.controller';
+import { UsersManagementController } from './users-management.controller';
 import { UsersController } from './users.controller';
 
 const queryHandlers = [
@@ -66,7 +67,7 @@ const commandHandlers = [
 const passportStrategies = [JwtPassportStrategy];
 
 @Module({
-  controllers: [AuthController, UsersController],
+  controllers: [AuthController, UsersController, UsersManagementController],
   imports: [
     MikroOrmModule.forFeature([UserEntity]),
     MulterModule.register(),
