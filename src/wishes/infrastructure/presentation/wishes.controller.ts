@@ -161,8 +161,11 @@ export class WishesController {
     },
   })
   @UseGuards(AuthGuard('jwt'), SameIdRequestGuard, WishOwnershipGuard)
-  @Patch()
-  async update(@Body() dto: UpdateWishDto): Promise<void> {
+  @Patch(':id')
+  async update(
+    @Param() params: WishIdDto,
+    @Body() dto: UpdateWishDto,
+  ): Promise<void> {
     const command = new UpdateWishCommand(
       dto.id,
       dto.title,
@@ -313,8 +316,11 @@ export class WishesController {
     },
   })
   @UseGuards(AuthGuard('jwt'), SameIdRequestGuard, WishStageOwnershipGuard)
-  @Patch('stage')
-  async updateWishStage(@Body() dto: UpdateWishStageDto): Promise<void> {
+  @Patch('stage/:id')
+  async updateWishStage(
+    @Param() params: WishStageIdDto,
+    @Body() dto: UpdateWishStageDto,
+  ): Promise<void> {
     const command = new UpdateWishStageCommand(
       dto.wishStageId,
       dto.title,

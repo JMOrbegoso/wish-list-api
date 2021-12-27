@@ -506,29 +506,6 @@ export const swaggerDocument: OpenAPIObject = {
         tags: ['WishesController'],
         security: [{ bearer: [] }],
       },
-      patch: {
-        operationId: 'Update',
-        parameters: [],
-        requestBody: {
-          required: true,
-          content: {
-            'application/json': {
-              schema: { $ref: '#/components/schemas/UpdateWishDto' },
-            },
-          },
-        },
-        responses: {
-          201: { description: 'Wish updated successfully.' },
-          400: { description: 'Something went wrong.' },
-          401: { description: 'User is not authenticated.' },
-          403: {
-            description:
-              'This resource is prohibited for the authenticated user.',
-          },
-        },
-        tags: ['WishesController'],
-        security: [{ bearer: [] }],
-      },
     },
     '/api/wishes/public': {
       get: {
@@ -614,6 +591,38 @@ export const swaggerDocument: OpenAPIObject = {
               'This resource is prohibited for the authenticated user.',
           },
           404: { description: 'Wish not found.' },
+        },
+        tags: ['WishesController'],
+        security: [{ bearer: [] }],
+      },
+      patch: {
+        operationId: 'Update',
+        parameters: [
+          {
+            name: 'id',
+            required: true,
+            in: 'path',
+            description: 'Wish id.',
+            example: '61872ad79452fa50b7b70f80',
+            schema: { type: 'string' },
+          },
+        ],
+        requestBody: {
+          required: true,
+          content: {
+            'application/json': {
+              schema: { $ref: '#/components/schemas/UpdateWishDto' },
+            },
+          },
+        },
+        responses: {
+          201: { description: 'Wish updated successfully.' },
+          400: { description: 'Something went wrong.' },
+          401: { description: 'User is not authenticated.' },
+          403: {
+            description:
+              'This resource is prohibited for the authenticated user.',
+          },
         },
         tags: ['WishesController'],
         security: [{ bearer: [] }],
@@ -792,9 +801,20 @@ export const swaggerDocument: OpenAPIObject = {
         tags: ['WishesController'],
         security: [{ bearer: [] }],
       },
+    },
+    '/api/wishes/stage/{wishStageId}': {
       patch: {
         operationId: 'UpdateWishStage',
-        parameters: [],
+        parameters: [
+          {
+            name: 'wishStageId',
+            required: true,
+            in: 'path',
+            description: 'Wish Stage id.',
+            example: '61872ad79452fa50b7b70f80',
+            schema: { type: 'string' },
+          },
+        ],
         requestBody: {
           required: true,
           content: {
@@ -815,8 +835,6 @@ export const swaggerDocument: OpenAPIObject = {
         tags: ['WishesController'],
         security: [{ bearer: [] }],
       },
-    },
-    '/api/wishes/stage/{wishStageId}': {
       delete: {
         operationId: 'DeleteWishStage',
         parameters: [
