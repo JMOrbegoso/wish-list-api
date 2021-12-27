@@ -13,6 +13,8 @@ import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { AuthGuard } from '@nestjs/passport';
 import {
   Ownership,
+  RequestIds,
+  RequestIdsKey,
   RoleOwnership,
 } from '../../../shared/infrastructure/presentation/decorators';
 import { SameIdRequestGuard } from '../../../shared/infrastructure/presentation/guards';
@@ -143,6 +145,10 @@ export class WishesController {
     await this.commandBus.execute(command);
   }
 
+  @SetMetadata<string, RequestIds>(RequestIdsKey, {
+    bodyIdPropertyName: 'id',
+    paramsIdPropertyName: 'id',
+  })
   @SetMetadata<string, RoleOwnership>(WishOwnershipKey, {
     ownerships: [
       { role: Role.admin(), ownership: Ownership.Any },
@@ -291,6 +297,10 @@ export class WishesController {
     await this.commandBus.execute(command);
   }
 
+  @SetMetadata<string, RequestIds>(RequestIdsKey, {
+    bodyIdPropertyName: 'id',
+    paramsIdPropertyName: 'id',
+  })
   @SetMetadata<string, RoleOwnership>(WishStageOwnershipKey, {
     ownerships: [
       { role: Role.admin(), ownership: Ownership.Any },
