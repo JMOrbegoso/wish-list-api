@@ -101,6 +101,25 @@ describe('shared', () => {
         );
 
         test.each(validValues)(
+          'updating one domain event using the list getter of an Order should not have an effect on the original',
+          (uniqueId: MockedObject<UniqueId>) => {
+            // Arrange
+            const originalPrice = 99;
+            const order = Order.create(uniqueId, originalPrice);
+            const orderAdded = new OrderAdded(order);
+            order.addDomainEvent(orderAdded);
+
+            // Act
+            order.domainEvents[0] = new OrderAdded({ price: 10 } as Order);
+
+            // Assert
+            expect((order.domainEvents[0] as OrderAdded).order.price).toBe(
+              originalPrice,
+            );
+          },
+        );
+
+        test.each(validValues)(
           'adding one domain event to an Order recently created should have one domain event',
           (uniqueId: MockedObject<UniqueId>, price: number) => {
             // Arrange

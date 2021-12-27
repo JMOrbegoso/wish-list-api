@@ -1,5 +1,5 @@
 export class TooManyWishStageImagesError extends Error {
   constructor() {
-    super('Images limit reached in the WishStage.');
+    super('Images quantity limit reached in the Wish Stage.');
   }
 }

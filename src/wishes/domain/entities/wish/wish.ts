@@ -1,11 +1,34 @@
+import { WishStage, Wisher } from '..';
+import { AggregateRoot } from '../../../../shared/domain/entities';
+import {
+  MillisecondsDate,
+  UniqueId,
+  WebUrl,
+} from '../../../../shared/domain/value-objects';
+import {
+  CategoryName,
+  WishDescription,
+  WishPrivacyLevel,
+  WishTitle,
+} from '../../value-objects';
 import {
   DeletedWishCannotBeUpdatedError,
   DuplicatedWishStageError,
   InvalidWishCategoriesError,
+  InvalidWishCategoryNameError,
+  InvalidWishCompletedAtError,
+  InvalidWishCreatedAtError,
+  InvalidWishDescriptionError,
+  InvalidWishImageError,
   InvalidWishImagesError,
+  InvalidWishPrivacyLevelError,
+  InvalidWishStageError,
   InvalidWishStagesError,
+  InvalidWishTitleError,
+  InvalidWishUpdatedAtError,
+  InvalidWishUrlError,
   InvalidWishUrlsError,
-  InvalidWisherError,
+  InvalidWishWisherError,
   NonExistentWishStageError,
   TooManyWishCategoriesError,
   TooManyWishImagesError,
@@ -15,25 +38,7 @@ import {
   WishIsAlreadyDeletedError,
   WishIsAlreadyUncompletedError,
   WishIsNotDeletedError,
-  WishStage,
-  Wisher,
-} from '..';
-import { AggregateRoot } from '../../../../shared/domain/entities';
-import {
-  InvalidMillisecondsDateError,
-  MillisecondsDate,
-  UniqueId,
-  WebUrl,
-} from '../../../../shared/domain/value-objects';
-import {
-  CategoryName,
-  InvalidWishDescriptionError,
-  InvalidWishPrivacyLevelError,
-  InvalidWishTitleError,
-  WishDescription,
-  WishPrivacyLevel,
-  WishTitle,
-} from '../../value-objects';
+} from './exceptions';
 
 export class Wish extends AggregateRoot {
   public static readonly MaxUrls = 5;
@@ -72,33 +77,34 @@ export class Wish extends AggregateRoot {
     super(id);
 
     if (!title) throw new InvalidWishTitleError();
-
     if (!description) throw new InvalidWishDescriptionError();
-
     if (!privacyLevel) throw new InvalidWishPrivacyLevelError();
-
-    if (!createdAt) throw new InvalidMillisecondsDateError();
-
-    if (!updatedAt) throw new InvalidMillisecondsDateError();
-
-    if (!wisher) throw new InvalidWisherError();
-
+    if (!createdAt) throw new InvalidWishCreatedAtError();
+    if (!updatedAt) throw new InvalidWishUpdatedAtError();
+    if (!wisher) throw new InvalidWishWisherError();
     if (!urls) throw new InvalidWishUrlsError();
-
     if (urls.length > Wish.MaxUrls) throw new TooManyWishUrlsError();
-
+    urls.forEach((url) => {
+      if (!url) throw new InvalidWishUrlError();
+    });
     if (!imageUrls) throw new InvalidWishImagesError();
-
     if (imageUrls.length > Wish.MaxImages) throw new TooManyWishImagesError();
-
+    imageUrls.forEach((imageUrl) => {
+      if (!imageUrl) throw new InvalidWishImageError();
+    });
     if (!categories) throw new InvalidWishCategoriesError();
-
     if (categories.length > Wish.MaxCategories)
       throw new TooManyWishCategoriesError();
-
+    categories.forEach((category) => {
+      if (!category) throw new InvalidWishCategoryNameError();
+    });
     if (!stages) throw new InvalidWishStagesError();
-
     if (stages.length > Wish.MaxStages) throw new TooManyWishStagesError();
+    stages.forEach((stage) => {
+      if (!stage) throw new InvalidWishStageError();
+    });
+    if (!deletedAt) deletedAt = null;
+    if (!completedAt) completedAt = null;
 
     this._title = title;
     this._description = description;
@@ -106,10 +112,10 @@ export class Wish extends AggregateRoot {
     this._createdAt = createdAt;
     this._updatedAt = updatedAt;
     this._wisher = wisher;
-    this._urls = urls;
-    this._imageUrls = imageUrls;
-    this._categories = categories;
-    this._stages = stages;
+    this._urls = [...urls];
+    this._imageUrls = [...imageUrls];
+    this._categories = [...categories];
+    this._stages = [...stages];
     this._deletedAt = deletedAt;
     this._completedAt = completedAt;
   }
@@ -178,16 +184,41 @@ export class Wish extends AggregateRoot {
     return [...this._urls];
   }
 
+  public get urlsLength(): number {
+    return this._urls.length;
+  }
+
   public get imageUrls(): WebUrl[] {
     return [...this._imageUrls];
+  }
+
+  public get imageUrlsLength(): number {
+    return this._imageUrls.length;
   }
 
   public get categories(): CategoryName[] {
     return [...this._categories];
   }
 
+  public get categoriesLength(): number {
+    return this._categories.length;
+  }
+
   public get stages(): WishStage[] {
-    return [...this._stages];
+    return this._stages.map((stage) =>
+      WishStage.create(
+        stage.id,
+        stage.title,
+        stage.description,
+        stage.createdAt,
+        stage.urls,
+        stage.imageUrls,
+      ),
+    );
+  }
+
+  public get stagesLength(): number {
+    return this._stages.length;
   }
 
   public get deletedAt(): MillisecondsDate {
@@ -223,7 +254,7 @@ export class Wish extends AggregateRoot {
 
     if (this.isCompleted) throw new WishIsAlreadyCompletedError();
 
-    if (!completedAt) throw new InvalidMillisecondsDateError();
+    if (!completedAt) throw new InvalidWishCompletedAtError();
 
     this._completedAt = completedAt;
     this._updatedAt = MillisecondsDate.create();
@@ -317,7 +348,7 @@ export class Wish extends AggregateRoot {
   public removeStage(stageToRemove: WishStage): void {
     if (this.isDeleted) throw new DeletedWishCannotBeUpdatedError();
 
-    if (!stageToRemove) throw new InvalidWishStagesError();
+    if (!stageToRemove) throw new InvalidWishStageError();
 
     if (!this._stages.some((stage) => stage.equals(stageToRemove)))
       throw new NonExistentWishStageError();

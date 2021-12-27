@@ -1,19 +1,6 @@
 import { MockedObject } from 'ts-jest/dist/utils/testing';
+import { RefreshToken, User, VerificationCode } from '..';
 import {
-  BlockedUserCannotBeUpdatedError,
-  DeletedUserCannotBeUpdatedError,
-  DuplicatedRefreshTokenError,
-  InvalidRefreshTokenError,
-  InvalidRefreshTokensError,
-  InvalidVerificationCodeError,
-  RefreshToken,
-  RefreshTokenNotFoundError,
-  UnverifiedUserCannotBeUpdatedError,
-  User,
-  VerificationCode,
-} from '..';
-import {
-  InvalidMillisecondsDateError,
   InvalidUniqueIdError,
   MillisecondsDate,
   UniqueId,
@@ -23,15 +10,6 @@ import {
   Biography,
   Email,
   FirstName,
-  InvalidBiographyError,
-  InvalidBlockedStatusError,
-  InvalidEmailError,
-  InvalidFirstNameError,
-  InvalidLastNameError,
-  InvalidPasswordHashError,
-  InvalidRolesError,
-  InvalidUsernameError,
-  InvalidVerificationStatusError,
   IsBlocked,
   IsVerified,
   LastName,
@@ -39,6 +17,29 @@ import {
   Role,
   Username,
 } from '../../value-objects';
+import {
+  BlockedUserCannotBeUpdatedError,
+  DeletedUserCannotBeUpdatedError,
+  DuplicatedUserRefreshTokenError,
+  InvalidUserBiographyError,
+  InvalidUserBirthdayError,
+  InvalidUserBlockedStatusError,
+  InvalidUserCreatedAtError,
+  InvalidUserEmailError,
+  InvalidUserFirstNameError,
+  InvalidUserLastNameError,
+  InvalidUserPasswordHashError,
+  InvalidUserRefreshTokenError,
+  InvalidUserRefreshTokensError,
+  InvalidUserRoleError,
+  InvalidUserRolesError,
+  InvalidUserUpdatedAtError,
+  InvalidUserUsernameError,
+  InvalidUserVerificationCodeError,
+  InvalidUserVerificationStatusError,
+  RefreshTokenNotFoundError,
+  UnverifiedUserCannotBeUpdatedError,
+} from './exceptions';
 
 const validValues = [
   [
@@ -633,7 +634,7 @@ describe('users', () => {
                 profilePicture,
                 deletedAt,
               ),
-            ).toThrowError(InvalidEmailError);
+            ).toThrowError(InvalidUserEmailError);
           },
         );
 
@@ -683,7 +684,7 @@ describe('users', () => {
                 profilePicture,
                 deletedAt,
               ),
-            ).toThrowError(InvalidUsernameError);
+            ).toThrowError(InvalidUserUsernameError);
           },
         );
 
@@ -733,7 +734,7 @@ describe('users', () => {
                 profilePicture,
                 deletedAt,
               ),
-            ).toThrowError(InvalidPasswordHashError);
+            ).toThrowError(InvalidUserPasswordHashError);
           },
         );
 
@@ -783,7 +784,7 @@ describe('users', () => {
                 profilePicture,
                 deletedAt,
               ),
-            ).toThrowError(InvalidVerificationStatusError);
+            ).toThrowError(InvalidUserVerificationStatusError);
           },
         );
 
@@ -833,7 +834,7 @@ describe('users', () => {
                 profilePicture,
                 deletedAt,
               ),
-            ).toThrowError(InvalidVerificationCodeError);
+            ).toThrowError(InvalidUserVerificationCodeError);
           },
         );
 
@@ -883,7 +884,7 @@ describe('users', () => {
                 profilePicture,
                 deletedAt,
               ),
-            ).toThrowError(InvalidBlockedStatusError);
+            ).toThrowError(InvalidUserBlockedStatusError);
           },
         );
 
@@ -933,7 +934,7 @@ describe('users', () => {
                 profilePicture,
                 deletedAt,
               ),
-            ).toThrowError(InvalidFirstNameError);
+            ).toThrowError(InvalidUserFirstNameError);
           },
         );
 
@@ -983,7 +984,7 @@ describe('users', () => {
                 profilePicture,
                 deletedAt,
               ),
-            ).toThrowError(InvalidLastNameError);
+            ).toThrowError(InvalidUserLastNameError);
           },
         );
 
@@ -1033,7 +1034,7 @@ describe('users', () => {
                 profilePicture,
                 deletedAt,
               ),
-            ).toThrowError(InvalidMillisecondsDateError);
+            ).toThrowError(InvalidUserBirthdayError);
           },
         );
 
@@ -1083,7 +1084,7 @@ describe('users', () => {
                 profilePicture,
                 deletedAt,
               ),
-            ).toThrowError(InvalidMillisecondsDateError);
+            ).toThrowError(InvalidUserCreatedAtError);
           },
         );
 
@@ -1133,7 +1134,7 @@ describe('users', () => {
                 profilePicture,
                 deletedAt,
               ),
-            ).toThrowError(InvalidMillisecondsDateError);
+            ).toThrowError(InvalidUserUpdatedAtError);
           },
         );
 
@@ -1183,7 +1184,7 @@ describe('users', () => {
                 profilePicture,
                 deletedAt,
               ),
-            ).toThrowError(InvalidBiographyError);
+            ).toThrowError(InvalidUserBiographyError);
           },
         );
 
@@ -1233,7 +1234,58 @@ describe('users', () => {
                 profilePicture,
                 deletedAt,
               ),
-            ).toThrowError(InvalidRolesError);
+            ).toThrowError(InvalidUserRolesError);
+          },
+        );
+
+        test.each(validValues)(
+          'create a User with a invalid role inside a valid roles array should throw error',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            email: MockedObject<Email>,
+            username: MockedObject<Username>,
+            passwordHash: MockedObject<PasswordHash>,
+            isVerified: MockedObject<IsVerified>,
+            verificationCode: MockedObject<VerificationCode>,
+            isBlocked: MockedObject<IsBlocked>,
+            firstName: MockedObject<FirstName>,
+            lastName: MockedObject<LastName>,
+            birthday: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            biography: MockedObject<Biography>,
+            roles: MockedObject<Role[]>,
+            refreshTokens: MockedObject<RefreshToken[]>,
+            profilePicture: MockedObject<WebUrl>,
+            deletedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+            roles = [{} as Role, null];
+
+            // Act
+
+            // Assert
+            expect(() =>
+              User.create(
+                uniqueId,
+                email,
+                username,
+                passwordHash,
+                isVerified,
+                verificationCode,
+                isBlocked,
+                firstName,
+                lastName,
+                birthday,
+                createdAt,
+                updatedAt,
+                biography,
+                roles,
+                refreshTokens,
+                profilePicture,
+                deletedAt,
+              ),
+            ).toThrowError(InvalidUserRoleError);
           },
         );
 
@@ -1283,7 +1335,123 @@ describe('users', () => {
                 profilePicture,
                 deletedAt,
               ),
-            ).toThrowError(InvalidRefreshTokensError);
+            ).toThrowError(InvalidUserRefreshTokensError);
+          },
+        );
+
+        test.each(validValues)(
+          'create a User with a invalid refreshToken inside a valid refreshTokens array should throw error',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            email: MockedObject<Email>,
+            username: MockedObject<Username>,
+            passwordHash: MockedObject<PasswordHash>,
+            isVerified: MockedObject<IsVerified>,
+            verificationCode: MockedObject<VerificationCode>,
+            isBlocked: MockedObject<IsBlocked>,
+            firstName: MockedObject<FirstName>,
+            lastName: MockedObject<LastName>,
+            birthday: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            biography: MockedObject<Biography>,
+            roles: MockedObject<Role[]>,
+            refreshTokens: MockedObject<RefreshToken[]>,
+            profilePicture: MockedObject<WebUrl>,
+            deletedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+            refreshTokens = [{} as RefreshToken, null];
+
+            // Act
+
+            // Assert
+            expect(() =>
+              User.create(
+                uniqueId,
+                email,
+                username,
+                passwordHash,
+                isVerified,
+                verificationCode,
+                isBlocked,
+                firstName,
+                lastName,
+                birthday,
+                createdAt,
+                updatedAt,
+                biography,
+                roles,
+                refreshTokens,
+                profilePicture,
+                deletedAt,
+              ),
+            ).toThrowError(InvalidUserRefreshTokenError);
+          },
+        );
+
+        test.each(validValues)(
+          'should create an User with [id: %p], [email: %p], [username: %p], [passwordHash: %p], [isVerified: %p], [isBlocked: %p], [firstName: %p], [lastName: %p], [birthday: %p], [createdAt: %p], [updatedAt: %p], [biography: %p], [roles: %p], [refreshTokens: %p], [profilePicture: %p] and [deletedAt: %p]',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            email: MockedObject<Email>,
+            username: MockedObject<Username>,
+            passwordHash: MockedObject<PasswordHash>,
+            isVerified: MockedObject<IsVerified>,
+            verificationCode: MockedObject<VerificationCode>,
+            isBlocked: MockedObject<IsBlocked>,
+            firstName: MockedObject<FirstName>,
+            lastName: MockedObject<LastName>,
+            birthday: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            biography: MockedObject<Biography>,
+          ) => {
+            // Arrange
+
+            // Act
+            const user = User.create(
+              uniqueId,
+              email,
+              username,
+              passwordHash,
+              isVerified,
+              verificationCode,
+              isBlocked,
+              firstName,
+              lastName,
+              birthday,
+              createdAt,
+              updatedAt,
+              biography,
+            );
+
+            // Assert
+            expect(user.id.getId).toBe(uniqueId.getId);
+            expect(user.email.getEmail).toBe(email.getEmail);
+            expect(user.username.getUsername).toBe(username.getUsername);
+            expect(user.passwordHash.getPasswordHash).toBe(
+              passwordHash.getPasswordHash,
+            );
+            expect(user.isVerified).toBe(isVerified.getStatus);
+            expect(user.isBlocked).toBe(isBlocked.getStatus);
+            expect(user.firstName.getFirstName).toBe(firstName.getFirstName);
+            expect(user.lastName.getLastName).toBe(lastName.getLastName);
+            expect(user.birthday.getMilliseconds).toBe(
+              birthday.getMilliseconds,
+            );
+            expect(user.createdAt.getMilliseconds).toBe(
+              createdAt.getMilliseconds,
+            );
+            expect(user.updatedAt.getMilliseconds).toBe(
+              updatedAt.getMilliseconds,
+            );
+            expect(user.biography.getBiography).toBe(biography.getBiography);
+
+            expect(user.rolesLength).toBe(0);
+            expect(user.refreshTokensLength).toBe(0);
+            expect(user.deletedAt).toBeNull();
+            expect(user.profilePicture).toBeNull();
           },
         );
 
@@ -1961,7 +2129,7 @@ describe('users', () => {
             user.addRole(roleToAdd);
 
             // Assert
-            expect(user.roles.length).toBe(1);
+            expect(user.rolesLength).toBe(1);
             expect(user.roles[0]).toBe('Admin');
           },
         );
@@ -2021,7 +2189,7 @@ describe('users', () => {
             user.addRole(roleToAdd);
 
             // Assert
-            expect(user.roles.length).toBe(2);
+            expect(user.rolesLength).toBe(2);
             expect(user.roles[0]).toBe('Admin');
             expect(user.roles[1]).toBe('Moderator');
           },
@@ -2082,7 +2250,7 @@ describe('users', () => {
             user.removeRole(roleToRemove);
 
             // Assert
-            expect(user.roles.length).toBe(1);
+            expect(user.rolesLength).toBe(1);
             expect(user.roles[0]).toBe('Admin');
           },
         );
@@ -2142,7 +2310,7 @@ describe('users', () => {
             user.removeRole(roleToRemove);
 
             // Assert
-            expect(user.roles.length).toBe(0);
+            expect(user.rolesLength).toBe(0);
           },
         );
 
@@ -2205,13 +2373,13 @@ describe('users', () => {
             user.removeRole(roleToRemove);
 
             // Assert
-            expect(user.roles.length).toBe(1);
+            expect(user.rolesLength).toBe(1);
             expect(user.roles[0]).toBe('Moderator');
           },
         );
 
         test.each(validValues)(
-          'do changes on refreshTokens getter should make no changes on the original refreshTokens array',
+          'make changes on refreshTokens getter should make no changes on the original refreshTokens array',
           (
             uniqueId: MockedObject<UniqueId>,
             email: MockedObject<Email>,
@@ -2232,6 +2400,12 @@ describe('users', () => {
             deletedAt: MockedObject<MillisecondsDate>,
           ) => {
             // Arrange
+            const originalId = 'refresh-token-id';
+            refreshTokens = [
+              {
+                id: { getId: originalId },
+              } as MockedObject<RefreshToken>,
+            ];
             const user = User.create(
               uniqueId,
               email,
@@ -2253,19 +2427,16 @@ describe('users', () => {
             );
 
             // Act
-            const refreshTokensLocal = user.refreshTokens;
-            const newRefreshToken = {
-              id: { getId: 'new-refresh-token-id' },
+            user.refreshTokens.push({
+              id: { getId: 'new-refresh-token-1' },
+            } as MockedObject<RefreshToken>);
+            user.refreshTokens[0] = {
+              id: { getId: 'new-refresh-token-2' },
             } as MockedObject<RefreshToken>;
-            refreshTokensLocal.push(newRefreshToken);
 
             // Assert
-            expect(user.refreshTokens).toHaveLength(refreshTokens.length);
-            expect(refreshTokensLocal).toHaveLength(refreshTokens.length + 1);
-
-            for (let i = 0; i < refreshTokens.length; i++) {
-              expect(user.refreshTokens[i].id).toBe(refreshTokens[i].id);
-            }
+            expect(user.refreshTokensLength).toBe(1);
+            expect(user.refreshTokens[0].id.getId).toBe(originalId);
           },
         );
 
@@ -2626,7 +2797,7 @@ describe('users', () => {
 
             // Assert
             expect(() => user.addRefreshToken(null)).toThrowError(
-              InvalidRefreshTokenError,
+              InvalidUserRefreshTokenError,
             );
           },
         );
@@ -2690,7 +2861,7 @@ describe('users', () => {
 
             // Assert
             expect(() => user.addRefreshToken(newRefreshToken)).toThrowError(
-              DuplicatedRefreshTokenError,
+              DuplicatedUserRefreshTokenError,
             );
           },
         );
@@ -2982,7 +3153,7 @@ describe('users', () => {
 
             // Assert
             expect(() => user.replaceRefreshToken(null, null)).toThrowError(
-              InvalidRefreshTokenError,
+              InvalidUserRefreshTokenError,
             );
           },
         );
@@ -3118,7 +3289,7 @@ describe('users', () => {
             // Assert
             expect(() =>
               user.replaceRefreshToken(null, newRefreshToken),
-            ).toThrowError(DuplicatedRefreshTokenError);
+            ).toThrowError(DuplicatedUserRefreshTokenError);
           },
         );
 
