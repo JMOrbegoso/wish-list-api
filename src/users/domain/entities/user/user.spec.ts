@@ -1406,6 +1406,71 @@ describe('users', () => {
             createdAt: MockedObject<MillisecondsDate>,
             updatedAt: MockedObject<MillisecondsDate>,
             biography: MockedObject<Biography>,
+          ) => {
+            // Arrange
+
+            // Act
+            const user = User.create(
+              uniqueId,
+              email,
+              username,
+              passwordHash,
+              isVerified,
+              verificationCode,
+              isBlocked,
+              firstName,
+              lastName,
+              birthday,
+              createdAt,
+              updatedAt,
+              biography,
+            );
+
+            // Assert
+            expect(user.id.getId).toBe(uniqueId.getId);
+            expect(user.email.getEmail).toBe(email.getEmail);
+            expect(user.username.getUsername).toBe(username.getUsername);
+            expect(user.passwordHash.getPasswordHash).toBe(
+              passwordHash.getPasswordHash,
+            );
+            expect(user.isVerified).toBe(isVerified.getStatus);
+            expect(user.isBlocked).toBe(isBlocked.getStatus);
+            expect(user.firstName.getFirstName).toBe(firstName.getFirstName);
+            expect(user.lastName.getLastName).toBe(lastName.getLastName);
+            expect(user.birthday.getMilliseconds).toBe(
+              birthday.getMilliseconds,
+            );
+            expect(user.createdAt.getMilliseconds).toBe(
+              createdAt.getMilliseconds,
+            );
+            expect(user.updatedAt.getMilliseconds).toBe(
+              updatedAt.getMilliseconds,
+            );
+            expect(user.biography.getBiography).toBe(biography.getBiography);
+
+            expect(user.rolesLength).toBe(0);
+            expect(user.refreshTokensLength).toBe(0);
+            expect(user.deletedAt).toBeNull();
+            expect(user.profilePicture).toBeNull();
+          },
+        );
+
+        test.each(validValues)(
+          'should create an User with [id: %p], [email: %p], [username: %p], [passwordHash: %p], [isVerified: %p], [isBlocked: %p], [firstName: %p], [lastName: %p], [birthday: %p], [createdAt: %p], [updatedAt: %p], [biography: %p], [roles: %p], [refreshTokens: %p], [profilePicture: %p] and [deletedAt: %p]',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            email: MockedObject<Email>,
+            username: MockedObject<Username>,
+            passwordHash: MockedObject<PasswordHash>,
+            isVerified: MockedObject<IsVerified>,
+            verificationCode: MockedObject<VerificationCode>,
+            isBlocked: MockedObject<IsBlocked>,
+            firstName: MockedObject<FirstName>,
+            lastName: MockedObject<LastName>,
+            birthday: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
             refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
