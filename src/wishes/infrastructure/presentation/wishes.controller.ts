@@ -283,15 +283,15 @@ export class WishesController {
     ],
     idProperty: {
       target: 'body',
-      name: 'id',
+      name: 'wishId',
     },
   })
   @UseGuards(AuthGuard('jwt'), WishOwnershipGuard)
   @Post('stage')
   async createWishStage(@Body() dto: CreateWishStageDto): Promise<void> {
     const command = new CreateWishStageCommand(
-      dto.wishStageId,
       dto.id,
+      dto.wishId,
       dto.title,
       dto.description,
       dto.urls,
@@ -312,7 +312,7 @@ export class WishesController {
     ],
     idProperty: {
       target: 'body',
-      name: 'wishStageId',
+      name: 'id',
     },
   })
   @UseGuards(AuthGuard('jwt'), SameIdRequestGuard, WishStageOwnershipGuard)
@@ -322,7 +322,7 @@ export class WishesController {
     @Body() dto: UpdateWishStageDto,
   ): Promise<void> {
     const command = new UpdateWishStageCommand(
-      dto.wishStageId,
+      dto.id,
       dto.title,
       dto.description,
       dto.urls,
@@ -343,9 +343,9 @@ export class WishesController {
     },
   })
   @UseGuards(AuthGuard('jwt'), WishStageOwnershipGuard)
-  @Delete('stage/:wishStageId')
+  @Delete('stage/:id')
   async deleteWishStage(@Param() params: WishStageIdDto): Promise<void> {
-    const command = new DeleteWishStageCommand(params.wishStageId);
+    const command = new DeleteWishStageCommand(params.id);
     await this.commandBus.execute(command);
   }
 }

@@ -571,7 +571,7 @@ export const swaggerDocument: OpenAPIObject = {
             required: true,
             in: 'path',
             description: 'Wish id.',
-            example: '61872ad79452fa50b7b70f80',
+            example: '61c4c0fec96d0f2ad6858ecb',
             schema: { type: 'string' },
           },
         ],
@@ -603,7 +603,7 @@ export const swaggerDocument: OpenAPIObject = {
             required: true,
             in: 'path',
             description: 'Wish id.',
-            example: '61872ad79452fa50b7b70f80',
+            example: '61c4c0fec96d0f2ad6858ecb',
             schema: { type: 'string' },
           },
         ],
@@ -635,7 +635,7 @@ export const swaggerDocument: OpenAPIObject = {
             required: true,
             in: 'path',
             description: 'Wish id.',
-            example: '61872ad79452fa50b7b70f80',
+            example: '61c4c0fec96d0f2ad6858ecb',
             schema: { type: 'string' },
           },
         ],
@@ -662,7 +662,7 @@ export const swaggerDocument: OpenAPIObject = {
             required: true,
             in: 'path',
             description: 'Wish id.',
-            example: '61872ad79452fa50b7b70f80',
+            example: '61c4c0fec96d0f2ad6858ecb',
             schema: { type: 'string' },
           },
         ],
@@ -689,7 +689,7 @@ export const swaggerDocument: OpenAPIObject = {
             required: true,
             in: 'path',
             description: 'Wish id.',
-            example: '61872ad79452fa50b7b70f80',
+            example: '61c4c0fec96d0f2ad6858ecb',
             schema: { type: 'string' },
           },
           {
@@ -724,7 +724,7 @@ export const swaggerDocument: OpenAPIObject = {
             required: true,
             in: 'path',
             description: 'Wish id.',
-            example: '61872ad79452fa50b7b70f80',
+            example: '61c4c0fec96d0f2ad6858ecb',
             schema: { type: 'string' },
           },
         ],
@@ -751,7 +751,7 @@ export const swaggerDocument: OpenAPIObject = {
             required: true,
             in: 'path',
             description: 'Wish id.',
-            example: '61872ad79452fa50b7b70f80',
+            example: '61c4c0fec96d0f2ad6858ecb',
             schema: { type: 'string' },
           },
           {
@@ -802,16 +802,16 @@ export const swaggerDocument: OpenAPIObject = {
         security: [{ bearer: [] }],
       },
     },
-    '/api/wishes/stage/{wishStageId}': {
+    '/api/wishes/stage/{id}': {
       patch: {
         operationId: 'UpdateWishStage',
         parameters: [
           {
-            name: 'wishStageId',
+            name: 'id',
             required: true,
             in: 'path',
-            description: 'Wish Stage id.',
-            example: '61872ad79452fa50b7b70f80',
+            description: 'Wish stage id.',
+            example: '61c4c0dec96d0f2ad6858ec9',
             schema: { type: 'string' },
           },
         ],
@@ -839,11 +839,11 @@ export const swaggerDocument: OpenAPIObject = {
         operationId: 'DeleteWishStage',
         parameters: [
           {
-            name: 'wishStageId',
+            name: 'id',
             required: true,
             in: 'path',
-            description: 'Wish Stage id.',
-            example: '61872ad79452fa50b7b70f80',
+            description: 'Wish stage id.',
+            example: '61c4c0dec96d0f2ad6858ec9',
             schema: { type: 'string' },
           },
         ],
@@ -1113,12 +1113,12 @@ export const swaggerDocument: OpenAPIObject = {
           id: {
             type: 'string',
             description: 'Wish stage id.',
-            example: '61872ad79452fa50b7b70f80',
+            example: '61c4c0dec96d0f2ad6858ec9',
           },
           title: {
             type: 'string',
             description: 'Wish stage title.',
-            example: 'Found the laptop model',
+            example: 'Found the best laptop model.',
           },
           description: {
             type: 'string',
@@ -1164,6 +1164,11 @@ export const swaggerDocument: OpenAPIObject = {
           id: {
             type: 'string',
             description: 'Wish id.',
+            example: '61c4c0fec96d0f2ad6858ecb',
+          },
+          wisherId: {
+            type: 'string',
+            description: 'Wisher id.',
             example: '61872ad79452fa50b7b70f80',
           },
           title: {
@@ -1188,11 +1193,6 @@ export const swaggerDocument: OpenAPIObject = {
             type: 'number',
             description: 'Wish update date in milliseconds.',
             example: 1636128526164,
-          },
-          wisherId: {
-            type: 'string',
-            description: 'Wisher id.',
-            example: '61872ad79452fa50b7b70f80',
           },
           urls: {
             type: 'array',
@@ -1236,12 +1236,12 @@ export const swaggerDocument: OpenAPIObject = {
         },
         required: [
           'id',
+          'wisherId',
           'title',
           'description',
           'privacyLevel',
           'createdAt',
           'updatedAt',
-          'wisherId',
           'urls',
           'imageUrls',
           'categories',
@@ -1262,6 +1262,11 @@ export const swaggerDocument: OpenAPIObject = {
           id: {
             type: 'string',
             description: 'Wish id.',
+            example: '61c4c0fec96d0f2ad6858ecb',
+          },
+          wisherId: {
+            type: 'string',
+            description: 'Wisher id.',
             example: '61872ad79452fa50b7b70f80',
           },
           title: {
@@ -1276,11 +1281,6 @@ export const swaggerDocument: OpenAPIObject = {
           },
           privacyLevel: {
             $ref: '#/components/schemas/PrivacyLevel',
-          },
-          wisherId: {
-            type: 'string',
-            description: 'Wisher id.',
-            example: '61872ad79452fa50b7b70f80',
           },
           urls: {
             type: 'array',
@@ -1303,10 +1303,10 @@ export const swaggerDocument: OpenAPIObject = {
         },
         required: [
           'id',
+          'wisherId',
           'title',
           'description',
           'privacyLevel',
-          'wisherId',
           'urls',
           'imageUrls',
           'categories',
@@ -1318,7 +1318,7 @@ export const swaggerDocument: OpenAPIObject = {
           id: {
             type: 'string',
             description: 'Wish id.',
-            example: '61872ad79452fa50b7b70f80',
+            example: '61c4c0fec96d0f2ad6858ecb',
           },
           title: {
             type: 'string',
@@ -1363,78 +1363,80 @@ export const swaggerDocument: OpenAPIObject = {
         properties: {
           id: {
             type: 'string',
+            description: 'Wish stage id.',
+            example: '61c4c0dec96d0f2ad6858ec9',
+          },
+          wishId: {
+            type: 'string',
             description: 'Wish id.',
-            example: '61872ad79452fa50b7b70f80',
+            example: '61c4c0fec96d0f2ad6858ecb',
           },
           title: {
             type: 'string',
-            description: 'Wish title.',
-            example: 'New Laptop',
+            description: 'Wish stage title.',
+            example: 'Found the best laptop model.',
           },
           description: {
             type: 'string',
-            description: 'Wish description.',
-            example: 'A brand new laptop.',
+            description: 'Wish stage description.',
+            example: 'Find a nice laptop model to buy.',
           },
           urls: {
             type: 'array',
             items: { type: 'string' },
-            description: 'Wish urls',
-            example: ['https://www.example.com'],
+            description: 'Wish stage urls.',
+            example: ['https://www.example.com/1', 'https://www.example.com/2'],
           },
           imageUrls: {
             type: 'array',
             items: { type: 'string' },
-            description: 'Wish image urls',
-            example: ['https://www.example.com/1.jpg'],
-          },
-          wishStageId: {
-            type: 'string',
-            description: 'Wish Stage id.',
-            example: '61872ad79452fa50b7b70f80',
+            description: 'Wish stage images.',
+            example: [
+              'https://www.example.com/1.jpg',
+              'https://www.example.com/2.jpg',
+            ],
           },
         },
-        required: [
-          'id',
-          'title',
-          'description',
-          'urls',
-          'imageUrls',
-          'wishStageId',
-        ],
+        required: ['id', 'wishId', 'title', 'description', 'urls', 'imageUrls'],
       },
       UpdateWishStageDto: {
         type: 'object',
         properties: {
+          id: {
+            type: 'string',
+            description: 'Wish stage id.',
+            example: '61c4c0dec96d0f2ad6858ec9',
+          },
           title: {
             type: 'string',
-            description: 'Wish title.',
-            example: 'New Laptop',
+            description: 'Wish stage title.',
+            example: 'Found the best laptop model.',
           },
           description: {
             type: 'string',
-            description: 'Wish description.',
-            example: 'A brand new laptop.',
+            description: 'Wish stage description.',
+            example: 'Find a nice laptop model to buy.',
           },
           urls: {
             type: 'array',
             items: { type: 'string' },
-            description: 'Wish urls',
-            example: ['https://www.example.com'],
+            description: 'Wish stage urls.',
+            example: [
+              'https://www.example.com/new',
+              'https://www.example.com/new',
+            ],
           },
           imageUrls: {
             type: 'array',
             items: { type: 'string' },
-            description: 'Wish image urls',
-            example: ['https://www.example.com/1.jpg'],
-          },
-          wishStageId: {
-            type: 'string',
-            description: 'Wish Stage id.',
-            example: '61872ad79452fa50b7b70f80',
+            description: 'Wish stage images.',
+            example: [
+              'https://www.example.com/new-1.jpg',
+              'https://www.example.com/new-2.jpg',
+            ],
           },
         },
-        required: ['title', 'description', 'urls', 'imageUrls', 'wishStageId'],
+        required: ['id', 'title', 'description', 'urls', 'imageUrls'],
       },
     },
   },
