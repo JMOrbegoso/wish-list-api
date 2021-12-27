@@ -112,10 +112,10 @@ export class Wish extends AggregateRoot {
     this._createdAt = createdAt;
     this._updatedAt = updatedAt;
     this._wisher = wisher;
-    this._urls = urls;
-    this._imageUrls = imageUrls;
-    this._categories = categories;
-    this._stages = stages;
+    this._urls = [...urls];
+    this._imageUrls = [...imageUrls];
+    this._categories = [...categories];
+    this._stages = [...stages];
     this._deletedAt = deletedAt;
     this._completedAt = completedAt;
   }

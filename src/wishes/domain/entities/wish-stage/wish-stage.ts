@@ -55,8 +55,8 @@ export class WishStage extends Entity {
     this._title = title;
     this._description = description;
     this._createdAt = createdAt;
-    this._urls = urls;
-    this._imageUrls = imageUrls;
+    this._urls = [...urls];
+    this._imageUrls = [...imageUrls];
   }
 
   public static create(

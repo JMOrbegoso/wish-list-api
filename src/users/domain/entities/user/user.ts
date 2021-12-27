@@ -114,8 +114,8 @@ export class User extends AggregateRoot {
     this._createdAt = createdAt;
     this._updatedAt = updatedAt;
     this._biography = biography;
-    this._roles = roles;
-    this._refreshTokens = refreshTokens;
+    this._roles = [...roles];
+    this._refreshTokens = [...refreshTokens];
     this._profilePicture = profilePicture;
     this._deletedAt = deletedAt;
   }
