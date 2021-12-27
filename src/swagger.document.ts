@@ -40,7 +40,7 @@ export const swaggerDocument: OpenAPIObject = {
           },
           404: { description: 'User not found.' },
         },
-        tags: ['AuthController'],
+        tags: ['Auth'],
       },
     },
     '/api/refresh': {
@@ -66,7 +66,7 @@ export const swaggerDocument: OpenAPIObject = {
           },
           401: { description: 'Refresh token is invalid.' },
         },
-        tags: ['AuthController'],
+        tags: ['Auth'],
       },
     },
     '/api/verify': {
@@ -85,7 +85,7 @@ export const swaggerDocument: OpenAPIObject = {
           400: { description: 'Something went wrong.' },
           404: { description: 'User not found.' },
         },
-        tags: ['AuthController'],
+        tags: ['Auth'],
       },
     },
     '/api/users': {
