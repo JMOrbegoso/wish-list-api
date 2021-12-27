@@ -38,7 +38,7 @@ export class WishStageOwnershipGuard implements CanActivate {
         ];
       const uniqueId = UniqueId.create(id);
       const wish = await this.wishRepository.getWishByWishStageId(uniqueId);
-      if (request.user.id == wish.id.getId) return true;
+      if (request.user.id == wish.wisher.id.getId) return true;
     }
 
     return false;
