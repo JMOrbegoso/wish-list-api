@@ -266,7 +266,7 @@ export class WishesController {
     await this.commandBus.execute(command);
   }
 
-  @SetMetadata<string, RoleOwnership>(WishStageOwnershipKey, {
+  @SetMetadata<string, RoleOwnership>(WishOwnershipKey, {
     ownerships: [
       { role: Role.admin(), ownership: Ownership.Own },
       { role: Role.moderator(), ownership: Ownership.Own },
@@ -274,10 +274,10 @@ export class WishesController {
     ],
     idProperty: {
       target: 'body',
-      name: 'wishStageId',
+      name: 'id',
     },
   })
-  @UseGuards(AuthGuard('jwt'), WishStageOwnershipGuard)
+  @UseGuards(AuthGuard('jwt'), WishOwnershipGuard)
   @Post('stage')
   async createWishStage(@Body() dto: CreateWishStageDto): Promise<void> {
     const command = new CreateWishStageCommand(
