@@ -36,7 +36,7 @@ export class WishOwnershipGuard implements CanActivate {
         request[wishOwnership.idProperty.target][wishOwnership.idProperty.name];
       const uniqueId = UniqueId.create(id);
       const wish = await this.wishRepository.getOneById(uniqueId);
-      if (request.user.id == wish.id.getId) return true;
+      if (request.user.id == wish.wisher.id.getId) return true;
     }
 
     return false;
