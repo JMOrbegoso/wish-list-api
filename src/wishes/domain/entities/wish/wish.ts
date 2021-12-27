@@ -348,7 +348,7 @@ export class Wish extends AggregateRoot {
   public removeStage(stageToRemove: WishStage): void {
     if (this.isDeleted) throw new DeletedWishCannotBeUpdatedError();
 
-    if (!stageToRemove) throw new InvalidWishStagesError();
+    if (!stageToRemove) throw new InvalidWishStageError();
 
     if (!this._stages.some((stage) => stage.equals(stageToRemove)))
       throw new NonExistentWishStageError();
