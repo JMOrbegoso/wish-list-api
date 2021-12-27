@@ -3,7 +3,6 @@ import { IsMongoId, IsNotEmpty } from 'class-validator';
 import { CreateWishDto } from '.';
 
 export class CreateWishStageDto extends PickType(CreateWishDto, [
-  'id',
   'title',
   'description',
   'urls',
@@ -11,5 +10,9 @@ export class CreateWishStageDto extends PickType(CreateWishDto, [
 ]) {
   @IsMongoId()
   @IsNotEmpty()
-  wishStageId: string;
+  id: string;
+
+  @IsMongoId()
+  @IsNotEmpty()
+  wishId: string;
 }

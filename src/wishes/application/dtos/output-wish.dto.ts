@@ -4,6 +4,8 @@ import { OutputWishStageDto } from '.';
 export class OutputWishDto {
   id: string;
 
+  wisherId: string;
+
   title: string;
 
   description: string;
@@ -13,8 +15,6 @@ export class OutputWishDto {
   createdAt: number;
 
   updatedAt: number;
-
-  wisherId: string;
 
   urls: string[];
 

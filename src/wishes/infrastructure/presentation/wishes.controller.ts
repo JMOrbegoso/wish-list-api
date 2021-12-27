@@ -13,6 +13,8 @@ import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { AuthGuard } from '@nestjs/passport';
 import {
   Ownership,
+  RequestIds,
+  RequestIdsKey,
   RoleOwnership,
 } from '../../../shared/infrastructure/presentation/decorators';
 import { SameIdRequestGuard } from '../../../shared/infrastructure/presentation/guards';
@@ -143,6 +145,10 @@ export class WishesController {
     await this.commandBus.execute(command);
   }
 
+  @SetMetadata<string, RequestIds>(RequestIdsKey, {
+    bodyIdPropertyName: 'id',
+    paramsIdPropertyName: 'id',
+  })
   @SetMetadata<string, RoleOwnership>(WishOwnershipKey, {
     ownerships: [
       { role: Role.admin(), ownership: Ownership.Any },
@@ -155,8 +161,11 @@ export class WishesController {
     },
   })
   @UseGuards(AuthGuard('jwt'), SameIdRequestGuard, WishOwnershipGuard)
-  @Patch()
-  async update(@Body() dto: UpdateWishDto): Promise<void> {
+  @Patch(':id')
+  async update(
+    @Param() params: WishIdDto,
+    @Body() dto: UpdateWishDto,
+  ): Promise<void> {
     const command = new UpdateWishCommand(
       dto.id,
       dto.title,
@@ -274,15 +283,15 @@ export class WishesController {
     ],
     idProperty: {
       target: 'body',
-      name: 'id',
+      name: 'wishId',
     },
   })
   @UseGuards(AuthGuard('jwt'), WishOwnershipGuard)
   @Post('stage')
   async createWishStage(@Body() dto: CreateWishStageDto): Promise<void> {
     const command = new CreateWishStageCommand(
-      dto.wishStageId,
       dto.id,
+      dto.wishId,
       dto.title,
       dto.description,
       dto.urls,
@@ -291,6 +300,10 @@ export class WishesController {
     await this.commandBus.execute(command);
   }
 
+  @SetMetadata<string, RequestIds>(RequestIdsKey, {
+    bodyIdPropertyName: 'id',
+    paramsIdPropertyName: 'id',
+  })
   @SetMetadata<string, RoleOwnership>(WishStageOwnershipKey, {
     ownerships: [
       { role: Role.admin(), ownership: Ownership.Any },
@@ -299,14 +312,17 @@ export class WishesController {
     ],
     idProperty: {
       target: 'body',
-      name: 'wishStageId',
+      name: 'id',
     },
   })
   @UseGuards(AuthGuard('jwt'), SameIdRequestGuard, WishStageOwnershipGuard)
-  @Patch('stage')
-  async updateWishStage(@Body() dto: UpdateWishStageDto): Promise<void> {
+  @Patch('stage/:id')
+  async updateWishStage(
+    @Param() params: WishStageIdDto,
+    @Body() dto: UpdateWishStageDto,
+  ): Promise<void> {
     const command = new UpdateWishStageCommand(
-      dto.wishStageId,
+      dto.id,
       dto.title,
       dto.description,
       dto.urls,
@@ -327,9 +343,9 @@ export class WishesController {
     },
   })
   @UseGuards(AuthGuard('jwt'), WishStageOwnershipGuard)
-  @Delete('stage/:wishStageId')
+  @Delete('stage/:id')
   async deleteWishStage(@Param() params: WishStageIdDto): Promise<void> {
-    const command = new DeleteWishStageCommand(params.wishStageId);
+    const command = new DeleteWishStageCommand(params.id);
     await this.commandBus.execute(command);
   }
 }
