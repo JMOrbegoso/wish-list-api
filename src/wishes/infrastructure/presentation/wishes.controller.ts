@@ -29,13 +29,10 @@ import {
   ChangeWishPrivacyLevelCommand,
   CompleteWishCommand,
   CreateWishCommand,
-  CreateWishStageCommand,
   DeleteWishCommand,
-  DeleteWishStageCommand,
   UncompleteWishCommand,
   UndeleteWishCommand,
   UpdateWishCommand,
-  UpdateWishStageCommand,
 } from '../../application/commands';
 import { OutputWishDto } from '../../application/dtos';
 import {
@@ -48,19 +45,11 @@ import {
   ChangeWishPrivacyLevelDto,
   CompleteWishDto,
   CreateWishDto,
-  CreateWishStageDto,
   UpdateWishDto,
-  UpdateWishStageDto,
   WishIdDto,
-  WishStageIdDto,
   WisherIdDto,
 } from '../dto';
-import {
-  WishOwnershipGuard,
-  WishOwnershipKey,
-  WishStageOwnershipGuard,
-  WishStageOwnershipKey,
-} from './guards';
+import { WishOwnershipGuard, WishOwnershipKey } from './guards';
 
 @Controller('wishes')
 export class WishesController {
@@ -272,80 +261,6 @@ export class WishesController {
       params.id,
       params.privacyLevel,
     );
-    await this.commandBus.execute(command);
-  }
-
-  @SetMetadata<string, RoleOwnership>(WishOwnershipKey, {
-    ownerships: [
-      { role: Role.admin(), ownership: Ownership.Own },
-      { role: Role.moderator(), ownership: Ownership.Own },
-      { role: Role.basic(), ownership: Ownership.Own },
-    ],
-    idProperty: {
-      target: 'body',
-      name: 'wishId',
-    },
-  })
-  @UseGuards(AuthGuard('jwt'), WishOwnershipGuard)
-  @Post('stage')
-  async createWishStage(@Body() dto: CreateWishStageDto): Promise<void> {
-    const command = new CreateWishStageCommand(
-      dto.id,
-      dto.wishId,
-      dto.title,
-      dto.description,
-      dto.urls,
-      dto.imageUrls,
-    );
-    await this.commandBus.execute(command);
-  }
-
-  @SetMetadata<string, RequestIds>(RequestIdsKey, {
-    bodyIdPropertyName: 'id',
-    paramsIdPropertyName: 'id',
-  })
-  @SetMetadata<string, RoleOwnership>(WishStageOwnershipKey, {
-    ownerships: [
-      { role: Role.admin(), ownership: Ownership.Any },
-      { role: Role.moderator(), ownership: Ownership.Any },
-      { role: Role.basic(), ownership: Ownership.Own },
-    ],
-    idProperty: {
-      target: 'body',
-      name: 'id',
-    },
-  })
-  @UseGuards(AuthGuard('jwt'), SameIdRequestGuard, WishStageOwnershipGuard)
-  @Patch('stage/:id')
-  async updateWishStage(
-    @Param() params: WishStageIdDto,
-    @Body() dto: UpdateWishStageDto,
-  ): Promise<void> {
-    const command = new UpdateWishStageCommand(
-      dto.id,
-      dto.title,
-      dto.description,
-      dto.urls,
-      dto.imageUrls,
-    );
-    await this.commandBus.execute(command);
-  }
-
-  @SetMetadata<string, RoleOwnership>(WishStageOwnershipKey, {
-    ownerships: [
-      { role: Role.admin(), ownership: Ownership.Any },
-      { role: Role.moderator(), ownership: Ownership.Any },
-      { role: Role.basic(), ownership: Ownership.Own },
-    ],
-    idProperty: {
-      target: 'params',
-      name: 'id',
-    },
-  })
-  @UseGuards(AuthGuard('jwt'), WishStageOwnershipGuard)
-  @Delete('stage/:id')
-  async deleteWishStage(@Param() params: WishStageIdDto): Promise<void> {
-    const command = new DeleteWishStageCommand(params.id);
     await this.commandBus.execute(command);
   }
 }
