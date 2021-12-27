@@ -55,6 +55,9 @@ export class WishEntity {
   stages = new Collection<WishStageEntity>(this);
 
   @Property({ nullable: true })
+  startedAt?: Date;
+
+  @Property({ nullable: true })
   deletedAt?: Date;
 
   @Property({ nullable: true })
