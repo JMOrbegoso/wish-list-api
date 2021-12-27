@@ -20,6 +20,10 @@ export class CreateWishDto {
   @IsNotEmpty()
   id: string;
 
+  @IsMongoId()
+  @IsNotEmpty()
+  wisherId: string;
+
   @IsString()
   @IsNotEmpty()
   @MaxLength(WishTitle.MaxLength)
@@ -32,10 +36,6 @@ export class CreateWishDto {
 
   @IsEnum(PrivacyLevel)
   privacyLevel: PrivacyLevel;
-
-  @IsMongoId()
-  @IsNotEmpty()
-  wisherId: string;
 
   @IsArray()
   @ArrayMaxSize(Wish.MaxUrls)
