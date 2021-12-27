@@ -332,6 +332,38 @@ describe('wishes', () => {
         );
 
         test.each(validValues)(
+          'should create a WishStage with [id: %p], [title: %p], [description: %p], [createdAt: %p]',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            title: MockedObject<WishTitle>,
+            description: MockedObject<WishDescription>,
+            createdAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+
+            // Act
+            const wishStage = WishStage.create(
+              uniqueId,
+              title,
+              description,
+              createdAt,
+            );
+
+            // Assert
+            expect(wishStage.id.getId).toBe(uniqueId.getId);
+            expect(wishStage.title.getTitle).toBe(title.getTitle);
+            expect(wishStage.description.getDescription).toBe(
+              description.getDescription,
+            );
+            expect(wishStage.createdAt.getMilliseconds).toBe(
+              createdAt.getMilliseconds,
+            );
+            expect(wishStage.urlsLength).toBe(0);
+            expect(wishStage.imageUrlsLength).toBe(0);
+          },
+        );
+
+        test.each(validValues)(
           'should create a WishStage with [id: %p], [title: %p], [description: %p], [createdAt: %p], [urls: %p] and [images: %p]',
           (
             uniqueId: MockedObject<UniqueId>,
