@@ -243,6 +243,41 @@ describe('users', () => {
         );
 
         test.each(validValues)(
+          'should create a RefreshToken with [id: %p], [createdAt: %p], [secondsDuration: %p], [ipAddress: %p]',
+          (
+            id: MockedObject<UniqueId>,
+            createdAt: MockedObject<MillisecondsDate>,
+            secondsDuration: MockedObject<SecondsDuration>,
+            ipAddress: MockedObject<IpAddress>,
+          ) => {
+            // Arrange
+
+            // Act
+            const refreshToken = RefreshToken.create(
+              id,
+              ipAddress,
+              createdAt,
+              secondsDuration,
+            );
+
+            // Assert
+            expect(refreshToken.id.getId).toBe(id.getId);
+            expect(refreshToken.createdAt.getMilliseconds).toBe(
+              createdAt.getMilliseconds,
+            );
+            expect(refreshToken.duration).toBe(secondsDuration.getDuration);
+            expect(refreshToken.ipAddress).toBe(ipAddress.getIpAddress);
+
+            expect(refreshToken.replacedAt).toBeNull();
+            expect(refreshToken.replacedBy).toBeNull();
+            expect(refreshToken.wasReplaced).toBeFalsy();
+
+            expect(refreshToken.revokedAt).toBeNull();
+            expect(refreshToken.isRevoked).toBeFalsy();
+          },
+        );
+
+        test.each(validValues)(
           'should create a RefreshToken with [id: %p], [createdAt: %p], [secondsDuration: %p], [ipAddress: %p], [replacedAt: %p], [replacedBy: %p], [revokedAt: %p]',
           (
             id: MockedObject<UniqueId>,
