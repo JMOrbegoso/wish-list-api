@@ -27,6 +27,7 @@ import {
 import { WishRepository } from '../../domain/repositories';
 import { WishEntity } from '../persistence/entities';
 import { WishRepositoryMongoDb } from '../persistence/repositories';
+import { WishStagesController } from './wish-stages.controller';
 import { WishesController } from './wishes.controller';
 
 const queryHandlers = [
@@ -49,7 +50,7 @@ const commandHandlers = [
 ];
 
 @Module({
-  controllers: [WishesController],
+  controllers: [WishesController, WishStagesController],
   imports: [
     MikroOrmModule.forFeature([WishEntity]),
     MulterModule.register(),
