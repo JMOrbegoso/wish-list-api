@@ -49,6 +49,7 @@ const validValues = [
       ] as MockedObject<CategoryName[]>,
       stages: [],
       deletedAt: null,
+      startedAt: null,
       completedAt: null,
     } as MockedObject<Wish>,
     {
@@ -121,6 +122,9 @@ const validValues = [
       deletedAt: {
         getDate: new Date(1994, 5, 4),
       },
+      startedAt: {
+        getDate: new Date(1994, 5, 4),
+      },
       completedAt: {
         getDate: new Date(1994, 5, 4),
       },
@@ -189,11 +193,19 @@ describe('wishes', () => {
                 wish.stages[i].title.getTitle,
               );
             }
+
             if (wish.deletedAt)
               expect(wishEntity.deletedAt.getTime()).toBe(
                 wish.deletedAt.getDate.getTime(),
               );
             else expect(wishEntity.deletedAt).toBeNull();
+
+            if (wish.startedAt)
+              expect(wishEntity.startedAt.getTime()).toBe(
+                wish.startedAt.getDate.getTime(),
+              );
+            else expect(wishEntity.startedAt).toBeNull();
+
             if (wish.completedAt)
               expect(wishEntity.completedAt.getTime()).toBe(
                 wish.completedAt.getDate.getTime(),
