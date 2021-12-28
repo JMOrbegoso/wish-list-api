@@ -32,6 +32,9 @@ export function wishEntityToWish(wishEntity: WishEntity): Wish {
   const deletedAt = wishEntity.deletedAt
     ? MillisecondsDate.createFromDate(wishEntity.deletedAt)
     : null;
+  const startedAt = wishEntity.startedAt
+    ? MillisecondsDate.createFromDate(wishEntity.startedAt)
+    : null;
   const completedAt = wishEntity.completedAt
     ? MillisecondsDate.createFromDate(wishEntity.completedAt)
     : null;
@@ -49,6 +52,7 @@ export function wishEntityToWish(wishEntity: WishEntity): Wish {
     categories,
     stages,
     deletedAt,
+    startedAt,
     completedAt,
   );
 }

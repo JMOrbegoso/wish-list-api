@@ -26,5 +26,7 @@ export class OutputWishDto {
 
   deletedAt?: number;
 
+  startedAt?: number;
+
   completedAt?: number;
 }

@@ -28,6 +28,7 @@ export function wishToWishEntity(
     wishStagesEntities,
   );
   wishEntity.deletedAt = wish.deletedAt?.getDate ?? null;
+  wishEntity.startedAt = wish.startedAt?.getDate ?? null;
   wishEntity.completedAt = wish.completedAt?.getDate ?? null;
 
   return wishEntity;

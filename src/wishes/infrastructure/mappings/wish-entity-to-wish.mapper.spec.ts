@@ -45,6 +45,7 @@ const validValues = [
       ] as MockedObject<WishStageEntity[]>),
     } as unknown,
     deletedAt: null,
+    startedAt: null,
     completedAt: null,
   } as MockedObject<WishEntity>,
   {
@@ -64,6 +65,7 @@ const validValues = [
       toArray: jest.fn().mockReturnValue([] as MockedObject<WishStageEntity[]>),
     } as unknown,
     deletedAt: new Date(1994, 5, 4),
+    startedAt: new Date(1990, 5, 4),
     completedAt: new Date(1994, 5, 4),
   } as MockedObject<WishEntity>,
 ];
@@ -104,11 +106,19 @@ describe('wishes', () => {
               expect(wishEntity.categories[i]).toBe(wish.categories[i].getName);
             for (let i = 0; i < wishEntity.stages.length; i++)
               expect(wishEntity.stages[i].id).toBe(wish.stages[i].id.getId);
+
             if (wishEntity.deletedAt)
               expect(wish.deletedAt.getMilliseconds).toBe(
                 new Date(wishEntity.deletedAt).getTime(),
               );
             else expect(wish.deletedAt).toBeNull();
+
+            if (wishEntity.startedAt)
+              expect(wish.startedAt.getMilliseconds).toBe(
+                new Date(wishEntity.startedAt).getTime(),
+              );
+            else expect(wish.startedAt).toBeNull();
+
             if (wishEntity.completedAt)
               expect(wish.completedAt.getMilliseconds).toBe(
                 new Date(wishEntity.completedAt).getTime(),

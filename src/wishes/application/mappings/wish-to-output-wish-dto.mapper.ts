@@ -17,6 +17,7 @@ export function wishToOutputWishDto(wish: Wish): OutputWishDto {
   dto.categories = wish.categories.map((category) => category.getName);
   dto.stages = wish.stages.map((stage) => wishStageToOutputWishStageDto(stage));
   dto.deletedAt = wish.deletedAt?.getMilliseconds ?? null;
+  dto.startedAt = wish.startedAt?.getMilliseconds ?? null;
   dto.completedAt = wish.completedAt?.getMilliseconds ?? null;
 
   return dto;

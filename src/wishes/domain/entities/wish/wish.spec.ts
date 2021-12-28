@@ -97,6 +97,9 @@ const validValues = [
     {
       getMilliseconds: 1,
     } as MockedObject<MillisecondsDate>,
+    {
+      getMilliseconds: 1,
+    } as MockedObject<MillisecondsDate>,
   ],
   [
     {
@@ -155,6 +158,7 @@ const validValues = [
       } as MockedObject<WishStage>,
     ],
     null,
+    null,
     {
       getMilliseconds: 1,
     } as MockedObject<MillisecondsDate>,
@@ -202,6 +206,7 @@ const validValues = [
       getMilliseconds: 1,
     } as MockedObject<MillisecondsDate>,
     null,
+    null,
   ],
   [
     {
@@ -242,6 +247,7 @@ const validValues = [
       } as MockedObject<CategoryName>,
     ],
     [],
+    null,
     null,
     null,
   ],
@@ -266,6 +272,7 @@ describe('wishes', () => {
             categories: MockedObject<CategoryName>[],
             stages: MockedObject<WishStage>[],
             deletedAt: MockedObject<MillisecondsDate>,
+            startedAt: MockedObject<MillisecondsDate>,
             completedAt: MockedObject<MillisecondsDate>,
           ) => {
             // Arrange
@@ -287,6 +294,7 @@ describe('wishes', () => {
                 categories,
                 stages,
                 deletedAt,
+                startedAt,
                 completedAt,
               ),
             ).toThrowError(InvalidUniqueIdError);
@@ -308,6 +316,7 @@ describe('wishes', () => {
             categories: MockedObject<CategoryName>[],
             stages: MockedObject<WishStage>[],
             deletedAt: MockedObject<MillisecondsDate>,
+            startedAt: MockedObject<MillisecondsDate>,
             completedAt: MockedObject<MillisecondsDate>,
           ) => {
             // Arrange
@@ -329,6 +338,7 @@ describe('wishes', () => {
                 categories,
                 stages,
                 deletedAt,
+                startedAt,
                 completedAt,
               ),
             ).toThrowError(InvalidWishTitleError);
@@ -350,6 +360,7 @@ describe('wishes', () => {
             categories: MockedObject<CategoryName>[],
             stages: MockedObject<WishStage>[],
             deletedAt: MockedObject<MillisecondsDate>,
+            startedAt: MockedObject<MillisecondsDate>,
             completedAt: MockedObject<MillisecondsDate>,
           ) => {
             // Arrange
@@ -371,6 +382,7 @@ describe('wishes', () => {
                 categories,
                 stages,
                 deletedAt,
+                startedAt,
                 completedAt,
               ),
             ).toThrowError(InvalidWishDescriptionError);
@@ -392,6 +404,7 @@ describe('wishes', () => {
             categories: MockedObject<CategoryName>[],
             stages: MockedObject<WishStage>[],
             deletedAt: MockedObject<MillisecondsDate>,
+            startedAt: MockedObject<MillisecondsDate>,
             completedAt: MockedObject<MillisecondsDate>,
           ) => {
             // Arrange
@@ -413,6 +426,7 @@ describe('wishes', () => {
                 categories,
                 stages,
                 deletedAt,
+                startedAt,
                 completedAt,
               ),
             ).toThrowError(InvalidWishPrivacyLevelError);
@@ -434,6 +448,7 @@ describe('wishes', () => {
             categories: MockedObject<CategoryName>[],
             stages: MockedObject<WishStage>[],
             deletedAt: MockedObject<MillisecondsDate>,
+            startedAt: MockedObject<MillisecondsDate>,
             completedAt: MockedObject<MillisecondsDate>,
           ) => {
             // Arrange
@@ -455,6 +470,7 @@ describe('wishes', () => {
                 categories,
                 stages,
                 deletedAt,
+                startedAt,
                 completedAt,
               ),
             ).toThrowError(InvalidWishCreatedAtError);
@@ -476,6 +492,7 @@ describe('wishes', () => {
             categories: MockedObject<CategoryName>[],
             stages: MockedObject<WishStage>[],
             deletedAt: MockedObject<MillisecondsDate>,
+            startedAt: MockedObject<MillisecondsDate>,
             completedAt: MockedObject<MillisecondsDate>,
           ) => {
             // Arrange
@@ -497,6 +514,7 @@ describe('wishes', () => {
                 categories,
                 stages,
                 deletedAt,
+                startedAt,
                 completedAt,
               ),
             ).toThrowError(InvalidWishUpdatedAtError);
@@ -518,6 +536,7 @@ describe('wishes', () => {
             categories: MockedObject<CategoryName>[],
             stages: MockedObject<WishStage>[],
             deletedAt: MockedObject<MillisecondsDate>,
+            startedAt: MockedObject<MillisecondsDate>,
             completedAt: MockedObject<MillisecondsDate>,
           ) => {
             // Arrange
@@ -539,6 +558,7 @@ describe('wishes', () => {
                 categories,
                 stages,
                 deletedAt,
+                startedAt,
                 completedAt,
               ),
             ).toThrowError(InvalidWishWisherError);
@@ -560,6 +580,7 @@ describe('wishes', () => {
             categories: MockedObject<CategoryName>[],
             stages: MockedObject<WishStage>[],
             deletedAt: MockedObject<MillisecondsDate>,
+            startedAt: MockedObject<MillisecondsDate>,
             completedAt: MockedObject<MillisecondsDate>,
           ) => {
             // Arrange
@@ -581,6 +602,7 @@ describe('wishes', () => {
                 categories,
                 stages,
                 deletedAt,
+                startedAt,
                 completedAt,
               ),
             ).toThrowError(InvalidWishUrlsError);
@@ -602,6 +624,7 @@ describe('wishes', () => {
             categories: MockedObject<CategoryName>[],
             stages: MockedObject<WishStage>[],
             deletedAt: MockedObject<MillisecondsDate>,
+            startedAt: MockedObject<MillisecondsDate>,
             completedAt: MockedObject<MillisecondsDate>,
           ) => {
             // Arrange
@@ -626,6 +649,7 @@ describe('wishes', () => {
                 categories,
                 stages,
                 deletedAt,
+                startedAt,
                 completedAt,
               ),
             ).toThrowError(TooManyWishUrlsError);
@@ -647,6 +671,7 @@ describe('wishes', () => {
             categories: MockedObject<CategoryName>[],
             stages: MockedObject<WishStage>[],
             deletedAt: MockedObject<MillisecondsDate>,
+            startedAt: MockedObject<MillisecondsDate>,
             completedAt: MockedObject<MillisecondsDate>,
           ) => {
             // Arrange
@@ -669,6 +694,7 @@ describe('wishes', () => {
                 categories,
                 stages,
                 deletedAt,
+                startedAt,
                 completedAt,
               ),
             ).toThrowError(InvalidWishUrlError);
@@ -690,6 +716,7 @@ describe('wishes', () => {
             categories: MockedObject<CategoryName>[],
             stages: MockedObject<WishStage>[],
             deletedAt: MockedObject<MillisecondsDate>,
+            startedAt: MockedObject<MillisecondsDate>,
             completedAt: MockedObject<MillisecondsDate>,
           ) => {
             // Arrange
@@ -711,6 +738,7 @@ describe('wishes', () => {
                 categories,
                 stages,
                 deletedAt,
+                startedAt,
                 completedAt,
               ),
             ).toThrowError(InvalidWishImagesError);
@@ -732,6 +760,7 @@ describe('wishes', () => {
             categories: MockedObject<CategoryName>[],
             stages: MockedObject<WishStage>[],
             deletedAt: MockedObject<MillisecondsDate>,
+            startedAt: MockedObject<MillisecondsDate>,
             completedAt: MockedObject<MillisecondsDate>,
           ) => {
             // Arrange
@@ -756,6 +785,7 @@ describe('wishes', () => {
                 categories,
                 stages,
                 deletedAt,
+                startedAt,
                 completedAt,
               ),
             ).toThrowError(TooManyWishImagesError);
@@ -777,6 +807,7 @@ describe('wishes', () => {
             categories: MockedObject<CategoryName>[],
             stages: MockedObject<WishStage>[],
             deletedAt: MockedObject<MillisecondsDate>,
+            startedAt: MockedObject<MillisecondsDate>,
             completedAt: MockedObject<MillisecondsDate>,
           ) => {
             // Arrange
@@ -799,6 +830,7 @@ describe('wishes', () => {
                 categories,
                 stages,
                 deletedAt,
+                startedAt,
                 completedAt,
               ),
             ).toThrowError(InvalidWishImageError);
@@ -820,6 +852,7 @@ describe('wishes', () => {
             categories: MockedObject<CategoryName>[],
             stages: MockedObject<WishStage>[],
             deletedAt: MockedObject<MillisecondsDate>,
+            startedAt: MockedObject<MillisecondsDate>,
             completedAt: MockedObject<MillisecondsDate>,
           ) => {
             // Arrange
@@ -841,6 +874,7 @@ describe('wishes', () => {
                 null,
                 stages,
                 deletedAt,
+                startedAt,
                 completedAt,
               ),
             ).toThrowError(InvalidWishCategoriesError);
@@ -862,6 +896,7 @@ describe('wishes', () => {
             categories: MockedObject<CategoryName>[],
             stages: MockedObject<WishStage>[],
             deletedAt: MockedObject<MillisecondsDate>,
+            startedAt: MockedObject<MillisecondsDate>,
             completedAt: MockedObject<MillisecondsDate>,
           ) => {
             // Arrange
@@ -886,6 +921,7 @@ describe('wishes', () => {
                 categories,
                 stages,
                 deletedAt,
+                startedAt,
                 completedAt,
               ),
             ).toThrowError(TooManyWishCategoriesError);
@@ -907,6 +943,7 @@ describe('wishes', () => {
             categories: MockedObject<CategoryName>[],
             stages: MockedObject<WishStage>[],
             deletedAt: MockedObject<MillisecondsDate>,
+            startedAt: MockedObject<MillisecondsDate>,
             completedAt: MockedObject<MillisecondsDate>,
           ) => {
             // Arrange
@@ -929,6 +966,7 @@ describe('wishes', () => {
                 categories,
                 stages,
                 deletedAt,
+                startedAt,
                 completedAt,
               ),
             ).toThrowError(InvalidWishCategoryNameError);
@@ -950,6 +988,7 @@ describe('wishes', () => {
             categories: MockedObject<CategoryName>[],
             stages: MockedObject<WishStage>[],
             deletedAt: MockedObject<MillisecondsDate>,
+            startedAt: MockedObject<MillisecondsDate>,
             completedAt: MockedObject<MillisecondsDate>,
           ) => {
             // Arrange
@@ -971,6 +1010,7 @@ describe('wishes', () => {
                 categories,
                 null,
                 deletedAt,
+                startedAt,
                 completedAt,
               ),
             ).toThrowError(InvalidWishStagesError);
@@ -992,6 +1032,7 @@ describe('wishes', () => {
             categories: MockedObject<CategoryName>[],
             stages: MockedObject<WishStage>[],
             deletedAt: MockedObject<MillisecondsDate>,
+            startedAt: MockedObject<MillisecondsDate>,
             completedAt: MockedObject<MillisecondsDate>,
           ) => {
             // Arrange
@@ -1016,6 +1057,7 @@ describe('wishes', () => {
                 categories,
                 stages,
                 deletedAt,
+                startedAt,
                 completedAt,
               ),
             ).toThrowError(TooManyWishStagesError);
@@ -1037,6 +1079,7 @@ describe('wishes', () => {
             categories: MockedObject<CategoryName>[],
             stages: MockedObject<WishStage>[],
             deletedAt: MockedObject<MillisecondsDate>,
+            startedAt: MockedObject<MillisecondsDate>,
             completedAt: MockedObject<MillisecondsDate>,
           ) => {
             // Arrange
@@ -1059,6 +1102,7 @@ describe('wishes', () => {
                 categories,
                 stages,
                 deletedAt,
+                startedAt,
                 completedAt,
               ),
             ).toThrowError(InvalidWishStageError);
@@ -1117,7 +1161,7 @@ describe('wishes', () => {
         );
 
         test.each(validValues)(
-          'should create a Wish with [id: %p], [title: %p], [description: %p], [privacyLevel: %p], [createdAt: %p], [updatedAt: %p], [wisher: %p], [urls: %p], [images: %p], [categories: %p], [stages: %p], [deletedAt: %p] and [completedAt: %p]',
+          'should create a Wish with [id: %p], [title: %p], [description: %p], [privacyLevel: %p], [createdAt: %p], [updatedAt: %p], [wisher: %p], [urls: %p], [images: %p], [categories: %p], [stages: %p], [deletedAt: %p], [startedAt: %p] and [completedAt: %p]',
           (
             uniqueId: MockedObject<UniqueId>,
             title: MockedObject<WishTitle>,
@@ -1131,6 +1175,7 @@ describe('wishes', () => {
             categories: MockedObject<CategoryName>[],
             stages: MockedObject<WishStage>[],
             deletedAt: MockedObject<MillisecondsDate>,
+            startedAt: MockedObject<MillisecondsDate>,
             completedAt: MockedObject<MillisecondsDate>,
           ) => {
             // Arrange
@@ -1149,6 +1194,7 @@ describe('wishes', () => {
               categories,
               stages,
               deletedAt,
+              startedAt,
               completedAt,
             );
 
@@ -1189,6 +1235,12 @@ describe('wishes', () => {
               );
             else expect(wish.deletedAt).toBeNull();
 
+            if (startedAt)
+              expect(wish.startedAt.getMilliseconds).toBe(
+                startedAt.getMilliseconds,
+              );
+            else expect(wish.startedAt).toBeNull();
+
             if (completedAt)
               expect(wish.completedAt.getMilliseconds).toBe(
                 completedAt.getMilliseconds,
@@ -1212,6 +1264,7 @@ describe('wishes', () => {
             categories: MockedObject<CategoryName>[],
             stages: MockedObject<WishStage>[],
             deletedAt: MockedObject<MillisecondsDate>,
+            startedAt: MockedObject<MillisecondsDate>,
             completedAt: MockedObject<MillisecondsDate>,
           ) => {
             // Arrange
@@ -1234,6 +1287,7 @@ describe('wishes', () => {
               categories,
               stages,
               deletedAt,
+              startedAt,
               completedAt,
             );
 
@@ -1266,6 +1320,7 @@ describe('wishes', () => {
             categories: MockedObject<CategoryName>[],
             stages: MockedObject<WishStage>[],
             deletedAt: MockedObject<MillisecondsDate>,
+            startedAt: MockedObject<MillisecondsDate>,
             completedAt: MockedObject<MillisecondsDate>,
           ) => {
             // Arrange
@@ -1288,6 +1343,7 @@ describe('wishes', () => {
               categories,
               stages,
               deletedAt,
+              startedAt,
               completedAt,
             );
 
@@ -1320,6 +1376,7 @@ describe('wishes', () => {
             categories: MockedObject<CategoryName>[],
             stages: MockedObject<WishStage>[],
             deletedAt: MockedObject<MillisecondsDate>,
+            startedAt: MockedObject<MillisecondsDate>,
             completedAt: MockedObject<MillisecondsDate>,
           ) => {
             // Arrange
@@ -1342,6 +1399,7 @@ describe('wishes', () => {
               categories,
               stages,
               deletedAt,
+              startedAt,
               completedAt,
             );
 
@@ -1374,6 +1432,7 @@ describe('wishes', () => {
             categories: MockedObject<CategoryName>[],
             stages: MockedObject<WishStage>[],
             deletedAt: MockedObject<MillisecondsDate>,
+            startedAt: MockedObject<MillisecondsDate>,
             completedAt: MockedObject<MillisecondsDate>,
           ) => {
             // Arrange
@@ -1404,6 +1463,7 @@ describe('wishes', () => {
               categories,
               stages,
               deletedAt,
+              startedAt,
               completedAt,
             );
 
@@ -1467,6 +1527,7 @@ describe('wishes', () => {
             categories: MockedObject<CategoryName>[],
             stages: MockedObject<WishStage>[],
             deletedAt: MockedObject<MillisecondsDate>,
+            startedAt: MockedObject<MillisecondsDate>,
             completedAt: MockedObject<MillisecondsDate>,
           ) => {
             // Arrange
@@ -1483,6 +1544,7 @@ describe('wishes', () => {
               categories,
               stages,
               deletedAt,
+              startedAt,
               completedAt,
             );
 
@@ -1551,6 +1613,7 @@ describe('wishes', () => {
             categories: MockedObject<CategoryName>[],
             stages: MockedObject<WishStage>[],
             deletedAt: MockedObject<MillisecondsDate>,
+            startedAt: MockedObject<MillisecondsDate>,
             completedAt: MockedObject<MillisecondsDate>,
           ) => {
             // Arrange
@@ -1567,6 +1630,7 @@ describe('wishes', () => {
               categories,
               stages,
               null,
+              startedAt,
               completedAt,
             );
 
@@ -1631,6 +1695,7 @@ describe('wishes', () => {
             categories: MockedObject<CategoryName>[],
             stages: MockedObject<WishStage>[],
             deletedAt: MockedObject<MillisecondsDate>,
+            startedAt: MockedObject<MillisecondsDate>,
             completedAt: MockedObject<MillisecondsDate>,
           ) => {
             // Arrange
@@ -1650,6 +1715,7 @@ describe('wishes', () => {
               categories,
               stages,
               deletedAt,
+              startedAt,
               completedAt,
             );
 
@@ -1724,6 +1790,7 @@ describe('wishes', () => {
             categories: MockedObject<CategoryName>[],
             stages: MockedObject<WishStage>[],
             deletedAt: MockedObject<MillisecondsDate>,
+            startedAt: MockedObject<MillisecondsDate>,
             completedAt: MockedObject<MillisecondsDate>,
           ) => {
             // Arrange
@@ -1743,6 +1810,7 @@ describe('wishes', () => {
               categories,
               stages,
               null,
+              startedAt,
               completedAt,
             );
 
@@ -1941,11 +2009,9 @@ describe('wishes', () => {
             images: MockedObject<WebUrl>[],
             categories: MockedObject<CategoryName>[],
             stages: MockedObject<WishStage>[],
-            deletedAt: MockedObject<MillisecondsDate>,
-            completedAt: MockedObject<MillisecondsDate>,
           ) => {
             // Arrange
-            completedAt = {
+            const completedAt = {
               getMilliseconds: 1,
             } as MockedObject<MillisecondsDate>;
             const wish = Wish.create(
@@ -1960,6 +2026,7 @@ describe('wishes', () => {
               images,
               categories,
               stages,
+              null,
               null,
               completedAt,
             );
@@ -1991,6 +2058,7 @@ describe('wishes', () => {
             categories: MockedObject<CategoryName>[],
             stages: MockedObject<WishStage>[],
             deletedAt: MockedObject<MillisecondsDate>,
+            startedAt: MockedObject<MillisecondsDate>,
             completedAt: MockedObject<MillisecondsDate>,
           ) => {
             // Arrange
@@ -2010,6 +2078,7 @@ describe('wishes', () => {
               categories,
               stages,
               deletedAt,
+              startedAt,
               completedAt,
             );
 
@@ -2122,6 +2191,7 @@ describe('wishes', () => {
             categories: MockedObject<CategoryName>[],
             stages: MockedObject<WishStage>[],
             deletedAt: MockedObject<MillisecondsDate>,
+            startedAt: MockedObject<MillisecondsDate>,
             completedAt: MockedObject<MillisecondsDate>,
           ) => {
             // Arrange
@@ -2141,6 +2211,7 @@ describe('wishes', () => {
               categories,
               stages,
               deletedAt,
+              startedAt,
               completedAt,
             );
 
@@ -2618,6 +2689,7 @@ describe('wishes', () => {
             categories: MockedObject<CategoryName>[],
             stages: MockedObject<WishStage>[],
             deletedAt: MockedObject<MillisecondsDate>,
+            startedAt: MockedObject<MillisecondsDate>,
             completedAt: MockedObject<MillisecondsDate>,
           ) => {
             // Arrange
@@ -2637,6 +2709,7 @@ describe('wishes', () => {
               categories,
               stages,
               deletedAt,
+              startedAt,
               completedAt,
             );
 
@@ -2836,6 +2909,7 @@ describe('wishes', () => {
             categories: MockedObject<CategoryName>[],
             stages: MockedObject<WishStage>[],
             deletedAt: MockedObject<MillisecondsDate>,
+            startedAt: MockedObject<MillisecondsDate>,
             completedAt: MockedObject<MillisecondsDate>,
           ) => {
             // Arrange
@@ -2855,6 +2929,7 @@ describe('wishes', () => {
               categories,
               stages,
               deletedAt,
+              startedAt,
               completedAt,
             );
 
@@ -2978,6 +3053,7 @@ describe('wishes', () => {
             categories: MockedObject<CategoryName>[],
             stages: MockedObject<WishStage>[],
             deletedAt: MockedObject<MillisecondsDate>,
+            startedAt: MockedObject<MillisecondsDate>,
             completedAt: MockedObject<MillisecondsDate>,
           ) => {
             // Arrange
@@ -2997,6 +3073,7 @@ describe('wishes', () => {
               categories,
               stages,
               deletedAt,
+              startedAt,
               completedAt,
             );
 
