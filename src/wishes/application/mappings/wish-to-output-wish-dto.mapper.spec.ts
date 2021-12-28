@@ -80,6 +80,7 @@ const validValues = [
       } as MockedObject<WishStage>,
     ] as MockedObject<WishStage[]>,
     deletedAt: null,
+    startedAt: null,
     completedAt: null,
   } as MockedObject<Wish>,
   {
@@ -111,6 +112,9 @@ const validValues = [
     categories: [],
     stages: [],
     deletedAt: {
+      getMilliseconds: 2,
+    },
+    startedAt: {
       getMilliseconds: 2,
     },
     completedAt: {
@@ -151,9 +155,15 @@ describe('wishes', () => {
             for (let i = 0; i < wish.stages.length; i++) {
               expect(dto.stages[i].id).toBe(wish.stages[i].id.getId);
             }
+
             if (wish.deletedAt)
               expect(dto.deletedAt).toBe(wish.deletedAt.getMilliseconds);
             else expect(dto.deletedAt).toBeNull();
+
+            if (wish.startedAt)
+              expect(dto.startedAt).toBe(wish.startedAt.getMilliseconds);
+            else expect(dto.startedAt).toBeNull();
+
             if (wish.completedAt)
               expect(dto.completedAt).toBe(wish.completedAt.getMilliseconds);
             else expect(dto.completedAt).toBeNull();

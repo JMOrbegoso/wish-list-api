@@ -1228,6 +1228,11 @@ export const swaggerDocument: OpenAPIObject = {
             description: 'Wish delete date in milliseconds.',
             example: 1636128526164,
           },
+          startedAt: {
+            type: 'number',
+            description: 'Wish started at date in milliseconds.',
+            example: 1636128526164,
+          },
           completedAt: {
             type: 'number',
             description: 'Wish completion date in milliseconds.',
@@ -1247,6 +1252,7 @@ export const swaggerDocument: OpenAPIObject = {
           'categories',
           'stages',
           'deletedAt',
+          'startedAt',
           'completedAt',
         ],
       },
