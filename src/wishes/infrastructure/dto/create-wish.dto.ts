@@ -4,6 +4,9 @@ import {
   IsEnum,
   IsMongoId,
   IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsPositive,
   IsString,
   MaxLength,
 } from 'class-validator';
@@ -52,4 +55,9 @@ export class CreateWishDto {
   @IsString({ each: true })
   @MaxLength(CategoryName.MaxLength, { each: true })
   categories: string[];
+
+  @IsNumber()
+  @IsPositive()
+  @IsOptional()
+  startedAt: number;
 }
