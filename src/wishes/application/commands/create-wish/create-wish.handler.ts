@@ -38,6 +38,9 @@ export class CreateWishHandler implements ICommandHandler<CreateWishCommand> {
     const categories = command.categories.map((url) =>
       CategoryName.create(url),
     );
+    const startedAt = command.startedAt
+      ? MillisecondsDate.createFromMilliseconds(command.startedAt)
+      : null;
 
     // Check if the user exist
     const user = await this.userRepository.getOneById(wisherId);
@@ -59,6 +62,10 @@ export class CreateWishHandler implements ICommandHandler<CreateWishCommand> {
       urls,
       imageUrls,
       categories,
+      [],
+      null,
+      startedAt,
+      null,
     );
 
     // Add the new wish to the wishes repository
