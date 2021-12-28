@@ -4,6 +4,7 @@ import { CqrsModule } from '@nestjs/cqrs';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { MulterModule } from '@nestjs/platform-express';
+import config from '../../../config';
 import { UnitOfWork } from '../../../shared/domain/repositories';
 import { UnitOfWorkMongoDb } from '../../../shared/infrastructure/repositories';
 import {
@@ -75,7 +76,7 @@ const passportStrategies = [JwtPassportStrategy];
     PassportModule,
     JwtModule.registerAsync({
       useFactory: () => ({
-        secret: process.env.JWT_KEY,
+        secret: config.JWT_KEY,
         signOptions: { expiresIn: '60s' },
       }),
     }),

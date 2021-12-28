@@ -1,14 +1,10 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule } from '@nestjs/swagger';
-import { config as initDotenv } from 'dotenv';
 import { AppModule } from './app.module';
 import { swaggerDocument } from './swagger.document';
 
 async function bootstrap(): Promise<void> {
-  // Initialize environment variables
-  initDotenv();
-
   // Create app
   const app = await NestFactory.create(AppModule);
 
