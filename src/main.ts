@@ -2,6 +2,7 @@ import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
+import config from './config';
 import { swaggerDocument } from './swagger.document';
 
 async function bootstrap(): Promise<void> {
@@ -18,6 +19,6 @@ async function bootstrap(): Promise<void> {
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
 
   // Start server
-  await app.listen(3000);
+  await app.listen(config.SERVER_PORT);
 }
 bootstrap();
