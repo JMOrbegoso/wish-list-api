@@ -63,13 +63,15 @@ To run this Backend API make sure you have installed all of the following prereq
 
 ```bash
 # Environment Variables
-mv '.env.example' '.env'
+cp '.env.example' '.env' # Development
+cp '.env.example' '.test.env' # Tests
 
 # Install dependencies
 yarn
 
-# Run Docker
-docker-compose up
+# Run MongoDB database in Docker 🐋
+docker-compose up # Development
+docker-compose -f docker-compose.e2e.yml --env-file ./.test.env up # Tests
 ```
 
 ## 🚀 Running
