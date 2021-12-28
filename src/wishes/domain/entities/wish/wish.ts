@@ -57,7 +57,6 @@ export class Wish extends AggregateRoot {
   private _categories: CategoryName[];
   private _stages: WishStage[];
   private _deletedAt?: MillisecondsDate;
-  private _startedAt?: MillisecondsDate;
   private _completedAt?: MillisecondsDate;
 
   private constructor(
@@ -73,7 +72,6 @@ export class Wish extends AggregateRoot {
     categories: CategoryName[],
     stages: WishStage[],
     deletedAt?: MillisecondsDate,
-    startedAt?: MillisecondsDate,
     completedAt?: MillisecondsDate,
   ) {
     super(id);
@@ -106,7 +104,6 @@ export class Wish extends AggregateRoot {
       if (!stage) throw new InvalidWishStageError();
     });
     if (!deletedAt) deletedAt = null;
-    if (!startedAt) startedAt = null;
     if (!completedAt) completedAt = null;
 
     this._title = title;
@@ -120,7 +117,6 @@ export class Wish extends AggregateRoot {
     this._categories = [...categories];
     this._stages = [...stages];
     this._deletedAt = deletedAt;
-    this._startedAt = startedAt;
     this._completedAt = completedAt;
   }
 
@@ -137,7 +133,6 @@ export class Wish extends AggregateRoot {
     categories: CategoryName[] = [],
     stages: WishStage[] = [],
     deletedAt: MillisecondsDate = null,
-    startedAt: MillisecondsDate = null,
     completedAt: MillisecondsDate = null,
   ): Wish {
     return new Wish(
@@ -153,7 +148,6 @@ export class Wish extends AggregateRoot {
       categories,
       stages,
       deletedAt,
-      startedAt,
       completedAt,
     );
   }
@@ -231,10 +225,6 @@ export class Wish extends AggregateRoot {
     return this._deletedAt;
   }
 
-  public get startedAt(): MillisecondsDate {
-    return this._startedAt;
-  }
-
   public get completedAt(): MillisecondsDate {
     return this._completedAt;
   }
@@ -293,7 +283,6 @@ export class Wish extends AggregateRoot {
     urls: WebUrl[] = [],
     imageUrls: WebUrl[] = [],
     categories: CategoryName[] = [],
-    startedAt: MillisecondsDate = null,
   ): void {
     if (this.isDeleted) throw new DeletedWishCannotBeUpdatedError();
 
@@ -314,14 +303,11 @@ export class Wish extends AggregateRoot {
     if (categories.length > Wish.MaxCategories)
       throw new TooManyWishCategoriesError();
 
-    if (!startedAt) startedAt = null;
-
     this._title = title;
     this._description = description;
     this._urls = urls;
     this._imageUrls = imageUrls;
     this._categories = categories;
-    this._startedAt = startedAt;
 
     this._updatedAt = MillisecondsDate.create();
   }
