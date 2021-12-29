@@ -6,6 +6,34 @@ import {
   WisherEntity,
 } from '../../src/wishes/infrastructure/persistence/entities';
 
+export type WishDb = {
+  _id: ObjectId;
+  wisher: ObjectId;
+  title: string;
+  description: string;
+  privacyLevel: PrivacyLevel;
+  createdAt: Date;
+  updatedAt: Date;
+  urls: string[];
+  imageUrls: string[];
+  categories: string[];
+  deletedAt?: Date;
+  startedAt?: Date;
+  completedAt?: Date;
+};
+
+export type WisherDb = { _id: ObjectId };
+
+export type WishStageDb = {
+  _id: ObjectId;
+  wish: ObjectId;
+  title: string;
+  description: string;
+  createdAt: Date;
+  urls: string[];
+  imageUrls: string[];
+};
+
 export async function seedWish(
   database: Db,
   id: string,
@@ -21,7 +49,7 @@ export async function seedWish(
   deletedAt?: Date,
   startedAt?: Date,
   completedAt?: Date,
-): Promise<void> {
+): Promise<WishDb> {
   const wish = new WishEntity();
   wish.id = id;
   wish.title = title;
@@ -38,16 +66,18 @@ export async function seedWish(
 
   delete wish.stages;
 
-  await database
-    .collection('wishes')
-    .insertOne({ ...wish, wisher: new ObjectId(wisherId) });
+  const record = { ...wish, wisher: new ObjectId(wisherId) };
+  await database.collection('wishes').insertOne(record);
+  return record;
 }
 
-export async function seedWisher(database: Db, id: string): Promise<void> {
+export async function seedWisher(database: Db, id: string): Promise<WisherDb> {
   const wisher = new WisherEntity();
   wisher.id = id;
 
-  await database.collection('wishers').insertOne(wisher);
+  const record = { ...wisher };
+  await database.collection('wishers').insertOne(record);
+  return record;
 }
 
 export async function seedWishStage(
@@ -59,7 +89,7 @@ export async function seedWishStage(
   createdAt: Date = new Date(),
   urls: string[] = [],
   imageUrls: string[] = [],
-): Promise<void> {
+): Promise<WishStageDb> {
   const wishStage = new WishStageEntity();
   wishStage.id = id;
   wishStage.title = title;
@@ -68,7 +98,7 @@ export async function seedWishStage(
   wishStage.urls = urls;
   wishStage.imageUrls = imageUrls;
 
-  await database
-    .collection('wish-stages')
-    .insertOne({ ...wishStage, wish: new ObjectId(wishId) });
+  const record = { ...wishStage, wish: new ObjectId(wishId) };
+  await database.collection('wish-stages').insertOne(record);
+  return record;
 }
