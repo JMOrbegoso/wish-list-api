@@ -182,37 +182,39 @@ describe('WishesController (e2e)', () => {
     await mongoClient.close();
   });
 
-  describe('/GET', () => {
-    it(`should get the public wishes`, () => {
-      return request(app.getHttpServer())
-        .get('/wishes/public')
-        .expect(200)
-        .expect('Content-Type', /json/)
-        .expect(({ body }) => {
-          const outputWishes = body as OutputWishDto[];
+  describe('/wishes/public', () => {
+    describe('GET', () => {
+      it(`should get the public wishes`, () => {
+        return request(app.getHttpServer())
+          .get('/wishes/public')
+          .expect(200)
+          .expect('Content-Type', /json/)
+          .expect(({ body }) => {
+            const outputWishes = body as OutputWishDto[];
 
-          expect(outputWishes).toHaveLength(2);
+            expect(outputWishes).toHaveLength(2);
 
-          const outputWish_1 = outputWishes.find(
-            (w) => w.id === wish_1._id.toString(),
-          );
-          assertOutputWish(outputWish_1, wish_1);
-          expect(outputWish_1.stages).toHaveLength(2);
-          const outputWishStage_1 = outputWish_1.stages.find(
-            (ws) => ws.id === wishStage_1._id.toString(),
-          );
-          assertOutputWishStage(outputWishStage_1, wishStage_1);
+            const outputWish_1 = outputWishes.find(
+              (w) => w.id === wish_1._id.toString(),
+            );
+            assertOutputWish(outputWish_1, wish_1);
+            expect(outputWish_1.stages).toHaveLength(2);
+            const outputWishStage_1 = outputWish_1.stages.find(
+              (ws) => ws.id === wishStage_1._id.toString(),
+            );
+            assertOutputWishStage(outputWishStage_1, wishStage_1);
 
-          const outputWish_2 = outputWishes.find(
-            (w) => w.id === wish_4._id.toString(),
-          );
-          assertOutputWish(outputWish_2, wish_4);
-          expect(outputWish_2.stages).toHaveLength(1);
-          const outputWishStage_2 = outputWish_1.stages.find(
-            (ws) => ws.id === wishStage_2._id.toString(),
-          );
-          assertOutputWishStage(outputWishStage_2, wishStage_2);
-        });
+            const outputWish_2 = outputWishes.find(
+              (w) => w.id === wish_4._id.toString(),
+            );
+            assertOutputWish(outputWish_2, wish_4);
+            expect(outputWish_2.stages).toHaveLength(1);
+            const outputWishStage_2 = outputWish_1.stages.find(
+              (ws) => ws.id === wishStage_2._id.toString(),
+            );
+            assertOutputWishStage(outputWishStage_2, wishStage_2);
+          });
+      });
     });
   });
 

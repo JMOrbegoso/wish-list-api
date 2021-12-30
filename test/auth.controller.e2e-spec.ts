@@ -127,8 +127,8 @@ describe('AuthController (e2e)', () => {
     await mongoClient.close();
   });
 
-  describe('/POST', () => {
-    describe('/login', () => {
+  describe('/login', () => {
+    describe('POST', () => {
       describe(`should return 400`, () => {
         it(`Username should not be empty`, () => {
           return request(app.getHttpServer())
@@ -413,8 +413,8 @@ describe('AuthController (e2e)', () => {
     });
   });
 
-  describe('/GET', () => {
-    describe('/verify', () => {
+  describe('/verify', () => {
+    describe('GET', () => {
       describe(`should return 400`, () => {
         it(`verification code should not be empty`, () => {
           return request(app.getHttpServer())
