@@ -209,7 +209,76 @@ describe('WishesController (e2e)', () => {
           const outputWishes = body as OutputWishDto[];
 
           expect(outputWishes).toHaveLength(2);
+
+          const outputWish_1 = outputWishes.find(
+            (w) => w.id === wish_1._id.toString(),
+          );
+          assertOutputWish(outputWish_1, wish_1);
+          expect(outputWish_1.stages).toHaveLength(2);
+          const outputWishStage_1 = outputWish_1.stages.find(
+            (ws) => ws.id === wishStage_1._id.toString(),
+          );
+          assertOutputWishStage(outputWishStage_1, wishStage_1);
+
+          const outputWish_2 = outputWishes.find(
+            (w) => w.id === wish_4._id.toString(),
+          );
+          assertOutputWish(outputWish_2, wish_4);
+          expect(outputWish_2.stages).toHaveLength(1);
+          const outputWishStage_2 = outputWish_1.stages.find(
+            (ws) => ws.id === wishStage_2._id.toString(),
+          );
+          assertOutputWishStage(outputWishStage_2, wishStage_2);
         });
     });
   });
+
+  function assertOutputWish(outputWish: OutputWishDto, wishDb: WishDb): void {
+    expect(outputWish).toBeTruthy();
+    expect(outputWish.id).toBe(wishDb._id.toString());
+    expect(outputWish.wisherId).toBe(wishDb.wisher.toString());
+    expect(outputWish.title).toBe(wishDb.title);
+    expect(outputWish.description).toBe(wishDb.description);
+    expect(outputWish.privacyLevel).toBe(wishDb.privacyLevel);
+    expect(outputWish.createdAt).toBe(wishDb.createdAt.getTime());
+    expect(outputWish.updatedAt).toBe(wishDb.updatedAt.getTime());
+
+    for (let i = 0; i < wishDb.urls.length; i++)
+      expect(outputWish.urls[i]).toBe(wishDb.urls[i]);
+
+    for (let i = 0; i < wishDb.imageUrls.length; i++)
+      expect(outputWish.imageUrls[i]).toBe(wishDb.imageUrls[i]);
+
+    for (let i = 0; i < wishDb.categories.length; i++)
+      expect(outputWish.categories[i]).toBe(wishDb.categories[i]);
+
+    if (wishDb.deletedAt)
+      expect(outputWish.deletedAt).toBe(wishDb.deletedAt.getTime());
+    else expect(outputWish.deletedAt).toBeNull();
+
+    if (wishDb.startedAt)
+      expect(outputWish.startedAt).toBe(wishDb.startedAt.getTime());
+    else expect(outputWish.startedAt).toBeNull();
+
+    if (wishDb.completedAt)
+      expect(outputWish.completedAt).toBe(wishDb.completedAt.getTime());
+    else expect(outputWish.completedAt).toBeNull();
+  }
+
+  function assertOutputWishStage(
+    outputWishStage: OutputWishStageDto,
+    wishStageDb: WishStageDb,
+  ): void {
+    expect(outputWishStage).toBeTruthy();
+    expect(outputWishStage.id).toBe(wishStageDb._id.toString());
+    expect(outputWishStage.title).toBe(wishStageDb.title);
+    expect(outputWishStage.description).toBe(wishStageDb.description);
+    expect(outputWishStage.createdAt).toBe(wishStageDb.createdAt.getTime());
+
+    for (let i = 0; i < wishStageDb.urls.length; i++)
+      expect(outputWishStage.urls[i]).toBe(wishStageDb.urls[i]);
+
+    for (let i = 0; i < wishStageDb.imageUrls.length; i++)
+      expect(outputWishStage.imageUrls[i]).toBe(wishStageDb.imageUrls[i]);
+  }
 });
