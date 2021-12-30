@@ -1,10 +1,6 @@
 import { Db, ObjectId } from 'mongodb';
-import { PrivacyLevel } from '../../src/wishes/domain/value-objects';
-import {
-  WishEntity,
-  WishStageEntity,
-  WisherEntity,
-} from '../../src/wishes/infrastructure/persistence/entities';
+import { PrivacyLevel } from '../../../src/wishes/domain/value-objects';
+import { WishEntity } from '../../../src/wishes/infrastructure/persistence/entities';
 
 export type WishDb = {
   _id: ObjectId;
@@ -20,18 +16,6 @@ export type WishDb = {
   deletedAt?: Date;
   startedAt?: Date;
   completedAt?: Date;
-};
-
-export type WisherDb = { _id: ObjectId };
-
-export type WishStageDb = {
-  _id: ObjectId;
-  wish: ObjectId;
-  title: string;
-  description: string;
-  createdAt: Date;
-  urls: string[];
-  imageUrls: string[];
 };
 
 export async function seedWish(
@@ -68,37 +52,5 @@ export async function seedWish(
 
   const record = { ...wish, wisher: new ObjectId(wisherId) };
   await database.collection('wishes').insertOne(record);
-  return record;
-}
-
-export async function seedWisher(database: Db, id: string): Promise<WisherDb> {
-  const wisher = new WisherEntity();
-  wisher.id = id;
-
-  const record = { ...wisher };
-  await database.collection('wishers').insertOne(record);
-  return record;
-}
-
-export async function seedWishStage(
-  database: Db,
-  id: string,
-  wishId: string,
-  title = 'wish stage title',
-  description = 'wish stage description',
-  createdAt: Date = new Date(),
-  urls: string[] = [],
-  imageUrls: string[] = [],
-): Promise<WishStageDb> {
-  const wishStage = new WishStageEntity();
-  wishStage.id = id;
-  wishStage.title = title;
-  wishStage.description = description;
-  wishStage.createdAt = createdAt;
-  wishStage.urls = urls;
-  wishStage.imageUrls = imageUrls;
-
-  const record = { ...wishStage, wish: new ObjectId(wishId) };
-  await database.collection('wish-stages').insertOne(record);
   return record;
 }

@@ -1,1 +1,1 @@
-export * from './seed-database.helpers';
+export * from './seeders';
