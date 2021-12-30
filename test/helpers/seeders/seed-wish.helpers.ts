@@ -20,7 +20,6 @@ export type WishDb = {
 
 export async function seedWish(
   database: Db,
-  id: string,
   wisherId: string,
   title = 'wish title',
   description = 'wish description',
@@ -35,7 +34,8 @@ export async function seedWish(
   completedAt?: Date,
 ): Promise<WishDb> {
   const wish = new WishEntity();
-  wish.id = id;
+
+  wish.id = new ObjectId().toString();
   wish.title = title;
   wish.description = description;
   wish.privacyLevel = privacyLevel;

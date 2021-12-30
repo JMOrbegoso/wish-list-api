@@ -13,7 +13,6 @@ export type WishStageDb = {
 
 export async function seedWishStage(
   database: Db,
-  id: string,
   wishId: string,
   title = 'wish stage title',
   description = 'wish stage description',
@@ -22,7 +21,8 @@ export async function seedWishStage(
   imageUrls: string[] = [],
 ): Promise<WishStageDb> {
   const wishStage = new WishStageEntity();
-  wishStage.id = id;
+
+  wishStage.id = new ObjectId().toString();
   wishStage.title = title;
   wishStage.description = description;
   wishStage.createdAt = createdAt;

@@ -39,13 +39,12 @@ describe('WishesController (e2e)', () => {
     const database = mongoClient.db(mikroOrmConfig.dbName);
 
     // Seed wishers
-    wisher_1 = await seedWisher(database, '61ccc8d723d2dca10e57291e');
-    wisher_2 = await seedWisher(database, '61cce183b8917063ed614a00');
+    wisher_1 = await seedWisher(database);
+    wisher_2 = await seedWisher(database);
 
     // Seed wishes
     wish_1 = await seedWish(
       database,
-      '61cce183b8917063ed614a01',
       wisher_1._id.toString(),
       'New Laptop',
       'A brand new laptop.',
@@ -62,7 +61,6 @@ describe('WishesController (e2e)', () => {
 
     wish_2 = await seedWish(
       database,
-      '61cce183b8917063ed614a03',
       wisher_1._id.toString(),
       'Develop a TODO app.',
       'Develop a cross-platform app.',
@@ -79,7 +77,6 @@ describe('WishesController (e2e)', () => {
 
     wish_3 = await seedWish(
       database,
-      '61cce183b8917063ed614a04',
       wisher_2._id.toString(),
       'Write a book',
       'Write an autobiographical book.',
@@ -90,7 +87,6 @@ describe('WishesController (e2e)', () => {
 
     wish_4 = await seedWish(
       database,
-      '61cce183b8917063ed614a05',
       wisher_2._id.toString(),
       'Learn to swim',
       'Learn various swimming styles.',
@@ -106,7 +102,6 @@ describe('WishesController (e2e)', () => {
     // Seed wish stages
     wishStage_1 = await seedWishStage(
       database,
-      '61cce183b8917063ed614a02',
       wish_1._id.toString(),
       'Found the best laptop model',
       'Find a nice laptop model to buy.',
@@ -120,7 +115,6 @@ describe('WishesController (e2e)', () => {
 
     wishStage_2 = await seedWishStage(
       database,
-      '61cce183b8917063ed614a07',
       wish_1._id.toString(),
       'Buy it!',
       'Buy the laptop.',
@@ -131,7 +125,6 @@ describe('WishesController (e2e)', () => {
 
     wishStage_3 = await seedWishStage(
       database,
-      '61cce183b8917063ed614a0e',
       wish_2._id.toString(),
       'Choose a multiplatform framework',
       'Cross-platform framework with support for desktop Windows apps.',
@@ -142,7 +135,6 @@ describe('WishesController (e2e)', () => {
 
     wishStage_4 = await seedWishStage(
       database,
-      '61cce183b8917063ed614a0d',
       wish_2._id.toString(),
       'Install the IDE',
       'Install the IDE to start with the development of the app.',
@@ -153,7 +145,6 @@ describe('WishesController (e2e)', () => {
 
     wishStage_5 = await seedWishStage(
       database,
-      '61cce183b8917063ed614a0c',
       wish_4._id.toString(),
       'Enroll in a swimming school',
       'Swimming school near my house.',
