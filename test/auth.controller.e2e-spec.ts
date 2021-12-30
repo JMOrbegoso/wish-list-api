@@ -7,7 +7,10 @@ import mikroOrmConfig from '../src/mikro-orm.config';
 import { AuthTokensDto } from '../src/users/application/dtos';
 import { Password, Role, Username } from '../src/users/domain/value-objects';
 import { LoginDto } from '../src/users/infrastructure/dtos';
-import { RefreshTokenEntity } from '../src/users/infrastructure/persistence/entities';
+import {
+  RefreshTokenEntity,
+  UserEntity,
+} from '../src/users/infrastructure/persistence/entities';
 import { UserDb, dropDatabase, seedUser } from './helpers';
 
 describe('AuthController (e2e)', () => {
@@ -404,6 +407,64 @@ describe('AuthController (e2e)', () => {
               expect(refreshToken.replacedAt).toBeNull();
               expect(refreshToken.replacedBy).toBeNull();
               expect(refreshToken.revokedAt).toBeNull();
+            });
+        });
+      });
+    });
+  });
+
+  describe('/GET', () => {
+    describe('/verify', () => {
+      describe(`should return 400`, () => {
+        it(`verification code should not be empty`, () => {
+          return request(app.getHttpServer())
+            .get('/verify')
+            .query({ code: '' })
+            .expect(400)
+            .expect(({ body }) =>
+              expect(
+                (body.message as string[]).some((m) =>
+                  m.match(/code should not be empty/i),
+                ),
+              ).toBeTruthy(),
+            );
+        });
+
+        it(`User is already verified`, () => {
+          return request(app.getHttpServer())
+            .get('/verify')
+            .query({ code: user_4.verificationCode })
+            .expect(400)
+            .expect(({ body }) =>
+              expect(body.message).toMatch(/already verified/i),
+            );
+        });
+      });
+
+      describe(`should return 404`, () => {
+        it(`Not found user related to the verification code`, () => {
+          return request(app.getHttpServer())
+            .get('/verify')
+            .query({ code: 'verification-code' })
+            .expect(404)
+            .expect(({ body }) => expect(body.message).toMatch(/not found/i));
+        });
+      });
+
+      describe(`should return 200`, () => {
+        it(`User verified successfully`, () => {
+          return request(app.getHttpServer())
+            .get('/verify')
+            .query({ code: user_3.verificationCode })
+            .expect(200)
+            .expect(async () => {
+              const database = mongoClient.db(mikroOrmConfig.dbName);
+              const user: UserEntity = await database
+                .collection('users')
+                .findOne({ _id: new ObjectId(user_3._id) });
+
+              expect(user).toBeTruthy();
+              expect(user.isVerified).toBeTruthy();
             });
         });
       });
