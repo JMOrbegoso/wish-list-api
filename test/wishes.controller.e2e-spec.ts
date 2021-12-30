@@ -13,6 +13,7 @@ import {
   WishDb,
   WishStageDb,
   WisherDb,
+  dropDatabase,
   seedWish,
   seedWishStage,
   seedWisher,
@@ -154,15 +155,6 @@ describe('WishesController (e2e)', () => {
     );
   }
 
-  async function cleanDatabase(): Promise<void> {
-    const database = mongoClient.db(mikroOrmConfig.dbName);
-    const collections = await database.collections();
-
-    collections.forEach(async (collection) => {
-      await collection.deleteMany({});
-    });
-  }
-
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
@@ -174,7 +166,7 @@ describe('WishesController (e2e)', () => {
       useUnifiedTopology: true,
     });
 
-    await cleanDatabase();
+    await dropDatabase(mongoClient, mikroOrmConfig.dbName);
   });
 
   beforeEach(async () => {
@@ -182,7 +174,7 @@ describe('WishesController (e2e)', () => {
   });
 
   afterEach(async () => {
-    await cleanDatabase();
+    await dropDatabase(mongoClient, mikroOrmConfig.dbName);
   });
 
   afterAll(async () => {

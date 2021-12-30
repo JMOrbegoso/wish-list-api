@@ -8,7 +8,7 @@ import { AuthTokensDto } from '../src/users/application/dtos';
 import { Password, Role, Username } from '../src/users/domain/value-objects';
 import { LoginDto } from '../src/users/infrastructure/dtos';
 import { RefreshTokenEntity } from '../src/users/infrastructure/persistence/entities';
-import { UserDb, seedUser } from './helpers';
+import { UserDb, dropDatabase, seedUser } from './helpers';
 
 describe('AuthController (e2e)', () => {
   let app: INestApplication;
@@ -96,15 +96,6 @@ describe('AuthController (e2e)', () => {
     );
   }
 
-  async function cleanDatabase(): Promise<void> {
-    const database = mongoClient.db(mikroOrmConfig.dbName);
-    const collections = await database.collections();
-
-    collections.forEach(async (collection) => {
-      await collection.deleteMany({});
-    });
-  }
-
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
@@ -117,7 +108,7 @@ describe('AuthController (e2e)', () => {
       useUnifiedTopology: true,
     });
 
-    await cleanDatabase();
+    await dropDatabase(mongoClient, mikroOrmConfig.dbName);
   });
 
   beforeEach(async () => {
@@ -125,7 +116,7 @@ describe('AuthController (e2e)', () => {
   });
 
   afterEach(async () => {
-    await cleanDatabase();
+    await dropDatabase(mongoClient, mikroOrmConfig.dbName);
   });
 
   afterAll(async () => {
