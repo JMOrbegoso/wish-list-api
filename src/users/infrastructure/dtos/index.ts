@@ -6,3 +6,4 @@ export * from './update-user-profile.dto';
 export * from './update-user-password.dto';
 export * from './login.dto';
 export * from './refresh-token.dto';
+export * from './verification-code.dto';
