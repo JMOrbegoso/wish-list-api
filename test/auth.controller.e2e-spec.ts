@@ -5,155 +5,23 @@ import request from 'supertest';
 import { AppModule } from '../src/app.module';
 import mikroOrmConfig from '../src/mikro-orm.config';
 import { AuthTokensDto } from '../src/users/application/dtos';
-import { Password, Role, Username } from '../src/users/domain/value-objects';
+import { Password, Username } from '../src/users/domain/value-objects';
 import { LoginDto, RefreshTokenDto } from '../src/users/infrastructure/dtos';
 import {
   RefreshTokenEntity,
   UserEntity,
 } from '../src/users/infrastructure/persistence/entities';
-import {
-  RefreshTokenDb,
-  UserDb,
-  dropDatabase,
-  seedRefreshToken,
-  seedUser,
-} from './helpers';
+import { Seed, dropDatabase, seedDatabaseItems } from './helpers';
 
 describe('AuthController (e2e)', () => {
   let app: INestApplication;
   let mongoClient: MongoClient;
 
   // Seed
-  let user_1: UserDb;
-  let user_2: UserDb;
-  let user_3: UserDb;
-  let user_4: UserDb;
-  let refreshToken_1: RefreshTokenDb;
-  let refreshToken_2: RefreshTokenDb;
-  let refreshToken_3: RefreshTokenDb;
-  let refreshToken_4: RefreshTokenDb;
-  let refreshToken_5: RefreshTokenDb;
-  let refreshToken_6: RefreshTokenDb;
+  let seed: Seed;
 
   async function seedDatabase(): Promise<void> {
-    const database = mongoClient.db(mikroOrmConfig.dbName);
-
-    user_1 = await seedUser(
-      database,
-      'scott@doe.com',
-      'Scott_Doe',
-      'passworD$_1',
-      false,
-      false,
-      'Scott',
-      'Doe',
-      new Date(),
-      new Date(),
-      new Date(),
-      'A nice person.',
-      'https://www.example.com/scott/',
-      new Date(),
-      [Role.basic().getRole],
-    );
-
-    user_2 = await seedUser(
-      database,
-      'Christobal@doe.com',
-      'Christobal_Doe',
-      'passworD$_2',
-      false,
-      true,
-      'Christobal',
-      'Doe',
-      new Date(),
-      new Date(),
-      new Date(),
-      'A nice person.',
-      'https://www.example.com/christobal/',
-      null,
-      [Role.basic().getRole],
-    );
-
-    user_3 = await seedUser(
-      database,
-      'Shannon@Doe.com',
-      'Shannon_Doe',
-      'passworD$_3',
-      false,
-      false,
-      'Shannon',
-      'Doe',
-      new Date(),
-      new Date(),
-      new Date(),
-      'A nice person.',
-      'https://www.example.com/shannon/',
-      null,
-      [Role.basic().getRole],
-    );
-
-    user_4 = await seedUser(
-      database,
-      'Anne@Doe.com',
-      'Anne_Doe',
-      'passworD$_4',
-      true,
-      false,
-      'Anne',
-      'Doe',
-      new Date(),
-      new Date(),
-      new Date(),
-      'A nice person.',
-      'https://www.example.com/anne/',
-      null,
-      [Role.basic().getRole],
-    );
-
-    refreshToken_1 = await seedRefreshToken(
-      database,
-      user_4._id.toString(),
-      new Date(2000, 10, 10),
-    );
-
-    refreshToken_2 = await seedRefreshToken(
-      database,
-      user_4._id.toString(),
-      new Date(),
-      1000,
-      '192.168.0.1',
-    );
-
-    refreshToken_3 = await seedRefreshToken(
-      database,
-      user_4._id.toString(),
-      undefined,
-      undefined,
-      undefined,
-      new Date(),
-      refreshToken_1._id.toString(),
-    );
-
-    refreshToken_4 = await seedRefreshToken(
-      database,
-      user_4._id.toString(),
-      undefined,
-      undefined,
-      undefined,
-      undefined,
-      undefined,
-      new Date(),
-    );
-
-    refreshToken_5 = await seedRefreshToken(database, user_1._id.toString());
-
-    refreshToken_6 = await seedRefreshToken(
-      database,
-      user_2._id.toString(),
-      undefined,
-      undefined,
-      '192.168.0.1',
-    );
+    seed = await seedDatabaseItems(mongoClient, mikroOrmConfig.dbName);
   }
 
   beforeAll(async () => {
@@ -386,8 +254,8 @@ describe('AuthController (e2e)', () => {
           return request(app.getHttpServer())
             .post('/login')
             .send({
-              username: user_1.username,
-              password: user_1.password,
+              username: seed.user_1.username,
+              password: seed.user_1.password,
             } as LoginDto)
             .expect(401)
             .expect(({ body }) =>
@@ -399,8 +267,8 @@ describe('AuthController (e2e)', () => {
           return request(app.getHttpServer())
             .post('/login')
             .send({
-              username: user_2.username,
-              password: user_2.password,
+              username: seed.user_2.username,
+              password: seed.user_2.password,
             } as LoginDto)
             .expect(401)
             .expect(({ body }) =>
@@ -412,8 +280,8 @@ describe('AuthController (e2e)', () => {
           return request(app.getHttpServer())
             .post('/login')
             .send({
-              username: user_3.username,
-              password: user_3.password,
+              username: seed.user_3.username,
+              password: seed.user_3.password,
             } as LoginDto)
             .expect(401)
             .expect(({ body }) =>
@@ -425,7 +293,7 @@ describe('AuthController (e2e)', () => {
           return request(app.getHttpServer())
             .post('/login')
             .send({
-              username: user_4.username,
+              username: seed.user_4.username,
               password: 'P4ss_w0rd',
             } as LoginDto)
             .expect(401)
@@ -440,8 +308,8 @@ describe('AuthController (e2e)', () => {
           return request(app.getHttpServer())
             .post('/login')
             .send({
-              username: user_4.username,
-              password: user_4.password,
+              username: seed.user_4.username,
+              password: seed.user_4.password,
             } as LoginDto)
             .expect(200)
             .expect(async ({ body }) => {
@@ -457,7 +325,9 @@ describe('AuthController (e2e)', () => {
                 .findOne({ _id: new ObjectId(authTokens.refresh_token) });
 
               expect(refreshToken).toBeTruthy();
-              expect(refreshToken.user.toString()).toBe(user_4._id.toString());
+              expect(refreshToken.user.toString()).toBe(
+                seed.user_4._id.toString(),
+              );
               expect(refreshToken.createdAt).toBeTruthy();
               expect(refreshToken.duration).toBeTruthy();
               expect(refreshToken.ipAddress).toBeTruthy();
@@ -532,7 +402,7 @@ describe('AuthController (e2e)', () => {
           return request(app.getHttpServer())
             .post('/refresh')
             .send({
-              refresh_token: refreshToken_1._id.toString(),
+              refresh_token: seed.refreshToken_1._id.toString(),
             } as RefreshTokenDto)
             .expect(401)
             .expect(async () => {
@@ -540,7 +410,7 @@ describe('AuthController (e2e)', () => {
 
               const refreshToken: RefreshTokenEntity = await database
                 .collection('refresh-tokens')
-                .findOne({ _id: new ObjectId(refreshToken_1._id) });
+                .findOne({ _id: new ObjectId(seed.refreshToken_1._id) });
 
               expect(refreshToken).toBeTruthy();
               expect(refreshToken.replacedBy).toBeFalsy();
@@ -553,7 +423,7 @@ describe('AuthController (e2e)', () => {
           return request(app.getHttpServer())
             .post('/refresh')
             .send({
-              refresh_token: refreshToken_3._id.toString(),
+              refresh_token: seed.refreshToken_3._id.toString(),
             } as RefreshTokenDto)
             .expect(401)
             .expect(async () => {
@@ -567,7 +437,8 @@ describe('AuthController (e2e)', () => {
               // Check if the refreshToken_2 was automatically revoked
               // (Refresh Token generated by the same User)
               const validRefreshToken1 = refreshTokensDb.find(
-                (rt) => rt._id.toString() === refreshToken_2._id.toString(),
+                (rt) =>
+                  rt._id.toString() === seed.refreshToken_2._id.toString(),
               );
               expect(validRefreshToken1).toBeTruthy();
               expect(validRefreshToken1.replacedBy).toBeFalsy();
@@ -577,7 +448,8 @@ describe('AuthController (e2e)', () => {
               // Check if the refreshToken_5 was automatically revoked
               // (Refresh Token generated by different User but the same Ip Address)
               const validRefreshToken2 = refreshTokensDb.find(
-                (rt) => rt._id.toString() === refreshToken_5._id.toString(),
+                (rt) =>
+                  rt._id.toString() === seed.refreshToken_5._id.toString(),
               );
               expect(validRefreshToken2).toBeTruthy();
               expect(validRefreshToken2.replacedBy).toBeFalsy();
@@ -587,7 +459,8 @@ describe('AuthController (e2e)', () => {
               // Check if the refreshToken_6 was NOT automatically revoked
               // (Refresh Token generated by different User and different Ip Address)
               const validRefreshToken3 = refreshTokensDb.find(
-                (rt) => rt._id.toString() === refreshToken_6._id.toString(),
+                (rt) =>
+                  rt._id.toString() === seed.refreshToken_6._id.toString(),
               );
               expect(validRefreshToken3).toBeTruthy();
               expect(validRefreshToken3.replacedBy).toBeFalsy();
@@ -600,7 +473,7 @@ describe('AuthController (e2e)', () => {
           return request(app.getHttpServer())
             .post('/refresh')
             .send({
-              refresh_token: refreshToken_4._id.toString(),
+              refresh_token: seed.refreshToken_4._id.toString(),
             } as RefreshTokenDto)
             .expect(401)
             .expect(async () => {
@@ -614,7 +487,8 @@ describe('AuthController (e2e)', () => {
               // Check if the refreshToken_2 was automatically revoked
               // (Refresh Token generated by the same User)
               const validRefreshToken1 = refreshTokensDb.find(
-                (rt) => rt._id.toString() === refreshToken_2._id.toString(),
+                (rt) =>
+                  rt._id.toString() === seed.refreshToken_2._id.toString(),
               );
               expect(validRefreshToken1).toBeTruthy();
               expect(validRefreshToken1.replacedBy).toBeFalsy();
@@ -624,7 +498,8 @@ describe('AuthController (e2e)', () => {
               // Check if the refreshToken_5 was automatically revoked
               // (Refresh Token generated by different User but the same Ip Address)
               const validRefreshToken2 = refreshTokensDb.find(
-                (rt) => rt._id.toString() === refreshToken_5._id.toString(),
+                (rt) =>
+                  rt._id.toString() === seed.refreshToken_5._id.toString(),
               );
               expect(validRefreshToken2).toBeTruthy();
               expect(validRefreshToken2.replacedBy).toBeFalsy();
@@ -634,7 +509,8 @@ describe('AuthController (e2e)', () => {
               // Check if the refreshToken_6 was NOT automatically revoked
               // (Refresh Token generated by different User and different Ip Address)
               const validRefreshToken3 = refreshTokensDb.find(
-                (rt) => rt._id.toString() === refreshToken_6._id.toString(),
+                (rt) =>
+                  rt._id.toString() === seed.refreshToken_6._id.toString(),
               );
               expect(validRefreshToken3).toBeTruthy();
               expect(validRefreshToken3.replacedBy).toBeFalsy();
@@ -649,7 +525,7 @@ describe('AuthController (e2e)', () => {
           return request(app.getHttpServer())
             .post('/refresh')
             .send({
-              refresh_token: refreshToken_2._id.toString(),
+              refresh_token: seed.refreshToken_2._id.toString(),
             } as RefreshTokenDto)
             .expect(200)
             .expect(async ({ body }) => {
@@ -672,7 +548,7 @@ describe('AuthController (e2e)', () => {
 
               expect(newRefreshToken).toBeTruthy();
               expect(newRefreshToken.user.toString()).toBe(
-                user_4._id.toString(),
+                seed.user_4._id.toString(),
               );
               expect(newRefreshToken.createdAt).toBeTruthy();
               expect(newRefreshToken.duration).toBeTruthy();
@@ -683,12 +559,13 @@ describe('AuthController (e2e)', () => {
 
               // Check if the refreshToken_2 was used
               const usedRefreshToken = refreshTokensDb.find(
-                (rt) => rt._id.toString() === refreshToken_2._id.toString(),
+                (rt) =>
+                  rt._id.toString() === seed.refreshToken_2._id.toString(),
               );
 
               expect(usedRefreshToken).toBeTruthy();
               expect(usedRefreshToken.user.toString()).toBe(
-                user_4._id.toString(),
+                seed.user_4._id.toString(),
               );
               expect(usedRefreshToken.createdAt).toBeTruthy();
               expect(usedRefreshToken.duration).toBeTruthy();
@@ -724,7 +601,7 @@ describe('AuthController (e2e)', () => {
         it(`User is already verified`, () => {
           return request(app.getHttpServer())
             .get('/verify')
-            .query({ code: user_4.verificationCode })
+            .query({ code: seed.user_4.verificationCode })
             .expect(400)
             .expect(({ body }) =>
               expect(body.message).toMatch(/already verified/i),
@@ -746,14 +623,14 @@ describe('AuthController (e2e)', () => {
         it(`User verified successfully`, () => {
           return request(app.getHttpServer())
             .get('/verify')
-            .query({ code: user_3.verificationCode })
+            .query({ code: seed.user_3.verificationCode })
             .expect(200)
             .expect(async () => {
               const database = mongoClient.db(mikroOrmConfig.dbName);
 
               const user: UserEntity = await database
                 .collection('users')
-                .findOne({ _id: new ObjectId(user_3._id) });
+                .findOne({ _id: new ObjectId(seed.user_3._id) });
 
               expect(user).toBeTruthy();
               expect(user.isVerified).toBeTruthy();
