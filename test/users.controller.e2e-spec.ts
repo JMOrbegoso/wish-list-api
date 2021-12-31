@@ -44,46 +44,48 @@ describe('UsersController (e2e)', () => {
 
   describe('/users/public', () => {
     describe('GET', () => {
-      it(`should get the users`, () => {
-        return request(app.getHttpServer())
-          .get('/users')
-          .expect(200)
-          .expect('Content-Type', /json/)
-          .expect(({ body }) => {
-            const outputUsers = body as OutputUserDto[];
+      describe(`should return 200`, () => {
+        it(`should get the users`, () => {
+          return request(app.getHttpServer())
+            .get('/users')
+            .expect(200)
+            .expect('Content-Type', /json/)
+            .expect(({ body }) => {
+              const outputUsers = body as OutputUserDto[];
 
-            expect(outputUsers).toHaveLength(6);
+              expect(outputUsers).toHaveLength(6);
 
-            const outputUser_1 = outputUsers.find(
-              (u) => u.id === seed.deletedUser._id.toString(),
-            );
-            assertOutputUser(outputUser_1, seed.deletedUser);
+              const outputUser_1 = outputUsers.find(
+                (u) => u.id === seed.deletedUser._id.toString(),
+              );
+              assertOutputUser(outputUser_1, seed.deletedUser);
 
-            const outputUser_2 = outputUsers.find(
-              (u) => u.id === seed.blockedUser._id.toString(),
-            );
-            assertOutputUser(outputUser_2, seed.blockedUser);
+              const outputUser_2 = outputUsers.find(
+                (u) => u.id === seed.blockedUser._id.toString(),
+              );
+              assertOutputUser(outputUser_2, seed.blockedUser);
 
-            const outputUser_3 = outputUsers.find(
-              (u) => u.id === seed.unverifiedUser._id.toString(),
-            );
-            assertOutputUser(outputUser_3, seed.unverifiedUser);
+              const outputUser_3 = outputUsers.find(
+                (u) => u.id === seed.unverifiedUser._id.toString(),
+              );
+              assertOutputUser(outputUser_3, seed.unverifiedUser);
 
-            const outputUser_4 = outputUsers.find(
-              (u) => u.id === seed.basicUser._id.toString(),
-            );
-            assertOutputUser(outputUser_4, seed.basicUser);
+              const outputUser_4 = outputUsers.find(
+                (u) => u.id === seed.basicUser._id.toString(),
+              );
+              assertOutputUser(outputUser_4, seed.basicUser);
 
-            const outputUser_5 = outputUsers.find(
-              (u) => u.id === seed.moderatorUser._id.toString(),
-            );
-            assertOutputUser(outputUser_5, seed.moderatorUser);
+              const outputUser_5 = outputUsers.find(
+                (u) => u.id === seed.moderatorUser._id.toString(),
+              );
+              assertOutputUser(outputUser_5, seed.moderatorUser);
 
-            const outputUser_6 = outputUsers.find(
-              (u) => u.id === seed.adminUser._id.toString(),
-            );
-            assertOutputUser(outputUser_6, seed.adminUser);
-          });
+              const outputUser_6 = outputUsers.find(
+                (u) => u.id === seed.adminUser._id.toString(),
+              );
+              assertOutputUser(outputUser_6, seed.adminUser);
+            });
+        });
       });
     });
   });
