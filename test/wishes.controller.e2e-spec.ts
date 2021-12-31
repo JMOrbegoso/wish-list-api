@@ -23,10 +23,6 @@ describe('WishesController (e2e)', () => {
   // Seed
   let seed: Seed;
 
-  async function seedDatabase(): Promise<void> {
-    seed = await seedDatabaseItems(mongoClient, mikroOrmConfig.dbName);
-  }
-
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
@@ -43,7 +39,7 @@ describe('WishesController (e2e)', () => {
   });
 
   beforeEach(async () => {
-    await seedDatabase();
+    seed = await seedDatabaseItems(mongoClient, mikroOrmConfig.dbName);
   });
 
   afterEach(async () => {
