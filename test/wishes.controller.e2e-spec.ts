@@ -1,4 +1,4 @@
-import { INestApplication } from '@nestjs/common';
+import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { MongoClient } from 'mongodb';
 import request from 'supertest';
@@ -160,6 +160,7 @@ describe('WishesController (e2e)', () => {
       imports: [AppModule],
     }).compile();
     app = moduleFixture.createNestApplication();
+    app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
     await app.init();
 
     mongoClient = await MongoClient.connect(mikroOrmConfig.clientUrl, {
