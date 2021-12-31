@@ -3,10 +3,13 @@ import { WisherEntity } from '../../../src/wishes/infrastructure/persistence/ent
 
 export type WisherDb = { _id: ObjectId };
 
-export async function seedWisher(database: Db): Promise<WisherDb> {
+export async function seedWisher(
+  database: Db,
+  userId: string,
+): Promise<WisherDb> {
   const wisher = new WisherEntity();
 
-  wisher.id = new ObjectId().toString();
+  wisher.id = userId;
 
   const record = { ...wisher };
   await database.collection('wishers').insertOne(record);

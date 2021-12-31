@@ -269,8 +269,8 @@ export async function seedDatabaseItems(
 
   // Seed wishers
 
-  const wisher_1 = await seedWisher(database);
-  const wisher_2 = await seedWisher(database);
+  const wisher_1 = await seedWisher(database, basicUser._id.toString());
+  const wisher_2 = await seedWisher(database, moderatorUser._id.toString());
 
   // Seed wishes
 
