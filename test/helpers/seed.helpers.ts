@@ -15,16 +15,17 @@ import {
 } from './seeders';
 
 export type Seed = {
-  user_1: UserDb;
-  user_2: UserDb;
-  user_3: UserDb;
-  user_4: UserDb;
-  refreshToken_1: RefreshTokenDb;
-  refreshToken_2: RefreshTokenDb;
-  refreshToken_3: RefreshTokenDb;
-  refreshToken_4: RefreshTokenDb;
-  refreshToken_5: RefreshTokenDb;
-  refreshToken_6: RefreshTokenDb;
+  deletedUser: UserDb;
+  blockedUser: UserDb;
+  unverifiedUser: UserDb;
+  basicUser: UserDb;
+
+  expiredRefreshToken: RefreshTokenDb;
+  validRefreshToken_1: RefreshTokenDb;
+  usedRefreshToken: RefreshTokenDb;
+  revokedRefreshToken: RefreshTokenDb;
+  validRefreshToken_2: RefreshTokenDb;
+  validRefreshToken_3: RefreshTokenDb;
 
   wisher_1: WisherDb;
   wisher_2: WisherDb;
@@ -47,7 +48,7 @@ export async function seedDatabaseItems(
 
   // Seed users
 
-  const user_1 = await seedUser(
+  const deletedUser = await seedUser(
     database,
     'scott@doe.com',
     'Scott_Doe',
@@ -65,7 +66,7 @@ export async function seedDatabaseItems(
     [Role.basic().getRole],
   );
 
-  const user_2 = await seedUser(
+  const blockedUser = await seedUser(
     database,
     'Christobal@doe.com',
     'Christobal_Doe',
@@ -83,7 +84,7 @@ export async function seedDatabaseItems(
     [Role.basic().getRole],
   );
 
-  const user_3 = await seedUser(
+  const unverifiedUser = await seedUser(
     database,
     'Shannon@Doe.com',
     'Shannon_Doe',
@@ -101,7 +102,7 @@ export async function seedDatabaseItems(
     [Role.basic().getRole],
   );
 
-  const user_4 = await seedUser(
+  const basicUser = await seedUser(
     database,
     'Anne@Doe.com',
     'Anne_Doe',
@@ -121,33 +122,33 @@ export async function seedDatabaseItems(
 
   // Seed refresh tokens
 
-  const refreshToken_1 = await seedRefreshToken(
+  const expiredRefreshToken = await seedRefreshToken(
     database,
-    user_4._id.toString(),
+    basicUser._id.toString(),
     new Date(2000, 10, 10),
   );
 
-  const refreshToken_2 = await seedRefreshToken(
+  const validRefreshToken_1 = await seedRefreshToken(
     database,
-    user_4._id.toString(),
+    basicUser._id.toString(),
     new Date(),
     1000,
     '192.168.0.1',
   );
 
-  const refreshToken_3 = await seedRefreshToken(
+  const usedRefreshToken = await seedRefreshToken(
     database,
-    user_4._id.toString(),
+    basicUser._id.toString(),
     undefined,
     undefined,
     undefined,
     new Date(),
-    refreshToken_1._id.toString(),
+    expiredRefreshToken._id.toString(),
   );
 
-  const refreshToken_4 = await seedRefreshToken(
+  const revokedRefreshToken = await seedRefreshToken(
     database,
-    user_4._id.toString(),
+    basicUser._id.toString(),
     undefined,
     undefined,
     undefined,
@@ -156,14 +157,14 @@ export async function seedDatabaseItems(
     new Date(),
   );
 
-  const refreshToken_5 = await seedRefreshToken(
+  const validRefreshToken_2 = await seedRefreshToken(
     database,
-    user_1._id.toString(),
+    deletedUser._id.toString(),
   );
 
-  const refreshToken_6 = await seedRefreshToken(
+  const validRefreshToken_3 = await seedRefreshToken(
     database,
-    user_2._id.toString(),
+    blockedUser._id.toString(),
     undefined,
     undefined,
     '192.168.0.1',
@@ -288,16 +289,16 @@ export async function seedDatabaseItems(
   );
 
   return {
-    user_1,
-    user_2,
-    user_3,
-    user_4,
-    refreshToken_1,
-    refreshToken_2,
-    refreshToken_3,
-    refreshToken_4,
-    refreshToken_5,
-    refreshToken_6,
+    deletedUser,
+    blockedUser,
+    unverifiedUser,
+    basicUser,
+    expiredRefreshToken,
+    validRefreshToken_1,
+    usedRefreshToken,
+    revokedRefreshToken,
+    validRefreshToken_2,
+    validRefreshToken_3,
     wisher_1,
     wisher_2,
     wish_1,
