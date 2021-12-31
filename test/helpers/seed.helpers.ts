@@ -90,47 +90,47 @@ export type Seed = {
   /**
    * Wisher based on **basicUser**.
    */
-  wisher_1: WisherDb;
+  basicUserAsWisher: WisherDb;
   /**
    * Wisher based on **moderatorUser**.
    */
-  wisher_2: WisherDb;
+  moderatorUserAsWisher: WisherDb;
   /**
    * Public Wish created by **basicUserAsWisher**.
    */
-  wish_1: WishDb;
+  publicWish_1: WishDb;
   /**
    * Just Friends Wish created by **basicUserAsWisher**.
    */
-  wish_2: WishDb;
+  justFriendsWish: WishDb;
   /**
    * Only Me Wish created by **moderatorUserAsWisher**.
    */
-  wish_3: WishDb;
+  onlyMeWish: WishDb;
   /**
    * Public Wish created by **moderatorUserAsWisher**.
    */
-  wish_4: WishDb;
+  publicWish_2: WishDb;
   /**
    * Wish Stage 1 owned by **PublicWish_1**.
    */
-  wishStage_1: WishStageDb;
+  wishStage_1_of_PublicWish_1: WishStageDb;
   /**
    * Wish Stage 2 owned by **PublicWish_1**.
    */
-  wishStage_2: WishStageDb;
+  wishStage_2_of_PublicWish_1: WishStageDb;
   /**
    * Wish Stage 1 owned by **JustFriendsWish**.
    */
-  wishStage_3: WishStageDb;
+  wishStage_1_of_JustFriendsWish: WishStageDb;
   /**
    * Wish Stage 2 owned by **JustFriendsWish**.
    */
-  wishStage_4: WishStageDb;
+  wishStage_2_of_JustFriendsWish: WishStageDb;
   /**
    * Wish Stage owned by **PublicWish_2**.
    */
-  wishStage_5: WishStageDb;
+  wishStage_of_PublicWish_2: WishStageDb;
 };
 
 export async function seedDatabaseItems(
@@ -301,14 +301,20 @@ export async function seedDatabaseItems(
 
   // Seed wishers
 
-  const wisher_1 = await seedWisher(database, basicUser._id.toString());
-  const wisher_2 = await seedWisher(database, moderatorUser._id.toString());
+  const basicUserAsWisher = await seedWisher(
+    database,
+    basicUser._id.toString(),
+  );
+  const moderatorUserAsWisher = await seedWisher(
+    database,
+    moderatorUser._id.toString(),
+  );
 
   // Seed wishes
 
-  const wish_1 = await seedWish(
+  const publicWish_1 = await seedWish(
     database,
-    wisher_1._id.toString(),
+    basicUserAsWisher._id.toString(),
     'New Laptop',
     'A brand new laptop.',
     PrivacyLevel.Public,
@@ -322,9 +328,9 @@ export async function seedDatabaseItems(
     new Date(),
   );
 
-  const wish_2 = await seedWish(
+  const justFriendsWish = await seedWish(
     database,
-    wisher_1._id.toString(),
+    basicUserAsWisher._id.toString(),
     'Develop a TODO app.',
     'Develop a cross-platform app.',
     PrivacyLevel.JustFriends,
@@ -338,9 +344,9 @@ export async function seedDatabaseItems(
     new Date(),
   );
 
-  const wish_3 = await seedWish(
+  const onlyMeWish = await seedWish(
     database,
-    wisher_2._id.toString(),
+    moderatorUserAsWisher._id.toString(),
     'Write a book',
     'Write an autobiographical book.',
     PrivacyLevel.OnlyMe,
@@ -348,9 +354,9 @@ export async function seedDatabaseItems(
     new Date(),
   );
 
-  const wish_4 = await seedWish(
+  const publicWish_2 = await seedWish(
     database,
-    wisher_2._id.toString(),
+    moderatorUserAsWisher._id.toString(),
     'Learn to swim',
     'Learn various swimming styles.',
     PrivacyLevel.Public,
@@ -364,9 +370,9 @@ export async function seedDatabaseItems(
 
   // Seed wish stages
 
-  const wishStage_1 = await seedWishStage(
+  const wishStage_1_of_PublicWish_1 = await seedWishStage(
     database,
-    wish_1._id.toString(),
+    publicWish_1._id.toString(),
     'Found the best laptop model',
     'Find a nice laptop model to buy.',
     new Date(),
@@ -377,9 +383,9 @@ export async function seedDatabaseItems(
     ],
   );
 
-  const wishStage_2 = await seedWishStage(
+  const wishStage_2_of_PublicWish_1 = await seedWishStage(
     database,
-    wish_1._id.toString(),
+    publicWish_1._id.toString(),
     'Buy it!',
     'Buy the laptop.',
     new Date(),
@@ -387,9 +393,9 @@ export async function seedDatabaseItems(
     ['https://www.example.com/stage/1.png'],
   );
 
-  const wishStage_3 = await seedWishStage(
+  const wishStage_1_of_JustFriendsWish = await seedWishStage(
     database,
-    wish_2._id.toString(),
+    justFriendsWish._id.toString(),
     'Choose a multiplatform framework',
     'Cross-platform framework with support for desktop Windows apps.',
     new Date(),
@@ -397,9 +403,9 @@ export async function seedDatabaseItems(
     [],
   );
 
-  const wishStage_4 = await seedWishStage(
+  const wishStage_2_of_JustFriendsWish = await seedWishStage(
     database,
-    wish_2._id.toString(),
+    justFriendsWish._id.toString(),
     'Install the IDE',
     'Install the IDE to start with the development of the app.',
     new Date(),
@@ -407,9 +413,9 @@ export async function seedDatabaseItems(
     [],
   );
 
-  const wishStage_5 = await seedWishStage(
+  const wishStage_of_PublicWish_2 = await seedWishStage(
     database,
-    wish_4._id.toString(),
+    publicWish_2._id.toString(),
     'Enroll in a swimming school',
     'Swimming school near my house.',
     new Date(),
@@ -430,16 +436,16 @@ export async function seedDatabaseItems(
     revokedRefreshToken,
     validRefreshToken_2,
     validRefreshToken_3,
-    wisher_1,
-    wisher_2,
-    wish_1,
-    wish_2,
-    wish_3,
-    wish_4,
-    wishStage_1,
-    wishStage_2,
-    wishStage_3,
-    wishStage_4,
-    wishStage_5,
+    basicUserAsWisher,
+    moderatorUserAsWisher,
+    publicWish_1,
+    justFriendsWish,
+    onlyMeWish,
+    publicWish_2,
+    wishStage_1_of_PublicWish_1,
+    wishStage_2_of_PublicWish_1,
+    wishStage_1_of_JustFriendsWish,
+    wishStage_2_of_JustFriendsWish,
+    wishStage_of_PublicWish_2,
   };
 }

@@ -68,24 +68,30 @@ describe('WishesController (e2e)', () => {
             expect(outputWishes).toHaveLength(2);
 
             const outputWish_1 = outputWishes.find(
-              (w) => w.id === seed.wish_1._id.toString(),
+              (w) => w.id === seed.publicWish_1._id.toString(),
             );
-            assertOutputWish(outputWish_1, seed.wish_1);
+            assertOutputWish(outputWish_1, seed.publicWish_1);
             expect(outputWish_1.stages).toHaveLength(2);
             const outputWishStage_1 = outputWish_1.stages.find(
-              (ws) => ws.id === seed.wishStage_1._id.toString(),
+              (ws) => ws.id === seed.wishStage_1_of_PublicWish_1._id.toString(),
             );
-            assertOutputWishStage(outputWishStage_1, seed.wishStage_1);
+            assertOutputWishStage(
+              outputWishStage_1,
+              seed.wishStage_1_of_PublicWish_1,
+            );
 
             const outputWish_2 = outputWishes.find(
-              (w) => w.id === seed.wish_4._id.toString(),
+              (w) => w.id === seed.publicWish_2._id.toString(),
             );
-            assertOutputWish(outputWish_2, seed.wish_4);
+            assertOutputWish(outputWish_2, seed.publicWish_2);
             expect(outputWish_2.stages).toHaveLength(1);
             const outputWishStage_2 = outputWish_1.stages.find(
-              (ws) => ws.id === seed.wishStage_2._id.toString(),
+              (ws) => ws.id === seed.wishStage_2_of_PublicWish_1._id.toString(),
             );
-            assertOutputWishStage(outputWishStage_2, seed.wishStage_2);
+            assertOutputWishStage(
+              outputWishStage_2,
+              seed.wishStage_2_of_PublicWish_1,
+            );
           });
       });
     });
