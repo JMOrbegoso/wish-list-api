@@ -15,18 +15,77 @@ import {
 } from './seeders';
 
 export type Seed = {
+  /**
+   * Deleted basic user:
+   * - Deleted.
+   * - Not blocked.
+   * - Not verified.
+   * - Roles: Basic.
+   */
   deletedUser: UserDb;
+  /**
+   * Blocked basic user:
+   * - Not deleted.
+   * - Blocked.
+   * - Not verified.
+   * - Roles: Basic.
+   */
   blockedUser: UserDb;
+  /**
+   * Basic user not verified:
+   * - Not deleted.
+   * - Not blocked.
+   * - Not verified.
+   * - Roles: Basic.
+   */
   unverifiedUser: UserDb;
+  /**
+   * Valid basic user:
+   * - Not deleted.
+   * - Not blocked.
+   * - Verified.
+   * - Roles: Basic.
+   */
   basicUser: UserDb;
+  /**
+   * Valid moderator user:
+   * - Not deleted.
+   * - Not blocked.
+   * - Verified.
+   * - Roles: Moderator.
+   */
   moderatorUser: UserDb;
+  /**
+   * Valid admin user:
+   * - Not deleted.
+   * - Not blocked.
+   * - Verified.
+   * - Roles: Admin.
+   */
   adminUser: UserDb;
-
+  /**
+   * Expired refresh token created by **basicUser**.
+   */
   expiredRefreshToken: RefreshTokenDb;
+  /**
+   * Valid refresh token created by **basicUser** with custom Ip address.
+   */
   validRefreshToken_1: RefreshTokenDb;
+  /**
+   * Used refresh token created by **basicUser**.
+   */
   usedRefreshToken: RefreshTokenDb;
+  /**
+   * Revoked refresh token created by **basicUser**.
+   */
   revokedRefreshToken: RefreshTokenDb;
+  /**
+   * Valid refresh token created by **deletedUser** with default Ip address.
+   */
   validRefreshToken_2: RefreshTokenDb;
+  /**
+   * Valid refresh token created by **blockedUser** with custom Ip address.
+   */
   validRefreshToken_3: RefreshTokenDb;
 
   wisher_1: WisherDb;
