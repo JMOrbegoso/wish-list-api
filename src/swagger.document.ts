@@ -35,8 +35,7 @@ export const swaggerDocument: OpenAPIObject = {
             },
           },
           401: {
-            description:
-              'User is deleted, blocked, not verified or the password is incorrect.',
+            description: 'User is invalid or the password is incorrect.',
           },
           400: { description: 'Bad Request.' },
           404: { description: 'User not found.' },
@@ -66,7 +65,7 @@ export const swaggerDocument: OpenAPIObject = {
             },
           },
           400: { description: 'Refresh token is invalid.' },
-          401: { description: 'User or Refresh token is invalid.' },
+          401: { description: 'Invalid user or refresh token.' },
         },
         tags: ['Auth'],
       },
@@ -85,8 +84,7 @@ export const swaggerDocument: OpenAPIObject = {
         responses: {
           200: { description: 'User verified successfully.' },
           400: {
-            description:
-              'Invalid verification code or User is already verified.',
+            description: 'Invalid verification code or invalid User.',
           },
           404: { description: 'User not found.' },
         },
