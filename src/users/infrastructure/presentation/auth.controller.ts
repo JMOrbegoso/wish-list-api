@@ -14,7 +14,7 @@ import {
   VerifyUserCommand,
 } from '../../application/commands';
 import { AuthTokensDto } from '../../application/dtos';
-import { LoginDto, RefreshTokenDto } from '../dtos';
+import { LoginDto, RefreshTokenDto, VerificationCodeDto } from '../dtos';
 
 @Controller()
 export class AuthController {
@@ -45,8 +45,8 @@ export class AuthController {
   }
 
   @Get('verify')
-  async verify(@Query('code') code: string): Promise<void> {
-    const command = new VerifyUserCommand(code);
+  async verify(@Query() query: VerificationCodeDto): Promise<void> {
+    const command = new VerifyUserCommand(query.code);
     await this.commandBus.execute(command);
   }
 }

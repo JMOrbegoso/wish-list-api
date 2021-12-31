@@ -23,7 +23,9 @@ export class VerifyUserHandler implements ICommandHandler<VerifyUserCommand> {
     );
     if (!user) throw new NotFoundException();
 
-    // Check if the user is already verified
+    // Check if the user can be verified
+    if (user.isDeleted) throw new BadRequestException('User is deleted.');
+    if (user.isBlocked) throw new BadRequestException('User is blocked.');
     if (user.isVerified)
       throw new BadRequestException('User is already verified.');
 

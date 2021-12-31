@@ -274,6 +274,237 @@ describe('users', () => {
         );
 
         test.each(commands)(
+          'should throw UnauthorizedException because the user is deleted',
+          async (command: RefreshAccessTokenCommand) => {
+            // Arrange
+            const unitOfWork = {
+              commitChanges: jest.fn(),
+            } as MockedObject<UnitOfWork>;
+
+            const refreshTokenToReplace = {
+              isExpired: false,
+              isRevoked: false,
+              wasReplaced: false,
+              isValid: true,
+              replace: jest.fn(),
+            } as MockedObject<RefreshToken>;
+
+            const user = {
+              id: {
+                getId: 'id-0',
+              },
+              email: {
+                getEmail: 'email',
+              },
+              username: {
+                getUsername: 'username',
+              },
+              firstName: {
+                getFirstName: 'firstname',
+              },
+              lastName: {
+                getLastName: 'lastname',
+              },
+              birthday: {
+                getMilliseconds: 1,
+              },
+              createdAt: {
+                getMilliseconds: 1,
+              },
+              updatedAt: {
+                getMilliseconds: 1,
+              },
+              isVerified: true,
+              isBlocked: false,
+              biography: {
+                getBiography: 'bio',
+              },
+              roles: ['Admin'],
+              profilePicture: null,
+              isDeleted: true,
+              getRefreshToken: jest.fn().mockReturnValue(refreshTokenToReplace),
+            } as MockedObject<User>;
+
+            const userRepository = {
+              getOneByRefreshTokenId: jest.fn().mockReturnValue(user),
+            } as MockedObject<UserRepository>;
+
+            const tokenService = {} as MockedObject<TokenService>;
+
+            const uniqueIdGeneratorService =
+              {} as MockedObject<UniqueIdGeneratorService>;
+
+            const handler = new RefreshAccessTokenHandler(
+              unitOfWork,
+              userRepository,
+              tokenService,
+              uniqueIdGeneratorService,
+            );
+
+            // Act
+
+            // Assert
+            return expect(handler.execute(command)).rejects.toThrowError(
+              UnauthorizedException,
+            );
+          },
+        );
+
+        test.each(commands)(
+          'should throw UnauthorizedException because the user is blocked',
+          async (command: RefreshAccessTokenCommand) => {
+            // Arrange
+            const unitOfWork = {
+              commitChanges: jest.fn(),
+            } as MockedObject<UnitOfWork>;
+
+            const refreshTokenToReplace = {
+              isExpired: false,
+              isRevoked: false,
+              wasReplaced: false,
+              isValid: true,
+              replace: jest.fn(),
+            } as MockedObject<RefreshToken>;
+
+            const user = {
+              id: {
+                getId: 'id-0',
+              },
+              email: {
+                getEmail: 'email',
+              },
+              username: {
+                getUsername: 'username',
+              },
+              firstName: {
+                getFirstName: 'firstname',
+              },
+              lastName: {
+                getLastName: 'lastname',
+              },
+              birthday: {
+                getMilliseconds: 1,
+              },
+              createdAt: {
+                getMilliseconds: 1,
+              },
+              updatedAt: {
+                getMilliseconds: 1,
+              },
+              isVerified: true,
+              isBlocked: true,
+              biography: {
+                getBiography: 'bio',
+              },
+              roles: ['Admin'],
+              profilePicture: null,
+              isDeleted: false,
+              getRefreshToken: jest.fn().mockReturnValue(refreshTokenToReplace),
+            } as MockedObject<User>;
+
+            const userRepository = {
+              getOneByRefreshTokenId: jest.fn().mockReturnValue(user),
+            } as MockedObject<UserRepository>;
+
+            const tokenService = {} as MockedObject<TokenService>;
+
+            const uniqueIdGeneratorService =
+              {} as MockedObject<UniqueIdGeneratorService>;
+
+            const handler = new RefreshAccessTokenHandler(
+              unitOfWork,
+              userRepository,
+              tokenService,
+              uniqueIdGeneratorService,
+            );
+
+            // Act
+
+            // Assert
+            return expect(handler.execute(command)).rejects.toThrowError(
+              UnauthorizedException,
+            );
+          },
+        );
+
+        test.each(commands)(
+          'should throw UnauthorizedException because the user is not verified',
+          async (command: RefreshAccessTokenCommand) => {
+            // Arrange
+            const unitOfWork = {
+              commitChanges: jest.fn(),
+            } as MockedObject<UnitOfWork>;
+
+            const refreshTokenToReplace = {
+              isExpired: false,
+              isRevoked: false,
+              wasReplaced: false,
+              isValid: true,
+              replace: jest.fn(),
+            } as MockedObject<RefreshToken>;
+
+            const user = {
+              id: {
+                getId: 'id-0',
+              },
+              email: {
+                getEmail: 'email',
+              },
+              username: {
+                getUsername: 'username',
+              },
+              firstName: {
+                getFirstName: 'firstname',
+              },
+              lastName: {
+                getLastName: 'lastname',
+              },
+              birthday: {
+                getMilliseconds: 1,
+              },
+              createdAt: {
+                getMilliseconds: 1,
+              },
+              updatedAt: {
+                getMilliseconds: 1,
+              },
+              isVerified: false,
+              isBlocked: false,
+              biography: {
+                getBiography: 'bio',
+              },
+              roles: ['Admin'],
+              profilePicture: null,
+              isDeleted: false,
+              getRefreshToken: jest.fn().mockReturnValue(refreshTokenToReplace),
+            } as MockedObject<User>;
+
+            const userRepository = {
+              getOneByRefreshTokenId: jest.fn().mockReturnValue(user),
+            } as MockedObject<UserRepository>;
+
+            const tokenService = {} as MockedObject<TokenService>;
+
+            const uniqueIdGeneratorService =
+              {} as MockedObject<UniqueIdGeneratorService>;
+
+            const handler = new RefreshAccessTokenHandler(
+              unitOfWork,
+              userRepository,
+              tokenService,
+              uniqueIdGeneratorService,
+            );
+
+            // Act
+
+            // Assert
+            return expect(handler.execute(command)).rejects.toThrowError(
+              UnauthorizedException,
+            );
+          },
+        );
+
+        test.each(commands)(
           'should generate the auth tokens using the refresh token',
           async (command: RefreshAccessTokenCommand) => {
             // Arrange
