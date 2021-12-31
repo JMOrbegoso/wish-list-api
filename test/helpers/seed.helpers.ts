@@ -87,17 +87,49 @@ export type Seed = {
    * Valid refresh token created by **blockedUser** with custom Ip address.
    */
   validRefreshToken_3: RefreshTokenDb;
-
+  /**
+   * Wisher based on **basicUser**.
+   */
   wisher_1: WisherDb;
+  /**
+   * Wisher based on **moderatorUser**.
+   */
   wisher_2: WisherDb;
+  /**
+   * Public Wish created by **basicUserAsWisher**.
+   */
   wish_1: WishDb;
+  /**
+   * Just Friends Wish created by **basicUserAsWisher**.
+   */
   wish_2: WishDb;
+  /**
+   * Only Me Wish created by **moderatorUserAsWisher**.
+   */
   wish_3: WishDb;
+  /**
+   * Public Wish created by **moderatorUserAsWisher**.
+   */
   wish_4: WishDb;
+  /**
+   * Wish Stage 1 owned by **PublicWish_1**.
+   */
   wishStage_1: WishStageDb;
+  /**
+   * Wish Stage 2 owned by **PublicWish_1**.
+   */
   wishStage_2: WishStageDb;
+  /**
+   * Wish Stage 1 owned by **JustFriendsWish**.
+   */
   wishStage_3: WishStageDb;
+  /**
+   * Wish Stage 2 owned by **JustFriendsWish**.
+   */
   wishStage_4: WishStageDb;
+  /**
+   * Wish Stage owned by **PublicWish_2**.
+   */
   wishStage_5: WishStageDb;
 };
 
