@@ -19,6 +19,8 @@ export type Seed = {
   blockedUser: UserDb;
   unverifiedUser: UserDb;
   basicUser: UserDb;
+  moderatorUser: UserDb;
+  adminUser: UserDb;
 
   expiredRefreshToken: RefreshTokenDb;
   validRefreshToken_1: RefreshTokenDb;
@@ -118,6 +120,42 @@ export async function seedDatabaseItems(
     'https://www.example.com/anne/',
     null,
     [Role.basic().getRole],
+  );
+
+  const moderatorUser = await seedUser(
+    database,
+    'Stephen@Doe.com',
+    'Stephen_Doe',
+    'passworD$_4',
+    true,
+    false,
+    'Stephen',
+    'Doe',
+    new Date(),
+    new Date(),
+    new Date(),
+    'A nice person.',
+    'https://www.example.com/stephen/',
+    null,
+    [Role.moderator().getRole],
+  );
+
+  const adminUser = await seedUser(
+    database,
+    'Sylvester@Doe.com',
+    'Sylvester_Doe',
+    'passworD$_4',
+    true,
+    false,
+    'Sylvester',
+    'Doe',
+    new Date(),
+    new Date(),
+    new Date(),
+    'A nice person.',
+    'https://www.example.com/sylvester/',
+    null,
+    [Role.admin().getRole],
   );
 
   // Seed refresh tokens
@@ -293,6 +331,8 @@ export async function seedDatabaseItems(
     blockedUser,
     unverifiedUser,
     basicUser,
+    moderatorUser,
+    adminUser,
     expiredRefreshToken,
     validRefreshToken_1,
     usedRefreshToken,
