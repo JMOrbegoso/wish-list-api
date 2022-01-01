@@ -1233,8 +1233,9 @@ function assertOutputUser(outputUser: OutputUserDto, userDb: UserDb): void {
   for (let i = 0; i < userDb.roles.length; i++)
     expect(outputUser.roles[i]).toBe(userDb.roles[i]);
 
-  for (let i = 0; i < userDb.profilePicture.length; i++)
-    expect(outputUser.profilePicture[i]).toBe(userDb.profilePicture[i]);
+  if (userDb.profilePicture)
+    expect(outputUser.profilePicture).toBe(userDb.profilePicture);
+  else expect(outputUser.profilePicture).toBeNull();
 
   if (userDb.deletedAt)
     expect(outputUser.deletedAt).toBe(userDb.deletedAt.getTime());
