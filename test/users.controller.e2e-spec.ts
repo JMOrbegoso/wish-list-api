@@ -52,7 +52,7 @@ describe('UsersController (e2e)', () => {
     await mongoClient.close();
   });
 
-  describe('/users/public', () => {
+  describe('/users', () => {
     describe('GET', () => {
       describe(`should return 200`, () => {
         it(`should get the users`, () => {
