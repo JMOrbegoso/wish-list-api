@@ -168,6 +168,43 @@ describe('UsersController (e2e)', () => {
       });
     });
   });
+
+  describe('/users/email/{email}', () => {
+    describe('GET', () => {
+      describe(`should return 400`, () => {
+        test.each(['aaa=bbb', 'email', '1000', 'aaa@bb@b', '@bb.com'])(
+          `email do not match its regex`,
+          (invalidEmail) => {
+            return request(app.getHttpServer())
+              .get(`/users/email/${invalidEmail}`)
+              .expect(400);
+          },
+        );
+      });
+
+      describe(`should return 404`, () => {
+        it(`user not found`, () => {
+          return request(app.getHttpServer())
+            .get('/users/email/email@email.com')
+            .expect(404);
+        });
+      });
+
+      describe(`should return 200`, () => {
+        it(`user found`, () => {
+          return request(app.getHttpServer())
+            .get(`/users/email/${seed.basicUser.email}`)
+            .expect(200)
+            .expect('Content-Type', /json/)
+            .expect(({ body }) => {
+              const outputUser = body as OutputUserDto;
+
+              assertOutputUser(outputUser, seed.basicUser);
+            });
+        });
+      });
+    });
+  });
 });
 
 function assertOutputUser(outputUser: OutputUserDto, userDb: UserDb): void {
