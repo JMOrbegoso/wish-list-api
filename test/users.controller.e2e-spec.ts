@@ -5,6 +5,7 @@ import request from 'supertest';
 import { AppModule } from '../src/app.module';
 import mikroOrmConfig from '../src/mikro-orm.config';
 import { OutputUserDto } from '../src/users/application/dtos';
+import { Username } from '../src/users/domain/value-objects';
 import { Seed, UserDb, dropDatabase, seedDatabaseItems } from './helpers';
 
 describe('UsersController (e2e)', () => {
@@ -84,6 +85,84 @@ describe('UsersController (e2e)', () => {
                 (u) => u.id === seed.adminUser._id.toString(),
               );
               assertOutputUser(outputUser_6, seed.adminUser);
+            });
+        });
+      });
+    });
+  });
+
+  describe('/users/{id}', () => {
+    describe('GET', () => {
+      describe(`should return 400`, () => {
+        it(`invalid user id`, () => {
+          return request(app.getHttpServer()).get('/users/user-id').expect(400);
+        });
+      });
+
+      describe(`should return 404`, () => {
+        it(`user not found`, () => {
+          return request(app.getHttpServer())
+            .get('/users/61cce183b8917063ed614a0b')
+            .expect(404);
+        });
+      });
+
+      describe(`should return 200`, () => {
+        it(`user found`, () => {
+          return request(app.getHttpServer())
+            .get(`/users/${seed.basicUser._id.toString()}`)
+            .expect(200)
+            .expect('Content-Type', /json/)
+            .expect(({ body }) => {
+              const outputUser = body as OutputUserDto;
+
+              assertOutputUser(outputUser, seed.basicUser);
+            });
+        });
+      });
+    });
+  });
+
+  describe('/users/username/{username}', () => {
+    describe('GET', () => {
+      describe(`should return 400`, () => {
+        it(`username is too long`, () => {
+          return request(app.getHttpServer())
+            .get(`/users/username/${'a'.repeat(Username.MaxLength + 1)}`)
+            .expect(400);
+        });
+
+        it(`username is too short`, () => {
+          return request(app.getHttpServer())
+            .get(`/users/username/${'a'.repeat(Username.MinLength - 1)}`)
+            .expect(400);
+        });
+
+        it(`username do not match its regex`, () => {
+          return request(app.getHttpServer())
+            .get(`/users/username/aaa=bbb`)
+            .expect(400);
+        });
+      });
+
+      describe(`should return 404`, () => {
+        it(`user not found`, () => {
+          return request(app.getHttpServer())
+            .get('/users/username/user_name')
+            .expect(404);
+        });
+      });
+
+      describe(`should return 200`, () => {
+        it(`user found`, () => {
+          return request(app.getHttpServer())
+            .get(`/users/username/${seed.basicUser.username}`)
+            .expect(200)
+            .expect('Content-Type', /json/)
+            .expect(({ body }) => {
+              const outputUser = body as OutputUserDto;
+
+              assertOutputUser(outputUser, seed.basicUser);
             });
         });
       });
