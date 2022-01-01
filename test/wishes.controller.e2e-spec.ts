@@ -53,42 +53,46 @@ describe('WishesController (e2e)', () => {
 
   describe('/wishes/public', () => {
     describe('GET', () => {
-      it(`should get the public wishes`, () => {
-        return request(app.getHttpServer())
-          .get('/wishes/public')
-          .expect(200)
-          .expect('Content-Type', /json/)
-          .expect(({ body }) => {
-            const outputWishes = body as OutputWishDto[];
+      describe('should return 200', () => {
+        it(`should get the public wishes`, () => {
+          return request(app.getHttpServer())
+            .get('/wishes/public')
+            .expect(200)
+            .expect('Content-Type', /json/)
+            .expect(({ body }) => {
+              const outputWishes = body as OutputWishDto[];
 
-            expect(outputWishes).toHaveLength(2);
+              expect(outputWishes).toHaveLength(2);
 
-            const outputWish_1 = outputWishes.find(
-              (w) => w.id === seed.publicWish_1._id.toString(),
-            );
-            assertOutputWish(outputWish_1, seed.publicWish_1);
-            expect(outputWish_1.stages).toHaveLength(2);
-            const outputWishStage_1 = outputWish_1.stages.find(
-              (ws) => ws.id === seed.wishStage_1_of_PublicWish_1._id.toString(),
-            );
-            assertOutputWishStage(
-              outputWishStage_1,
-              seed.wishStage_1_of_PublicWish_1,
-            );
+              const outputWish_1 = outputWishes.find(
+                (w) => w.id === seed.publicWish_1._id.toString(),
+              );
+              assertOutputWish(outputWish_1, seed.publicWish_1);
+              expect(outputWish_1.stages).toHaveLength(2);
+              const outputWishStage_1 = outputWish_1.stages.find(
+                (ws) =>
+                  ws.id === seed.wishStage_1_of_PublicWish_1._id.toString(),
+              );
+              assertOutputWishStage(
+                outputWishStage_1,
+                seed.wishStage_1_of_PublicWish_1,
+              );
 
-            const outputWish_2 = outputWishes.find(
-              (w) => w.id === seed.publicWish_2._id.toString(),
-            );
-            assertOutputWish(outputWish_2, seed.publicWish_2);
-            expect(outputWish_2.stages).toHaveLength(1);
-            const outputWishStage_2 = outputWish_1.stages.find(
-              (ws) => ws.id === seed.wishStage_2_of_PublicWish_1._id.toString(),
-            );
-            assertOutputWishStage(
-              outputWishStage_2,
-              seed.wishStage_2_of_PublicWish_1,
-            );
-          });
+              const outputWish_2 = outputWishes.find(
+                (w) => w.id === seed.publicWish_2._id.toString(),
+              );
+              assertOutputWish(outputWish_2, seed.publicWish_2);
+              expect(outputWish_2.stages).toHaveLength(1);
+              const outputWishStage_2 = outputWish_1.stages.find(
+                (ws) =>
+                  ws.id === seed.wishStage_2_of_PublicWish_1._id.toString(),
+              );
+              assertOutputWishStage(
+                outputWishStage_2,
+                seed.wishStage_2_of_PublicWish_1,
+              );
+            });
+        });
       });
     });
   });
