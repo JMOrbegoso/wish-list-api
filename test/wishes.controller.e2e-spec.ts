@@ -16,9 +16,10 @@ import {
   WishDescription,
   WishTitle,
 } from '../src/wishes/domain/value-objects';
-import { CreateWishDto } from '../src/wishes/infrastructure/dto';
+import { CreateWishDto, UpdateWishDto } from '../src/wishes/infrastructure/dto';
 import {
   WishEntity,
+  WishStageEntity,
   WisherEntity,
 } from '../src/wishes/infrastructure/persistence/entities';
 import {
@@ -1241,6 +1242,751 @@ describe('WishesController (e2e)', () => {
     });
   });
 
+  describe('/wishes/{id}', () => {
+    describe('PATCH', () => {
+      const title = 'New name';
+      const description = 'New description.';
+      const urls = [
+        'https://www.example.com/new-url/1',
+        'https://www.example.com/new-url/2',
+        'https://www.example.com/new-url/3',
+      ];
+      const imageUrls = [
+        'https://www.example.com/new-url/1.jpg',
+        'https://www.example.com/new-url/2.jpg',
+      ];
+      const categories = ['new category 1', 'new category 2'];
+
+      describe(`should return 401`, () => {
+        it(`unauthenticated request`, () => {
+          const id = 'wish-id';
+          return request(app.getHttpServer())
+            .patch(`/wishes/${id}`)
+            .send({
+              id,
+              title,
+              description,
+              urls,
+              imageUrls,
+              categories,
+            } as UpdateWishDto)
+            .expect(401)
+            .expect(async () => {
+              const database = mongoClient.db(mikroOrmConfig.dbName);
+
+              const wishesDb: WishEntity[] = await database
+                .collection('wishes')
+                .find()
+                .toArray();
+
+              expect(wishesDb).toHaveLength(4);
+            });
+        });
+      });
+
+      describe(`should return 403`, () => {
+        it(`publicWish_2 does not belong to the basicUser`, () => {
+          const id = seed.publicWish_2._id.toString();
+          return request(app.getHttpServer())
+            .patch(`/wishes/${id}`)
+            .send({
+              id,
+              title,
+              description,
+              urls,
+              imageUrls,
+              categories,
+            } as UpdateWishDto)
+            .auth(accessTokenBasicUser, { type: 'bearer' })
+            .expect(403)
+            .expect(async () => {
+              const database = mongoClient.db(mikroOrmConfig.dbName);
+
+              const wishesDb: WishEntity[] = await database
+                .collection('wishes')
+                .find()
+                .toArray();
+
+              expect(wishesDb).toHaveLength(4);
+            });
+        });
+      });
+
+      describe(`should return 404`, () => {
+        it(`wish not found`, () => {
+          const id = '61cce183b8917063ed614a17';
+          return request(app.getHttpServer())
+            .patch(`/wishes/${id}`)
+            .send({
+              id,
+              title,
+              description,
+              urls,
+              imageUrls,
+              categories,
+            } as UpdateWishDto)
+            .auth(accessTokenBasicUser, { type: 'bearer' })
+            .expect(404)
+            .expect(async () => {
+              const database = mongoClient.db(mikroOrmConfig.dbName);
+
+              const wishesDb: WishEntity[] = await database
+                .collection('wishes')
+                .find()
+                .toArray();
+
+              expect(wishesDb).toHaveLength(4);
+            });
+        });
+      });
+
+      describe(`should return 400`, () => {
+        it(`title should not be empty`, () => {
+          const id = seed.publicWish_1._id.toString();
+          return request(app.getHttpServer())
+            .patch(`/wishes/${id}`)
+            .send({
+              id,
+              description,
+              urls,
+              imageUrls,
+              categories,
+            } as UpdateWishDto)
+            .auth(accessTokenBasicUser, { type: 'bearer' })
+            .expect(400)
+            .expect(({ body }) =>
+              expect(
+                (body.message as string[]).some((m) =>
+                  m.match(/title should not be empty/i),
+                ),
+              ).toBeTruthy(),
+            )
+            .expect(async () => {
+              const database = mongoClient.db(mikroOrmConfig.dbName);
+
+              const wishesDb: WishEntity[] = await database
+                .collection('wishes')
+                .find()
+                .toArray();
+
+              expect(wishesDb).toHaveLength(4);
+            });
+        });
+
+        it(`title must be a string`, () => {
+          const id = seed.publicWish_1._id.toString();
+          return request(app.getHttpServer())
+            .patch(`/wishes/${id}`)
+            .send({
+              id,
+              title: 1000,
+              description,
+              urls,
+              imageUrls,
+              categories,
+            } as unknown as UpdateWishDto)
+            .auth(accessTokenBasicUser, { type: 'bearer' })
+            .expect(400)
+            .expect(({ body }) =>
+              expect(
+                (body.message as string[]).some((m) =>
+                  m.match(/title must be a string/i),
+                ),
+              ).toBeTruthy(),
+            )
+            .expect(async () => {
+              const database = mongoClient.db(mikroOrmConfig.dbName);
+
+              const wishesDb: WishEntity[] = await database
+                .collection('wishes')
+                .find()
+                .toArray();
+
+              expect(wishesDb).toHaveLength(4);
+            });
+        });
+
+        it(`title is too long`, () => {
+          const id = seed.publicWish_1._id.toString();
+          return request(app.getHttpServer())
+            .patch(`/wishes/${id}`)
+            .send({
+              id,
+              title: 'a'.repeat(WishTitle.MaxLength + 1),
+              description,
+              urls,
+              imageUrls,
+              categories,
+            } as UpdateWishDto)
+            .auth(accessTokenBasicUser, { type: 'bearer' })
+            .expect(400)
+            .expect(({ body }) =>
+              expect(
+                (body.message as string[]).some((m) =>
+                  m.match(/title must be shorter than or equal to /i),
+                ),
+              ).toBeTruthy(),
+            )
+            .expect(async () => {
+              const database = mongoClient.db(mikroOrmConfig.dbName);
+
+              const wishesDb: WishEntity[] = await database
+                .collection('wishes')
+                .find()
+                .toArray();
+
+              expect(wishesDb).toHaveLength(4);
+            });
+        });
+
+        it(`description should not be empty`, () => {
+          const id = seed.publicWish_1._id.toString();
+          return request(app.getHttpServer())
+            .patch(`/wishes/${id}`)
+            .send({
+              id,
+              title,
+              urls,
+              imageUrls,
+              categories,
+            } as UpdateWishDto)
+            .auth(accessTokenBasicUser, { type: 'bearer' })
+            .expect(400)
+            .expect(({ body }) =>
+              expect(
+                (body.message as string[]).some((m) =>
+                  m.match(/description should not be empty/i),
+                ),
+              ).toBeTruthy(),
+            )
+            .expect(async () => {
+              const database = mongoClient.db(mikroOrmConfig.dbName);
+
+              const wishesDb: WishEntity[] = await database
+                .collection('wishes')
+                .find()
+                .toArray();
+
+              expect(wishesDb).toHaveLength(4);
+            });
+        });
+
+        it(`description must be a string`, () => {
+          const id = seed.publicWish_1._id.toString();
+          return request(app.getHttpServer())
+            .patch(`/wishes/${id}`)
+            .send({
+              id,
+              title,
+              description: 1000,
+              urls,
+              imageUrls,
+              categories,
+            } as unknown as UpdateWishDto)
+            .auth(accessTokenBasicUser, { type: 'bearer' })
+            .expect(400)
+            .expect(({ body }) =>
+              expect(
+                (body.message as string[]).some((m) =>
+                  m.match(/description must be a string/i),
+                ),
+              ).toBeTruthy(),
+            )
+            .expect(async () => {
+              const database = mongoClient.db(mikroOrmConfig.dbName);
+
+              const wishesDb: WishEntity[] = await database
+                .collection('wishes')
+                .find()
+                .toArray();
+
+              expect(wishesDb).toHaveLength(4);
+            });
+        });
+
+        it(`description is too long`, () => {
+          const id = seed.publicWish_1._id.toString();
+          return request(app.getHttpServer())
+            .patch(`/wishes/${id}`)
+            .send({
+              id,
+              title,
+              description: 'a'.repeat(WishDescription.MaxLength + 1),
+              urls,
+              imageUrls,
+              categories,
+            } as UpdateWishDto)
+            .auth(accessTokenBasicUser, { type: 'bearer' })
+            .expect(400)
+            .expect(({ body }) =>
+              expect(
+                (body.message as string[]).some((m) =>
+                  m.match(/description must be shorter than or equal to /i),
+                ),
+              ).toBeTruthy(),
+            )
+            .expect(async () => {
+              const database = mongoClient.db(mikroOrmConfig.dbName);
+
+              const wishesDb: WishEntity[] = await database
+                .collection('wishes')
+                .find()
+                .toArray();
+
+              expect(wishesDb).toHaveLength(4);
+            });
+        });
+
+        it(`urls must be an array`, () => {
+          const id = seed.publicWish_1._id.toString();
+          return request(app.getHttpServer())
+            .patch(`/wishes/${id}`)
+            .send({
+              id,
+              title,
+              description,
+              urls: 'https://www.example.com',
+              imageUrls,
+              categories,
+            } as unknown as UpdateWishDto)
+            .auth(accessTokenBasicUser, { type: 'bearer' })
+            .expect(400)
+            .expect(({ body }) =>
+              expect(
+                (body.message as string[]).some((m) =>
+                  m.match(/urls must be an array/i),
+                ),
+              ).toBeTruthy(),
+            )
+            .expect(async () => {
+              const database = mongoClient.db(mikroOrmConfig.dbName);
+
+              const wishesDb: WishEntity[] = await database
+                .collection('wishes')
+                .find()
+                .toArray();
+
+              expect(wishesDb).toHaveLength(4);
+            });
+        });
+
+        it(`urls have so many elements`, () => {
+          const id = seed.publicWish_1._id.toString();
+          return request(app.getHttpServer())
+            .patch(`/wishes/${id}`)
+            .send({
+              id,
+              title,
+              description,
+              urls: Array(Wish.MaxUrls + 1).fill('https://www.example.com'),
+              imageUrls,
+              categories,
+            } as UpdateWishDto)
+            .auth(accessTokenBasicUser, { type: 'bearer' })
+            .expect(400)
+            .expect(({ body }) =>
+              expect(
+                (body.message as string[]).some((m) =>
+                  m.match(/urls must contain not more than /i),
+                ),
+              ).toBeTruthy(),
+            )
+            .expect(async () => {
+              const database = mongoClient.db(mikroOrmConfig.dbName);
+
+              const wishesDb: WishEntity[] = await database
+                .collection('wishes')
+                .find()
+                .toArray();
+
+              expect(wishesDb).toHaveLength(4);
+            });
+        });
+
+        it(`each value in urls must be a string`, () => {
+          const id = seed.publicWish_1._id.toString();
+          return request(app.getHttpServer())
+            .patch(`/wishes/${id}`)
+            .send({
+              id,
+              title,
+              description,
+              urls: [
+                'https://www.example.com',
+                1000,
+                'https://www.example.com',
+              ],
+              imageUrls,
+              categories,
+            } as UpdateWishDto)
+            .auth(accessTokenBasicUser, { type: 'bearer' })
+            .expect(400)
+            .expect(({ body }) =>
+              expect(
+                (body.message as string[]).some((m) =>
+                  m.match(/each value in urls must be a string/i),
+                ),
+              ).toBeTruthy(),
+            )
+            .expect(async () => {
+              const database = mongoClient.db(mikroOrmConfig.dbName);
+
+              const wishesDb: WishEntity[] = await database
+                .collection('wishes')
+                .find()
+                .toArray();
+
+              expect(wishesDb).toHaveLength(4);
+            });
+        });
+
+        it(`imageUrls must be an array`, () => {
+          const id = seed.publicWish_1._id.toString();
+          return request(app.getHttpServer())
+            .patch(`/wishes/${id}`)
+            .send({
+              id,
+              title,
+              description,
+              urls,
+              imageUrls: 'https://www.example.com/1.jpg',
+              categories,
+            } as unknown as UpdateWishDto)
+            .auth(accessTokenBasicUser, { type: 'bearer' })
+            .expect(400)
+            .expect(({ body }) =>
+              expect(
+                (body.message as string[]).some((m) =>
+                  m.match(/imageUrls must be an array/i),
+                ),
+              ).toBeTruthy(),
+            )
+            .expect(async () => {
+              const database = mongoClient.db(mikroOrmConfig.dbName);
+
+              const wishesDb: WishEntity[] = await database
+                .collection('wishes')
+                .find()
+                .toArray();
+
+              expect(wishesDb).toHaveLength(4);
+            });
+        });
+
+        it(`imageUrls have so many elements`, () => {
+          const id = seed.publicWish_1._id.toString();
+          return request(app.getHttpServer())
+            .patch(`/wishes/${id}`)
+            .send({
+              id,
+              title,
+              description,
+              urls,
+              imageUrls: Array(Wish.MaxUrls + 1).fill(
+                'https://www.example.com',
+              ),
+              categories,
+            } as UpdateWishDto)
+            .auth(accessTokenBasicUser, { type: 'bearer' })
+            .expect(400)
+            .expect(({ body }) =>
+              expect(
+                (body.message as string[]).some((m) =>
+                  m.match(/imageUrls must contain not more than /i),
+                ),
+              ).toBeTruthy(),
+            )
+            .expect(async () => {
+              const database = mongoClient.db(mikroOrmConfig.dbName);
+
+              const wishesDb: WishEntity[] = await database
+                .collection('wishes')
+                .find()
+                .toArray();
+
+              expect(wishesDb).toHaveLength(4);
+            });
+        });
+
+        it(`each value in imageUrls must be a string`, () => {
+          const id = seed.publicWish_1._id.toString();
+          return request(app.getHttpServer())
+            .patch(`/wishes/${id}`)
+            .send({
+              id,
+              title,
+              description,
+              urls,
+              imageUrls: [
+                'https://www.example.com/1.jpg',
+                1000,
+                'https://www.example.com/1.jpg',
+              ],
+              categories,
+            } as UpdateWishDto)
+            .auth(accessTokenBasicUser, { type: 'bearer' })
+            .expect(400)
+            .expect(({ body }) =>
+              expect(
+                (body.message as string[]).some((m) =>
+                  m.match(/each value in imageUrls must be a string/i),
+                ),
+              ).toBeTruthy(),
+            )
+            .expect(async () => {
+              const database = mongoClient.db(mikroOrmConfig.dbName);
+
+              const wishesDb: WishEntity[] = await database
+                .collection('wishes')
+                .find()
+                .toArray();
+
+              expect(wishesDb).toHaveLength(4);
+            });
+        });
+
+        it(`categories must be an array`, () => {
+          const id = seed.publicWish_1._id.toString();
+          return request(app.getHttpServer())
+            .patch(`/wishes/${id}`)
+            .send({
+              id,
+              title,
+              description,
+              urls,
+              imageUrls,
+              categories: 'new category',
+            } as unknown as UpdateWishDto)
+            .auth(accessTokenBasicUser, { type: 'bearer' })
+            .expect(400)
+            .expect(({ body }) =>
+              expect(
+                (body.message as string[]).some((m) =>
+                  m.match(/categories must be an array/i),
+                ),
+              ).toBeTruthy(),
+            )
+            .expect(async () => {
+              const database = mongoClient.db(mikroOrmConfig.dbName);
+
+              const wishesDb: WishEntity[] = await database
+                .collection('wishes')
+                .find()
+                .toArray();
+
+              expect(wishesDb).toHaveLength(4);
+            });
+        });
+
+        it(`categories have so many elements`, () => {
+          const id = seed.publicWish_1._id.toString();
+          return request(app.getHttpServer())
+            .patch(`/wishes/${id}`)
+            .send({
+              id,
+              title,
+              description,
+              urls,
+              imageUrls,
+              categories: Array(Wish.MaxCategories + 1).fill('new category'),
+            } as UpdateWishDto)
+            .auth(accessTokenBasicUser, { type: 'bearer' })
+            .expect(400)
+            .expect(({ body }) =>
+              expect(
+                (body.message as string[]).some((m) =>
+                  m.match(/categories must contain not more than /i),
+                ),
+              ).toBeTruthy(),
+            )
+            .expect(async () => {
+              const database = mongoClient.db(mikroOrmConfig.dbName);
+
+              const wishesDb: WishEntity[] = await database
+                .collection('wishes')
+                .find()
+                .toArray();
+
+              expect(wishesDb).toHaveLength(4);
+            });
+        });
+
+        it(`each value in categories must be a string`, () => {
+          const id = seed.publicWish_1._id.toString();
+          return request(app.getHttpServer())
+            .patch(`/wishes/${id}`)
+            .send({
+              id,
+              title,
+              description,
+              urls,
+              imageUrls,
+              categories: ['new category 1', 1000, 'new category 2'],
+            } as UpdateWishDto)
+            .auth(accessTokenBasicUser, { type: 'bearer' })
+            .expect(400)
+            .expect(({ body }) =>
+              expect(
+                (body.message as string[]).some((m) =>
+                  m.match(/each value in categories must be a string/i),
+                ),
+              ).toBeTruthy(),
+            )
+            .expect(async () => {
+              const database = mongoClient.db(mikroOrmConfig.dbName);
+
+              const wishesDb: WishEntity[] = await database
+                .collection('wishes')
+                .find()
+                .toArray();
+
+              expect(wishesDb).toHaveLength(4);
+            });
+        });
+
+        it(`ids are different`, () => {
+          const id = 'wish-id-1';
+          return request(app.getHttpServer())
+            .patch(`/wishes/${id}`)
+            .send({
+              id: 'wish-id-2',
+              title,
+              description,
+              urls,
+              imageUrls,
+              categories,
+            } as UpdateWishDto)
+            .auth(accessTokenBasicUser, { type: 'bearer' })
+            .expect(400)
+            .expect(({ body }) =>
+              expect(body.message).toMatch(/Id are different/i),
+            )
+            .expect(async () => {
+              const database = mongoClient.db(mikroOrmConfig.dbName);
+
+              const wishesDb: WishEntity[] = await database
+                .collection('wishes')
+                .find()
+                .toArray();
+
+              expect(wishesDb).toHaveLength(4);
+            });
+        });
+      });
+
+      describe(`should return 200`, () => {
+        it(`wish updated successfully`, () => {
+          const id = seed.publicWish_1._id.toString();
+          return request(app.getHttpServer())
+            .patch(`/wishes/${id}`)
+            .send({
+              id,
+              title,
+              description,
+              urls,
+              imageUrls,
+              categories,
+            } as UpdateWishDto)
+            .auth(accessTokenBasicUser, { type: 'bearer' })
+            .expect(200)
+            .expect(async () => {
+              const database = mongoClient.db(mikroOrmConfig.dbName);
+
+              const wishesDb: WishEntity[] = await database
+                .collection('wishes')
+                .find()
+                .toArray();
+
+              expect(wishesDb).toHaveLength(4);
+
+              const wishUpdated = wishesDb.find((u) => u._id.toString() === id);
+
+              expect(wishUpdated).toBeTruthy();
+
+              expect(wishUpdated._id.toString()).toBe(id);
+              expect(wishUpdated.wisher.toString()).toBe(
+                seed.basicUser._id.toString(),
+              );
+              expect(wishUpdated.title).toBe(title);
+              expect(wishUpdated.description).toBe(description);
+              expect(wishUpdated.privacyLevel).toBe(
+                seed.publicWish_1.privacyLevel,
+              );
+              expect(wishUpdated.createdAt).toBeTruthy();
+              expect(wishUpdated.createdAt.getTime()).toBe(
+                seed.publicWish_1.createdAt.getTime(),
+              );
+              expect(wishUpdated.updatedAt).toBeTruthy();
+              expect(wishUpdated.updatedAt.getTime()).toBeGreaterThan(
+                seed.publicWish_1.updatedAt.getTime(),
+              );
+              expect(wishUpdated.urls).toHaveLength(urls.length);
+              expect(wishUpdated.imageUrls).toHaveLength(imageUrls.length);
+              expect(wishUpdated.categories).toHaveLength(categories.length);
+
+              for (let i = 0; i < urls.length; i++)
+                expect(wishUpdated.urls[i]).toBe(urls[i]);
+
+              for (let i = 0; i < imageUrls.length; i++)
+                expect(wishUpdated.imageUrls[i]).toBe(imageUrls[i]);
+
+              for (let i = 0; i < categories.length; i++)
+                expect(wishUpdated.categories[i]).toBe(categories[i]);
+
+              expect(wishUpdated.deletedAt).toBeNull();
+              expect(wishUpdated.startedAt.getTime()).toBe(
+                seed.publicWish_1.startedAt.getTime(),
+              );
+              expect(wishUpdated.completedAt.getTime()).toBe(
+                seed.publicWish_1.completedAt.getTime(),
+              );
+            })
+            .expect(async () => {
+              const database = mongoClient.db(mikroOrmConfig.dbName);
+
+              const wishersDb: WisherEntity[] = await database
+                .collection('wishers')
+                .find()
+                .toArray();
+
+              expect(wishersDb).toHaveLength(2);
+
+              const wisher = wishersDb.find(
+                (u) =>
+                  u._id.toString() === seed.basicUserAsWisher._id.toString(),
+              );
+
+              expect(wisher).toBeTruthy();
+            })
+            .expect(async () => {
+              const database = mongoClient.db(mikroOrmConfig.dbName);
+
+              const wishStagesDb: WishStageEntity[] = await database
+                .collection('wish-stages')
+                .find()
+                .toArray();
+
+              expect(wishStagesDb).toHaveLength(5);
+
+              const wishStage1 = wishStagesDb.find(
+                (u) =>
+                  u._id.toString() ===
+                  seed.wishStage_1_of_PublicWish_1._id.toString(),
+              );
+              assertWishStage(wishStage1, seed.wishStage_1_of_PublicWish_1);
+
+              const wishStage2 = wishStagesDb.find(
+                (u) =>
+                  u._id.toString() ===
+                  seed.wishStage_2_of_PublicWish_1._id.toString(),
+              );
+              assertWishStage(wishStage2, seed.wishStage_2_of_PublicWish_1);
+            });
+        });
+      });
+    });
+  });
+
   describe('/wishes/public', () => {
     describe('GET', () => {
       describe('should return 200', () => {
@@ -1335,4 +2081,24 @@ function assertOutputWishStage(
 
   for (let i = 0; i < wishStageDb.imageUrls.length; i++)
     expect(outputWishStage.imageUrls[i]).toBe(wishStageDb.imageUrls[i]);
+}
+
+function assertWishStage(
+  wishStageEntity: WishStageEntity,
+  wishStageDb: WishStageDb,
+): void {
+  expect(wishStageEntity).toBeTruthy();
+
+  expect(wishStageEntity._id.toString()).toBe(wishStageDb._id.toString());
+  expect(wishStageEntity.title).toBe(wishStageDb.title);
+  expect(wishStageEntity.description).toBe(wishStageDb.description);
+  expect(wishStageEntity.createdAt.getTime()).toBe(
+    wishStageDb.createdAt.getTime(),
+  );
+
+  for (let i = 0; i < wishStageDb.urls.length; i++)
+    expect(wishStageEntity.urls[i]).toBe(wishStageDb.urls[i]);
+
+  for (let i = 0; i < wishStageDb.imageUrls.length; i++)
+    expect(wishStageEntity.imageUrls[i]).toBe(wishStageDb.imageUrls[i]);
 }
