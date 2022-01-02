@@ -73,6 +73,125 @@ describe('WishesController (e2e)', () => {
   });
 
   describe('/wishes', () => {
+    describe('GET', () => {
+      describe(`should return 401`, () => {
+        it(`unauthenticated request`, () => {
+          return request(app.getHttpServer())
+            .get('/wishes')
+            .expect(401)
+            .expect(async () => {
+              const database = mongoClient.db(mikroOrmConfig.dbName);
+
+              const wishesDb: WishEntity[] = await database
+                .collection('wishes')
+                .find()
+                .toArray();
+
+              expect(wishesDb).toHaveLength(4);
+            });
+        });
+      });
+
+      describe(`should return 403`, () => {
+        it(`wish does not belong to authenticated user`, () => {
+          return request(app.getHttpServer())
+            .get('/wishes')
+            .auth(accessTokenBasicUser, { type: 'bearer' })
+            .expect(403)
+            .expect(async () => {
+              const database = mongoClient.db(mikroOrmConfig.dbName);
+
+              const wishesDb: WishEntity[] = await database
+                .collection('wishes')
+                .find()
+                .toArray();
+
+              expect(wishesDb).toHaveLength(4);
+            });
+        });
+      });
+
+      describe('should return 200', () => {
+        it(`should get the public wishes`, () => {
+          return request(app.getHttpServer())
+            .get('/wishes')
+            .auth(accessTokenModeratorUser, { type: 'bearer' })
+            .expect(200)
+            .expect('Content-Type', /json/)
+            .expect(({ body }) => {
+              const outputWishes = body as OutputWishDto[];
+
+              expect(outputWishes).toHaveLength(4);
+
+              const outputWish_1 = outputWishes.find(
+                (w) => w.id === seed.publicWish_1._id.toString(),
+              );
+              assertOutputWish(outputWish_1, seed.publicWish_1);
+              expect(outputWish_1.stages).toHaveLength(2);
+              const outputWishStage_1 = outputWish_1.stages.find(
+                (ws) =>
+                  ws.id === seed.wishStage_1_of_PublicWish_1._id.toString(),
+              );
+              assertOutputWishStage(
+                outputWishStage_1,
+                seed.wishStage_1_of_PublicWish_1,
+              );
+              const outputWishStage_2 = outputWish_1.stages.find(
+                (ws) =>
+                  ws.id === seed.wishStage_2_of_PublicWish_1._id.toString(),
+              );
+              assertOutputWishStage(
+                outputWishStage_2,
+                seed.wishStage_2_of_PublicWish_1,
+              );
+
+              const outputWish_2 = outputWishes.find(
+                (w) => w.id === seed.publicWish_2._id.toString(),
+              );
+              assertOutputWish(outputWish_2, seed.publicWish_2);
+              expect(outputWish_2.stages).toHaveLength(1);
+              const outputWishStage_3 = outputWish_1.stages.find(
+                (ws) =>
+                  ws.id === seed.wishStage_2_of_PublicWish_1._id.toString(),
+              );
+              assertOutputWishStage(
+                outputWishStage_3,
+                seed.wishStage_2_of_PublicWish_1,
+              );
+
+              const outputWish_3 = outputWishes.find(
+                (w) => w.id === seed.justFriendsWish._id.toString(),
+              );
+              assertOutputWish(outputWish_3, seed.justFriendsWish);
+              expect(outputWish_3.stages).toHaveLength(2);
+
+              const outputWishStage_4 = outputWish_3.stages.find(
+                (ws) =>
+                  ws.id === seed.wishStage_1_of_JustFriendsWish._id.toString(),
+              );
+              assertOutputWishStage(
+                outputWishStage_4,
+                seed.wishStage_1_of_JustFriendsWish,
+              );
+              const outputWishStage_5 = outputWish_3.stages.find(
+                (ws) =>
+                  ws.id === seed.wishStage_2_of_JustFriendsWish._id.toString(),
+              );
+              assertOutputWishStage(
+                outputWishStage_5,
+                seed.wishStage_2_of_JustFriendsWish,
+              );
+
+              const outputWish_4 = outputWishes.find(
+                (w) => w.id === seed.onlyMeWish._id.toString(),
+              );
+              assertOutputWish(outputWish_4, seed.onlyMeWish);
+              expect(outputWish_4.stages).toHaveLength(0);
+            });
+        });
+      });
+    });
+
     describe('POST', () => {
       const id = new ObjectId().toString();
       const title = 'Brand new wish';
