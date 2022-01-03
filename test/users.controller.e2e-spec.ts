@@ -51,8 +51,9 @@ describe('UsersController (e2e)', () => {
     mongoClient = await MongoClient.connect(mikroOrmConfig.clientUrl, {
       useUnifiedTopology: true,
     });
+    const database = mongoClient.db(mikroOrmConfig.dbName);
 
-    await dropDatabase(mongoClient, mikroOrmConfig.dbName);
+    await dropDatabase(database);
   });
 
   beforeEach(async () => {
@@ -65,7 +66,8 @@ describe('UsersController (e2e)', () => {
   });
 
   afterEach(async () => {
-    await dropDatabase(mongoClient, mikroOrmConfig.dbName);
+    const database = mongoClient.db(mikroOrmConfig.dbName);
+    await dropDatabase(database);
   });
 
   afterAll(async () => {
