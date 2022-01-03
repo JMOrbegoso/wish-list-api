@@ -31,6 +31,9 @@ export class CreateUserDto {
   @IsNotEmpty()
   @MaxLength(Username.MaxLength)
   @MinLength(Username.MinLength)
+  @Matches(Username.Regex, {
+    message: 'username contains invalid characters.',
+  })
   username: string;
 
   @IsString()
