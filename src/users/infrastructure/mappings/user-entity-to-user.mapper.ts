@@ -15,7 +15,8 @@ import {
   Role,
   Username,
 } from '../../domain/value-objects';
-import { UserEntity } from '../persistence/entities';
+import { RefreshTokenEntity, UserEntity } from '../persistence/entities';
+import { refreshTokenEntityToRefreshToken } from '.';
 
 export function userEntityToUser(userEntity: UserEntity): User {
   const id = UniqueId.create(userEntity.id);
@@ -39,6 +40,9 @@ export function userEntityToUser(userEntity: UserEntity): User {
     ? MillisecondsDate.createFromDate(userEntity.deletedAt)
     : null;
   const roles = userEntity.roles.map((r) => Role.create(r));
+  const refreshTokens = userEntity.refreshTokens
+    .toArray()
+    .map((rt: RefreshTokenEntity) => refreshTokenEntityToRefreshToken(rt));
 
   return User.create(
     id,
@@ -55,6 +59,7 @@ export function userEntityToUser(userEntity: UserEntity): User {
     updatedAt,
     biography,
     roles,
+    refreshTokens,
     profilePicture,
     deletedAt,
   );

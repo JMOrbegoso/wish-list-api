@@ -14,7 +14,7 @@ export class GetUserByIdHandler implements IQueryHandler<GetUserByIdQuery> {
   async execute(query: GetUserByIdQuery): Promise<OutputUserDto> {
     const id = UniqueId.create(query.id);
 
-    const user: User = await this.userRepository.getOne(id);
+    const user: User = await this.userRepository.getOneById(id);
 
     if (!user) throw new NotFoundException();
 

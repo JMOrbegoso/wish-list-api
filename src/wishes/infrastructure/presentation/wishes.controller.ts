@@ -12,18 +12,9 @@ import {
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { AuthGuard } from '@nestjs/passport';
 import {
-  ApiBadRequestResponse,
-  ApiBearerAuth,
-  ApiBody,
-  ApiCreatedResponse,
-  ApiForbiddenResponse,
-  ApiNotFoundResponse,
-  ApiOkResponse,
-  ApiTags,
-  ApiUnauthorizedResponse,
-} from '@nestjs/swagger';
-import {
   Ownership,
+  RequestIds,
+  RequestIdsKey,
   RoleOwnership,
 } from '../../../shared/infrastructure/presentation/decorators';
 import { SameIdRequestGuard } from '../../../shared/infrastructure/presentation/guards';
@@ -38,13 +29,10 @@ import {
   ChangeWishPrivacyLevelCommand,
   CompleteWishCommand,
   CreateWishCommand,
-  CreateWishStageCommand,
   DeleteWishCommand,
-  DeleteWishStageCommand,
   UncompleteWishCommand,
   UndeleteWishCommand,
   UpdateWishCommand,
-  UpdateWishStageCommand,
 } from '../../application/commands';
 import { OutputWishDto } from '../../application/dtos';
 import {
@@ -57,31 +45,16 @@ import {
   ChangeWishPrivacyLevelDto,
   CompleteWishDto,
   CreateWishDto,
-  CreateWishStageDto,
   UpdateWishDto,
-  UpdateWishStageDto,
   WishIdDto,
-  WishStageIdDto,
   WisherIdDto,
 } from '../dto';
-import {
-  WishOwnershipGuard,
-  WishOwnershipKey,
-  WishStageOwnershipGuard,
-  WishStageOwnershipKey,
-} from './guards';
+import { WishOwnershipGuard, WishOwnershipKey } from './guards';
 
-@ApiTags('WishesController')
 @Controller('wishes')
 export class WishesController {
   constructor(private commandBus: CommandBus, private queryBus: QueryBus) {}
 
-  @ApiBearerAuth()
-  @ApiOkResponse({ type: [OutputWishDto], description: 'Wishes found.' })
-  @ApiUnauthorizedResponse({ description: 'User is not authenticated.' })
-  @ApiForbiddenResponse({
-    description: 'This resource is prohibited for the authenticated user.',
-  })
   @SetMetadata<string, Role[]>(RolesKey, [Role.admin(), Role.moderator()])
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Get()
@@ -90,19 +63,12 @@ export class WishesController {
     return await this.queryBus.execute(query);
   }
 
-  @ApiOkResponse({ type: [OutputWishDto], description: 'Wishes found.' })
   @Get('/public')
   async getPublicWishes(): Promise<OutputWishDto[]> {
     const query = new GetPublicWishesQuery();
     return await this.queryBus.execute(query);
   }
 
-  @ApiBearerAuth()
-  @ApiOkResponse({ type: [OutputWishDto], description: 'Wishes found.' })
-  @ApiUnauthorizedResponse({ description: 'User is not authenticated.' })
-  @ApiForbiddenResponse({
-    description: 'This resource is prohibited for the authenticated user.',
-  })
   @SetMetadata<string, RoleOwnership>(RoleOwnershipKey, {
     ownerships: [
       { role: Role.admin(), ownership: Ownership.Any },
@@ -123,14 +89,6 @@ export class WishesController {
     return await this.queryBus.execute(query);
   }
 
-  @ApiBearerAuth()
-  @ApiOkResponse({ type: OutputWishDto, description: 'Wish found.' })
-  @ApiUnauthorizedResponse({ description: 'User is not authenticated.' })
-  @ApiForbiddenResponse({
-    description: 'This resource is prohibited for the authenticated user.',
-  })
-  @ApiNotFoundResponse({ description: 'Wish not found.' })
-  @ApiBadRequestResponse({ description: 'Something went wrong.' })
   @SetMetadata<string, RoleOwnership>(WishOwnershipKey, {
     ownerships: [
       { role: Role.admin(), ownership: Ownership.Any },
@@ -149,14 +107,6 @@ export class WishesController {
     return await this.queryBus.execute(query);
   }
 
-  @ApiBearerAuth()
-  @ApiBody({ required: true, type: CreateWishDto })
-  @ApiCreatedResponse({ description: 'Wish created successfully.' })
-  @ApiUnauthorizedResponse({ description: 'User is not authenticated.' })
-  @ApiForbiddenResponse({
-    description: 'This resource is prohibited for the authenticated user.',
-  })
-  @ApiBadRequestResponse({ description: 'Something went wrong.' })
   @SetMetadata<string, RoleOwnership>(RoleOwnershipKey, {
     ownerships: [
       { role: Role.admin(), ownership: Ownership.Own },
@@ -180,18 +130,15 @@ export class WishesController {
       dto.urls,
       dto.imageUrls,
       dto.categories,
+      dto.startedAt,
     );
     await this.commandBus.execute(command);
   }
 
-  @ApiBearerAuth()
-  @ApiBody({ required: true, type: UpdateWishDto })
-  @ApiCreatedResponse({ description: 'Wish updated successfully.' })
-  @ApiUnauthorizedResponse({ description: 'User is not authenticated.' })
-  @ApiForbiddenResponse({
-    description: 'This resource is prohibited for the authenticated user.',
+  @SetMetadata<string, RequestIds>(RequestIdsKey, {
+    bodyIdPropertyName: 'id',
+    paramsIdPropertyName: 'id',
   })
-  @ApiBadRequestResponse({ description: 'Something went wrong.' })
   @SetMetadata<string, RoleOwnership>(WishOwnershipKey, {
     ownerships: [
       { role: Role.admin(), ownership: Ownership.Any },
@@ -204,8 +151,11 @@ export class WishesController {
     },
   })
   @UseGuards(AuthGuard('jwt'), SameIdRequestGuard, WishOwnershipGuard)
-  @Patch()
-  async update(@Body() dto: UpdateWishDto): Promise<void> {
+  @Patch(':id')
+  async update(
+    @Param() params: WishIdDto,
+    @Body() dto: UpdateWishDto,
+  ): Promise<void> {
     const command = new UpdateWishCommand(
       dto.id,
       dto.title,
@@ -217,14 +167,6 @@ export class WishesController {
     await this.commandBus.execute(command);
   }
 
-  @ApiBearerAuth()
-  @ApiOkResponse({ description: 'Wish deleted successfully.' })
-  @ApiUnauthorizedResponse({ description: 'User is not authenticated.' })
-  @ApiForbiddenResponse({
-    description: 'This resource is prohibited for the authenticated user.',
-  })
-  @ApiNotFoundResponse({ description: 'Wish not found.' })
-  @ApiBadRequestResponse({ description: 'Something went wrong.' })
   @SetMetadata<string, RoleOwnership>(WishOwnershipKey, {
     ownerships: [
       { role: Role.admin(), ownership: Ownership.Any },
@@ -243,14 +185,6 @@ export class WishesController {
     await this.commandBus.execute(command);
   }
 
-  @ApiBearerAuth()
-  @ApiOkResponse({ description: 'Wish undeleted successfully.' })
-  @ApiUnauthorizedResponse({ description: 'User is not authenticated.' })
-  @ApiForbiddenResponse({
-    description: 'This resource is prohibited for the authenticated user.',
-  })
-  @ApiNotFoundResponse({ description: 'Wish not found.' })
-  @ApiBadRequestResponse({ description: 'Something went wrong.' })
   @SetMetadata<string, RoleOwnership>(WishOwnershipKey, {
     ownerships: [
       { role: Role.admin(), ownership: Ownership.Any },
@@ -269,14 +203,6 @@ export class WishesController {
     await this.commandBus.execute(command);
   }
 
-  @ApiBearerAuth()
-  @ApiOkResponse({ description: 'Wish completed successfully.' })
-  @ApiUnauthorizedResponse({ description: 'User is not authenticated.' })
-  @ApiForbiddenResponse({
-    description: 'This resource is prohibited for the authenticated user.',
-  })
-  @ApiNotFoundResponse({ description: 'Wish not found.' })
-  @ApiBadRequestResponse({ description: 'Something went wrong.' })
   @SetMetadata<string, RoleOwnership>(WishOwnershipKey, {
     ownerships: [
       { role: Role.admin(), ownership: Ownership.Own },
@@ -298,14 +224,6 @@ export class WishesController {
     await this.commandBus.execute(command);
   }
 
-  @ApiBearerAuth()
-  @ApiOkResponse({ description: 'Wish uncompleted successfully.' })
-  @ApiUnauthorizedResponse({ description: 'User is not authenticated.' })
-  @ApiForbiddenResponse({
-    description: 'This resource is prohibited for the authenticated user.',
-  })
-  @ApiNotFoundResponse({ description: 'Wish not found.' })
-  @ApiBadRequestResponse({ description: 'Something went wrong.' })
   @SetMetadata<string, RoleOwnership>(WishOwnershipKey, {
     ownerships: [
       { role: Role.admin(), ownership: Ownership.Own },
@@ -324,16 +242,6 @@ export class WishesController {
     await this.commandBus.execute(command);
   }
 
-  @ApiBearerAuth()
-  @ApiOkResponse({
-    description: 'Wish privacy level changed successfully.',
-  })
-  @ApiUnauthorizedResponse({ description: 'User is not authenticated.' })
-  @ApiForbiddenResponse({
-    description: 'This resource is prohibited for the authenticated user.',
-  })
-  @ApiNotFoundResponse({ description: 'Wish not found.' })
-  @ApiBadRequestResponse({ description: 'Something went wrong.' })
   @SetMetadata<string, RoleOwnership>(WishOwnershipKey, {
     ownerships: [
       { role: Role.admin(), ownership: Ownership.Own },
@@ -354,97 +262,6 @@ export class WishesController {
       params.id,
       params.privacyLevel,
     );
-    await this.commandBus.execute(command);
-  }
-
-  @ApiBearerAuth()
-  @ApiBody({ required: true, type: CreateWishStageDto })
-  @ApiCreatedResponse({ description: 'Wish stage created successfully.' })
-  @ApiUnauthorizedResponse({ description: 'User is not authenticated.' })
-  @ApiForbiddenResponse({
-    description: 'This resource is prohibited for the authenticated user.',
-  })
-  @ApiBadRequestResponse({ description: 'Something went wrong.' })
-  @SetMetadata<string, RoleOwnership>(WishStageOwnershipKey, {
-    ownerships: [
-      { role: Role.admin(), ownership: Ownership.Own },
-      { role: Role.moderator(), ownership: Ownership.Own },
-      { role: Role.basic(), ownership: Ownership.Own },
-    ],
-    idProperty: {
-      target: 'body',
-      name: 'wishStageId',
-    },
-  })
-  @UseGuards(AuthGuard('jwt'), WishStageOwnershipGuard)
-  @Post('stage')
-  async createWishStage(@Body() dto: CreateWishStageDto): Promise<void> {
-    const command = new CreateWishStageCommand(
-      dto.wishStageId,
-      dto.id,
-      dto.title,
-      dto.description,
-      dto.urls,
-      dto.imageUrls,
-    );
-    await this.commandBus.execute(command);
-  }
-
-  @ApiBearerAuth()
-  @ApiBody({ required: true, type: UpdateWishStageDto })
-  @ApiCreatedResponse({ description: 'Wish stage updated successfully.' })
-  @ApiUnauthorizedResponse({ description: 'User is not authenticated.' })
-  @ApiForbiddenResponse({
-    description: 'This resource is prohibited for the authenticated user.',
-  })
-  @ApiBadRequestResponse({ description: 'Something went wrong.' })
-  @SetMetadata<string, RoleOwnership>(WishStageOwnershipKey, {
-    ownerships: [
-      { role: Role.admin(), ownership: Ownership.Any },
-      { role: Role.moderator(), ownership: Ownership.Any },
-      { role: Role.basic(), ownership: Ownership.Own },
-    ],
-    idProperty: {
-      target: 'body',
-      name: 'wishStageId',
-    },
-  })
-  @UseGuards(AuthGuard('jwt'), SameIdRequestGuard, WishStageOwnershipGuard)
-  @Patch('stage')
-  async updateWishStage(@Body() dto: UpdateWishStageDto): Promise<void> {
-    const command = new UpdateWishStageCommand(
-      dto.wishStageId,
-      dto.title,
-      dto.description,
-      dto.urls,
-      dto.imageUrls,
-    );
-    await this.commandBus.execute(command);
-  }
-
-  @ApiBearerAuth()
-  @ApiOkResponse({ description: 'Wish stage deleted successfully.' })
-  @ApiUnauthorizedResponse({ description: 'User is not authenticated.' })
-  @ApiForbiddenResponse({
-    description: 'This resource is prohibited for the authenticated user.',
-  })
-  @ApiNotFoundResponse({ description: 'Wish stage not found.' })
-  @ApiBadRequestResponse({ description: 'Something went wrong.' })
-  @SetMetadata<string, RoleOwnership>(WishStageOwnershipKey, {
-    ownerships: [
-      { role: Role.admin(), ownership: Ownership.Any },
-      { role: Role.moderator(), ownership: Ownership.Any },
-      { role: Role.basic(), ownership: Ownership.Own },
-    ],
-    idProperty: {
-      target: 'params',
-      name: 'id',
-    },
-  })
-  @UseGuards(AuthGuard('jwt'), WishStageOwnershipGuard)
-  @Delete('stage/:wishStageId')
-  async deleteWishStage(@Param() params: WishStageIdDto): Promise<void> {
-    const command = new DeleteWishStageCommand(params.wishStageId);
     await this.commandBus.execute(command);
   }
 }

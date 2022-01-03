@@ -35,7 +35,7 @@ export class CreateWishStageHandler
     if (wishStageExist) throw new BadRequestException('Id already in use.');
 
     // Check if the wish exist
-    const wish = await this.wishRepository.getOne(wishId);
+    const wish = await this.wishRepository.getOneById(wishId);
     if (!wish) throw new NotFoundException();
 
     // Check if the wish is deleted

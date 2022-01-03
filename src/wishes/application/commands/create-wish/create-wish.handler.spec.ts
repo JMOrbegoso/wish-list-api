@@ -16,6 +16,7 @@ const commands = [
     [],
     [],
     [],
+    null,
   ),
   new CreateWishCommand(
     'id 1',
@@ -26,6 +27,7 @@ const commands = [
     ['https://www.example.com', 'https://www.example.net'],
     ['https://www.example.com/1.jpg', 'https://www.example.net/1.jpg'],
     [],
+    undefined,
   ),
   new CreateWishCommand(
     'id 2',
@@ -36,6 +38,7 @@ const commands = [
     [],
     ['https://www.example.com/2.jpg', 'https://www.example.net/2.jpg'],
     ['tech', 'tech 2'],
+    1000000000,
   ),
 ];
 
@@ -49,7 +52,7 @@ describe('wishes', () => {
             // Arrange
             const wishRepository = {} as MockedObject<WishRepository>;
             const userRepository = {
-              getOne: jest.fn().mockReturnValue(false),
+              getOneById: jest.fn().mockReturnValue(false),
             } as MockedObject<UserRepository>;
 
             const unitOfWork = {} as MockedObject<UnitOfWork>;
@@ -74,11 +77,11 @@ describe('wishes', () => {
           (command: CreateWishCommand) => {
             // Arrange
             const wishRepository = {
-              getOne: jest.fn().mockReturnValue(true),
+              getOneById: jest.fn().mockReturnValue(true),
             } as MockedObject<WishRepository>;
 
             const userRepository = {
-              getOne: jest.fn().mockReturnValue(true),
+              getOneById: jest.fn().mockReturnValue(true),
             } as MockedObject<UserRepository>;
 
             const unitOfWork = {} as MockedObject<UnitOfWork>;
@@ -102,11 +105,11 @@ describe('wishes', () => {
           (command: CreateWishCommand) => {
             // Arrange
             const wishRepository = {
-              getOne: jest.fn().mockReturnValue(true),
+              getOneById: jest.fn().mockReturnValue(true),
             } as MockedObject<WishRepository>;
 
             const userRepository = {
-              getOne: jest.fn().mockReturnValue(true),
+              getOneById: jest.fn().mockReturnValue(true),
             } as MockedObject<UserRepository>;
 
             const unitOfWork = {} as MockedObject<UnitOfWork>;
@@ -130,12 +133,12 @@ describe('wishes', () => {
           async (command: CreateWishCommand) => {
             // Arrange
             const wishRepository = {
-              getOne: jest.fn().mockReturnValue(null),
+              getOneById: jest.fn().mockReturnValue(null),
               add: jest.fn(),
             } as MockedObject<WishRepository>;
 
             const userRepository = {
-              getOne: jest.fn().mockReturnValue(true),
+              getOneById: jest.fn().mockReturnValue(true),
             } as MockedObject<UserRepository>;
 
             const unitOfWork = {

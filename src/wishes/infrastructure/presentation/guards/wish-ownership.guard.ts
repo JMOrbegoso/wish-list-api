@@ -1,4 +1,9 @@
-import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
+import {
+  CanActivate,
+  ExecutionContext,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { UniqueId } from '../../../../shared/domain/value-objects';
 import {
@@ -35,8 +40,9 @@ export class WishOwnershipGuard implements CanActivate {
       const id =
         request[wishOwnership.idProperty.target][wishOwnership.idProperty.name];
       const uniqueId = UniqueId.create(id);
-      const wish = await this.wishRepository.getOne(uniqueId);
-      if (request.user.id == wish.id.getId) return true;
+      const wish = await this.wishRepository.getOneById(uniqueId);
+      if (!wish) throw new NotFoundException();
+      if (request.user.id == wish.wisher.id.getId) return true;
     }
 
     return false;

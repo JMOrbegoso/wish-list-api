@@ -1,7 +1,11 @@
+import { Collection } from '@mikro-orm/core';
 import { User } from '../../domain/entities';
-import { UserEntity } from '../persistence/entities';
+import { RefreshTokenEntity, UserEntity } from '../persistence/entities';
 
-export function userToUserEntity(user: User): UserEntity {
+export function userToUserEntity(
+  user: User,
+  refreshTokenEntities: RefreshTokenEntity[],
+): UserEntity {
   const userEntity = new UserEntity();
 
   userEntity.id = user.id.getId;
@@ -22,6 +26,10 @@ export function userToUserEntity(user: User): UserEntity {
   userEntity.profilePicture = user.profilePicture?.getUrl ?? null;
   userEntity.deletedAt = user.deletedAt?.getDate ?? null;
   userEntity.roles = user.roles;
+  userEntity.refreshTokens = new Collection<RefreshTokenEntity>(
+    userEntity,
+    refreshTokenEntities,
+  );
 
   return userEntity;
 }

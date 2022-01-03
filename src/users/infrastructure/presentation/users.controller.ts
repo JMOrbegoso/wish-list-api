@@ -17,19 +17,6 @@ import {
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { AuthGuard } from '@nestjs/passport';
 import { FileInterceptor } from '@nestjs/platform-express';
-import {
-  ApiBadRequestResponse,
-  ApiBearerAuth,
-  ApiBody,
-  ApiConsumes,
-  ApiCreatedResponse,
-  ApiForbiddenResponse,
-  ApiNotFoundResponse,
-  ApiOkResponse,
-  ApiPayloadTooLargeResponse,
-  ApiTags,
-  ApiUnauthorizedResponse,
-} from '@nestjs/swagger';
 import { diskStorage } from 'multer';
 import { v4 as uuid } from 'uuid';
 import {
@@ -40,11 +27,7 @@ import {
 } from '../../../shared/infrastructure/presentation/decorators';
 import { SameIdRequestGuard } from '../../../shared/infrastructure/presentation/guards';
 import {
-  BlockUserCommand,
   CreateUserCommand,
-  DeleteUserCommand,
-  UnblockUserCommand,
-  UndeleteUserCommand,
   UpdateUserPasswordCommand,
   UpdateUserProfileCommand,
   UpdateUserProfilePictureCommand,
@@ -65,46 +48,30 @@ import {
   UserIdDto,
   UsernameDto,
 } from '../dtos';
-import {
-  createUserDtoToCreateUserCommand,
-  updateUserPasswordDtoToUpdateUserPasswordCommand,
-  updateUserProfileDtoToUpdateUserProfileCommand,
-} from '../mappings';
 import { RoleOwnershipGuard, RoleOwnershipKey } from './guards';
 
-@ApiTags('UsersController')
 @Controller('users')
 export class UsersController {
   constructor(private commandBus: CommandBus, private queryBus: QueryBus) {}
 
-  @ApiOkResponse({ type: [OutputUserDto], description: 'Users found.' })
   @Get()
   async getAllUsers(): Promise<OutputUserDto[]> {
     const query = new GetUsersQuery();
     return await this.queryBus.execute(query);
   }
 
-  @ApiOkResponse({ type: OutputUserDto, description: 'User found.' })
-  @ApiNotFoundResponse({ description: 'User not found.' })
-  @ApiBadRequestResponse({ description: 'Something went wrong.' })
   @Get(':id')
   async getUserById(@Param() params: UserIdDto): Promise<OutputUserDto> {
     const query = new GetUserByIdQuery(params.id);
     return await this.queryBus.execute(query);
   }
 
-  @ApiOkResponse({ type: OutputUserDto, description: 'User found.' })
-  @ApiNotFoundResponse({ description: 'User not found.' })
-  @ApiBadRequestResponse({ description: 'Something went wrong.' })
   @Get('email/:email')
   async getUserByEmail(@Param() params: UserEmailDto): Promise<OutputUserDto> {
     const query = new GetUserByEmailQuery(params.email);
     return await this.queryBus.execute(query);
   }
 
-  @ApiOkResponse({ type: OutputUserDto, description: 'User found.' })
-  @ApiNotFoundResponse({ description: 'User not found.' })
-  @ApiBadRequestResponse({ description: 'Something went wrong.' })
   @Get('username/:username')
   async getUserByUsername(
     @Param() params: UsernameDto,
@@ -113,24 +80,21 @@ export class UsersController {
     return await this.queryBus.execute(query);
   }
 
-  @ApiBody({ required: true, type: CreateUserDto })
-  @ApiCreatedResponse({ description: 'User created successfully.' })
-  @ApiBadRequestResponse({ description: 'Something went wrong.' })
   @Post()
   async register(@Body() dto: CreateUserDto): Promise<void> {
-    const command: CreateUserCommand = createUserDtoToCreateUserCommand(dto);
+    const command = new CreateUserCommand(
+      dto.id,
+      dto.email,
+      dto.username,
+      dto.password,
+      dto.firstName,
+      dto.lastName,
+      dto.birthday,
+      dto.biography,
+    );
     await this.commandBus.execute(command);
   }
 
-  @ApiBearerAuth()
-  @ApiBody({ required: true, type: UpdateUserProfileDto })
-  @ApiOkResponse({ description: 'User updated successfully.' })
-  @ApiUnauthorizedResponse({ description: 'User is not authenticated.' })
-  @ApiForbiddenResponse({
-    description: 'This resource is prohibited for the authenticated user.',
-  })
-  @ApiNotFoundResponse({ description: 'User not found.' })
-  @ApiBadRequestResponse({ description: 'Something went wrong.' })
   @SetMetadata<string, RequestIds>(RequestIdsKey, {
     bodyIdPropertyName: 'id',
     paramsIdPropertyName: 'id',
@@ -152,33 +116,16 @@ export class UsersController {
     @Param() params: UserIdDto,
     @Body() dto: UpdateUserProfileDto,
   ): Promise<void> {
-    const command: UpdateUserProfileCommand =
-      updateUserProfileDtoToUpdateUserProfileCommand(dto);
+    const command = new UpdateUserProfileCommand(
+      dto.id,
+      dto.firstName,
+      dto.lastName,
+      dto.birthday,
+      dto.biography,
+    );
     await this.commandBus.execute(command);
   }
 
-  @ApiBearerAuth()
-  @ApiConsumes('multipart/form-data')
-  @ApiBody({
-    schema: {
-      type: 'object',
-      properties: {
-        file: {
-          type: 'string',
-          format: 'binary',
-          description: 'User profile picture, in jpg format and 1 Mb max size.',
-        },
-      },
-    },
-  })
-  @ApiOkResponse({ description: 'User updated successfully.' })
-  @ApiUnauthorizedResponse({ description: 'User is not authenticated.' })
-  @ApiForbiddenResponse({
-    description: 'This resource is prohibited for the authenticated user.',
-  })
-  @ApiNotFoundResponse({ description: 'User not found.' })
-  @ApiPayloadTooLargeResponse({ description: 'File too large.' })
-  @ApiBadRequestResponse({ description: 'Something went wrong.' })
   @SetMetadata<string, RoleOwnership>(RoleOwnershipKey, {
     ownerships: [
       { role: Role.admin(), ownership: Ownership.Own },
@@ -223,14 +170,6 @@ export class UsersController {
     await this.commandBus.execute(command);
   }
 
-  @ApiBearerAuth()
-  @ApiOkResponse({ description: 'User profile picture successfully deleted.' })
-  @ApiUnauthorizedResponse({ description: 'User is not authenticated.' })
-  @ApiForbiddenResponse({
-    description: 'This resource is prohibited for the authenticated user.',
-  })
-  @ApiNotFoundResponse({ description: 'User not found.' })
-  @ApiBadRequestResponse({ description: 'Something went wrong.' })
   @SetMetadata<string, RoleOwnership>(RoleOwnershipKey, {
     ownerships: [
       { role: Role.admin(), ownership: Ownership.Any },
@@ -249,15 +188,6 @@ export class UsersController {
     await this.commandBus.execute(command);
   }
 
-  @ApiBearerAuth()
-  @ApiBody({ required: true, type: UpdateUserPasswordDto })
-  @ApiOkResponse({ description: 'User updated successfully.' })
-  @ApiUnauthorizedResponse({ description: 'User is not authenticated.' })
-  @ApiForbiddenResponse({
-    description: 'This resource is prohibited for the authenticated user.',
-  })
-  @ApiNotFoundResponse({ description: 'User not found.' })
-  @ApiBadRequestResponse({ description: 'Something went wrong.' })
   @SetMetadata<string, RequestIds>(RequestIdsKey, {
     bodyIdPropertyName: 'id',
     paramsIdPropertyName: 'id',
@@ -279,108 +209,7 @@ export class UsersController {
     @Param() params: UserIdDto,
     @Body() dto: UpdateUserPasswordDto,
   ): Promise<void> {
-    const command: UpdateUserPasswordCommand =
-      updateUserPasswordDtoToUpdateUserPasswordCommand(dto);
-    await this.commandBus.execute(command);
-  }
-
-  @ApiBearerAuth()
-  @ApiOkResponse({ description: 'User blocked successfully.' })
-  @ApiUnauthorizedResponse({ description: 'User is not authenticated.' })
-  @ApiForbiddenResponse({
-    description: 'This resource is prohibited for the authenticated user.',
-  })
-  @ApiNotFoundResponse({ description: 'User not found.' })
-  @ApiBadRequestResponse({ description: 'Something went wrong.' })
-  @SetMetadata<string, RoleOwnership>(RoleOwnershipKey, {
-    ownerships: [
-      { role: Role.admin(), ownership: Ownership.Any },
-      { role: Role.moderator(), ownership: Ownership.Any },
-    ],
-    idProperty: {
-      target: 'params',
-      name: 'id',
-    },
-  })
-  @UseGuards(AuthGuard('jwt'), RoleOwnershipGuard)
-  @Patch('block/:id')
-  async blockUser(@Param() params: UserIdDto): Promise<void> {
-    const command = new BlockUserCommand(params.id);
-    await this.commandBus.execute(command);
-  }
-
-  @ApiBearerAuth()
-  @ApiOkResponse({ description: 'User unblocked successfully.' })
-  @ApiUnauthorizedResponse({ description: 'User is not authenticated.' })
-  @ApiForbiddenResponse({
-    description: 'This resource is prohibited for the authenticated user.',
-  })
-  @ApiNotFoundResponse({ description: 'User not found.' })
-  @ApiBadRequestResponse({ description: 'Something went wrong.' })
-  @SetMetadata<string, RoleOwnership>(RoleOwnershipKey, {
-    ownerships: [
-      { role: Role.admin(), ownership: Ownership.Any },
-      { role: Role.moderator(), ownership: Ownership.Any },
-    ],
-    idProperty: {
-      target: 'params',
-      name: 'id',
-    },
-  })
-  @UseGuards(AuthGuard('jwt'), RoleOwnershipGuard)
-  @Patch('unblock/:id')
-  async unblockUser(@Param() params: UserIdDto): Promise<void> {
-    const command = new UnblockUserCommand(params.id);
-    await this.commandBus.execute(command);
-  }
-
-  @ApiBearerAuth()
-  @ApiOkResponse({ description: 'User deleted successfully.' })
-  @ApiUnauthorizedResponse({ description: 'User is not authenticated.' })
-  @ApiForbiddenResponse({
-    description: 'This resource is prohibited for the authenticated user.',
-  })
-  @ApiNotFoundResponse({ description: 'User not found.' })
-  @ApiBadRequestResponse({ description: 'Something went wrong.' })
-  @SetMetadata<string, RoleOwnership>(RoleOwnershipKey, {
-    ownerships: [
-      { role: Role.admin(), ownership: Ownership.Any },
-      { role: Role.moderator(), ownership: Ownership.Any },
-    ],
-    idProperty: {
-      target: 'params',
-      name: 'id',
-    },
-  })
-  @UseGuards(AuthGuard('jwt'), RoleOwnershipGuard)
-  @Delete(':id')
-  async deleteUser(@Param() params: UserIdDto): Promise<void> {
-    const command = new DeleteUserCommand(params.id);
-    await this.commandBus.execute(command);
-  }
-
-  @ApiBearerAuth()
-  @ApiOkResponse({ description: 'User undeleted successfully.' })
-  @ApiUnauthorizedResponse({ description: 'User is not authenticated.' })
-  @ApiForbiddenResponse({
-    description: 'This resource is prohibited for the authenticated user.',
-  })
-  @ApiNotFoundResponse({ description: 'User not found.' })
-  @ApiBadRequestResponse({ description: 'Something went wrong.' })
-  @SetMetadata<string, RoleOwnership>(RoleOwnershipKey, {
-    ownerships: [
-      { role: Role.admin(), ownership: Ownership.Any },
-      { role: Role.moderator(), ownership: Ownership.Any },
-    ],
-    idProperty: {
-      target: 'params',
-      name: 'id',
-    },
-  })
-  @UseGuards(AuthGuard('jwt'), RoleOwnershipGuard)
-  @Patch('undelete/:id')
-  async undeleteUser(@Param() params: UserIdDto): Promise<void> {
-    const command = new UndeleteUserCommand(params.id);
+    const command = new UpdateUserPasswordCommand(dto.id, dto.password);
     await this.commandBus.execute(command);
   }
 }

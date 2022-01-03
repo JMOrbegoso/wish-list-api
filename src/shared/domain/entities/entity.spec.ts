@@ -84,6 +84,21 @@ describe('shared', () => {
         );
 
         test.each(validValues)(
+          'comparing an entity with null should return false',
+          (uniqueId: MockedObject<UniqueId>, price: number) => {
+            // Arrange
+            const product = Product.create(uniqueId, price);
+
+            // Act
+            const result = product.equals(null);
+
+            // Assert
+            expect(result).toBeFalsy();
+            expect(uniqueId.equals.mock.calls).toHaveLength(0);
+          },
+        );
+
+        test.each(validValues)(
           'comparing two entities should call "equals" method from UniqueId',
           (uniqueId: MockedObject<UniqueId>, price: number) => {
             // Arrange

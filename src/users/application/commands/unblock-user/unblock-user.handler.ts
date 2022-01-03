@@ -16,7 +16,7 @@ export class UnblockUserHandler implements ICommandHandler<UnblockUserCommand> {
     const id = UniqueId.create(command.id);
 
     // Get user by id
-    const user = await this.userRepository.getOne(id);
+    const user = await this.userRepository.getOneById(id);
     if (!user) throw new NotFoundException();
 
     // Check if the user is not blocked
@@ -26,7 +26,7 @@ export class UnblockUserHandler implements ICommandHandler<UnblockUserCommand> {
     user.unblock();
 
     // Add the updated user to the users repository
-    this.userRepository.update(user);
+    await this.userRepository.update(user);
 
     // Save changes using Unit of Work
     await this.unitOfWork.commitChanges();

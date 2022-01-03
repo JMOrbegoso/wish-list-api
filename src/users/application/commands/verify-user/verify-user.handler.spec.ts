@@ -37,7 +37,133 @@ describe('users', () => {
         );
 
         test.each(commands)(
-          'should throw BadRequestException',
+          'should throw BadRequestException because the user is deleted',
+          (command: VerifyUserCommand) => {
+            // Arrange
+            const user = {
+              id: {
+                getId: 'id-0',
+              },
+              email: {
+                getEmail: 'email0@email.com',
+              },
+              username: {
+                getUsername: 'John_Doe_0',
+              },
+              passwordHash: {
+                getPasswordHash: 'hash0',
+              },
+              isVerified: false,
+              isBlocked: false,
+              isDeleted: true,
+              firstName: {
+                getFirstName: 'FirstName0',
+              },
+              lastName: {
+                getLastName: 'LastName0',
+              },
+              birthday: {
+                getMilliseconds: 1,
+              },
+              createdAt: {
+                getMilliseconds: 2,
+              },
+              updatedAt: {
+                getMilliseconds: 3,
+              },
+              biography: {
+                getBiography: 'A nice person 0.',
+              },
+              profilePicture: {
+                getUrl: 'https://www.example.com/0.jpg',
+              },
+              deletedAt: {
+                getMilliseconds: 4,
+              },
+            } as MockedObject<User>;
+
+            const userRepository = {
+              getOneByVerificationCode: jest.fn().mockReturnValue(user),
+            } as MockedObject<UserRepository>;
+
+            const unitOfWork = {} as MockedObject<UnitOfWork>;
+
+            const handler = new VerifyUserHandler(unitOfWork, userRepository);
+
+            // Act
+
+            // Assert
+            return expect(handler.execute(command)).rejects.toThrowError(
+              BadRequestException,
+            );
+          },
+        );
+
+        test.each(commands)(
+          'should throw BadRequestException because the user is blocked',
+          (command: VerifyUserCommand) => {
+            // Arrange
+            const user = {
+              id: {
+                getId: 'id-0',
+              },
+              email: {
+                getEmail: 'email0@email.com',
+              },
+              username: {
+                getUsername: 'John_Doe_0',
+              },
+              passwordHash: {
+                getPasswordHash: 'hash0',
+              },
+              isVerified: false,
+              isBlocked: true,
+              isDeleted: false,
+              firstName: {
+                getFirstName: 'FirstName0',
+              },
+              lastName: {
+                getLastName: 'LastName0',
+              },
+              birthday: {
+                getMilliseconds: 1,
+              },
+              createdAt: {
+                getMilliseconds: 2,
+              },
+              updatedAt: {
+                getMilliseconds: 3,
+              },
+              biography: {
+                getBiography: 'A nice person 0.',
+              },
+              profilePicture: {
+                getUrl: 'https://www.example.com/0.jpg',
+              },
+              deletedAt: {
+                getMilliseconds: 4,
+              },
+            } as MockedObject<User>;
+
+            const userRepository = {
+              getOneByVerificationCode: jest.fn().mockReturnValue(user),
+            } as MockedObject<UserRepository>;
+
+            const unitOfWork = {} as MockedObject<UnitOfWork>;
+
+            const handler = new VerifyUserHandler(unitOfWork, userRepository);
+
+            // Act
+
+            // Assert
+            return expect(handler.execute(command)).rejects.toThrowError(
+              BadRequestException,
+            );
+          },
+        );
+
+        test.each(commands)(
+          'should throw BadRequestException because the user is already verified',
           (command: VerifyUserCommand) => {
             // Arrange
             const user = {

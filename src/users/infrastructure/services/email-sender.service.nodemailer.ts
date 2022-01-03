@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Transporter, createTransport } from 'nodemailer';
+import config from '../../../config';
 import { EmailSenderService } from '../../application/services';
 
 @Injectable()
@@ -8,14 +9,14 @@ export class EmailSenderServiceNodemailer implements EmailSenderService {
 
   constructor() {
     const transporter = createTransport({
-      host: process.env.EMAIL_HOST,
-      service: process.env.EMAIL_SERVICE,
+      host: config.EMAIL_HOST,
+      service: config.EMAIL_SERVICE,
       port: 587,
       secure: true,
       logger: true,
       auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
+        user: config.EMAIL_USER,
+        pass: config.EMAIL_PASS,
       },
     });
 
@@ -31,7 +32,7 @@ export class EmailSenderServiceNodemailer implements EmailSenderService {
   async send(to: string, subject: string, body: string): Promise<boolean> {
     try {
       const mail = {
-        from: process.env.EMAIL_SENDER,
+        from: config.EMAIL_SENDER,
         to: to,
         subject: subject,
         text: body,

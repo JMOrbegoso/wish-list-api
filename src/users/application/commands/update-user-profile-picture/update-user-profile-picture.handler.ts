@@ -18,7 +18,7 @@ export class UpdateUserProfilePictureHandler
     const id = UniqueId.create(command.id);
 
     // Get user by id
-    const user = await this.userRepository.getOne(id);
+    const user = await this.userRepository.getOneById(id);
     if (!user) throw new NotFoundException();
 
     // Check if the user was deleted
@@ -40,7 +40,7 @@ export class UpdateUserProfilePictureHandler
     user.updateProfilePicture(profilePicture);
 
     // Update the user using users repository
-    this.userRepository.update(user);
+    await this.userRepository.update(user);
 
     // Save changes using Unit of Work
     await this.unitOfWork.commitChanges();

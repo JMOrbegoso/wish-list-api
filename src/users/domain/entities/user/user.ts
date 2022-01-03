@@ -1,4 +1,4 @@
-import { VerificationCode } from '..';
+import { RefreshToken, VerificationCode } from '..';
 import { AggregateRoot } from '../../../../shared/domain/entities';
 import {
   MillisecondsDate,
@@ -16,6 +16,29 @@ import {
   Role,
   Username,
 } from '../../value-objects';
+import {
+  BlockedUserCannotBeUpdatedError,
+  DeletedUserCannotBeUpdatedError,
+  DuplicatedUserRefreshTokenError,
+  InvalidUserBiographyError,
+  InvalidUserBirthdayError,
+  InvalidUserBlockedStatusError,
+  InvalidUserCreatedAtError,
+  InvalidUserEmailError,
+  InvalidUserFirstNameError,
+  InvalidUserLastNameError,
+  InvalidUserPasswordHashError,
+  InvalidUserRefreshTokenError,
+  InvalidUserRefreshTokensError,
+  InvalidUserRoleError,
+  InvalidUserRolesError,
+  InvalidUserUpdatedAtError,
+  InvalidUserUsernameError,
+  InvalidUserVerificationCodeError,
+  InvalidUserVerificationStatusError,
+  RefreshTokenNotFoundError,
+  UnverifiedUserCannotBeUpdatedError,
+} from './exceptions';
 
 export class User extends AggregateRoot {
   private _email: Email;
@@ -31,6 +54,7 @@ export class User extends AggregateRoot {
   private _updatedAt: MillisecondsDate;
   private _biography: Biography;
   private _roles: Role[];
+  private _refreshTokens: RefreshToken[];
   private _profilePicture?: WebUrl;
   private _deletedAt?: MillisecondsDate;
 
@@ -49,10 +73,34 @@ export class User extends AggregateRoot {
     updatedAt: MillisecondsDate,
     biography: Biography,
     roles: Role[],
+    refreshTokens: RefreshToken[],
     profilePicture?: WebUrl,
     deletedAt?: MillisecondsDate,
   ) {
     super(id);
+
+    if (!email) throw new InvalidUserEmailError();
+    if (!username) throw new InvalidUserUsernameError();
+    if (!passwordHash) throw new InvalidUserPasswordHashError();
+    if (!isVerified) throw new InvalidUserVerificationStatusError();
+    if (!verificationCode) throw new InvalidUserVerificationCodeError();
+    if (!isBlocked) throw new InvalidUserBlockedStatusError();
+    if (!firstName) throw new InvalidUserFirstNameError();
+    if (!lastName) throw new InvalidUserLastNameError();
+    if (!birthday) throw new InvalidUserBirthdayError();
+    if (!createdAt) throw new InvalidUserCreatedAtError();
+    if (!updatedAt) throw new InvalidUserUpdatedAtError();
+    if (!biography) throw new InvalidUserBiographyError();
+    if (!roles) throw new InvalidUserRolesError();
+    roles.forEach((role) => {
+      if (!role) throw new InvalidUserRoleError();
+    });
+    if (!refreshTokens) throw new InvalidUserRefreshTokensError();
+    refreshTokens.forEach((refreshToken) => {
+      if (!refreshToken) throw new InvalidUserRefreshTokenError();
+    });
+    if (!profilePicture) profilePicture = null;
+    if (!deletedAt) deletedAt = null;
 
     this._email = email;
     this._username = username;
@@ -66,7 +114,8 @@ export class User extends AggregateRoot {
     this._createdAt = createdAt;
     this._updatedAt = updatedAt;
     this._biography = biography;
-    this._roles = roles;
+    this._roles = [...roles];
+    this._refreshTokens = [...refreshTokens];
     this._profilePicture = profilePicture;
     this._deletedAt = deletedAt;
   }
@@ -86,6 +135,7 @@ export class User extends AggregateRoot {
     updatedAt: MillisecondsDate,
     biography: Biography,
     roles: Role[] = [],
+    refreshTokens: RefreshToken[] = [],
     profilePicture: WebUrl = null,
     deletedAt: MillisecondsDate = null,
   ): User {
@@ -104,6 +154,7 @@ export class User extends AggregateRoot {
       updatedAt,
       biography,
       roles,
+      refreshTokens,
       profilePicture,
       deletedAt,
     );
@@ -219,11 +270,66 @@ export class User extends AggregateRoot {
     return this._roles.map((r) => r.getRole);
   }
 
+  public get rolesLength(): number {
+    return this._roles.length;
+  }
+
   public addRole(role: Role): void {
     if (!this._roles.some((r) => r.equals(role))) this._roles.push(role);
   }
 
   public removeRole(role: Role): void {
     this._roles = this._roles.filter((r) => !r.equals(role));
+  }
+
+  public get refreshTokens(): RefreshToken[] {
+    return [...this._refreshTokens];
+  }
+
+  public get refreshTokensLength(): number {
+    return this._refreshTokens.length;
+  }
+
+  public getRefreshToken(refreshTokenId: UniqueId): RefreshToken {
+    const refreshToken = this._refreshTokens.find((token) =>
+      token.id.equals(refreshTokenId),
+    );
+    if (!refreshToken) return null;
+
+    return refreshToken;
+  }
+
+  public addRefreshToken(newRefreshToken: RefreshToken): void {
+    if (this.isDeleted) throw new DeletedUserCannotBeUpdatedError();
+
+    if (this.isBlocked) throw new BlockedUserCannotBeUpdatedError();
+
+    if (!this.isVerified) throw new UnverifiedUserCannotBeUpdatedError();
+
+    if (!newRefreshToken) throw new InvalidUserRefreshTokenError();
+
+    if (this._refreshTokens.some((token) => token.equals(newRefreshToken)))
+      throw new DuplicatedUserRefreshTokenError();
+
+    this._refreshTokens.push(newRefreshToken);
+  }
+
+  public replaceRefreshToken(
+    refreshTokenIdToReplace: UniqueId,
+    replacedByToken: RefreshToken,
+  ): void {
+    if (this.isDeleted) throw new DeletedUserCannotBeUpdatedError();
+
+    if (this.isBlocked) throw new BlockedUserCannotBeUpdatedError();
+
+    if (!this.isVerified) throw new UnverifiedUserCannotBeUpdatedError();
+
+    if (!replacedByToken) throw new InvalidUserRefreshTokenError();
+
+    const refreshTokenToReplace = this.getRefreshToken(refreshTokenIdToReplace);
+    if (!refreshTokenToReplace) throw new RefreshTokenNotFoundError();
+
+    this.addRefreshToken(replacedByToken);
+    refreshTokenToReplace.replace(replacedByToken);
   }
 }

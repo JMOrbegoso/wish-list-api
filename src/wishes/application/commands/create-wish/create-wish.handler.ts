@@ -38,13 +38,16 @@ export class CreateWishHandler implements ICommandHandler<CreateWishCommand> {
     const categories = command.categories.map((url) =>
       CategoryName.create(url),
     );
+    const startedAt = command.startedAt
+      ? MillisecondsDate.createFromMilliseconds(command.startedAt)
+      : null;
 
     // Check if the user exist
-    const user = await this.userRepository.getOne(wisherId);
+    const user = await this.userRepository.getOneById(wisherId);
     if (!user) throw new NotFoundException();
 
     // Check if the id is already in use by other wish
-    const wishExists = await this.wishRepository.getOne(id);
+    const wishExists = await this.wishRepository.getOneById(id);
     if (wishExists) throw new BadRequestException('Id already in use.');
 
     // Create the new wish
@@ -59,6 +62,10 @@ export class CreateWishHandler implements ICommandHandler<CreateWishCommand> {
       urls,
       imageUrls,
       categories,
+      [],
+      null,
+      startedAt,
+      null,
     );
 
     // Add the new wish to the wishes repository

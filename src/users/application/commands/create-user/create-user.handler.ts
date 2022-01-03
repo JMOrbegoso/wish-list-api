@@ -82,8 +82,6 @@ export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
       createdAt,
       biography,
       roles,
-      null,
-      null,
     );
 
     // Add the new user to the users repository

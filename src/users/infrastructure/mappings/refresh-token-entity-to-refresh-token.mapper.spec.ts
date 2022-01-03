@@ -5,7 +5,6 @@ import { refreshTokenEntityToRefreshToken } from '.';
 const validValues = [
   {
     id: 'id-0',
-    userId: 'user-id-0',
     createdAt: new Date(2021, 5, 5),
     duration: 100,
     ipAddress: '192.168.0.1',
@@ -14,8 +13,7 @@ const validValues = [
     revokedAt: null,
   } as MockedObject<RefreshTokenEntity>,
   {
-    id: 'id-0',
-    userId: 'user-id-0',
+    id: 'id-1',
     createdAt: new Date(2021, 5, 5),
     duration: 100,
     ipAddress: '192.168.0.1',
@@ -24,8 +22,7 @@ const validValues = [
     revokedAt: new Date(2021, 5, 5),
   } as MockedObject<RefreshTokenEntity>,
   {
-    id: 'id-0',
-    userId: 'user-id-0',
+    id: 'id-2',
     createdAt: new Date(2021, 5, 5),
     duration: 100,
     ipAddress: '192.168.0.1',
@@ -34,8 +31,7 @@ const validValues = [
     revokedAt: null,
   } as MockedObject<RefreshTokenEntity>,
   {
-    id: 'id-0',
-    userId: 'user-id-0',
+    id: 'id-3',
     createdAt: new Date(2021, 5, 5),
     duration: 100,
     ipAddress: '192.168.0.1',
@@ -61,7 +57,6 @@ describe('users', () => {
             // Assert
             expect(refreshToken.id.getId).toBe(refreshTokenEntity.id);
 
-            expect(refreshToken.userId.getId).toBe(refreshTokenEntity.userId);
             expect(refreshToken.createdAt.getMilliseconds).toBe(
               refreshTokenEntity.createdAt.getTime(),
             );

@@ -21,13 +21,13 @@ export * from './biography/invalid-biography.error';
 export * from './biography/biography-is-too-long.error';
 
 export * from './is-verified/is-verified';
-export * from './is-verified/invalid-is-verified-status.error';
+export * from './is-verified/invalid-verification-status.error';
 
 export * from './password-hash/password-hash';
 export * from './password-hash/invalid-password-hash.error';
 
 export * from './is-blocked/is-blocked';
-export * from './is-blocked/invalid-is-blocked-status';
+export * from './is-blocked/invalid-blocked-status.error';
 
 export * from './password/password';
 export * from './password/invalid-password.error';
@@ -37,6 +37,7 @@ export * from './password/malformed-password.error';
 
 export * from './role/role';
 export * from './role/invalid-role.error';
+export * from './role/invalid-roles.error';
 
 export * from './seconds-duration/seconds-duration';
 export * from './seconds-duration/invalid-seconds-duration.error';

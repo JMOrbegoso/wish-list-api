@@ -13,7 +13,7 @@ export class GetWishByIdHandler implements IQueryHandler<GetWishByIdQuery> {
   async execute(query: GetWishByIdQuery): Promise<OutputWishDto> {
     const id = UniqueId.create(query.id);
 
-    const wish = await this.wishRepository.getOne(id);
+    const wish = await this.wishRepository.getOneById(id);
 
     if (!wish) throw new NotFoundException();
 

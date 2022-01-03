@@ -1,22 +1,21 @@
-import {
-  InvalidWishStageImagesError,
-  InvalidWishStageUrlsError,
-  TooManyWishStageImagesError,
-  TooManyWishStageUrlsError,
-} from '..';
 import { Entity } from '../../../../shared/domain/entities';
 import {
-  InvalidMillisecondsDateError,
   MillisecondsDate,
   UniqueId,
   WebUrl,
 } from '../../../../shared/domain/value-objects';
+import { WishDescription, WishTitle } from '../../value-objects';
 import {
-  InvalidWishDescriptionError,
-  InvalidWishTitleError,
-  WishDescription,
-  WishTitle,
-} from '../../value-objects';
+  InvalidWishStageCreatedAtError,
+  InvalidWishStageDescriptionError,
+  InvalidWishStageImageError,
+  InvalidWishStageImagesError,
+  InvalidWishStageTitleError,
+  InvalidWishStageUrlError,
+  InvalidWishStageUrlsError,
+  TooManyWishStageImagesError,
+  TooManyWishStageUrlsError,
+} from './exceptions';
 
 export class WishStage extends Entity {
   public static readonly MaxUrls = 5;
@@ -38,26 +37,26 @@ export class WishStage extends Entity {
   ) {
     super(id);
 
-    if (!title) throw new InvalidWishTitleError();
-
-    if (!description) throw new InvalidWishDescriptionError();
-
-    if (!createdAt) throw new InvalidMillisecondsDateError();
-
+    if (!title) throw new InvalidWishStageTitleError();
+    if (!description) throw new InvalidWishStageDescriptionError();
+    if (!createdAt) throw new InvalidWishStageCreatedAtError();
     if (!urls) throw new InvalidWishStageUrlsError();
-
     if (urls.length > WishStage.MaxUrls) throw new TooManyWishStageUrlsError();
-
+    urls.forEach((url) => {
+      if (!url) throw new InvalidWishStageUrlError();
+    });
     if (!imageUrls) throw new InvalidWishStageImagesError();
-
     if (imageUrls.length > WishStage.MaxImages)
       throw new TooManyWishStageImagesError();
+    imageUrls.forEach((imageUrl) => {
+      if (!imageUrl) throw new InvalidWishStageImageError();
+    });
 
     this._title = title;
     this._description = description;
     this._createdAt = createdAt;
-    this._urls = urls;
-    this._imageUrls = imageUrls;
+    this._urls = [...urls];
+    this._imageUrls = [...imageUrls];
   }
 
   public static create(
@@ -88,11 +87,19 @@ export class WishStage extends Entity {
   }
 
   public get urls(): WebUrl[] {
-    return this._urls;
+    return [...this._urls];
+  }
+
+  public get urlsLength(): number {
+    return this._urls.length;
   }
 
   public get imageUrls(): WebUrl[] {
-    return this._imageUrls;
+    return [...this._imageUrls];
+  }
+
+  public get imageUrlsLength(): number {
+    return this._imageUrls.length;
   }
 
   public update(
@@ -101,9 +108,9 @@ export class WishStage extends Entity {
     urls: WebUrl[] = [],
     imageUrls: WebUrl[] = [],
   ): void {
-    if (!title) throw new InvalidWishTitleError();
+    if (!title) throw new InvalidWishStageTitleError();
 
-    if (!description) throw new InvalidWishDescriptionError();
+    if (!description) throw new InvalidWishStageDescriptionError();
 
     if (!urls) throw new InvalidWishStageUrlsError();
 

@@ -1,24 +1,23 @@
 import { MockedObject } from 'ts-jest/dist/utils/testing';
+import { WishStage } from '..';
 import {
-  InvalidWishStageImagesError,
-  InvalidWishStageUrlsError,
-  TooManyWishStageImagesError,
-  TooManyWishStageUrlsError,
-  WishStage,
-} from '..';
-import {
-  InvalidMillisecondsDateError,
   InvalidUniqueIdError,
   MillisecondsDate,
   UniqueId,
   WebUrl,
 } from '../../../../shared/domain/value-objects';
+import { WishDescription, WishTitle } from '../../value-objects';
 import {
-  InvalidWishDescriptionError,
-  InvalidWishTitleError,
-  WishDescription,
-  WishTitle,
-} from '../../value-objects';
+  InvalidWishStageCreatedAtError,
+  InvalidWishStageDescriptionError,
+  InvalidWishStageImageError,
+  InvalidWishStageImagesError,
+  InvalidWishStageTitleError,
+  InvalidWishStageUrlError,
+  InvalidWishStageUrlsError,
+  TooManyWishStageImagesError,
+  TooManyWishStageUrlsError,
+} from './exceptions';
 
 const validValues = [
   [
@@ -39,12 +38,80 @@ const validValues = [
       {
         getUrl: 'https://www.example.com',
       } as MockedObject<WebUrl>,
+      {
+        getUrl: 'https://www.example.net',
+      } as MockedObject<WebUrl>,
     ],
     [
       {
         getUrl: 'https://www.example.com/1.jpg',
       } as MockedObject<WebUrl>,
+      {
+        getUrl: 'https://www.example.com/2.jpg',
+      } as MockedObject<WebUrl>,
+      {
+        getUrl: 'https://www.example.com/3.jpg',
+      } as MockedObject<WebUrl>,
     ],
+  ],
+  [
+    {
+      getId: 'id-1',
+      equals: jest.fn(),
+    } as MockedObject<UniqueId>,
+    {
+      getTitle: 'title',
+    } as MockedObject<WishTitle>,
+    {
+      getDescription: 'description',
+    } as MockedObject<WishDescription>,
+    {
+      getMilliseconds: 1,
+    } as MockedObject<MillisecondsDate>,
+    [],
+    [
+      {
+        getUrl: 'https://www.example.com/1.jpg',
+      } as MockedObject<WebUrl>,
+    ],
+  ],
+  [
+    {
+      getId: 'id-2',
+      equals: jest.fn(),
+    } as MockedObject<UniqueId>,
+    {
+      getTitle: 'title',
+    } as MockedObject<WishTitle>,
+    {
+      getDescription: 'description',
+    } as MockedObject<WishDescription>,
+    {
+      getMilliseconds: 1,
+    } as MockedObject<MillisecondsDate>,
+    [
+      {
+        getUrl: 'https://www.example.com',
+      } as MockedObject<WebUrl>,
+    ],
+    [],
+  ],
+  [
+    {
+      getId: 'id-3',
+      equals: jest.fn(),
+    } as MockedObject<UniqueId>,
+    {
+      getTitle: 'title',
+    } as MockedObject<WishTitle>,
+    {
+      getDescription: 'description',
+    } as MockedObject<WishDescription>,
+    {
+      getMilliseconds: 1,
+    } as MockedObject<MillisecondsDate>,
+    [],
+    [],
   ],
 ];
 
@@ -104,7 +171,7 @@ describe('wishes', () => {
                 urls,
                 images,
               ),
-            ).toThrowError(InvalidWishTitleError);
+            ).toThrowError(InvalidWishStageTitleError);
           },
         );
 
@@ -125,7 +192,7 @@ describe('wishes', () => {
             // Assert
             expect(() =>
               WishStage.create(uniqueId, title, null, createdAt, urls, images),
-            ).toThrowError(InvalidWishDescriptionError);
+            ).toThrowError(InvalidWishStageDescriptionError);
           },
         );
 
@@ -153,7 +220,7 @@ describe('wishes', () => {
                 urls,
                 images,
               ),
-            ).toThrowError(InvalidMillisecondsDateError);
+            ).toThrowError(InvalidWishStageCreatedAtError);
           },
         );
 
@@ -217,6 +284,35 @@ describe('wishes', () => {
         );
 
         test.each(validValues)(
+          'create a WishStage with a invalid url inside a valid urls array should throw error',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            title: MockedObject<WishTitle>,
+            description: MockedObject<WishDescription>,
+            createdAt: MockedObject<MillisecondsDate>,
+            urls: MockedObject<WebUrl>[],
+            images: MockedObject<WebUrl>[],
+          ) => {
+            // Arrange
+
+            // Act
+            urls = [{} as MockedObject<WebUrl>, null];
+
+            // Assert
+            expect(() =>
+              WishStage.create(
+                uniqueId,
+                title,
+                description,
+                createdAt,
+                urls,
+                images,
+              ),
+            ).toThrowError(InvalidWishStageUrlError);
+          },
+        );
+
+        test.each(validValues)(
           'create a WishStage with invalid images array should throw error',
           (
             uniqueId: MockedObject<UniqueId>,
@@ -275,6 +371,67 @@ describe('wishes', () => {
         );
 
         test.each(validValues)(
+          'create a WishStage with a invalid image inside a valid images array should throw error',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            title: MockedObject<WishTitle>,
+            description: MockedObject<WishDescription>,
+            createdAt: MockedObject<MillisecondsDate>,
+            urls: MockedObject<WebUrl>[],
+            images: MockedObject<WebUrl>[],
+          ) => {
+            // Arrange
+
+            // Act
+            images = [{} as MockedObject<WebUrl>, null];
+
+            // Assert
+            expect(() =>
+              WishStage.create(
+                uniqueId,
+                title,
+                description,
+                createdAt,
+                urls,
+                images,
+              ),
+            ).toThrowError(InvalidWishStageImageError);
+          },
+        );
+
+        test.each(validValues)(
+          'should create a WishStage with [id: %p], [title: %p], [description: %p], [createdAt: %p]',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            title: MockedObject<WishTitle>,
+            description: MockedObject<WishDescription>,
+            createdAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+
+            // Act
+            const wishStage = WishStage.create(
+              uniqueId,
+              title,
+              description,
+              createdAt,
+            );
+
+            // Assert
+            expect(wishStage.id.getId).toBe(uniqueId.getId);
+            expect(wishStage.title.getTitle).toBe(title.getTitle);
+            expect(wishStage.description.getDescription).toBe(
+              description.getDescription,
+            );
+            expect(wishStage.createdAt.getMilliseconds).toBe(
+              createdAt.getMilliseconds,
+            );
+            expect(wishStage.urlsLength).toBe(0);
+            expect(wishStage.imageUrlsLength).toBe(0);
+          },
+        );
+
+        test.each(validValues)(
           'should create a WishStage with [id: %p], [title: %p], [description: %p], [createdAt: %p], [urls: %p] and [images: %p]',
           (
             uniqueId: MockedObject<UniqueId>,
@@ -305,8 +462,92 @@ describe('wishes', () => {
             expect(wishStage.createdAt.getMilliseconds).toBe(
               createdAt.getMilliseconds,
             );
-            expect(wishStage.urls[0].getUrl).toBe(urls[0].getUrl);
-            expect(wishStage.imageUrls[0].getUrl).toBe(images[0].getUrl);
+            expect(wishStage.urlsLength).toBe(urls.length);
+            for (let i = 0; i < urls.length; i++)
+              expect(wishStage.urls[i].getUrl).toBe(urls[i].getUrl);
+            expect(wishStage.imageUrlsLength).toBe(images.length);
+            for (let i = 0; i < images.length; i++)
+              expect(wishStage.imageUrls[i].getUrl).toBe(images[i].getUrl);
+          },
+        );
+
+        test.each(validValues)(
+          'make changes on urls array getter should make no changes on the original urls array',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            title: MockedObject<WishTitle>,
+            description: MockedObject<WishDescription>,
+            createdAt: MockedObject<MillisecondsDate>,
+            urls: MockedObject<WebUrl>[],
+            images: MockedObject<WebUrl>[],
+          ) => {
+            // Arrange
+            const originalUrl = 'https://www.example.com/original';
+            urls = [
+              {
+                getUrl: originalUrl,
+              } as MockedObject<WebUrl>,
+            ];
+            const wishStage = WishStage.create(
+              uniqueId,
+              title,
+              description,
+              createdAt,
+              urls,
+              images,
+            );
+
+            // Act
+            wishStage.urls.push({
+              getUrl: 'https://www.example.com/new/1',
+            } as MockedObject<WebUrl>);
+            wishStage.urls[0] = {
+              getUrl: 'https://www.example.com/new/2',
+            } as MockedObject<WebUrl>;
+
+            // Assert
+            expect(wishStage.urlsLength).toBe(1);
+            expect(wishStage.urls[0].getUrl).toBe(originalUrl);
+          },
+        );
+
+        test.each(validValues)(
+          'make changes on images array getter should make no changes on the original images array',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            title: MockedObject<WishTitle>,
+            description: MockedObject<WishDescription>,
+            createdAt: MockedObject<MillisecondsDate>,
+            urls: MockedObject<WebUrl>[],
+            images: MockedObject<WebUrl>[],
+          ) => {
+            // Arrange
+            const originalImageUrl = 'https://www.example.com/original.jpg';
+            images = [
+              {
+                getUrl: originalImageUrl,
+              } as MockedObject<WebUrl>,
+            ];
+            const wishStage = WishStage.create(
+              uniqueId,
+              title,
+              description,
+              createdAt,
+              urls,
+              images,
+            );
+
+            // Act
+            wishStage.imageUrls.push({
+              getUrl: 'https://www.example.com/new/1.jpg',
+            } as MockedObject<WebUrl>);
+            wishStage.imageUrls[0] = {
+              getUrl: 'https://www.example.com/new/2.jpg',
+            } as MockedObject<WebUrl>;
+
+            // Assert
+            expect(wishStage.imageUrlsLength).toBe(1);
+            expect(wishStage.imageUrls[0].getUrl).toBe(originalImageUrl);
           },
         );
 
@@ -365,7 +606,7 @@ describe('wishes', () => {
 
             // Assert
             expect(() => wishStage.update(null, newDescription)).toThrowError(
-              InvalidWishTitleError,
+              InvalidWishStageTitleError,
             );
           },
         );
@@ -397,7 +638,7 @@ describe('wishes', () => {
 
             // Assert
             expect(() => wishStage.update(newTitle, null)).toThrowError(
-              InvalidWishDescriptionError,
+              InvalidWishStageDescriptionError,
             );
           },
         );
@@ -559,8 +800,8 @@ describe('wishes', () => {
             expect(wishStage.description.getDescription).toBe(
               newDescription.getDescription,
             );
-            expect(wishStage.urls.length).toBe(0);
-            expect(wishStage.imageUrls.length).toBe(0);
+            expect(wishStage.urlsLength).toBe(0);
+            expect(wishStage.imageUrlsLength).toBe(0);
           },
         );
 
@@ -609,8 +850,10 @@ describe('wishes', () => {
             expect(wishStage.description.getDescription).toBe(
               newDescription.getDescription,
             );
+            expect(wishStage.urlsLength).toBe(newUrls.length);
             for (let i = 0; i < newUrls.length; i++)
               expect(wishStage.urls[i].getUrl).toBe(newUrls[i].getUrl);
+            expect(wishStage.imageUrlsLength).toBe(newImages.length);
             for (let i = 0; i < newImages.length; i++)
               expect(wishStage.imageUrls[i].getUrl).toBe(newImages[i].getUrl);
           },
