@@ -13,14 +13,30 @@ import {
   Role,
   Username,
 } from '../src/users/domain/value-objects';
-import { CreateUserDto } from '../src/users/infrastructure/dtos';
-import { UserEntity } from '../src/users/infrastructure/persistence/entities';
-import { Seed, UserDb, dropDatabase, seedDatabaseItems } from './helpers';
+import {
+  CreateUserDto,
+  UpdateUserProfileDto,
+} from '../src/users/infrastructure/dtos';
+import {
+  RefreshTokenEntity,
+  UserEntity,
+} from '../src/users/infrastructure/persistence/entities';
+import {
+  Seed,
+  UserDb,
+  dropDatabase,
+  seedDatabaseItems,
+  getAccessToken,
+  RefreshTokenDb,
+} from './helpers';
 
 describe('UsersController (e2e)', () => {
   let app: INestApplication;
   let mongoClient: MongoClient;
-
+  // Access tokens
+  let accessTokenBasicUser: string;
+  let accessTokenModeratorUser: string;
+  let accessTokenAdminUser: string;
   // Seed
   let seed: Seed;
 
@@ -41,6 +57,10 @@ describe('UsersController (e2e)', () => {
 
   beforeEach(async () => {
     seed = await seedDatabaseItems(mongoClient, mikroOrmConfig.dbName);
+
+    accessTokenBasicUser = await getAccessToken(app, seed.basicUser);
+    accessTokenModeratorUser = await getAccessToken(app, seed.moderatorUser);
+    accessTokenAdminUser = await getAccessToken(app, seed.adminUser);
   });
 
   afterEach(async () => {
@@ -126,6 +146,545 @@ describe('UsersController (e2e)', () => {
               const outputUser = body as OutputUserDto;
 
               assertOutputUser(outputUser, seed.basicUser);
+            });
+        });
+      });
+    });
+  });
+
+  describe('/users/profile/{id}', () => {
+    describe('PATCH', () => {
+      const firstName = 'New FirstName';
+      const lastName = 'New LastName';
+      const birthday = new Date().getTime();
+      const biography = 'New Biography.';
+
+      describe(`should return 400`, () => {
+        it(`firstName should not be empty`, () => {
+          const id = seed.basicUser._id.toString();
+          return request(app.getHttpServer())
+            .patch(`/users/profile/${id}`)
+            .send({
+              id,
+              lastName,
+              birthday,
+              biography,
+            } as unknown as UpdateUserProfileDto)
+            .auth(accessTokenBasicUser, { type: 'bearer' })
+            .expect(400)
+            .expect(({ body }) =>
+              expect(
+                (body.message as string[]).some((m) =>
+                  m.match(/firstName should not be empty/i),
+                ),
+              ).toBeTruthy(),
+            )
+            .expect(async () => {
+              const database = mongoClient.db(mikroOrmConfig.dbName);
+
+              const usersDb: UserEntity[] = await database
+                .collection('users')
+                .find()
+                .toArray();
+
+              expect(usersDb).toHaveLength(6);
+            });
+        });
+
+        it(`firstName must be a string`, () => {
+          const id = seed.basicUser._id.toString();
+          return request(app.getHttpServer())
+            .patch(`/users/profile/${id}`)
+            .send({
+              id,
+              firstName: 1000,
+              lastName,
+              birthday,
+              biography,
+            } as unknown as UpdateUserProfileDto)
+            .auth(accessTokenBasicUser, { type: 'bearer' })
+            .expect(400)
+            .expect(({ body }) =>
+              expect(
+                (body.message as string[]).some((m) =>
+                  m.match(/firstName must be a string/i),
+                ),
+              ).toBeTruthy(),
+            )
+            .expect(async () => {
+              const database = mongoClient.db(mikroOrmConfig.dbName);
+
+              const usersDb: UserEntity[] = await database
+                .collection('users')
+                .find()
+                .toArray();
+
+              expect(usersDb).toHaveLength(6);
+            });
+        });
+
+        it(`firstName is too long`, () => {
+          const id = seed.basicUser._id.toString();
+          return request(app.getHttpServer())
+            .patch(`/users/profile/${id}`)
+            .send({
+              id,
+              firstName: 'a'.repeat(FirstName.MaxLength + 1),
+              lastName,
+              birthday,
+              biography,
+            } as unknown as UpdateUserProfileDto)
+            .auth(accessTokenBasicUser, { type: 'bearer' })
+            .expect(400)
+            .expect(({ body }) =>
+              expect(
+                (body.message as string[]).some((m) =>
+                  m.match(/firstName must be shorter than or equal to/i),
+                ),
+              ).toBeTruthy(),
+            )
+            .expect(async () => {
+              const database = mongoClient.db(mikroOrmConfig.dbName);
+
+              const usersDb: UserEntity[] = await database
+                .collection('users')
+                .find()
+                .toArray();
+
+              expect(usersDb).toHaveLength(6);
+            });
+        });
+
+        it(`lastName should not be empty`, () => {
+          const id = seed.basicUser._id.toString();
+          return request(app.getHttpServer())
+            .patch(`/users/profile/${id}`)
+            .send({
+              id,
+              firstName,
+              birthday,
+              biography,
+            } as unknown as UpdateUserProfileDto)
+            .auth(accessTokenBasicUser, { type: 'bearer' })
+            .expect(400)
+            .expect(({ body }) =>
+              expect(
+                (body.message as string[]).some((m) =>
+                  m.match(/lastName should not be empty/i),
+                ),
+              ).toBeTruthy(),
+            )
+            .expect(async () => {
+              const database = mongoClient.db(mikroOrmConfig.dbName);
+
+              const usersDb: UserEntity[] = await database
+                .collection('users')
+                .find()
+                .toArray();
+
+              expect(usersDb).toHaveLength(6);
+            });
+        });
+
+        it(`lastName must be a string`, () => {
+          const id = seed.basicUser._id.toString();
+          return request(app.getHttpServer())
+            .patch(`/users/profile/${id}`)
+            .send({
+              id,
+              firstName,
+              lastName: 1000,
+              birthday,
+              biography,
+            } as unknown as UpdateUserProfileDto)
+            .auth(accessTokenBasicUser, { type: 'bearer' })
+            .expect(400)
+            .expect(({ body }) =>
+              expect(
+                (body.message as string[]).some((m) =>
+                  m.match(/lastName must be a string/i),
+                ),
+              ).toBeTruthy(),
+            )
+            .expect(async () => {
+              const database = mongoClient.db(mikroOrmConfig.dbName);
+
+              const usersDb: UserEntity[] = await database
+                .collection('users')
+                .find()
+                .toArray();
+
+              expect(usersDb).toHaveLength(6);
+            });
+        });
+
+        it(`lastName is too long`, () => {
+          const id = seed.basicUser._id.toString();
+          return request(app.getHttpServer())
+            .patch(`/users/profile/${id}`)
+            .send({
+              id,
+              firstName,
+              lastName: 'a'.repeat(LastName.MaxLength + 1),
+              birthday,
+              biography,
+            } as unknown as UpdateUserProfileDto)
+            .auth(accessTokenBasicUser, { type: 'bearer' })
+            .expect(400)
+            .expect(({ body }) =>
+              expect(
+                (body.message as string[]).some((m) =>
+                  m.match(/lastName must be shorter than or equal to/i),
+                ),
+              ).toBeTruthy(),
+            )
+            .expect(async () => {
+              const database = mongoClient.db(mikroOrmConfig.dbName);
+
+              const usersDb: UserEntity[] = await database
+                .collection('users')
+                .find()
+                .toArray();
+
+              expect(usersDb).toHaveLength(6);
+            });
+        });
+
+        it(`birthday should not be empty`, () => {
+          const id = seed.basicUser._id.toString();
+          return request(app.getHttpServer())
+            .patch(`/users/profile/${id}`)
+            .send({
+              id,
+              firstName,
+              lastName,
+              biography,
+            } as unknown as UpdateUserProfileDto)
+            .auth(accessTokenBasicUser, { type: 'bearer' })
+            .expect(400)
+            .expect(({ body }) =>
+              expect(
+                (body.message as string[]).some((m) =>
+                  m.match(/birthday should not be empty/i),
+                ),
+              ).toBeTruthy(),
+            )
+            .expect(async () => {
+              const database = mongoClient.db(mikroOrmConfig.dbName);
+
+              const usersDb: UserEntity[] = await database
+                .collection('users')
+                .find()
+                .toArray();
+
+              expect(usersDb).toHaveLength(6);
+            });
+        });
+
+        it(`birthday should be a number`, () => {
+          const id = seed.basicUser._id.toString();
+          return request(app.getHttpServer())
+            .patch(`/users/profile/${id}`)
+            .send({
+              id,
+              firstName,
+              lastName,
+              birthday: '1000',
+              biography,
+            } as unknown as UpdateUserProfileDto)
+            .auth(accessTokenBasicUser, { type: 'bearer' })
+            .expect(400)
+            .expect(({ body }) =>
+              expect(
+                (body.message as string[]).some((m) =>
+                  m.match(/birthday must be a positive number/i),
+                ),
+              ).toBeTruthy(),
+            )
+            .expect(async () => {
+              const database = mongoClient.db(mikroOrmConfig.dbName);
+
+              const usersDb: UserEntity[] = await database
+                .collection('users')
+                .find()
+                .toArray();
+
+              expect(usersDb).toHaveLength(6);
+            });
+        });
+
+        it(`biography should not be empty`, () => {
+          const id = seed.basicUser._id.toString();
+          return request(app.getHttpServer())
+            .patch(`/users/profile/${id}`)
+            .send({
+              id,
+              firstName,
+              lastName,
+              birthday,
+            } as unknown as UpdateUserProfileDto)
+            .auth(accessTokenBasicUser, { type: 'bearer' })
+            .expect(400)
+            .expect(({ body }) =>
+              expect(
+                (body.message as string[]).some((m) =>
+                  m.match(/biography should not be empty/i),
+                ),
+              ).toBeTruthy(),
+            )
+            .expect(async () => {
+              const database = mongoClient.db(mikroOrmConfig.dbName);
+
+              const usersDb: UserEntity[] = await database
+                .collection('users')
+                .find()
+                .toArray();
+
+              expect(usersDb).toHaveLength(6);
+            });
+        });
+
+        it(`biography must be a string`, () => {
+          const id = seed.basicUser._id.toString();
+          return request(app.getHttpServer())
+            .patch(`/users/profile/${id}`)
+            .send({
+              id,
+              firstName,
+              lastName,
+              birthday,
+              biography: 1000,
+            } as unknown as UpdateUserProfileDto)
+            .auth(accessTokenBasicUser, { type: 'bearer' })
+            .expect(400)
+            .expect(({ body }) =>
+              expect(
+                (body.message as string[]).some((m) =>
+                  m.match(/biography must be a string/i),
+                ),
+              ).toBeTruthy(),
+            )
+            .expect(async () => {
+              const database = mongoClient.db(mikroOrmConfig.dbName);
+
+              const usersDb: UserEntity[] = await database
+                .collection('users')
+                .find()
+                .toArray();
+
+              expect(usersDb).toHaveLength(6);
+            });
+        });
+
+        it(`biography is too long`, () => {
+          const id = seed.basicUser._id.toString();
+          return request(app.getHttpServer())
+            .patch(`/users/profile/${id}`)
+            .send({
+              id,
+              firstName,
+              lastName,
+              birthday,
+              biography: 'a'.repeat(Biography.MaxLength + 1),
+            } as unknown as UpdateUserProfileDto)
+            .auth(accessTokenBasicUser, { type: 'bearer' })
+            .expect(400)
+            .expect(({ body }) =>
+              expect(
+                (body.message as string[]).some((m) =>
+                  m.match(/biography must be shorter than or equal to/i),
+                ),
+              ).toBeTruthy(),
+            )
+            .expect(async () => {
+              const database = mongoClient.db(mikroOrmConfig.dbName);
+
+              const usersDb: UserEntity[] = await database
+                .collection('users')
+                .find()
+                .toArray();
+
+              expect(usersDb).toHaveLength(6);
+            });
+        });
+
+        it(`different ids`, () => {
+          const id = 'user-id-1';
+          return request(app.getHttpServer())
+            .patch(`/users/profile/${id}`)
+            .send({
+              id: 'user-id-2',
+              firstName,
+              lastName,
+              birthday,
+              biography,
+            } as UpdateUserProfileDto)
+            .auth(accessTokenBasicUser, { type: 'bearer' })
+            .expect(400)
+            .expect(async () => {
+              const database = mongoClient.db(mikroOrmConfig.dbName);
+
+              const usersDb: UserEntity[] = await database
+                .collection('users')
+                .find()
+                .toArray();
+
+              expect(usersDb).toHaveLength(6);
+            });
+        });
+      });
+
+      describe(`should return 401`, () => {
+        it(`unauthenticated request`, () => {
+          const id = 'user-id';
+          return request(app.getHttpServer())
+            .patch(`/users/profile/${id}`)
+            .send({
+              id,
+              firstName,
+              lastName,
+              birthday,
+              biography,
+            } as UpdateUserProfileDto)
+            .expect(401)
+            .expect(async () => {
+              const database = mongoClient.db(mikroOrmConfig.dbName);
+
+              const usersDb: UserEntity[] = await database
+                .collection('users')
+                .find()
+                .toArray();
+
+              expect(usersDb).toHaveLength(6);
+            });
+        });
+      });
+
+      describe(`should return 403`, () => {
+        it(`forbidden resource`, () => {
+          const id = 'user-id';
+          return request(app.getHttpServer())
+            .patch(`/users/profile/${id}`)
+            .send({
+              id,
+              firstName,
+              lastName,
+              birthday,
+              biography,
+            } as UpdateUserProfileDto)
+            .auth(accessTokenBasicUser, { type: 'bearer' })
+            .expect(403)
+            .expect(async () => {
+              const database = mongoClient.db(mikroOrmConfig.dbName);
+
+              const usersDb: UserEntity[] = await database
+                .collection('users')
+                .find()
+                .toArray();
+
+              expect(usersDb).toHaveLength(6);
+            });
+        });
+      });
+
+      describe(`should return 200`, () => {
+        it(`user updated successfully`, () => {
+          const id = seed.basicUser._id.toString();
+          return request(app.getHttpServer())
+            .patch(`/users/profile/${id}`)
+            .send({
+              id,
+              firstName,
+              lastName,
+              birthday,
+              biography,
+            } as UpdateUserProfileDto)
+            .auth(accessTokenBasicUser, { type: 'bearer' })
+            .expect(200)
+            .expect(async () => {
+              const database = mongoClient.db(mikroOrmConfig.dbName);
+
+              const usersDb: UserEntity[] = await database
+                .collection('users')
+                .find()
+                .toArray();
+
+              expect(usersDb).toHaveLength(6);
+
+              const userUpdated = usersDb.find(
+                (u) => u._id.toString() === seed.basicUser._id.toString(),
+              );
+
+              expect(userUpdated).toBeTruthy();
+
+              expect(userUpdated._id.toString()).toBe(id);
+              expect(userUpdated.email).toBe(seed.basicUser.email);
+              expect(userUpdated.username).toBe(seed.basicUser.username);
+              expect(userUpdated.passwordHash).toBe(
+                seed.basicUser.passwordHash,
+              );
+              expect(userUpdated.passwordHash).not.toBe(
+                seed.basicUser.password,
+              );
+              expect(userUpdated.isVerified).toBe(seed.basicUser.isVerified);
+              expect(userUpdated.verificationCode).toBe(
+                seed.basicUser.verificationCode,
+              );
+              expect(userUpdated.isBlocked).toBe(seed.basicUser.isBlocked);
+              expect(userUpdated.firstName).toBe(firstName);
+              expect(userUpdated.lastName).toBe(lastName);
+              expect(userUpdated.birthday.getTime()).toBe(birthday);
+              expect(userUpdated.createdAt.getTime()).toBe(
+                seed.basicUser.createdAt.getTime(),
+              );
+              expect(userUpdated.updatedAt.getTime()).not.toBe(
+                seed.basicUser.updatedAt.getTime(),
+              );
+              expect(userUpdated.biography).toBe(biography);
+              expect(userUpdated.roles).toHaveLength(
+                seed.basicUser.roles.length,
+              );
+              for (let i = 0; i < userUpdated.roles.length; i++)
+                expect(userUpdated.roles[i]).toBe(seed.basicUser.roles[i]);
+
+              expect(userUpdated.profilePicture).toBe(
+                seed.basicUser.profilePicture,
+              );
+              expect(userUpdated.deletedAt).toBe(seed.basicUser.deletedAt);
+            })
+            .expect(async () => {
+              const database = mongoClient.db(mikroOrmConfig.dbName);
+
+              const refreshTokensDb: RefreshTokenEntity[] = await database
+                .collection('refresh-tokens')
+                .find()
+                .toArray();
+
+              expect(refreshTokensDb).toHaveLength(9);
+
+              const expiredRefreshToken = refreshTokensDb.find(
+                (rt) =>
+                  rt._id.toString() === seed.expiredRefreshToken._id.toString(),
+              );
+              assertRefreshToken(expiredRefreshToken, seed.expiredRefreshToken);
+
+              const usedRefreshToken = refreshTokensDb.find(
+                (rt) =>
+                  rt._id.toString() === seed.usedRefreshToken._id.toString(),
+              );
+              assertRefreshToken(usedRefreshToken, seed.usedRefreshToken);
+
+              const validRefreshToken_1 = refreshTokensDb.find(
+                (rt) =>
+                  rt._id.toString() === seed.validRefreshToken_1._id.toString(),
+              );
+              assertRefreshToken(validRefreshToken_1, seed.validRefreshToken_1);
+
+              const revokedRefreshToken = refreshTokensDb.find(
+                (rt) =>
+                  rt._id.toString() === seed.revokedRefreshToken._id.toString(),
+              );
+              assertRefreshToken(revokedRefreshToken, seed.revokedRefreshToken);
             });
         });
       });
@@ -1240,4 +1799,35 @@ function assertOutputUser(outputUser: OutputUserDto, userDb: UserDb): void {
   if (userDb.deletedAt)
     expect(outputUser.deletedAt).toBe(userDb.deletedAt.getTime());
   else expect(outputUser.deletedAt).toBeNull();
+}
+
+function assertRefreshToken(
+  refreshToken: RefreshTokenEntity,
+  refreshTokenDb: RefreshTokenDb,
+): void {
+  expect(refreshToken).toBeTruthy();
+
+  expect(refreshToken._id.toString()).toBe(refreshTokenDb._id.toString());
+  expect(refreshToken.user.toString()).toBe(refreshTokenDb.user.toString());
+  expect(refreshToken.createdAt.getTime()).toBe(
+    refreshTokenDb.createdAt.getTime(),
+  );
+  expect(refreshToken.duration).toBe(refreshTokenDb.duration);
+  expect(refreshToken.ipAddress).toBe(refreshTokenDb.ipAddress);
+
+  if (refreshTokenDb.replacedAt)
+    expect(refreshToken.replacedAt.getTime()).toBe(
+      refreshTokenDb.replacedAt.getTime(),
+    );
+  else expect(refreshToken.replacedAt).toBeNull();
+
+  if (refreshTokenDb.replacedBy)
+    expect(refreshToken.replacedBy).toBe(refreshTokenDb.replacedBy);
+  else expect(refreshToken.replacedBy).toBeNull();
+
+  if (refreshTokenDb.revokedAt)
+    expect(refreshToken.revokedAt.getTime()).toBe(
+      refreshTokenDb.revokedAt.getTime(),
+    );
+  else expect(refreshToken.revokedAt).toBeNull();
 }
