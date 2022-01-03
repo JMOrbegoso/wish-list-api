@@ -1,7 +1,7 @@
 import { ObjectId } from '@mikro-orm/mongodb';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import { MongoClient } from 'mongodb';
+import { MongoClient, Db as MongoDatabase } from 'mongodb';
 import request from 'supertest';
 import { AppModule } from '../src/app.module';
 import mikroOrmConfig from '../src/mikro-orm.config';
@@ -34,6 +34,7 @@ import {
 describe('WishesController (e2e)', () => {
   let app: INestApplication;
   let mongoClient: MongoClient;
+  let database: MongoDatabase;
   // Access tokens
   let accessTokenBasicUser: string;
   let accessTokenModeratorUser: string;
@@ -52,13 +53,12 @@ describe('WishesController (e2e)', () => {
     mongoClient = await MongoClient.connect(mikroOrmConfig.clientUrl, {
       useUnifiedTopology: true,
     });
-    const database = mongoClient.db(mikroOrmConfig.dbName);
+    database = mongoClient.db(mikroOrmConfig.dbName);
 
     await dropDatabase(database);
   });
 
   beforeEach(async () => {
-    const database = mongoClient.db(mikroOrmConfig.dbName);
     seed = await seedDatabaseItems(database);
 
     accessTokenBasicUser = await getAccessToken(app, seed.basicUser);
@@ -67,7 +67,6 @@ describe('WishesController (e2e)', () => {
   });
 
   afterEach(async () => {
-    const database = mongoClient.db(mikroOrmConfig.dbName);
     await dropDatabase(database);
   });
 
@@ -84,8 +83,6 @@ describe('WishesController (e2e)', () => {
             .get('/wishes')
             .expect(401)
             .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
               const wishesDb: WishEntity[] = await database
                 .collection('wishes')
                 .find()
@@ -103,8 +100,6 @@ describe('WishesController (e2e)', () => {
             .auth(accessTokenBasicUser, { type: 'bearer' })
             .expect(403)
             .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
               const wishesDb: WishEntity[] = await database
                 .collection('wishes')
                 .find()
@@ -230,8 +225,6 @@ describe('WishesController (e2e)', () => {
             } as CreateWishDto)
             .expect(401)
             .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
               const wishesDb: WishEntity[] = await database
                 .collection('wishes')
                 .find()
@@ -260,8 +253,6 @@ describe('WishesController (e2e)', () => {
             .auth(accessTokenAdminUser, { type: 'bearer' })
             .expect(403)
             .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
               const wishesDb: WishEntity[] = await database
                 .collection('wishes')
                 .find()
@@ -288,8 +279,6 @@ describe('WishesController (e2e)', () => {
             .auth(accessTokenAdminUser, { type: 'bearer' })
             .expect(403)
             .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
               const wishesDb: WishEntity[] = await database
                 .collection('wishes')
                 .find()
@@ -316,8 +305,6 @@ describe('WishesController (e2e)', () => {
             .auth(accessTokenBasicUser, { type: 'bearer' })
             .expect(403)
             .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
               const wishesDb: WishEntity[] = await database
                 .collection('wishes')
                 .find()
@@ -353,8 +340,6 @@ describe('WishesController (e2e)', () => {
               ).toBeTruthy(),
             )
             .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
               const wishesDb: WishEntity[] = await database
                 .collection('wishes')
                 .find()
@@ -389,8 +374,6 @@ describe('WishesController (e2e)', () => {
               ).toBeTruthy(),
             )
             .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
               const wishesDb: WishEntity[] = await database
                 .collection('wishes')
                 .find()
@@ -424,8 +407,6 @@ describe('WishesController (e2e)', () => {
               ).toBeTruthy(),
             )
             .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
               const wishesDb: WishEntity[] = await database
                 .collection('wishes')
                 .find()
@@ -460,8 +441,6 @@ describe('WishesController (e2e)', () => {
               ).toBeTruthy(),
             )
             .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
               const wishesDb: WishEntity[] = await database
                 .collection('wishes')
                 .find()
@@ -496,8 +475,6 @@ describe('WishesController (e2e)', () => {
               ).toBeTruthy(),
             )
             .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
               const wishesDb: WishEntity[] = await database
                 .collection('wishes')
                 .find()
@@ -531,8 +508,6 @@ describe('WishesController (e2e)', () => {
               ).toBeTruthy(),
             )
             .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
               const wishesDb: WishEntity[] = await database
                 .collection('wishes')
                 .find()
@@ -567,8 +542,6 @@ describe('WishesController (e2e)', () => {
               ).toBeTruthy(),
             )
             .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
               const wishesDb: WishEntity[] = await database
                 .collection('wishes')
                 .find()
@@ -603,8 +576,6 @@ describe('WishesController (e2e)', () => {
               ).toBeTruthy(),
             )
             .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
               const wishesDb: WishEntity[] = await database
                 .collection('wishes')
                 .find()
@@ -638,8 +609,6 @@ describe('WishesController (e2e)', () => {
               ).toBeTruthy(),
             )
             .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
               const wishesDb: WishEntity[] = await database
                 .collection('wishes')
                 .find()
@@ -674,8 +643,6 @@ describe('WishesController (e2e)', () => {
               ).toBeTruthy(),
             )
             .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
               const wishesDb: WishEntity[] = await database
                 .collection('wishes')
                 .find()
@@ -710,8 +677,6 @@ describe('WishesController (e2e)', () => {
               ).toBeTruthy(),
             )
             .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
               const wishesDb: WishEntity[] = await database
                 .collection('wishes')
                 .find()
@@ -746,8 +711,6 @@ describe('WishesController (e2e)', () => {
               ).toBeTruthy(),
             )
             .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
               const wishesDb: WishEntity[] = await database
                 .collection('wishes')
                 .find()
@@ -786,8 +749,6 @@ describe('WishesController (e2e)', () => {
               ).toBeTruthy(),
             )
             .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
               const wishesDb: WishEntity[] = await database
                 .collection('wishes')
                 .find()
@@ -822,8 +783,6 @@ describe('WishesController (e2e)', () => {
               ).toBeTruthy(),
             )
             .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
               const wishesDb: WishEntity[] = await database
                 .collection('wishes')
                 .find()
@@ -860,8 +819,6 @@ describe('WishesController (e2e)', () => {
               ).toBeTruthy(),
             )
             .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
               const wishesDb: WishEntity[] = await database
                 .collection('wishes')
                 .find()
@@ -900,8 +857,6 @@ describe('WishesController (e2e)', () => {
               ).toBeTruthy(),
             )
             .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
               const wishesDb: WishEntity[] = await database
                 .collection('wishes')
                 .find()
@@ -936,8 +891,6 @@ describe('WishesController (e2e)', () => {
               ).toBeTruthy(),
             )
             .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
               const wishesDb: WishEntity[] = await database
                 .collection('wishes')
                 .find()
@@ -972,8 +925,6 @@ describe('WishesController (e2e)', () => {
               ).toBeTruthy(),
             )
             .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
               const wishesDb: WishEntity[] = await database
                 .collection('wishes')
                 .find()
@@ -1008,8 +959,6 @@ describe('WishesController (e2e)', () => {
               ).toBeTruthy(),
             )
             .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
               const wishesDb: WishEntity[] = await database
                 .collection('wishes')
                 .find()
@@ -1050,8 +999,6 @@ describe('WishesController (e2e)', () => {
               ).toBeTruthy(),
             )
             .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
               const wishesDb: WishEntity[] = await database
                 .collection('wishes')
                 .find()
@@ -1079,8 +1026,6 @@ describe('WishesController (e2e)', () => {
             .expect(400)
             .expect(({ body }) => expect(body.message).toMatch(/in use/i))
             .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
               const wishesDb: WishEntity[] = await database
                 .collection('wishes')
                 .find()
@@ -1110,8 +1055,6 @@ describe('WishesController (e2e)', () => {
             .auth(accessTokenBasicUser, { type: 'bearer' })
             .expect(201)
             .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
               const wishesDb: WishEntity[] = await database
                 .collection('wishes')
                 .find()
@@ -1147,8 +1090,6 @@ describe('WishesController (e2e)', () => {
               expect(wishCreated.deletedAt).toBeFalsy();
             })
             .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
               const wishersDb: WisherEntity[] = await database
                 .collection('wishers')
                 .find()
@@ -1185,8 +1126,6 @@ describe('WishesController (e2e)', () => {
             .auth(accessTokenAdminUser, { type: 'bearer' })
             .expect(201)
             .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
               const wishesDb: WishEntity[] = await database
                 .collection('wishes')
                 .find()
@@ -1222,8 +1161,6 @@ describe('WishesController (e2e)', () => {
               expect(wishCreated.deletedAt).toBeFalsy();
             })
             .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
               const wishersDb: WisherEntity[] = await database
                 .collection('wishers')
                 .find()
@@ -1275,8 +1212,6 @@ describe('WishesController (e2e)', () => {
             } as UpdateWishDto)
             .expect(401)
             .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
               const wishesDb: WishEntity[] = await database
                 .collection('wishes')
                 .find()
@@ -1303,8 +1238,6 @@ describe('WishesController (e2e)', () => {
             .auth(accessTokenBasicUser, { type: 'bearer' })
             .expect(403)
             .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
               const wishesDb: WishEntity[] = await database
                 .collection('wishes')
                 .find()
@@ -1331,8 +1264,6 @@ describe('WishesController (e2e)', () => {
             .auth(accessTokenBasicUser, { type: 'bearer' })
             .expect(404)
             .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
               const wishesDb: WishEntity[] = await database
                 .collection('wishes')
                 .find()
@@ -1365,8 +1296,6 @@ describe('WishesController (e2e)', () => {
               ).toBeTruthy(),
             )
             .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
               const wishesDb: WishEntity[] = await database
                 .collection('wishes')
                 .find()
@@ -1398,8 +1327,6 @@ describe('WishesController (e2e)', () => {
               ).toBeTruthy(),
             )
             .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
               const wishesDb: WishEntity[] = await database
                 .collection('wishes')
                 .find()
@@ -1431,8 +1358,6 @@ describe('WishesController (e2e)', () => {
               ).toBeTruthy(),
             )
             .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
               const wishesDb: WishEntity[] = await database
                 .collection('wishes')
                 .find()
@@ -1463,8 +1388,6 @@ describe('WishesController (e2e)', () => {
               ).toBeTruthy(),
             )
             .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
               const wishesDb: WishEntity[] = await database
                 .collection('wishes')
                 .find()
@@ -1496,8 +1419,6 @@ describe('WishesController (e2e)', () => {
               ).toBeTruthy(),
             )
             .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
               const wishesDb: WishEntity[] = await database
                 .collection('wishes')
                 .find()
@@ -1529,8 +1450,6 @@ describe('WishesController (e2e)', () => {
               ).toBeTruthy(),
             )
             .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
               const wishesDb: WishEntity[] = await database
                 .collection('wishes')
                 .find()
@@ -1562,8 +1481,6 @@ describe('WishesController (e2e)', () => {
               ).toBeTruthy(),
             )
             .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
               const wishesDb: WishEntity[] = await database
                 .collection('wishes')
                 .find()
@@ -1595,8 +1512,6 @@ describe('WishesController (e2e)', () => {
               ).toBeTruthy(),
             )
             .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
               const wishesDb: WishEntity[] = await database
                 .collection('wishes')
                 .find()
@@ -1632,8 +1547,6 @@ describe('WishesController (e2e)', () => {
               ).toBeTruthy(),
             )
             .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
               const wishesDb: WishEntity[] = await database
                 .collection('wishes')
                 .find()
@@ -1665,8 +1578,6 @@ describe('WishesController (e2e)', () => {
               ).toBeTruthy(),
             )
             .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
               const wishesDb: WishEntity[] = await database
                 .collection('wishes')
                 .find()
@@ -1700,8 +1611,6 @@ describe('WishesController (e2e)', () => {
               ).toBeTruthy(),
             )
             .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
               const wishesDb: WishEntity[] = await database
                 .collection('wishes')
                 .find()
@@ -1737,8 +1646,6 @@ describe('WishesController (e2e)', () => {
               ).toBeTruthy(),
             )
             .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
               const wishesDb: WishEntity[] = await database
                 .collection('wishes')
                 .find()
@@ -1770,8 +1677,6 @@ describe('WishesController (e2e)', () => {
               ).toBeTruthy(),
             )
             .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
               const wishesDb: WishEntity[] = await database
                 .collection('wishes')
                 .find()
@@ -1803,8 +1708,6 @@ describe('WishesController (e2e)', () => {
               ).toBeTruthy(),
             )
             .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
               const wishesDb: WishEntity[] = await database
                 .collection('wishes')
                 .find()
@@ -1836,8 +1739,6 @@ describe('WishesController (e2e)', () => {
               ).toBeTruthy(),
             )
             .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
               const wishesDb: WishEntity[] = await database
                 .collection('wishes')
                 .find()
@@ -1865,8 +1766,6 @@ describe('WishesController (e2e)', () => {
               expect(body.message).toMatch(/Id are different/i),
             )
             .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
               const wishesDb: WishEntity[] = await database
                 .collection('wishes')
                 .find()
@@ -1893,8 +1792,6 @@ describe('WishesController (e2e)', () => {
             .auth(accessTokenBasicUser, { type: 'bearer' })
             .expect(200)
             .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
               const wishesDb: WishEntity[] = await database
                 .collection('wishes')
                 .find()
@@ -1945,8 +1842,6 @@ describe('WishesController (e2e)', () => {
               );
             })
             .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
               const wishersDb: WisherEntity[] = await database
                 .collection('wishers')
                 .find()
@@ -1962,8 +1857,6 @@ describe('WishesController (e2e)', () => {
               expect(wisher).toBeTruthy();
             })
             .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
               const wishStagesDb: WishStageEntity[] = await database
                 .collection('wish-stages')
                 .find()

@@ -1,7 +1,7 @@
 import { ObjectId } from '@mikro-orm/mongodb';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import { MongoClient } from 'mongodb';
+import { MongoClient, Db as MongoDatabase } from 'mongodb';
 import request from 'supertest';
 import { AppModule } from '../src/app.module';
 import mikroOrmConfig from '../src/mikro-orm.config';
@@ -16,6 +16,7 @@ import {
 describe('UsersManagementController (e2e)', () => {
   let app: INestApplication;
   let mongoClient: MongoClient;
+  let database: MongoDatabase;
   // Access tokens
   let accessTokenBasicUser: string;
   let accessTokenModeratorUser: string;
@@ -34,13 +35,12 @@ describe('UsersManagementController (e2e)', () => {
     mongoClient = await MongoClient.connect(mikroOrmConfig.clientUrl, {
       useUnifiedTopology: true,
     });
-    const database = mongoClient.db(mikroOrmConfig.dbName);
+    database = mongoClient.db(mikroOrmConfig.dbName);
 
     await dropDatabase(database);
   });
 
   beforeEach(async () => {
-    const database = mongoClient.db(mikroOrmConfig.dbName);
     seed = await seedDatabaseItems(database);
 
     accessTokenBasicUser = await getAccessToken(app, seed.basicUser);
@@ -49,7 +49,6 @@ describe('UsersManagementController (e2e)', () => {
   });
 
   afterEach(async () => {
-    const database = mongoClient.db(mikroOrmConfig.dbName);
     await dropDatabase(database);
   });
 
@@ -110,8 +109,6 @@ describe('UsersManagementController (e2e)', () => {
             .auth(accessTokenModeratorUser, { type: 'bearer' })
             .expect(200)
             .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
               const user: UserEntity = await database
                 .collection('users')
                 .findOne({ _id: new ObjectId(userId) });
@@ -176,8 +173,6 @@ describe('UsersManagementController (e2e)', () => {
             .auth(accessTokenModeratorUser, { type: 'bearer' })
             .expect(200)
             .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
               const user: UserEntity = await database
                 .collection('users')
                 .findOne({ _id: new ObjectId(userId) });
@@ -242,8 +237,6 @@ describe('UsersManagementController (e2e)', () => {
             .auth(accessTokenModeratorUser, { type: 'bearer' })
             .expect(200)
             .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
               const user: UserEntity = await database
                 .collection('users')
                 .findOne({ _id: new ObjectId(userId) });
@@ -308,8 +301,6 @@ describe('UsersManagementController (e2e)', () => {
             .auth(accessTokenModeratorUser, { type: 'bearer' })
             .expect(200)
             .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
               const user: UserEntity = await database
                 .collection('users')
                 .findOne({ _id: new ObjectId(userId) });
