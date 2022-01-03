@@ -22,12 +22,12 @@ import {
   UserEntity,
 } from '../src/users/infrastructure/persistence/entities';
 import {
+  RefreshTokenDb,
   Seed,
   UserDb,
   dropDatabase,
-  seedDatabaseItems,
   getAccessToken,
-  RefreshTokenDb,
+  seedDatabaseItems,
 } from './helpers';
 
 describe('UsersController (e2e)', () => {
@@ -56,7 +56,8 @@ describe('UsersController (e2e)', () => {
   });
 
   beforeEach(async () => {
-    seed = await seedDatabaseItems(mongoClient, mikroOrmConfig.dbName);
+    const database = mongoClient.db(mikroOrmConfig.dbName);
+    seed = await seedDatabaseItems(database);
 
     accessTokenBasicUser = await getAccessToken(app, seed.basicUser);
     accessTokenModeratorUser = await getAccessToken(app, seed.moderatorUser);

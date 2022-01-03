@@ -1,4 +1,4 @@
-import { MongoClient } from 'mongodb';
+import { Db as MongoDatabase } from 'mongodb';
 import { Role } from '../../src/users/domain/value-objects';
 import { PrivacyLevel } from '../../src/wishes/domain/value-objects';
 import {
@@ -134,11 +134,8 @@ export type Seed = {
 };
 
 export async function seedDatabaseItems(
-  mongoClient: MongoClient,
-  dbName: string,
+  database: MongoDatabase,
 ): Promise<Seed> {
-  const database = mongoClient.db(dbName);
-
   // Seed users
 
   const deletedUser = await seedUser(

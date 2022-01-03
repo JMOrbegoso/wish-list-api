@@ -36,7 +36,8 @@ describe('AuthController (e2e)', () => {
   });
 
   beforeEach(async () => {
-    seed = await seedDatabaseItems(mongoClient, mikroOrmConfig.dbName);
+    const database = mongoClient.db(mikroOrmConfig.dbName);
+    seed = await seedDatabaseItems(database);
   });
 
   afterEach(async () => {
