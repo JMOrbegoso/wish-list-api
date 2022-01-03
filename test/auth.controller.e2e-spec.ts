@@ -1,6 +1,6 @@
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import { MongoClient, ObjectId } from 'mongodb';
+import { MongoClient, Db as MongoDatabase, ObjectId } from 'mongodb';
 import request from 'supertest';
 import { AppModule } from '../src/app.module';
 import mikroOrmConfig from '../src/mikro-orm.config';
@@ -16,7 +16,7 @@ import { Seed, dropDatabase, seedDatabaseItems } from './helpers';
 describe('AuthController (e2e)', () => {
   let app: INestApplication;
   let mongoClient: MongoClient;
-
+  let database: MongoDatabase;
   // Seed
   let seed: Seed;
 
@@ -31,16 +31,17 @@ describe('AuthController (e2e)', () => {
     mongoClient = await MongoClient.connect(mikroOrmConfig.clientUrl, {
       useUnifiedTopology: true,
     });
+    database = mongoClient.db(mikroOrmConfig.dbName);
 
-    await dropDatabase(mongoClient, mikroOrmConfig.dbName);
+    await dropDatabase(database);
   });
 
   beforeEach(async () => {
-    seed = await seedDatabaseItems(mongoClient, mikroOrmConfig.dbName);
+    seed = await seedDatabaseItems(database);
   });
 
   afterEach(async () => {
-    await dropDatabase(mongoClient, mikroOrmConfig.dbName);
+    await dropDatabase(database);
   });
 
   afterAll(async () => {
@@ -315,7 +316,6 @@ describe('AuthController (e2e)', () => {
               expect(authTokens.access_token).toBeTruthy();
               expect(authTokens.refresh_token).toBeTruthy();
 
-              const database = mongoClient.db(mikroOrmConfig.dbName);
               const refreshToken: RefreshTokenEntity = await database
                 .collection('refresh-tokens')
                 .findOne({ _id: new ObjectId(authTokens.refresh_token) });
@@ -402,8 +402,6 @@ describe('AuthController (e2e)', () => {
             } as RefreshTokenDto)
             .expect(401)
             .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
               const refreshToken: RefreshTokenEntity = await database
                 .collection('refresh-tokens')
                 .findOne({ _id: new ObjectId(seed.expiredRefreshToken._id) });
@@ -423,8 +421,6 @@ describe('AuthController (e2e)', () => {
             } as RefreshTokenDto)
             .expect(401)
             .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
               const refreshTokensDb: RefreshTokenEntity[] = await database
                 .collection('refresh-tokens')
                 .find()
@@ -473,8 +469,6 @@ describe('AuthController (e2e)', () => {
             } as RefreshTokenDto)
             .expect(401)
             .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
               const refreshTokensDb: RefreshTokenEntity[] = await database
                 .collection('refresh-tokens')
                 .find()
@@ -531,7 +525,6 @@ describe('AuthController (e2e)', () => {
               expect(authTokens.access_token).toBeTruthy();
               expect(authTokens.refresh_token).toBeTruthy();
 
-              const database = mongoClient.db(mikroOrmConfig.dbName);
               const refreshTokensDb: RefreshTokenEntity[] = await database
                 .collection('refresh-tokens')
                 .find()
@@ -622,8 +615,6 @@ describe('AuthController (e2e)', () => {
             .query({ code: seed.unverifiedUser.verificationCode })
             .expect(200)
             .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
               const user: UserEntity = await database
                 .collection('users')
                 .findOne({ _id: new ObjectId(seed.unverifiedUser._id) });
