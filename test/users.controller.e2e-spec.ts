@@ -151,15 +151,7 @@ describe('UsersController (e2e)', () => {
                   m.match(/id should not be empty/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
+            );
         });
 
         it(`id must be a mongodb id`, () => {
@@ -182,15 +174,7 @@ describe('UsersController (e2e)', () => {
                   m.match(/id must be a mongodb id/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
+            );
         });
 
         it(`email should not be empty`, () => {
@@ -212,15 +196,7 @@ describe('UsersController (e2e)', () => {
                   m.match(/email should not be empty/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
+            );
         });
 
         it(`email must be a string`, () => {
@@ -243,15 +219,7 @@ describe('UsersController (e2e)', () => {
                   m.match(/email must be a string/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
+            );
         });
 
         it(`email must be an email`, () => {
@@ -274,15 +242,7 @@ describe('UsersController (e2e)', () => {
                   m.match(/email must be an email/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
+            );
         });
 
         it(`username should not be empty`, () => {
@@ -304,15 +264,7 @@ describe('UsersController (e2e)', () => {
                   m.match(/username should not be empty/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
+            );
         });
 
         it(`username must be a string`, () => {
@@ -335,15 +287,7 @@ describe('UsersController (e2e)', () => {
                   m.match(/username must be a string/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
+            );
         });
 
         it(`username is too long`, () => {
@@ -366,15 +310,7 @@ describe('UsersController (e2e)', () => {
                   m.match(/username must be shorter than or equal to/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
+            );
         });
 
         it(`username is too short`, () => {
@@ -397,15 +333,7 @@ describe('UsersController (e2e)', () => {
                   m.match(/username must be longer than or equal to/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
+            );
         });
 
         it(`username do not match its regex`, () => {
@@ -428,15 +356,7 @@ describe('UsersController (e2e)', () => {
                   m.match(/username contains invalid characters/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
+            );
         });
 
         it(`password should not be empty`, () => {
@@ -458,15 +378,7 @@ describe('UsersController (e2e)', () => {
                   m.match(/password should not be empty/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
+            );
         });
 
         it(`password must be a string`, () => {
@@ -489,15 +401,7 @@ describe('UsersController (e2e)', () => {
                   m.match(/password must be a string/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
+            );
         });
 
         it(`password is too long`, () => {
@@ -520,15 +424,7 @@ describe('UsersController (e2e)', () => {
                   m.match(/password must be shorter than or equal to/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
+            );
         });
 
         it(`password is too short`, () => {
@@ -551,15 +447,7 @@ describe('UsersController (e2e)', () => {
                   m.match(/password must be longer than or equal to/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
+            );
         });
 
         it(`password do not match its regex`, () => {
@@ -584,15 +472,7 @@ describe('UsersController (e2e)', () => {
                   ),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
+            );
         });
 
         it(`firstName should not be empty`, () => {
@@ -614,15 +494,7 @@ describe('UsersController (e2e)', () => {
                   m.match(/firstName should not be empty/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
+            );
         });
 
         it(`firstName must be a string`, () => {
@@ -645,15 +517,7 @@ describe('UsersController (e2e)', () => {
                   m.match(/firstName must be a string/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
+            );
         });
 
         it(`firstName is too long`, () => {
@@ -676,15 +540,7 @@ describe('UsersController (e2e)', () => {
                   m.match(/firstName must be shorter than or equal to/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
+            );
         });
 
         it(`lastName should not be empty`, () => {
@@ -706,15 +562,7 @@ describe('UsersController (e2e)', () => {
                   m.match(/lastName should not be empty/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
+            );
         });
 
         it(`lastName must be a string`, () => {
@@ -737,15 +585,7 @@ describe('UsersController (e2e)', () => {
                   m.match(/lastName must be a string/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
+            );
         });
 
         it(`lastName is too long`, () => {
@@ -768,15 +608,7 @@ describe('UsersController (e2e)', () => {
                   m.match(/lastName must be shorter than or equal to/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
+            );
         });
 
         it(`birthday should not be empty`, () => {
@@ -798,15 +630,7 @@ describe('UsersController (e2e)', () => {
                   m.match(/birthday should not be empty/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
+            );
         });
 
         it(`birthday should be a number`, () => {
@@ -829,15 +653,7 @@ describe('UsersController (e2e)', () => {
                   m.match(/birthday must be a positive number/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
+            );
         });
 
         it(`biography should not be empty`, () => {
@@ -859,15 +675,7 @@ describe('UsersController (e2e)', () => {
                   m.match(/biography should not be empty/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
+            );
         });
 
         it(`biography must be a string`, () => {
@@ -890,15 +698,7 @@ describe('UsersController (e2e)', () => {
                   m.match(/biography must be a string/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
+            );
         });
 
         it(`biography is too long`, () => {
@@ -921,15 +721,7 @@ describe('UsersController (e2e)', () => {
                   m.match(/biography must be shorter than or equal to/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
+            );
         });
 
         it(`Id already in use`, () => {
@@ -946,15 +738,7 @@ describe('UsersController (e2e)', () => {
               biography,
             } as CreateUserDto)
             .expect(400)
-            .expect(({ body }) => expect(body.message).toMatch(/in use/i))
-            .expect(async () => {
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
+            .expect(({ body }) => expect(body.message).toMatch(/in use/i));
         });
 
         it(`Email already in use`, () => {
@@ -971,15 +755,7 @@ describe('UsersController (e2e)', () => {
               biography,
             } as CreateUserDto)
             .expect(400)
-            .expect(({ body }) => expect(body.message).toMatch(/in use/i))
-            .expect(async () => {
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
+            .expect(({ body }) => expect(body.message).toMatch(/in use/i));
         });
 
         it(`Username already in use`, () => {
@@ -996,15 +772,7 @@ describe('UsersController (e2e)', () => {
               biography,
             } as CreateUserDto)
             .expect(400)
-            .expect(({ body }) => expect(body.message).toMatch(/in use/i))
-            .expect(async () => {
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
+            .expect(({ body }) => expect(body.message).toMatch(/in use/i));
         });
       });
 
@@ -1117,15 +885,7 @@ describe('UsersController (e2e)', () => {
                   m.match(/firstName should not be empty/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
+            );
         });
 
         it(`firstName must be a string`, () => {
@@ -1147,15 +907,7 @@ describe('UsersController (e2e)', () => {
                   m.match(/firstName must be a string/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
+            );
         });
 
         it(`firstName is too long`, () => {
@@ -1177,15 +929,7 @@ describe('UsersController (e2e)', () => {
                   m.match(/firstName must be shorter than or equal to/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
+            );
         });
 
         it(`lastName should not be empty`, () => {
@@ -1206,15 +950,7 @@ describe('UsersController (e2e)', () => {
                   m.match(/lastName should not be empty/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
+            );
         });
 
         it(`lastName must be a string`, () => {
@@ -1236,15 +972,7 @@ describe('UsersController (e2e)', () => {
                   m.match(/lastName must be a string/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
+            );
         });
 
         it(`lastName is too long`, () => {
@@ -1266,15 +994,7 @@ describe('UsersController (e2e)', () => {
                   m.match(/lastName must be shorter than or equal to/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
+            );
         });
 
         it(`birthday should not be empty`, () => {
@@ -1295,15 +1015,7 @@ describe('UsersController (e2e)', () => {
                   m.match(/birthday should not be empty/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
+            );
         });
 
         it(`birthday should be a number`, () => {
@@ -1325,15 +1037,7 @@ describe('UsersController (e2e)', () => {
                   m.match(/birthday must be a positive number/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
+            );
         });
 
         it(`biography should not be empty`, () => {
@@ -1354,15 +1058,7 @@ describe('UsersController (e2e)', () => {
                   m.match(/biography should not be empty/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
+            );
         });
 
         it(`biography must be a string`, () => {
@@ -1384,15 +1080,7 @@ describe('UsersController (e2e)', () => {
                   m.match(/biography must be a string/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
+            );
         });
 
         it(`biography is too long`, () => {
@@ -1414,15 +1102,7 @@ describe('UsersController (e2e)', () => {
                   m.match(/biography must be shorter than or equal to/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
+            );
         });
 
         it(`different ids`, () => {
@@ -1437,15 +1117,7 @@ describe('UsersController (e2e)', () => {
               biography,
             } as UpdateUserProfileDto)
             .auth(accessTokenBasicUser, { type: 'bearer' })
-            .expect(400)
-            .expect(async () => {
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
+            .expect(400);
         });
       });
 
@@ -1461,15 +1133,7 @@ describe('UsersController (e2e)', () => {
               birthday,
               biography,
             } as UpdateUserProfileDto)
-            .expect(401)
-            .expect(async () => {
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
+            .expect(401);
         });
       });
 
@@ -1486,15 +1150,7 @@ describe('UsersController (e2e)', () => {
               biography,
             } as UpdateUserProfileDto)
             .auth(accessTokenBasicUser, { type: 'bearer' })
-            .expect(403)
-            .expect(async () => {
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
+            .expect(403);
         });
       });
 

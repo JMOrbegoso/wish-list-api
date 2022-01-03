@@ -77,17 +77,7 @@ describe('WishesController (e2e)', () => {
     describe('GET', () => {
       describe(`should return 401`, () => {
         it(`unauthenticated request`, () => {
-          return request(app.getHttpServer())
-            .get('/wishes')
-            .expect(401)
-            .expect(async () => {
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+          return request(app.getHttpServer()).get('/wishes').expect(401);
         });
       });
 
@@ -96,15 +86,7 @@ describe('WishesController (e2e)', () => {
           return request(app.getHttpServer())
             .get('/wishes')
             .auth(accessTokenBasicUser, { type: 'bearer' })
-            .expect(403)
-            .expect(async () => {
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            .expect(403);
         });
       });
 
@@ -221,15 +203,7 @@ describe('WishesController (e2e)', () => {
               categories,
               startedAt,
             } as CreateWishDto)
-            .expect(401)
-            .expect(async () => {
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            .expect(401);
         });
       });
 
@@ -249,15 +223,7 @@ describe('WishesController (e2e)', () => {
               startedAt,
             } as CreateWishDto)
             .auth(accessTokenAdminUser, { type: 'bearer' })
-            .expect(403)
-            .expect(async () => {
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            .expect(403);
         });
 
         it(`moderator user is not the same as its access token`, () => {
@@ -275,15 +241,7 @@ describe('WishesController (e2e)', () => {
               startedAt,
             } as CreateWishDto)
             .auth(accessTokenAdminUser, { type: 'bearer' })
-            .expect(403)
-            .expect(async () => {
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            .expect(403);
         });
 
         it(`admin user is not the same as its access token`, () => {
@@ -301,15 +259,7 @@ describe('WishesController (e2e)', () => {
               startedAt,
             } as CreateWishDto)
             .auth(accessTokenBasicUser, { type: 'bearer' })
-            .expect(403)
-            .expect(async () => {
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            .expect(403);
         });
       });
 
@@ -336,15 +286,7 @@ describe('WishesController (e2e)', () => {
                   m.match(/id should not be empty/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            );
         });
 
         it(`id must be a mongodb id`, () => {
@@ -370,15 +312,7 @@ describe('WishesController (e2e)', () => {
                   m.match(/id must be a mongodb id/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            );
         });
 
         it(`title should not be empty`, () => {
@@ -403,15 +337,7 @@ describe('WishesController (e2e)', () => {
                   m.match(/title should not be empty/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            );
         });
 
         it(`title must be a string`, () => {
@@ -437,15 +363,7 @@ describe('WishesController (e2e)', () => {
                   m.match(/title must be a string/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            );
         });
 
         it(`title is too long`, () => {
@@ -471,15 +389,7 @@ describe('WishesController (e2e)', () => {
                   m.match(/title must be shorter than or equal to /i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            );
         });
 
         it(`description should not be empty`, () => {
@@ -504,15 +414,7 @@ describe('WishesController (e2e)', () => {
                   m.match(/description should not be empty/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            );
         });
 
         it(`description must be a string`, () => {
@@ -538,15 +440,7 @@ describe('WishesController (e2e)', () => {
                   m.match(/description must be a string/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            );
         });
 
         it(`description is too long`, () => {
@@ -572,15 +466,7 @@ describe('WishesController (e2e)', () => {
                   m.match(/description must be shorter than or equal to /i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            );
         });
 
         it(`privacyLevel should not be empty`, () => {
@@ -605,15 +491,7 @@ describe('WishesController (e2e)', () => {
                   m.match(/privacyLevel must be a valid enum value/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            );
         });
 
         it(`privacyLevel must be a valid enum value`, () => {
@@ -639,15 +517,7 @@ describe('WishesController (e2e)', () => {
                   m.match(/privacyLevel must be a valid enum value/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            );
         });
 
         it(`urls must be an array`, () => {
@@ -673,15 +543,7 @@ describe('WishesController (e2e)', () => {
                   m.match(/urls must be an array/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            );
         });
 
         it(`urls have so many elements`, () => {
@@ -707,15 +569,7 @@ describe('WishesController (e2e)', () => {
                   m.match(/urls must contain not more than /i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            );
         });
 
         it(`each value in urls must be a string`, () => {
@@ -745,15 +599,7 @@ describe('WishesController (e2e)', () => {
                   m.match(/each value in urls must be a string/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            );
         });
 
         it(`imageUrls must be an array`, () => {
@@ -779,15 +625,7 @@ describe('WishesController (e2e)', () => {
                   m.match(/imageUrls must be an array/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            );
         });
 
         it(`imageUrls have so many elements`, () => {
@@ -815,15 +653,7 @@ describe('WishesController (e2e)', () => {
                   m.match(/imageUrls must contain not more than /i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            );
         });
 
         it(`each value in imageUrls must be a string`, () => {
@@ -853,15 +683,7 @@ describe('WishesController (e2e)', () => {
                   m.match(/each value in imageUrls must be a string/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            );
         });
 
         it(`categories must be an array`, () => {
@@ -887,15 +709,7 @@ describe('WishesController (e2e)', () => {
                   m.match(/categories must be an array/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            );
         });
 
         it(`categories have so many elements`, () => {
@@ -921,15 +735,7 @@ describe('WishesController (e2e)', () => {
                   m.match(/categories must contain not more than /i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            );
         });
 
         it(`each value in categories must be a string`, () => {
@@ -955,15 +761,7 @@ describe('WishesController (e2e)', () => {
                   m.match(/each value in categories must be a string/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            );
         });
 
         it(`value in categories too long`, () => {
@@ -995,15 +793,7 @@ describe('WishesController (e2e)', () => {
                   ),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            );
         });
 
         it(`id already in use`, () => {
@@ -1022,15 +812,7 @@ describe('WishesController (e2e)', () => {
             } as CreateWishDto)
             .auth(accessTokenBasicUser, { type: 'bearer' })
             .expect(400)
-            .expect(({ body }) => expect(body.message).toMatch(/in use/i))
-            .expect(async () => {
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            .expect(({ body }) => expect(body.message).toMatch(/in use/i));
         });
       });
 
@@ -1208,15 +990,7 @@ describe('WishesController (e2e)', () => {
               imageUrls,
               categories,
             } as UpdateWishDto)
-            .expect(401)
-            .expect(async () => {
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            .expect(401);
         });
       });
 
@@ -1234,15 +1008,7 @@ describe('WishesController (e2e)', () => {
               categories,
             } as UpdateWishDto)
             .auth(accessTokenBasicUser, { type: 'bearer' })
-            .expect(403)
-            .expect(async () => {
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            .expect(403);
         });
       });
 
@@ -1260,15 +1026,7 @@ describe('WishesController (e2e)', () => {
               categories,
             } as UpdateWishDto)
             .auth(accessTokenBasicUser, { type: 'bearer' })
-            .expect(404)
-            .expect(async () => {
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            .expect(404);
         });
       });
 
@@ -1292,15 +1050,7 @@ describe('WishesController (e2e)', () => {
                   m.match(/title should not be empty/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            );
         });
 
         it(`title must be a string`, () => {
@@ -1323,15 +1073,7 @@ describe('WishesController (e2e)', () => {
                   m.match(/title must be a string/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            );
         });
 
         it(`title is too long`, () => {
@@ -1354,15 +1096,7 @@ describe('WishesController (e2e)', () => {
                   m.match(/title must be shorter than or equal to /i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            );
         });
 
         it(`description should not be empty`, () => {
@@ -1384,15 +1118,7 @@ describe('WishesController (e2e)', () => {
                   m.match(/description should not be empty/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            );
         });
 
         it(`description must be a string`, () => {
@@ -1415,15 +1141,7 @@ describe('WishesController (e2e)', () => {
                   m.match(/description must be a string/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            );
         });
 
         it(`description is too long`, () => {
@@ -1446,15 +1164,7 @@ describe('WishesController (e2e)', () => {
                   m.match(/description must be shorter than or equal to /i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            );
         });
 
         it(`urls must be an array`, () => {
@@ -1477,15 +1187,7 @@ describe('WishesController (e2e)', () => {
                   m.match(/urls must be an array/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            );
         });
 
         it(`urls have so many elements`, () => {
@@ -1508,15 +1210,7 @@ describe('WishesController (e2e)', () => {
                   m.match(/urls must contain not more than /i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            );
         });
 
         it(`each value in urls must be a string`, () => {
@@ -1543,15 +1237,7 @@ describe('WishesController (e2e)', () => {
                   m.match(/each value in urls must be a string/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            );
         });
 
         it(`imageUrls must be an array`, () => {
@@ -1574,15 +1260,7 @@ describe('WishesController (e2e)', () => {
                   m.match(/imageUrls must be an array/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            );
         });
 
         it(`imageUrls have so many elements`, () => {
@@ -1607,15 +1285,7 @@ describe('WishesController (e2e)', () => {
                   m.match(/imageUrls must contain not more than /i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            );
         });
 
         it(`each value in imageUrls must be a string`, () => {
@@ -1642,15 +1312,7 @@ describe('WishesController (e2e)', () => {
                   m.match(/each value in imageUrls must be a string/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            );
         });
 
         it(`categories must be an array`, () => {
@@ -1673,15 +1335,7 @@ describe('WishesController (e2e)', () => {
                   m.match(/categories must be an array/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            );
         });
 
         it(`categories have so many elements`, () => {
@@ -1704,15 +1358,7 @@ describe('WishesController (e2e)', () => {
                   m.match(/categories must contain not more than /i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            );
         });
 
         it(`each value in categories must be a string`, () => {
@@ -1735,15 +1381,7 @@ describe('WishesController (e2e)', () => {
                   m.match(/each value in categories must be a string/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            );
         });
 
         it(`ids are different`, () => {
@@ -1762,15 +1400,7 @@ describe('WishesController (e2e)', () => {
             .expect(400)
             .expect(({ body }) =>
               expect(body.message).toMatch(/Id are different/i),
-            )
-            .expect(async () => {
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            );
         });
       });
 
