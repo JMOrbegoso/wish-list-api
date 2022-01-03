@@ -46,6 +46,7 @@ Wish List API is a backend API to post wishes, you can publish and keep track of
   - Resource Ownership.
 - 🧪 Testing:
   - Jest.
+  - Supertest (e2e).
   - Coverage Report: 70%.
 - 📝 Documentation:
   - [Swagger for NestJS](https://github.com/nestjs/swagger/).

@@ -3,4 +3,5 @@
 
 yarn format
 yarn lint
-yarn test --watchAll=false
+yarn test
+yarn test:e2e
