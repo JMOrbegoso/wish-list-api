@@ -120,631 +120,7 @@ describe('UsersController (e2e)', () => {
         });
       });
     });
-  });
 
-  describe('/users/{id}', () => {
-    describe('GET', () => {
-      describe(`should return 400`, () => {
-        it(`invalid user id`, () => {
-          return request(app.getHttpServer()).get('/users/user-id').expect(400);
-        });
-      });
-
-      describe(`should return 404`, () => {
-        it(`user not found`, () => {
-          return request(app.getHttpServer())
-            .get('/users/61cce183b8917063ed614a0b')
-            .expect(404);
-        });
-      });
-
-      describe(`should return 200`, () => {
-        it(`user found`, () => {
-          return request(app.getHttpServer())
-            .get(`/users/${seed.basicUser._id.toString()}`)
-            .expect(200)
-            .expect('Content-Type', /json/)
-            .expect(({ body }) => {
-              const outputUser = body as OutputUserDto;
-
-              assertOutputUser(outputUser, seed.basicUser);
-            });
-        });
-      });
-    });
-  });
-
-  describe('/users/profile/{id}', () => {
-    describe('PATCH', () => {
-      const firstName = 'New FirstName';
-      const lastName = 'New LastName';
-      const birthday = new Date().getTime();
-      const biography = 'New Biography.';
-
-      describe(`should return 400`, () => {
-        it(`firstName should not be empty`, () => {
-          const id = seed.basicUser._id.toString();
-          return request(app.getHttpServer())
-            .patch(`/users/profile/${id}`)
-            .send({
-              id,
-              lastName,
-              birthday,
-              biography,
-            } as unknown as UpdateUserProfileDto)
-            .auth(accessTokenBasicUser, { type: 'bearer' })
-            .expect(400)
-            .expect(({ body }) =>
-              expect(
-                (body.message as string[]).some((m) =>
-                  m.match(/firstName should not be empty/i),
-                ),
-              ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
-        });
-
-        it(`firstName must be a string`, () => {
-          const id = seed.basicUser._id.toString();
-          return request(app.getHttpServer())
-            .patch(`/users/profile/${id}`)
-            .send({
-              id,
-              firstName: 1000,
-              lastName,
-              birthday,
-              biography,
-            } as unknown as UpdateUserProfileDto)
-            .auth(accessTokenBasicUser, { type: 'bearer' })
-            .expect(400)
-            .expect(({ body }) =>
-              expect(
-                (body.message as string[]).some((m) =>
-                  m.match(/firstName must be a string/i),
-                ),
-              ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
-        });
-
-        it(`firstName is too long`, () => {
-          const id = seed.basicUser._id.toString();
-          return request(app.getHttpServer())
-            .patch(`/users/profile/${id}`)
-            .send({
-              id,
-              firstName: 'a'.repeat(FirstName.MaxLength + 1),
-              lastName,
-              birthday,
-              biography,
-            } as unknown as UpdateUserProfileDto)
-            .auth(accessTokenBasicUser, { type: 'bearer' })
-            .expect(400)
-            .expect(({ body }) =>
-              expect(
-                (body.message as string[]).some((m) =>
-                  m.match(/firstName must be shorter than or equal to/i),
-                ),
-              ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
-        });
-
-        it(`lastName should not be empty`, () => {
-          const id = seed.basicUser._id.toString();
-          return request(app.getHttpServer())
-            .patch(`/users/profile/${id}`)
-            .send({
-              id,
-              firstName,
-              birthday,
-              biography,
-            } as unknown as UpdateUserProfileDto)
-            .auth(accessTokenBasicUser, { type: 'bearer' })
-            .expect(400)
-            .expect(({ body }) =>
-              expect(
-                (body.message as string[]).some((m) =>
-                  m.match(/lastName should not be empty/i),
-                ),
-              ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
-        });
-
-        it(`lastName must be a string`, () => {
-          const id = seed.basicUser._id.toString();
-          return request(app.getHttpServer())
-            .patch(`/users/profile/${id}`)
-            .send({
-              id,
-              firstName,
-              lastName: 1000,
-              birthday,
-              biography,
-            } as unknown as UpdateUserProfileDto)
-            .auth(accessTokenBasicUser, { type: 'bearer' })
-            .expect(400)
-            .expect(({ body }) =>
-              expect(
-                (body.message as string[]).some((m) =>
-                  m.match(/lastName must be a string/i),
-                ),
-              ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
-        });
-
-        it(`lastName is too long`, () => {
-          const id = seed.basicUser._id.toString();
-          return request(app.getHttpServer())
-            .patch(`/users/profile/${id}`)
-            .send({
-              id,
-              firstName,
-              lastName: 'a'.repeat(LastName.MaxLength + 1),
-              birthday,
-              biography,
-            } as unknown as UpdateUserProfileDto)
-            .auth(accessTokenBasicUser, { type: 'bearer' })
-            .expect(400)
-            .expect(({ body }) =>
-              expect(
-                (body.message as string[]).some((m) =>
-                  m.match(/lastName must be shorter than or equal to/i),
-                ),
-              ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
-        });
-
-        it(`birthday should not be empty`, () => {
-          const id = seed.basicUser._id.toString();
-          return request(app.getHttpServer())
-            .patch(`/users/profile/${id}`)
-            .send({
-              id,
-              firstName,
-              lastName,
-              biography,
-            } as unknown as UpdateUserProfileDto)
-            .auth(accessTokenBasicUser, { type: 'bearer' })
-            .expect(400)
-            .expect(({ body }) =>
-              expect(
-                (body.message as string[]).some((m) =>
-                  m.match(/birthday should not be empty/i),
-                ),
-              ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
-        });
-
-        it(`birthday should be a number`, () => {
-          const id = seed.basicUser._id.toString();
-          return request(app.getHttpServer())
-            .patch(`/users/profile/${id}`)
-            .send({
-              id,
-              firstName,
-              lastName,
-              birthday: '1000',
-              biography,
-            } as unknown as UpdateUserProfileDto)
-            .auth(accessTokenBasicUser, { type: 'bearer' })
-            .expect(400)
-            .expect(({ body }) =>
-              expect(
-                (body.message as string[]).some((m) =>
-                  m.match(/birthday must be a positive number/i),
-                ),
-              ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
-        });
-
-        it(`biography should not be empty`, () => {
-          const id = seed.basicUser._id.toString();
-          return request(app.getHttpServer())
-            .patch(`/users/profile/${id}`)
-            .send({
-              id,
-              firstName,
-              lastName,
-              birthday,
-            } as unknown as UpdateUserProfileDto)
-            .auth(accessTokenBasicUser, { type: 'bearer' })
-            .expect(400)
-            .expect(({ body }) =>
-              expect(
-                (body.message as string[]).some((m) =>
-                  m.match(/biography should not be empty/i),
-                ),
-              ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
-        });
-
-        it(`biography must be a string`, () => {
-          const id = seed.basicUser._id.toString();
-          return request(app.getHttpServer())
-            .patch(`/users/profile/${id}`)
-            .send({
-              id,
-              firstName,
-              lastName,
-              birthday,
-              biography: 1000,
-            } as unknown as UpdateUserProfileDto)
-            .auth(accessTokenBasicUser, { type: 'bearer' })
-            .expect(400)
-            .expect(({ body }) =>
-              expect(
-                (body.message as string[]).some((m) =>
-                  m.match(/biography must be a string/i),
-                ),
-              ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
-        });
-
-        it(`biography is too long`, () => {
-          const id = seed.basicUser._id.toString();
-          return request(app.getHttpServer())
-            .patch(`/users/profile/${id}`)
-            .send({
-              id,
-              firstName,
-              lastName,
-              birthday,
-              biography: 'a'.repeat(Biography.MaxLength + 1),
-            } as unknown as UpdateUserProfileDto)
-            .auth(accessTokenBasicUser, { type: 'bearer' })
-            .expect(400)
-            .expect(({ body }) =>
-              expect(
-                (body.message as string[]).some((m) =>
-                  m.match(/biography must be shorter than or equal to/i),
-                ),
-              ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
-        });
-
-        it(`different ids`, () => {
-          const id = 'user-id-1';
-          return request(app.getHttpServer())
-            .patch(`/users/profile/${id}`)
-            .send({
-              id: 'user-id-2',
-              firstName,
-              lastName,
-              birthday,
-              biography,
-            } as UpdateUserProfileDto)
-            .auth(accessTokenBasicUser, { type: 'bearer' })
-            .expect(400)
-            .expect(async () => {
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
-        });
-      });
-
-      describe(`should return 401`, () => {
-        it(`unauthenticated request`, () => {
-          const id = 'user-id';
-          return request(app.getHttpServer())
-            .patch(`/users/profile/${id}`)
-            .send({
-              id,
-              firstName,
-              lastName,
-              birthday,
-              biography,
-            } as UpdateUserProfileDto)
-            .expect(401)
-            .expect(async () => {
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
-        });
-      });
-
-      describe(`should return 403`, () => {
-        it(`forbidden resource`, () => {
-          const id = 'user-id';
-          return request(app.getHttpServer())
-            .patch(`/users/profile/${id}`)
-            .send({
-              id,
-              firstName,
-              lastName,
-              birthday,
-              biography,
-            } as UpdateUserProfileDto)
-            .auth(accessTokenBasicUser, { type: 'bearer' })
-            .expect(403)
-            .expect(async () => {
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
-        });
-      });
-
-      describe(`should return 200`, () => {
-        it(`user updated successfully`, () => {
-          const id = seed.basicUser._id.toString();
-          return request(app.getHttpServer())
-            .patch(`/users/profile/${id}`)
-            .send({
-              id,
-              firstName,
-              lastName,
-              birthday,
-              biography,
-            } as UpdateUserProfileDto)
-            .auth(accessTokenBasicUser, { type: 'bearer' })
-            .expect(200)
-            .expect(async () => {
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-
-              const userUpdated = usersDb.find(
-                (u) => u._id.toString() === seed.basicUser._id.toString(),
-              );
-
-              expect(userUpdated).toBeTruthy();
-
-              expect(userUpdated._id.toString()).toBe(id);
-              expect(userUpdated.email).toBe(seed.basicUser.email);
-              expect(userUpdated.username).toBe(seed.basicUser.username);
-              expect(userUpdated.passwordHash).toBe(
-                seed.basicUser.passwordHash,
-              );
-              expect(userUpdated.passwordHash).not.toBe(
-                seed.basicUser.password,
-              );
-              expect(userUpdated.isVerified).toBe(seed.basicUser.isVerified);
-              expect(userUpdated.verificationCode).toBe(
-                seed.basicUser.verificationCode,
-              );
-              expect(userUpdated.isBlocked).toBe(seed.basicUser.isBlocked);
-              expect(userUpdated.firstName).toBe(firstName);
-              expect(userUpdated.lastName).toBe(lastName);
-              expect(userUpdated.birthday.getTime()).toBe(birthday);
-              expect(userUpdated.createdAt.getTime()).toBe(
-                seed.basicUser.createdAt.getTime(),
-              );
-              expect(userUpdated.updatedAt.getTime()).not.toBe(
-                seed.basicUser.updatedAt.getTime(),
-              );
-              expect(userUpdated.biography).toBe(biography);
-              expect(userUpdated.roles).toHaveLength(
-                seed.basicUser.roles.length,
-              );
-              for (let i = 0; i < userUpdated.roles.length; i++)
-                expect(userUpdated.roles[i]).toBe(seed.basicUser.roles[i]);
-
-              expect(userUpdated.profilePicture).toBe(
-                seed.basicUser.profilePicture,
-              );
-              expect(userUpdated.deletedAt).toBe(seed.basicUser.deletedAt);
-            })
-            .expect(async () => {
-              const refreshTokensDb: RefreshTokenEntity[] = await database
-                .collection('refresh-tokens')
-                .find()
-                .toArray();
-
-              expect(refreshTokensDb).toHaveLength(9);
-
-              const expiredRefreshToken = refreshTokensDb.find(
-                (rt) =>
-                  rt._id.toString() === seed.expiredRefreshToken._id.toString(),
-              );
-              assertRefreshToken(expiredRefreshToken, seed.expiredRefreshToken);
-
-              const usedRefreshToken = refreshTokensDb.find(
-                (rt) =>
-                  rt._id.toString() === seed.usedRefreshToken._id.toString(),
-              );
-              assertRefreshToken(usedRefreshToken, seed.usedRefreshToken);
-
-              const validRefreshToken_1 = refreshTokensDb.find(
-                (rt) =>
-                  rt._id.toString() === seed.validRefreshToken_1._id.toString(),
-              );
-              assertRefreshToken(validRefreshToken_1, seed.validRefreshToken_1);
-
-              const revokedRefreshToken = refreshTokensDb.find(
-                (rt) =>
-                  rt._id.toString() === seed.revokedRefreshToken._id.toString(),
-              );
-              assertRefreshToken(revokedRefreshToken, seed.revokedRefreshToken);
-            });
-        });
-      });
-    });
-  });
-
-  describe('/users/username/{username}', () => {
-    describe('GET', () => {
-      describe(`should return 400`, () => {
-        it(`username is too long`, () => {
-          return request(app.getHttpServer())
-            .get(`/users/username/${'a'.repeat(Username.MaxLength + 1)}`)
-            .expect(400);
-        });
-
-        it(`username is too short`, () => {
-          return request(app.getHttpServer())
-            .get(`/users/username/${'a'.repeat(Username.MinLength - 1)}`)
-            .expect(400);
-        });
-
-        it(`username do not match its regex`, () => {
-          return request(app.getHttpServer())
-            .get(`/users/username/aaa=bbb`)
-            .expect(400);
-        });
-      });
-
-      describe(`should return 404`, () => {
-        it(`user not found`, () => {
-          return request(app.getHttpServer())
-            .get('/users/username/user_name')
-            .expect(404);
-        });
-      });
-
-      describe(`should return 200`, () => {
-        it(`user found`, () => {
-          return request(app.getHttpServer())
-            .get(`/users/username/${seed.basicUser.username}`)
-            .expect(200)
-            .expect('Content-Type', /json/)
-            .expect(({ body }) => {
-              const outputUser = body as OutputUserDto;
-
-              assertOutputUser(outputUser, seed.basicUser);
-            });
-        });
-      });
-    });
-  });
-
-  describe('/users/email/{email}', () => {
-    describe('GET', () => {
-      describe(`should return 400`, () => {
-        test.each(['aaa=bbb', 'email', '1000', 'aaa@bb@b', '@bb.com'])(
-          `email do not match its regex`,
-          (invalidEmail) => {
-            return request(app.getHttpServer())
-              .get(`/users/email/${invalidEmail}`)
-              .expect(400);
-          },
-        );
-      });
-
-      describe(`should return 404`, () => {
-        it(`user not found`, () => {
-          return request(app.getHttpServer())
-            .get('/users/email/email@email.com')
-            .expect(404);
-        });
-      });
-
-      describe(`should return 200`, () => {
-        it(`user found`, () => {
-          return request(app.getHttpServer())
-            .get(`/users/email/${seed.basicUser.email}`)
-            .expect(200)
-            .expect('Content-Type', /json/)
-            .expect(({ body }) => {
-              const outputUser = body as OutputUserDto;
-
-              assertOutputUser(outputUser, seed.basicUser);
-            });
-        });
-      });
-    });
-  });
-
-  describe('/users', () => {
     describe('POST', () => {
       const id = new ObjectId().toString();
       const email = 'john@doe.com';
@@ -1677,6 +1053,628 @@ describe('UsersController (e2e)', () => {
               expect(userCreated.roles[0]).toBe(Role.basic().getRole);
               expect(userCreated.profilePicture).toBeNull();
               expect(userCreated.deletedAt).toBeNull();
+            });
+        });
+      });
+    });
+  });
+
+  describe('/users/{id}', () => {
+    describe('GET', () => {
+      describe(`should return 400`, () => {
+        it(`invalid user id`, () => {
+          return request(app.getHttpServer()).get('/users/user-id').expect(400);
+        });
+      });
+
+      describe(`should return 404`, () => {
+        it(`user not found`, () => {
+          return request(app.getHttpServer())
+            .get('/users/61cce183b8917063ed614a0b')
+            .expect(404);
+        });
+      });
+
+      describe(`should return 200`, () => {
+        it(`user found`, () => {
+          return request(app.getHttpServer())
+            .get(`/users/${seed.basicUser._id.toString()}`)
+            .expect(200)
+            .expect('Content-Type', /json/)
+            .expect(({ body }) => {
+              const outputUser = body as OutputUserDto;
+
+              assertOutputUser(outputUser, seed.basicUser);
+            });
+        });
+      });
+    });
+  });
+
+  describe('/users/profile/{id}', () => {
+    describe('PATCH', () => {
+      const firstName = 'New FirstName';
+      const lastName = 'New LastName';
+      const birthday = new Date().getTime();
+      const biography = 'New Biography.';
+
+      describe(`should return 400`, () => {
+        it(`firstName should not be empty`, () => {
+          const id = seed.basicUser._id.toString();
+          return request(app.getHttpServer())
+            .patch(`/users/profile/${id}`)
+            .send({
+              id,
+              lastName,
+              birthday,
+              biography,
+            } as unknown as UpdateUserProfileDto)
+            .auth(accessTokenBasicUser, { type: 'bearer' })
+            .expect(400)
+            .expect(({ body }) =>
+              expect(
+                (body.message as string[]).some((m) =>
+                  m.match(/firstName should not be empty/i),
+                ),
+              ).toBeTruthy(),
+            )
+            .expect(async () => {
+              const usersDb: UserEntity[] = await database
+                .collection('users')
+                .find()
+                .toArray();
+
+              expect(usersDb).toHaveLength(6);
+            });
+        });
+
+        it(`firstName must be a string`, () => {
+          const id = seed.basicUser._id.toString();
+          return request(app.getHttpServer())
+            .patch(`/users/profile/${id}`)
+            .send({
+              id,
+              firstName: 1000,
+              lastName,
+              birthday,
+              biography,
+            } as unknown as UpdateUserProfileDto)
+            .auth(accessTokenBasicUser, { type: 'bearer' })
+            .expect(400)
+            .expect(({ body }) =>
+              expect(
+                (body.message as string[]).some((m) =>
+                  m.match(/firstName must be a string/i),
+                ),
+              ).toBeTruthy(),
+            )
+            .expect(async () => {
+              const usersDb: UserEntity[] = await database
+                .collection('users')
+                .find()
+                .toArray();
+
+              expect(usersDb).toHaveLength(6);
+            });
+        });
+
+        it(`firstName is too long`, () => {
+          const id = seed.basicUser._id.toString();
+          return request(app.getHttpServer())
+            .patch(`/users/profile/${id}`)
+            .send({
+              id,
+              firstName: 'a'.repeat(FirstName.MaxLength + 1),
+              lastName,
+              birthday,
+              biography,
+            } as unknown as UpdateUserProfileDto)
+            .auth(accessTokenBasicUser, { type: 'bearer' })
+            .expect(400)
+            .expect(({ body }) =>
+              expect(
+                (body.message as string[]).some((m) =>
+                  m.match(/firstName must be shorter than or equal to/i),
+                ),
+              ).toBeTruthy(),
+            )
+            .expect(async () => {
+              const usersDb: UserEntity[] = await database
+                .collection('users')
+                .find()
+                .toArray();
+
+              expect(usersDb).toHaveLength(6);
+            });
+        });
+
+        it(`lastName should not be empty`, () => {
+          const id = seed.basicUser._id.toString();
+          return request(app.getHttpServer())
+            .patch(`/users/profile/${id}`)
+            .send({
+              id,
+              firstName,
+              birthday,
+              biography,
+            } as unknown as UpdateUserProfileDto)
+            .auth(accessTokenBasicUser, { type: 'bearer' })
+            .expect(400)
+            .expect(({ body }) =>
+              expect(
+                (body.message as string[]).some((m) =>
+                  m.match(/lastName should not be empty/i),
+                ),
+              ).toBeTruthy(),
+            )
+            .expect(async () => {
+              const usersDb: UserEntity[] = await database
+                .collection('users')
+                .find()
+                .toArray();
+
+              expect(usersDb).toHaveLength(6);
+            });
+        });
+
+        it(`lastName must be a string`, () => {
+          const id = seed.basicUser._id.toString();
+          return request(app.getHttpServer())
+            .patch(`/users/profile/${id}`)
+            .send({
+              id,
+              firstName,
+              lastName: 1000,
+              birthday,
+              biography,
+            } as unknown as UpdateUserProfileDto)
+            .auth(accessTokenBasicUser, { type: 'bearer' })
+            .expect(400)
+            .expect(({ body }) =>
+              expect(
+                (body.message as string[]).some((m) =>
+                  m.match(/lastName must be a string/i),
+                ),
+              ).toBeTruthy(),
+            )
+            .expect(async () => {
+              const usersDb: UserEntity[] = await database
+                .collection('users')
+                .find()
+                .toArray();
+
+              expect(usersDb).toHaveLength(6);
+            });
+        });
+
+        it(`lastName is too long`, () => {
+          const id = seed.basicUser._id.toString();
+          return request(app.getHttpServer())
+            .patch(`/users/profile/${id}`)
+            .send({
+              id,
+              firstName,
+              lastName: 'a'.repeat(LastName.MaxLength + 1),
+              birthday,
+              biography,
+            } as unknown as UpdateUserProfileDto)
+            .auth(accessTokenBasicUser, { type: 'bearer' })
+            .expect(400)
+            .expect(({ body }) =>
+              expect(
+                (body.message as string[]).some((m) =>
+                  m.match(/lastName must be shorter than or equal to/i),
+                ),
+              ).toBeTruthy(),
+            )
+            .expect(async () => {
+              const usersDb: UserEntity[] = await database
+                .collection('users')
+                .find()
+                .toArray();
+
+              expect(usersDb).toHaveLength(6);
+            });
+        });
+
+        it(`birthday should not be empty`, () => {
+          const id = seed.basicUser._id.toString();
+          return request(app.getHttpServer())
+            .patch(`/users/profile/${id}`)
+            .send({
+              id,
+              firstName,
+              lastName,
+              biography,
+            } as unknown as UpdateUserProfileDto)
+            .auth(accessTokenBasicUser, { type: 'bearer' })
+            .expect(400)
+            .expect(({ body }) =>
+              expect(
+                (body.message as string[]).some((m) =>
+                  m.match(/birthday should not be empty/i),
+                ),
+              ).toBeTruthy(),
+            )
+            .expect(async () => {
+              const usersDb: UserEntity[] = await database
+                .collection('users')
+                .find()
+                .toArray();
+
+              expect(usersDb).toHaveLength(6);
+            });
+        });
+
+        it(`birthday should be a number`, () => {
+          const id = seed.basicUser._id.toString();
+          return request(app.getHttpServer())
+            .patch(`/users/profile/${id}`)
+            .send({
+              id,
+              firstName,
+              lastName,
+              birthday: '1000',
+              biography,
+            } as unknown as UpdateUserProfileDto)
+            .auth(accessTokenBasicUser, { type: 'bearer' })
+            .expect(400)
+            .expect(({ body }) =>
+              expect(
+                (body.message as string[]).some((m) =>
+                  m.match(/birthday must be a positive number/i),
+                ),
+              ).toBeTruthy(),
+            )
+            .expect(async () => {
+              const usersDb: UserEntity[] = await database
+                .collection('users')
+                .find()
+                .toArray();
+
+              expect(usersDb).toHaveLength(6);
+            });
+        });
+
+        it(`biography should not be empty`, () => {
+          const id = seed.basicUser._id.toString();
+          return request(app.getHttpServer())
+            .patch(`/users/profile/${id}`)
+            .send({
+              id,
+              firstName,
+              lastName,
+              birthday,
+            } as unknown as UpdateUserProfileDto)
+            .auth(accessTokenBasicUser, { type: 'bearer' })
+            .expect(400)
+            .expect(({ body }) =>
+              expect(
+                (body.message as string[]).some((m) =>
+                  m.match(/biography should not be empty/i),
+                ),
+              ).toBeTruthy(),
+            )
+            .expect(async () => {
+              const usersDb: UserEntity[] = await database
+                .collection('users')
+                .find()
+                .toArray();
+
+              expect(usersDb).toHaveLength(6);
+            });
+        });
+
+        it(`biography must be a string`, () => {
+          const id = seed.basicUser._id.toString();
+          return request(app.getHttpServer())
+            .patch(`/users/profile/${id}`)
+            .send({
+              id,
+              firstName,
+              lastName,
+              birthday,
+              biography: 1000,
+            } as unknown as UpdateUserProfileDto)
+            .auth(accessTokenBasicUser, { type: 'bearer' })
+            .expect(400)
+            .expect(({ body }) =>
+              expect(
+                (body.message as string[]).some((m) =>
+                  m.match(/biography must be a string/i),
+                ),
+              ).toBeTruthy(),
+            )
+            .expect(async () => {
+              const usersDb: UserEntity[] = await database
+                .collection('users')
+                .find()
+                .toArray();
+
+              expect(usersDb).toHaveLength(6);
+            });
+        });
+
+        it(`biography is too long`, () => {
+          const id = seed.basicUser._id.toString();
+          return request(app.getHttpServer())
+            .patch(`/users/profile/${id}`)
+            .send({
+              id,
+              firstName,
+              lastName,
+              birthday,
+              biography: 'a'.repeat(Biography.MaxLength + 1),
+            } as unknown as UpdateUserProfileDto)
+            .auth(accessTokenBasicUser, { type: 'bearer' })
+            .expect(400)
+            .expect(({ body }) =>
+              expect(
+                (body.message as string[]).some((m) =>
+                  m.match(/biography must be shorter than or equal to/i),
+                ),
+              ).toBeTruthy(),
+            )
+            .expect(async () => {
+              const usersDb: UserEntity[] = await database
+                .collection('users')
+                .find()
+                .toArray();
+
+              expect(usersDb).toHaveLength(6);
+            });
+        });
+
+        it(`different ids`, () => {
+          const id = 'user-id-1';
+          return request(app.getHttpServer())
+            .patch(`/users/profile/${id}`)
+            .send({
+              id: 'user-id-2',
+              firstName,
+              lastName,
+              birthday,
+              biography,
+            } as UpdateUserProfileDto)
+            .auth(accessTokenBasicUser, { type: 'bearer' })
+            .expect(400)
+            .expect(async () => {
+              const usersDb: UserEntity[] = await database
+                .collection('users')
+                .find()
+                .toArray();
+
+              expect(usersDb).toHaveLength(6);
+            });
+        });
+      });
+
+      describe(`should return 401`, () => {
+        it(`unauthenticated request`, () => {
+          const id = 'user-id';
+          return request(app.getHttpServer())
+            .patch(`/users/profile/${id}`)
+            .send({
+              id,
+              firstName,
+              lastName,
+              birthday,
+              biography,
+            } as UpdateUserProfileDto)
+            .expect(401)
+            .expect(async () => {
+              const usersDb: UserEntity[] = await database
+                .collection('users')
+                .find()
+                .toArray();
+
+              expect(usersDb).toHaveLength(6);
+            });
+        });
+      });
+
+      describe(`should return 403`, () => {
+        it(`forbidden resource`, () => {
+          const id = 'user-id';
+          return request(app.getHttpServer())
+            .patch(`/users/profile/${id}`)
+            .send({
+              id,
+              firstName,
+              lastName,
+              birthday,
+              biography,
+            } as UpdateUserProfileDto)
+            .auth(accessTokenBasicUser, { type: 'bearer' })
+            .expect(403)
+            .expect(async () => {
+              const usersDb: UserEntity[] = await database
+                .collection('users')
+                .find()
+                .toArray();
+
+              expect(usersDb).toHaveLength(6);
+            });
+        });
+      });
+
+      describe(`should return 200`, () => {
+        it(`user updated successfully`, () => {
+          const id = seed.basicUser._id.toString();
+          return request(app.getHttpServer())
+            .patch(`/users/profile/${id}`)
+            .send({
+              id,
+              firstName,
+              lastName,
+              birthday,
+              biography,
+            } as UpdateUserProfileDto)
+            .auth(accessTokenBasicUser, { type: 'bearer' })
+            .expect(200)
+            .expect(async () => {
+              const usersDb: UserEntity[] = await database
+                .collection('users')
+                .find()
+                .toArray();
+
+              expect(usersDb).toHaveLength(6);
+
+              const userUpdated = usersDb.find(
+                (u) => u._id.toString() === seed.basicUser._id.toString(),
+              );
+
+              expect(userUpdated).toBeTruthy();
+
+              expect(userUpdated._id.toString()).toBe(id);
+              expect(userUpdated.email).toBe(seed.basicUser.email);
+              expect(userUpdated.username).toBe(seed.basicUser.username);
+              expect(userUpdated.passwordHash).toBe(
+                seed.basicUser.passwordHash,
+              );
+              expect(userUpdated.passwordHash).not.toBe(
+                seed.basicUser.password,
+              );
+              expect(userUpdated.isVerified).toBe(seed.basicUser.isVerified);
+              expect(userUpdated.verificationCode).toBe(
+                seed.basicUser.verificationCode,
+              );
+              expect(userUpdated.isBlocked).toBe(seed.basicUser.isBlocked);
+              expect(userUpdated.firstName).toBe(firstName);
+              expect(userUpdated.lastName).toBe(lastName);
+              expect(userUpdated.birthday.getTime()).toBe(birthday);
+              expect(userUpdated.createdAt.getTime()).toBe(
+                seed.basicUser.createdAt.getTime(),
+              );
+              expect(userUpdated.updatedAt.getTime()).not.toBe(
+                seed.basicUser.updatedAt.getTime(),
+              );
+              expect(userUpdated.biography).toBe(biography);
+              expect(userUpdated.roles).toHaveLength(
+                seed.basicUser.roles.length,
+              );
+              for (let i = 0; i < userUpdated.roles.length; i++)
+                expect(userUpdated.roles[i]).toBe(seed.basicUser.roles[i]);
+
+              expect(userUpdated.profilePicture).toBe(
+                seed.basicUser.profilePicture,
+              );
+              expect(userUpdated.deletedAt).toBe(seed.basicUser.deletedAt);
+            })
+            .expect(async () => {
+              const refreshTokensDb: RefreshTokenEntity[] = await database
+                .collection('refresh-tokens')
+                .find()
+                .toArray();
+
+              expect(refreshTokensDb).toHaveLength(9);
+
+              const expiredRefreshToken = refreshTokensDb.find(
+                (rt) =>
+                  rt._id.toString() === seed.expiredRefreshToken._id.toString(),
+              );
+              assertRefreshToken(expiredRefreshToken, seed.expiredRefreshToken);
+
+              const usedRefreshToken = refreshTokensDb.find(
+                (rt) =>
+                  rt._id.toString() === seed.usedRefreshToken._id.toString(),
+              );
+              assertRefreshToken(usedRefreshToken, seed.usedRefreshToken);
+
+              const validRefreshToken_1 = refreshTokensDb.find(
+                (rt) =>
+                  rt._id.toString() === seed.validRefreshToken_1._id.toString(),
+              );
+              assertRefreshToken(validRefreshToken_1, seed.validRefreshToken_1);
+
+              const revokedRefreshToken = refreshTokensDb.find(
+                (rt) =>
+                  rt._id.toString() === seed.revokedRefreshToken._id.toString(),
+              );
+              assertRefreshToken(revokedRefreshToken, seed.revokedRefreshToken);
+            });
+        });
+      });
+    });
+  });
+
+  describe('/users/username/{username}', () => {
+    describe('GET', () => {
+      describe(`should return 400`, () => {
+        it(`username is too long`, () => {
+          return request(app.getHttpServer())
+            .get(`/users/username/${'a'.repeat(Username.MaxLength + 1)}`)
+            .expect(400);
+        });
+
+        it(`username is too short`, () => {
+          return request(app.getHttpServer())
+            .get(`/users/username/${'a'.repeat(Username.MinLength - 1)}`)
+            .expect(400);
+        });
+
+        it(`username do not match its regex`, () => {
+          return request(app.getHttpServer())
+            .get(`/users/username/aaa=bbb`)
+            .expect(400);
+        });
+      });
+
+      describe(`should return 404`, () => {
+        it(`user not found`, () => {
+          return request(app.getHttpServer())
+            .get('/users/username/user_name')
+            .expect(404);
+        });
+      });
+
+      describe(`should return 200`, () => {
+        it(`user found`, () => {
+          return request(app.getHttpServer())
+            .get(`/users/username/${seed.basicUser.username}`)
+            .expect(200)
+            .expect('Content-Type', /json/)
+            .expect(({ body }) => {
+              const outputUser = body as OutputUserDto;
+
+              assertOutputUser(outputUser, seed.basicUser);
+            });
+        });
+      });
+    });
+  });
+
+  describe('/users/email/{email}', () => {
+    describe('GET', () => {
+      describe(`should return 400`, () => {
+        test.each(['aaa=bbb', 'email', '1000', 'aaa@bb@b', '@bb.com'])(
+          `email do not match its regex`,
+          (invalidEmail) => {
+            return request(app.getHttpServer())
+              .get(`/users/email/${invalidEmail}`)
+              .expect(400);
+          },
+        );
+      });
+
+      describe(`should return 404`, () => {
+        it(`user not found`, () => {
+          return request(app.getHttpServer())
+            .get('/users/email/email@email.com')
+            .expect(404);
+        });
+      });
+
+      describe(`should return 200`, () => {
+        it(`user found`, () => {
+          return request(app.getHttpServer())
+            .get(`/users/email/${seed.basicUser.email}`)
+            .expect(200)
+            .expect('Content-Type', /json/)
+            .expect(({ body }) => {
+              const outputUser = body as OutputUserDto;
+
+              assertOutputUser(outputUser, seed.basicUser);
             });
         });
       });
