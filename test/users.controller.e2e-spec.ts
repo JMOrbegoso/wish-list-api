@@ -22,9 +22,9 @@ import {
   UserEntity,
 } from '../src/users/infrastructure/persistence/entities';
 import {
-  RefreshTokenDb,
   Seed,
-  UserDb,
+  assertOutputUser,
+  assertRefreshToken,
   dropDatabase,
   getAccessToken,
   seedDatabaseItems,
@@ -1681,61 +1681,3 @@ describe('UsersController (e2e)', () => {
     });
   });
 });
-
-function assertOutputUser(outputUser: OutputUserDto, userDb: UserDb): void {
-  expect(outputUser).toBeTruthy();
-
-  expect(outputUser.id).toBe(userDb._id.toString());
-  expect(outputUser.email).toBe(userDb.email);
-  expect(outputUser.username).toBe(userDb.username);
-  expect(outputUser.isVerified).toBe(userDb.isVerified);
-  expect(outputUser.isBlocked).toBe(userDb.isBlocked);
-  expect(outputUser.firstName).toBe(userDb.firstName);
-  expect(outputUser.lastName).toBe(userDb.lastName);
-  expect(outputUser.birthday).toBe(userDb.birthday.getTime());
-  expect(outputUser.createdAt).toBe(userDb.createdAt.getTime());
-  expect(outputUser.updatedAt).toBe(userDb.updatedAt.getTime());
-  expect(outputUser.biography).toBe(userDb.biography);
-
-  for (let i = 0; i < userDb.roles.length; i++)
-    expect(outputUser.roles[i]).toBe(userDb.roles[i]);
-
-  if (userDb.profilePicture)
-    expect(outputUser.profilePicture).toBe(userDb.profilePicture);
-  else expect(outputUser.profilePicture).toBeNull();
-
-  if (userDb.deletedAt)
-    expect(outputUser.deletedAt).toBe(userDb.deletedAt.getTime());
-  else expect(outputUser.deletedAt).toBeNull();
-}
-
-function assertRefreshToken(
-  refreshToken: RefreshTokenEntity,
-  refreshTokenDb: RefreshTokenDb,
-): void {
-  expect(refreshToken).toBeTruthy();
-
-  expect(refreshToken._id.toString()).toBe(refreshTokenDb._id.toString());
-  expect(refreshToken.user.toString()).toBe(refreshTokenDb.user.toString());
-  expect(refreshToken.createdAt.getTime()).toBe(
-    refreshTokenDb.createdAt.getTime(),
-  );
-  expect(refreshToken.duration).toBe(refreshTokenDb.duration);
-  expect(refreshToken.ipAddress).toBe(refreshTokenDb.ipAddress);
-
-  if (refreshTokenDb.replacedAt)
-    expect(refreshToken.replacedAt.getTime()).toBe(
-      refreshTokenDb.replacedAt.getTime(),
-    );
-  else expect(refreshToken.replacedAt).toBeNull();
-
-  if (refreshTokenDb.replacedBy)
-    expect(refreshToken.replacedBy).toBe(refreshTokenDb.replacedBy);
-  else expect(refreshToken.replacedBy).toBeNull();
-
-  if (refreshTokenDb.revokedAt)
-    expect(refreshToken.revokedAt.getTime()).toBe(
-      refreshTokenDb.revokedAt.getTime(),
-    );
-  else expect(refreshToken.revokedAt).toBeNull();
-}

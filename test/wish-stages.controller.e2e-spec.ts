@@ -17,8 +17,8 @@ import {
 } from '../src/wishes/infrastructure/persistence/entities';
 import {
   Seed,
-  WishDb,
-  WishStageDb,
+  assertWish,
+  assertWishStage,
   dropDatabase,
   getAccessToken,
   seedDatabaseItems,
@@ -1317,56 +1317,3 @@ describe('WishStagesController (e2e)', () => {
     });
   });
 });
-
-function assertWish(wishEntity: WishEntity, wishDb: WishDb): void {
-  expect(wishEntity).toBeTruthy();
-
-  expect(wishEntity._id.toString()).toBe(wishDb._id.toString());
-  expect(wishEntity.wisher.toString()).toBe(wishDb.wisher.toString());
-  expect(wishEntity.title).toBe(wishDb.title);
-  expect(wishEntity.description).toBe(wishDb.description);
-  expect(wishEntity.privacyLevel).toBe(wishDb.privacyLevel);
-  expect(wishEntity.createdAt.getTime()).toBe(wishDb.createdAt.getTime());
-  expect(wishEntity.updatedAt).toBeTruthy();
-
-  for (let i = 0; i < wishDb.urls.length; i++)
-    expect(wishEntity.urls[i]).toBe(wishDb.urls[i]);
-
-  for (let i = 0; i < wishDb.imageUrls.length; i++)
-    expect(wishEntity.imageUrls[i]).toBe(wishDb.imageUrls[i]);
-
-  for (let i = 0; i < wishDb.categories.length; i++)
-    expect(wishEntity.categories[i]).toBe(wishDb.categories[i]);
-
-  if (wishDb.deletedAt)
-    expect(wishEntity.deletedAt.getTime()).toBe(wishDb.deletedAt.getTime());
-  else expect(wishEntity.deletedAt).toBeNull();
-
-  if (wishDb.startedAt)
-    expect(wishEntity.startedAt.getTime()).toBe(wishDb.startedAt.getTime());
-  else expect(wishEntity.startedAt).toBeNull();
-
-  if (wishDb.completedAt)
-    expect(wishEntity.completedAt.getTime()).toBe(wishDb.completedAt.getTime());
-  else expect(wishEntity.completedAt).toBeNull();
-}
-
-function assertWishStage(
-  wishStageEntity: WishStageEntity,
-  wishStageDb: WishStageDb,
-): void {
-  expect(wishStageEntity).toBeTruthy();
-
-  expect(wishStageEntity._id.toString()).toBe(wishStageDb._id.toString());
-  expect(wishStageEntity.title).toBe(wishStageDb.title);
-  expect(wishStageEntity.description).toBe(wishStageDb.description);
-  expect(wishStageEntity.createdAt.getTime()).toBe(
-    wishStageDb.createdAt.getTime(),
-  );
-
-  for (let i = 0; i < wishStageDb.urls.length; i++)
-    expect(wishStageEntity.urls[i]).toBe(wishStageDb.urls[i]);
-
-  for (let i = 0; i < wishStageDb.imageUrls.length; i++)
-    expect(wishStageEntity.imageUrls[i]).toBe(wishStageDb.imageUrls[i]);
-}
