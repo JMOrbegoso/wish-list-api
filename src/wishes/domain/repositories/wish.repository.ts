@@ -1,6 +1,6 @@
 import { Repository } from '../../../shared/domain/repositories';
 import { UniqueId } from '../../../shared/domain/value-objects';
-import { Wish, WishStage } from '../entities';
+import { Wish, WishStage, Wisher } from '../entities';
 
 export abstract class WishRepository implements Repository<Wish> {
   abstract getWishStageById(wishStageId: UniqueId): Promise<WishStage>;
@@ -17,4 +17,8 @@ export abstract class WishRepository implements Repository<Wish> {
 
   abstract addWish(wish: Wish): void;
   abstract updateWish(wish: Wish): void;
+
+  abstract getWisherById(id: UniqueId): Promise<Wisher>;
+  abstract addWisher(wisher: Wisher): void;
+  abstract updateWisher(wisher: Wisher): void;
 }
