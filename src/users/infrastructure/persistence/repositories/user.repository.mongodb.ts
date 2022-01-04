@@ -10,9 +10,7 @@ import { UserRepository } from '../../../domain/repositories';
 import { Email, IpAddress, Username } from '../../../domain/value-objects';
 import {
   refreshTokenEntityToRefreshToken,
-  refreshTokenToRefreshTokenEntity,
   userEntityToUser,
-  userToUserEntity,
 } from '../../mappings';
 import { RefreshTokenEntity, UserEntity } from '../entities';
 
@@ -122,87 +120,11 @@ export class UserRepositoryMongoDb
     return refreshTokens;
   }
 
-  addUser(user: User): void {
-    const refreshTokenEntities = user.refreshTokens.map((token) =>
-      this.getOrCreateRefreshTokenEntity(token),
-    );
-    const userEntity = userToUserEntity(user, refreshTokenEntities);
-    const userEntityToPersist = this.create(userEntity);
-    this.persist(userEntityToPersist);
-  }
+  addUser(user: User): void {}
 
-  async updateUser(user: User): Promise<void> {
-    const userFromDb = await this.findOne(user.id.getId, { populate: true });
+  updateUser(user: User): void {}
 
-    // Update refreshTokens
-    const refreshTokensToUpdate = user.refreshTokens.filter((refreshToken) =>
-      userFromDb.refreshTokens
-        .getItems()
-        .some((refreshTokenDb) => refreshToken.id.getId === refreshTokenDb.id),
-    );
-    const refreshTokensToAdd = user.refreshTokens.filter(
-      (refreshToken) =>
-        !refreshTokensToUpdate.some(
-          (refreshTokenToUpdate) => refreshToken.id === refreshTokenToUpdate.id,
-        ),
-    );
+  addRefreshToken(refreshToken: RefreshToken): void {}
 
-    // Persist user refreshTokens to add
-    refreshTokensToAdd.forEach((refreshToken) =>
-      this.persistNewRefreshToken(refreshToken, userFromDb),
-    );
-
-    // Persist user refreshTokens to update
-    refreshTokensToUpdate.forEach((refreshToken) =>
-      this.updateRefreshTokenFromPersist(refreshToken),
-    );
-
-    // Update user
-    const userEntity = userToUserEntity(user, []);
-    this.assign(userFromDb, userEntity);
-  }
-
-  updateRefreshToken(refreshToken: RefreshToken): void {
-    const refreshTokenEntity = refreshTokenToRefreshTokenEntity(refreshToken);
-    const refreshTokenFromDb = this.orm.em.getReference(
-      RefreshTokenEntity,
-      refreshToken.id.getId,
-    );
-    this.orm.em.assign(refreshTokenFromDb, refreshTokenEntity);
-  }
-
-  private getOrCreateRefreshTokenEntity(
-    refreshToken: RefreshToken,
-  ): RefreshTokenEntity {
-    let refreshTokenEntity = this.orm.em.getReference(
-      RefreshTokenEntity,
-      refreshToken.id.getId,
-    );
-
-    if (!refreshTokenEntity) {
-      refreshTokenEntity = refreshTokenToRefreshTokenEntity(refreshToken);
-    }
-
-    return refreshTokenEntity;
-  }
-
-  private persistNewRefreshToken(
-    refreshToken: RefreshToken,
-    userFromDb: UserEntity,
-  ): void {
-    const refreshTokenEntity = refreshTokenToRefreshTokenEntity(refreshToken);
-    userFromDb.refreshTokens.add(refreshTokenEntity);
-    this.orm.em.persist(refreshTokenEntity);
-  }
-
-  private updateRefreshTokenFromPersist(refreshToken: RefreshToken): void {
-    const refreshTokenReference = this.orm.em.getReference(
-      RefreshTokenEntity,
-      refreshToken.id.getId,
-    );
-    this.orm.em.assign(
-      refreshTokenReference,
-      refreshTokenToRefreshTokenEntity(refreshToken),
-    );
-  }
+  updateRefreshToken(refreshToken: RefreshToken): void {}
 }
