@@ -1,4 +1,5 @@
 import {
+  EntityData,
   EntityRepository,
   MikroORM,
   Repository as MikroOrmRepository,
@@ -92,7 +93,25 @@ export class WishRepositoryMongoDb
     this.orm.em.persist(wishEntity);
   }
 
-  updateWish(wish: Wish): void {}
+  updateWish(wish: Wish): void {
+    const wishEntityFromDb = this.getReference(wish.id.getId);
+    const newValues: EntityData<WishEntity> = {
+      id: wish.id.getId,
+      title: wish.title.getTitle,
+      description: wish.description.getDescription,
+      privacyLevel: wish.privacyLevel.getPrivacyLevel,
+      createdAt: wish.createdAt.getDate,
+      updatedAt: wish.updatedAt.getDate,
+      wisher: new ObjectId(wish.wisher.id.getId),
+      urls: wish.urls.map((u) => u.getUrl),
+      imageUrls: wish.imageUrls.map((i) => i.getUrl),
+      categories: wish.categories.map((c) => c.getName),
+      deletedAt: wish.deletedAt?.getDate ?? null,
+      startedAt: wish.startedAt?.getDate ?? null,
+      completedAt: wish.completedAt?.getDate ?? null,
+    };
+    this.orm.em.assign(wishEntityFromDb, newValues);
+  }
 
   async getWisherById(id: UniqueId): Promise<Wisher> {
     const wisherEntity = await this.orm.em.findOne(WisherEntity, id.getId);
