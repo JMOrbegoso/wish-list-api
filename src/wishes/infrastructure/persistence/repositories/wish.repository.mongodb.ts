@@ -75,41 +75,14 @@ export class WishRepositoryMongoDb
   }
 
   addWish(wish: Wish): void {
-    const wishEntity = this.create({
-      id: wish.id.getId,
-      title: wish.title.getTitle,
-      description: wish.description.getDescription,
-      privacyLevel: wish.privacyLevel.getPrivacyLevel,
-      createdAt: wish.createdAt.getDate,
-      updatedAt: wish.updatedAt.getDate,
-      wisher: new ObjectId(wish.wisher.id.getId),
-      urls: wish.urls.map((u) => u.getUrl),
-      imageUrls: wish.imageUrls.map((i) => i.getUrl),
-      categories: wish.categories.map((c) => c.getName),
-      deletedAt: wish.deletedAt?.getDate ?? null,
-      startedAt: wish.startedAt?.getDate ?? null,
-      completedAt: wish.completedAt?.getDate ?? null,
-    });
-    this.orm.em.persist(wishEntity);
+    const newValues = this.wishEntityValues(wish);
+    const newWishEntity = this.create(newValues);
+    this.orm.em.persist(newWishEntity);
   }
 
   updateWish(wish: Wish): void {
     const wishEntityFromDb = this.getReference(wish.id.getId);
-    const newValues: EntityData<WishEntity> = {
-      id: wish.id.getId,
-      title: wish.title.getTitle,
-      description: wish.description.getDescription,
-      privacyLevel: wish.privacyLevel.getPrivacyLevel,
-      createdAt: wish.createdAt.getDate,
-      updatedAt: wish.updatedAt.getDate,
-      wisher: new ObjectId(wish.wisher.id.getId),
-      urls: wish.urls.map((u) => u.getUrl),
-      imageUrls: wish.imageUrls.map((i) => i.getUrl),
-      categories: wish.categories.map((c) => c.getName),
-      deletedAt: wish.deletedAt?.getDate ?? null,
-      startedAt: wish.startedAt?.getDate ?? null,
-      completedAt: wish.completedAt?.getDate ?? null,
-    };
+    const newValues = this.wishEntityValues(wish);
     this.orm.em.assign(wishEntityFromDb, newValues);
   }
 
@@ -121,21 +94,18 @@ export class WishRepositoryMongoDb
   }
 
   addWisher(wisher: Wisher): void {
-    const wisherEntity = this.orm.em.create(WisherEntity, {
-      id: wisher.id.getId,
-    });
+    const newValues = this.wisherEntityValues(wisher);
+    const wisherEntity = this.orm.em.create(WisherEntity, newValues);
     this.orm.em.persist(wisherEntity);
   }
 
   updateWisher(wisher: Wisher): void {
-    const wisherEntity = this.orm.em.create(WisherEntity, {
-      id: wisher.id.getId,
-    });
-    const refreshTokenEntityFromDb = this.orm.em.getReference(
+    const wisherEntityFromDb = this.orm.em.getReference(
       WisherEntity,
       wisher.id.getId,
     );
-    this.orm.em.assign(refreshTokenEntityFromDb, wisherEntity);
+    const newValues = this.wisherEntityValues(wisher);
+    this.orm.em.assign(wisherEntityFromDb, newValues);
   }
 
   async getWishStageById(id: UniqueId): Promise<WishStage> {
@@ -149,15 +119,8 @@ export class WishRepositoryMongoDb
   }
 
   addWishStage(wishStage: WishStage, wishId: UniqueId): void {
-    const wishStageEntity = this.orm.em.create(WishStageEntity, {
-      id: wishStage.id.getId,
-      wish: new ObjectId(wishId.getId),
-      title: wishStage.title.getTitle,
-      description: wishStage.description.getDescription,
-      createdAt: wishStage.createdAt.getDate,
-      urls: wishStage.urls.map((u) => u.getUrl),
-      imageUrls: wishStage.imageUrls.map((i) => i.getUrl),
-    });
+    const newValues = this.wishStageEntityValues(wishStage, wishId);
+    const wishStageEntity = this.orm.em.create(WishStageEntity, newValues);
     this.orm.em.persist(wishStageEntity);
   }
 
@@ -166,7 +129,44 @@ export class WishRepositoryMongoDb
       WishStageEntity,
       wishStage.id.getId,
     );
-    const newValues: EntityData<WishStageEntity> = {
+    const newValues = this.wishStageEntityValues(wishStage, wishId);
+    this.orm.em.assign(wishStageEntityFromDb, newValues);
+  }
+
+  deleteWishStage(id: UniqueId): void {
+    const wishStageFromDb = this.orm.em.getReference(WishStageEntity, id.getId);
+    this.remove(wishStageFromDb);
+  }
+
+  private wishEntityValues(wish: Wish): EntityData<WishEntity> {
+    return {
+      id: wish.id.getId,
+      title: wish.title.getTitle,
+      description: wish.description.getDescription,
+      privacyLevel: wish.privacyLevel.getPrivacyLevel,
+      createdAt: wish.createdAt.getDate,
+      updatedAt: wish.updatedAt.getDate,
+      wisher: new ObjectId(wish.wisher.id.getId),
+      urls: wish.urls.map((u) => u.getUrl),
+      imageUrls: wish.imageUrls.map((i) => i.getUrl),
+      categories: wish.categories.map((c) => c.getName),
+      deletedAt: wish.deletedAt?.getDate ?? null,
+      startedAt: wish.startedAt?.getDate ?? null,
+      completedAt: wish.completedAt?.getDate ?? null,
+    };
+  }
+
+  private wisherEntityValues(wisher: Wisher): EntityData<WisherEntity> {
+    return {
+      id: wisher.id.getId,
+    };
+  }
+
+  private wishStageEntityValues(
+    wishStage: WishStage,
+    wishId: UniqueId,
+  ): EntityData<WishStageEntity> {
+    return {
       id: wishStage.id.getId,
       wish: new ObjectId(wishId.getId),
       title: wishStage.title.getTitle,
@@ -175,11 +175,5 @@ export class WishRepositoryMongoDb
       urls: wishStage.urls.map((u) => u.getUrl),
       imageUrls: wishStage.imageUrls.map((i) => i.getUrl),
     };
-    this.orm.em.assign(wishStageEntityFromDb, newValues);
-  }
-
-  deleteWishStage(id: UniqueId): void {
-    const wishStageFromDb = this.orm.em.getReference(WishStageEntity, id.getId);
-    this.remove(wishStageFromDb);
   }
 }
