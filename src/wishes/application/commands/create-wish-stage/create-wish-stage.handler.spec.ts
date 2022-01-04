@@ -166,6 +166,7 @@ describe('wishes', () => {
               getWishStageById: jest.fn().mockReturnValue(null),
               getOneById: jest.fn().mockReturnValue(wish),
               updateWish: jest.fn(),
+              addWishStage: jest.fn(),
             } as MockedObject<WishRepository>;
 
             const unitOfWork = {
@@ -183,10 +184,17 @@ describe('wishes', () => {
             // Assert
             expect(wish.addStage.mock.calls).toHaveLength(1);
             expect(wishRepository.updateWish.mock.calls).toHaveLength(1);
-            expect(unitOfWork.commitChanges.mock.calls).toHaveLength(1);
             expect(wishRepository.updateWish.mock.calls[0][0].id.getId).toBe(
               wish.id.getId,
             );
+            expect(wishRepository.addWishStage.mock.calls).toHaveLength(1);
+            expect(wishRepository.addWishStage.mock.calls[0][0].id.getId).toBe(
+              command.id,
+            );
+            expect(wishRepository.addWishStage.mock.calls[0][1].getId).toBe(
+              command.wishId,
+            );
+            expect(unitOfWork.commitChanges.mock.calls).toHaveLength(1);
           },
         );
       });

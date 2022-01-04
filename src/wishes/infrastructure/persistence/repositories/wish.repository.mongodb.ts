@@ -148,7 +148,18 @@ export class WishRepositoryMongoDb
     return wishStage;
   }
 
-  addWishStage(wishStage: WishStage): void {}
+  addWishStage(wishStage: WishStage, wishId: UniqueId): void {
+    const wishStageEntity = this.orm.em.create(WishStageEntity, {
+      id: wishStage.id.getId,
+      wish: new ObjectId(wishId.getId),
+      title: wishStage.title.getTitle,
+      description: wishStage.description.getDescription,
+      createdAt: wishStage.createdAt.getDate,
+      urls: wishStage.urls.map((u) => u.getUrl),
+      imageUrls: wishStage.imageUrls.map((i) => i.getUrl),
+    });
+    this.orm.em.persist(wishStageEntity);
+  }
 
   updateWishStage(wishStage: WishStage): void {}
 
