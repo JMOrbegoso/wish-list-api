@@ -22,6 +22,6 @@ export abstract class WishRepository implements Repository<Wish> {
 
   abstract getWishStageById(id: UniqueId): Promise<WishStage>;
   abstract addWishStage(wishStage: WishStage, wishId: UniqueId): void;
-  abstract updateWishStage(wishStage: WishStage): void;
+  abstract updateWishStage(wishStage: WishStage, wishId: UniqueId): void;
   abstract deleteWishStage(id: UniqueId): void;
 }

@@ -4,6 +4,7 @@ import { UpdateWishStageCommand, UpdateWishStageHandler } from '..';
 import { UnitOfWork } from '../../../../shared/domain/repositories';
 import { UniqueId } from '../../../../shared/domain/value-objects';
 import { Wish, WishStage } from '../../../domain/entities';
+import { NonExistentWishStageError } from '../../../domain/entities/wish/exceptions';
 import { WishRepository } from '../../../domain/repositories';
 
 const commands = [
@@ -59,55 +60,10 @@ describe('wishes', () => {
         );
 
         test.each(commands)(
-          'update a wish stage that not exist should throw error',
+          'update a wish stage on a deleted wish should throw error',
           (command: UpdateWishStageCommand) => {
             // Arrange
-            const uniqueId = {
-              equals: jest.fn().mockReturnValue(false),
-            } as MockedObject<UniqueId>;
-
-            const wishStage = {
-              id: uniqueId as UniqueId,
-            } as MockedObject<WishStage>;
-
             const wish = {
-              stages: [wishStage] as MockedObject<WishStage[]>,
-            } as MockedObject<Wish>;
-
-            const wishRepository = {
-              getWishByWishStageId: jest.fn().mockReturnValue(wish),
-            } as MockedObject<WishRepository>;
-
-            const unitOfWork = {} as MockedObject<UnitOfWork>;
-
-            const handler = new UpdateWishStageHandler(
-              wishRepository,
-              unitOfWork,
-            );
-
-            // Act
-
-            // Assert
-            return expect(handler.execute(command)).rejects.toThrowError(
-              NotFoundException,
-            );
-          },
-        );
-
-        test.each(commands)(
-          'update a wish stage that not exist should throw error',
-          (command: UpdateWishStageCommand) => {
-            // Arrange
-            const uniqueId = {
-              equals: jest.fn().mockReturnValue(true),
-            } as MockedObject<UniqueId>;
-
-            const wishStage = {
-              id: uniqueId as UniqueId,
-            } as MockedObject<WishStage>;
-
-            const wish = {
-              stages: [wishStage] as MockedObject<WishStage[]>,
               isDeleted: true,
             } as MockedObject<Wish>;
 
@@ -127,6 +83,36 @@ describe('wishes', () => {
             // Assert
             return expect(handler.execute(command)).rejects.toThrowError(
               BadRequestException,
+            );
+          },
+        );
+
+        test.each(commands)(
+          'update a wish stage that not exist should throw error',
+          (command: UpdateWishStageCommand) => {
+            // Arrange
+            const wish = {
+              updateStage: jest.fn().mockImplementation(() => {
+                throw new NonExistentWishStageError();
+              }),
+            } as MockedObject<Wish>;
+
+            const wishRepository = {
+              getWishByWishStageId: jest.fn().mockReturnValue(wish),
+            } as MockedObject<WishRepository>;
+
+            const unitOfWork = {} as MockedObject<UnitOfWork>;
+
+            const handler = new UpdateWishStageHandler(
+              wishRepository,
+              unitOfWork,
+            );
+
+            // Act
+
+            // Assert
+            return expect(handler.execute(command)).rejects.toThrowError(
+              NonExistentWishStageError,
             );
           },
         );
@@ -155,6 +141,7 @@ describe('wishes', () => {
             const wishRepository = {
               getWishByWishStageId: jest.fn().mockReturnValue(wish),
               updateWish: jest.fn(),
+              updateWishStage: jest.fn(),
             } as MockedObject<WishRepository>;
 
             const unitOfWork = {
@@ -176,6 +163,13 @@ describe('wishes', () => {
             );
             expect(wishRepository.updateWish.mock.calls).toHaveLength(1);
             expect(wishRepository.updateWish.mock.calls[0][0].id.getId).toBe(
+              wish.id.getId,
+            );
+            expect(wishRepository.updateWishStage.mock.calls).toHaveLength(1);
+            expect(
+              wishRepository.updateWishStage.mock.calls[0][0].id.getId,
+            ).toBe(wishStage.id.getId);
+            expect(wishRepository.updateWishStage.mock.calls[0][1].getId).toBe(
               wish.id.getId,
             );
             expect(unitOfWork.commitChanges.mock.calls).toHaveLength(1);
