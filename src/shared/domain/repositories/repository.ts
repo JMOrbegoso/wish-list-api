@@ -5,6 +5,4 @@ export interface Repository<T extends AggregateRoot> {
   getAll(): Promise<T[]>;
 
   getOneById(id: UniqueId): Promise<T>;
-
-  add(t: T): void;
 }
