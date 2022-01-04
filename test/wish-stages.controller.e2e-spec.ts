@@ -1035,5 +1035,69 @@ describe('WishStagesController (e2e)', () => {
         });
       });
     });
+
+    describe('DELETE', () => {
+      describe(`should return 401`, () => {
+        it(`unauthenticated request`, () => {
+          const id = 'wish-stage-id';
+          return request(app.getHttpServer())
+            .delete(`/wish-stages/${id}`)
+            .expect(401);
+        });
+      });
+
+      describe(`should return 403`, () => {
+        it(`unauthenticated request`, () => {
+          const id = seed.wishStage_of_PublicWish_2._id.toString();
+          return request(app.getHttpServer())
+            .delete(`/wish-stages/${id}`)
+            .auth(accessTokenBasicUser, { type: 'bearer' })
+            .expect(403);
+        });
+      });
+
+      describe(`should return 404`, () => {
+        it(`unauthenticated request`, () => {
+          const id = 'wish-stage-id';
+          return request(app.getHttpServer())
+            .delete(`/wish-stages/${id}`)
+            .auth(accessTokenBasicUser, { type: 'bearer' })
+            .expect(404);
+        });
+      });
+
+      describe(`should return 200`, () => {
+        it(`wish stage deleted successfully`, () => {
+          const id = seed.wishStage_1_of_PublicWish_1._id.toString();
+          return request(app.getHttpServer())
+            .delete(`/wish-stages/${id}`)
+            .auth(accessTokenBasicUser, { type: 'bearer' })
+            .expect(200)
+            .expect(async () => {
+              const wishStagesDb: WishStageEntity[] = await database
+                .collection('wish-stages')
+                .find()
+                .toArray();
+
+              expect(wishStagesDb).toHaveLength(4);
+
+              const wishStageDeleted = wishStagesDb.find(
+                (u) => u._id.toString() === id,
+              );
+              expect(wishStageDeleted).toBeFalsy();
+
+              const wishStageKeeped = wishStagesDb.find(
+                (u) =>
+                  u._id.toString() ===
+                  seed.wishStage_2_of_PublicWish_1._id.toString(),
+              );
+              assertWishStage(
+                wishStageKeeped,
+                seed.wishStage_2_of_PublicWish_1,
+              );
+            });
+        });
+      });
+    });
   });
 });
