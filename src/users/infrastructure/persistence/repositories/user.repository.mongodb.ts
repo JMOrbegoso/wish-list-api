@@ -1,9 +1,11 @@
 import {
+  EntityData,
   EntityRepository,
   MikroORM,
   Repository as MikroOrmRepository,
 } from '@mikro-orm/core';
 import { Query } from '@mikro-orm/core/typings';
+import { ObjectId } from '@mikro-orm/mongodb';
 import { UniqueId } from '../../../../shared/domain/value-objects';
 import { RefreshToken, User, VerificationCode } from '../../../domain/entities';
 import { UserRepository } from '../../../domain/repositories';
@@ -120,11 +122,42 @@ export class UserRepositoryMongoDb
     return refreshTokens;
   }
 
-  addUser(user: User): void {}
+  addUser(user: User): void {
+    const newValues = this.userEntityValues(user);
+    const newUserEntity = this.create(newValues);
+    this.orm.em.persist(newUserEntity);
+  }
 
-  updateUser(user: User): void {}
+  updateUser(user: User): void {
+    const userEntityFromDb = this.getReference(user.id.getId);
+    const newValues = this.userEntityValues(user);
+    this.orm.em.assign(userEntityFromDb, newValues);
+  }
 
   addRefreshToken(refreshToken: RefreshToken): void {}
 
   updateRefreshToken(refreshToken: RefreshToken): void {}
+
+  private userEntityValues(user: User): EntityData<UserEntity> {
+    return {
+      id: user.id.getId,
+      email: user.email.getEmail,
+      normalizedEmail: user.email.getNormalizedEmail,
+      username: user.username.getUsername,
+      normalizedUsername: user.username.getNormalizedUsername,
+      passwordHash: user.passwordHash.getPasswordHash,
+      isVerified: user.isVerified,
+      verificationCode: user.verificationCode,
+      isBlocked: user.isBlocked,
+      firstName: user.firstName.getFirstName,
+      lastName: user.lastName.getLastName,
+      birthday: user.birthday.getDate,
+      createdAt: user.createdAt.getDate,
+      updatedAt: user.updatedAt.getDate,
+      biography: user.biography.getBiography,
+      profilePicture: user.profilePicture?.getUrl ?? null,
+      deletedAt: user.deletedAt?.getDate ?? null,
+      roles: user.roles,
+    };
+  }
 }
