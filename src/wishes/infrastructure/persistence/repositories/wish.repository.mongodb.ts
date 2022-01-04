@@ -95,7 +95,7 @@ export class WishRepositoryMongoDb
     this.persist(wishEntityToPersist);
   }
 
-  async update(wish: Wish): Promise<void> {
+  async updateWish(wish: Wish): Promise<void> {
     const wishFromDb = await this.findOne(wish.id.getId, { populate: true });
 
     // Update stages

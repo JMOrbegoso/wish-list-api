@@ -59,7 +59,7 @@ export class CreateWishStageHandler
     wish.addStage(wishStage);
 
     // Add the new wish to the wishes repository
-    await this.wishRepository.update(wish);
+    this.wishRepository.updateWish(wish);
 
     // Save changes using Unit of Work
     await this.unitOfWork.commitChanges();
