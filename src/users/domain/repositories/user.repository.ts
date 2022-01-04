@@ -31,8 +31,7 @@ export abstract class UserRepository implements Repository<User> {
   ): Promise<RefreshToken[]>;
 
   abstract addUser(user: User): void;
-
-  abstract update(user: User): Promise<void>;
+  abstract updateUser(user: User): void;
 
   abstract updateRefreshToken(refreshToken: RefreshToken): void;
 }

@@ -131,7 +131,7 @@ export class UserRepositoryMongoDb
     this.persist(userEntityToPersist);
   }
 
-  async update(user: User): Promise<void> {
+  async updateUser(user: User): Promise<void> {
     const userFromDb = await this.findOne(user.id.getId, { populate: true });
 
     // Update refreshTokens

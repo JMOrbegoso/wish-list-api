@@ -27,7 +27,7 @@ export class DeleteUserHandler implements ICommandHandler<DeleteUserCommand> {
     user.delete();
 
     // Add the updated user to the users repository
-    await this.userRepository.update(user);
+    this.userRepository.updateUser(user);
 
     // Save changes using Unit of Work
     await this.unitOfWork.commitChanges();
