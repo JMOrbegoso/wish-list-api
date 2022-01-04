@@ -163,5 +163,8 @@ export class WishRepositoryMongoDb
 
   updateWishStage(wishStage: WishStage): void {}
 
-  deleteWishStage(id: UniqueId): void {}
+  deleteWishStage(id: UniqueId): void {
+    const wishStageFromDb = this.orm.em.getReference(WishStageEntity, id.getId);
+    this.remove(wishStageFromDb);
+  }
 }

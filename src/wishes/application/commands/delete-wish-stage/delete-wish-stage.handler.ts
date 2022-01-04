@@ -34,6 +34,7 @@ export class DeleteWishStageHandler
 
     // Update the wish using the repository
     this.wishRepository.updateWish(wish);
+    this.wishRepository.deleteWishStage(wishStage.id);
 
     // Save changes using Unit of Work
     await this.unitOfWork.commitChanges();
