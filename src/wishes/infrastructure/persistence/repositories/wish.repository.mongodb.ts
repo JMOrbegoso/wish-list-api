@@ -85,7 +85,7 @@ export class WishRepositoryMongoDb
     return wish;
   }
 
-  add(wish: Wish): void {
+  addWish(wish: Wish): void {
     const wisherEntity = this.getOrCreateWisherEntity(wish.wisher);
     const wishStagesEntities = wish.stages.map((stage) =>
       this.getOrCreateWishStageEntity(stage),

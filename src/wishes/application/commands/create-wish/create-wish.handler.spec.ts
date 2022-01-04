@@ -134,7 +134,7 @@ describe('wishes', () => {
             // Arrange
             const wishRepository = {
               getOneById: jest.fn().mockReturnValue(null),
-              add: jest.fn(),
+              addWish: jest.fn(),
             } as MockedObject<WishRepository>;
 
             const userRepository = {
@@ -155,9 +155,9 @@ describe('wishes', () => {
             await handler.execute(command);
 
             // Assert
-            expect(wishRepository.add.mock.calls).toHaveLength(1);
+            expect(wishRepository.addWish.mock.calls).toHaveLength(1);
             expect(unitOfWork.commitChanges.mock.calls).toHaveLength(1);
-            expect(wishRepository.add.mock.calls[0][0].id.getId).toBe(
+            expect(wishRepository.addWish.mock.calls[0][0].id.getId).toBe(
               command.id,
             );
           },

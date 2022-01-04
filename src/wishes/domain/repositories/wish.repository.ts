@@ -15,7 +15,7 @@ export abstract class WishRepository implements Repository<Wish> {
 
   abstract getOneById(id: UniqueId): Promise<Wish>;
 
-  abstract add(wish: Wish): void;
+  abstract addWish(wish: Wish): void;
 
   abstract update(wish: Wish): Promise<void>;
 }

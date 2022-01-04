@@ -69,7 +69,7 @@ export class CreateWishHandler implements ICommandHandler<CreateWishCommand> {
     );
 
     // Add the new wish to the wishes repository
-    this.wishRepository.add(wish);
+    this.wishRepository.addWish(wish);
 
     // Save changes using Unit of Work
     await this.unitOfWork.commitChanges();
