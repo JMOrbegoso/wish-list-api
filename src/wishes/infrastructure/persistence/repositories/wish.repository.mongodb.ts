@@ -8,8 +8,12 @@ import { UniqueId } from '../../../../shared/domain/value-objects';
 import { Wish, WishStage, Wisher } from '../../../domain/entities';
 import { WishRepository } from '../../../domain/repositories';
 import { PrivacyLevel } from '../../../domain/value-objects';
-import { wishEntityToWish, wishStageEntityToWishStage } from '../../mappings';
-import { WishEntity, WishStageEntity } from '../entities';
+import {
+  wishEntityToWish,
+  wishStageEntityToWishStage,
+  wisherEntityToWisher,
+} from '../../mappings';
+import { WishEntity, WishStageEntity, WisherEntity } from '../entities';
 
 @MikroOrmRepository(WishEntity)
 export class WishRepositoryMongoDb
@@ -69,15 +73,51 @@ export class WishRepositoryMongoDb
     return wish;
   }
 
-  addWish(wish: Wish): void {}
+  addWish(wish: Wish): void {
+    const wishEntity = this.create({
+      id: wish.id.getId,
+      title: wish.title.getTitle,
+      description: wish.description.getDescription,
+      privacyLevel: wish.privacyLevel.getPrivacyLevel,
+      createdAt: wish.createdAt.getDate,
+      updatedAt: wish.updatedAt.getDate,
+      wisher: new ObjectId(wish.wisher.id.getId),
+      urls: wish.urls.map((u) => u.getUrl),
+      imageUrls: wish.imageUrls.map((i) => i.getUrl),
+      categories: wish.categories.map((c) => c.getName),
+      deletedAt: wish.deletedAt?.getDate ?? null,
+      startedAt: wish.startedAt?.getDate ?? null,
+      completedAt: wish.completedAt?.getDate ?? null,
+    });
+    this.orm.em.persist(wishEntity);
+  }
 
   updateWish(wish: Wish): void {}
 
-  async getWisherById(id: UniqueId): Promise<Wisher> {}
+  async getWisherById(id: UniqueId): Promise<Wisher> {
+    const wisherEntity = await this.orm.em.findOne(WisherEntity, id.getId);
+    if (!wisherEntity) return null;
+    const wisher = wisherEntityToWisher(wisherEntity);
+    return wisher;
+  }
 
-  addWisher(wisher: Wisher): void {}
+  addWisher(wisher: Wisher): void {
+    const wisherEntity = this.orm.em.create(WisherEntity, {
+      id: wisher.id.getId,
+    });
+    this.orm.em.persist(wisherEntity);
+  }
 
-  updateWisher(wisher: Wisher): void {}
+  updateWisher(wisher: Wisher): void {
+    const wisherEntity = this.orm.em.create(WisherEntity, {
+      id: wisher.id.getId,
+    });
+    const refreshTokenEntityFromDb = this.orm.em.getReference(
+      WisherEntity,
+      wisher.id.getId,
+    );
+    this.orm.em.assign(refreshTokenEntityFromDb, wisherEntity);
+  }
 
   async getWishStageById(id: UniqueId): Promise<WishStage> {
     const wishStageEntity = await this.orm.em.findOne(
