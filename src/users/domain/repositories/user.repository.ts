@@ -30,7 +30,7 @@ export abstract class UserRepository implements Repository<User> {
     ipAddress: IpAddress,
   ): Promise<RefreshToken[]>;
 
-  abstract add(user: User): void;
+  abstract addUser(user: User): void;
 
   abstract update(user: User): Promise<void>;
 

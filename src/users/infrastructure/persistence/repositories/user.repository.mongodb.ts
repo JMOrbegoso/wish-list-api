@@ -122,7 +122,7 @@ export class UserRepositoryMongoDb
     return refreshTokens;
   }
 
-  add(user: User): void {
+  addUser(user: User): void {
     const refreshTokenEntities = user.refreshTokens.map((token) =>
       this.getOrCreateRefreshTokenEntity(token),
     );
