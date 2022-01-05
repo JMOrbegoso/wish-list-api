@@ -512,7 +512,12 @@ describe('users', () => {
               commitChanges: jest.fn(),
             } as MockedObject<UnitOfWork>;
 
+            const uniqueId = {
+              equals: jest.fn().mockReturnValue(true),
+            } as MockedObject<UniqueId>;
+
             const refreshTokenToReplace = {
+              id: uniqueId as UniqueId,
               isExpired: false,
               isRevoked: false,
               wasReplaced: false,
@@ -554,23 +559,25 @@ describe('users', () => {
               profilePicture: null,
               replaceRefreshToken: jest.fn(),
               getRefreshToken: jest.fn().mockReturnValue(refreshTokenToReplace),
+              refreshTokens: [refreshTokenToReplace] as MockedObject<
+                RefreshToken[]
+              >,
             } as MockedObject<User>;
 
             const userRepository = {
               getOneByRefreshTokenId: jest.fn().mockReturnValue(user),
-              updateUser: jest.fn(),
+              addRefreshToken: jest.fn(),
+              updateRefreshToken: jest.fn(),
             } as MockedObject<UserRepository>;
 
             const tokenService = {
               signPayload: jest.fn().mockReturnValue('access-token'),
             } as MockedObject<TokenService>;
 
-            const uniqueId = {
-              getId: 'new-refresh-token-id',
-            } as MockedObject<UniqueId>;
-
             const uniqueIdGeneratorService = {
-              generateId: jest.fn().mockReturnValue(uniqueId),
+              generateId: jest.fn().mockReturnValue({
+                getId: 'new-refresh-token-id',
+              } as MockedObject<UniqueId>),
             } as MockedObject<UniqueIdGeneratorService>;
 
             const handler = new RefreshAccessTokenHandler(
@@ -590,7 +597,10 @@ describe('users', () => {
             );
             expect(user.replaceRefreshToken.mock.calls).toHaveLength(1);
 
-            expect(userRepository.updateUser.mock.calls).toHaveLength(1);
+            expect(userRepository.addRefreshToken.mock.calls).toHaveLength(1);
+            expect(userRepository.updateRefreshToken.mock.calls).toHaveLength(
+              1,
+            );
             expect(unitOfWork.commitChanges.mock.calls).toHaveLength(1);
 
             expect(authTokens.access_token).toBe('access-token');

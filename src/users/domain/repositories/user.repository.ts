@@ -33,6 +33,6 @@ export abstract class UserRepository implements Repository<User> {
   abstract addUser(user: User): void;
   abstract updateUser(user: User): void;
 
-  abstract addRefreshToken(refreshToken: RefreshToken): void;
+  abstract addRefreshToken(refreshToken: RefreshToken, userId: UniqueId): void;
   abstract updateRefreshToken(refreshToken: RefreshToken): void;
 }

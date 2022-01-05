@@ -134,9 +134,23 @@ export class UserRepositoryMongoDb
     this.orm.em.assign(userEntityFromDb, newValues);
   }
 
-  addRefreshToken(refreshToken: RefreshToken): void {}
+  addRefreshToken(refreshToken: RefreshToken, userId: UniqueId): void {
+    const newValues = this.refreshTokenEntityValues(refreshToken, userId);
+    const newRefreshTokenEntity = this.orm.em.create(
+      RefreshTokenEntity,
+      newValues,
+    );
+    this.orm.em.persist(newRefreshTokenEntity);
+  }
 
-  updateRefreshToken(refreshToken: RefreshToken): void {}
+  updateRefreshToken(refreshToken: RefreshToken): void {
+    const refreshTokenEntityFromDb = this.orm.em.getReference(
+      RefreshTokenEntity,
+      refreshToken.id.getId,
+    );
+    const newValues = this.refreshTokenEntityValues_2(refreshToken);
+    this.orm.em.assign(refreshTokenEntityFromDb, newValues);
+  }
 
   private userEntityValues(user: User): EntityData<UserEntity> {
     return {
@@ -158,6 +172,36 @@ export class UserRepositoryMongoDb
       profilePicture: user.profilePicture?.getUrl ?? null,
       deletedAt: user.deletedAt?.getDate ?? null,
       roles: user.roles,
+    };
+  }
+
+  private refreshTokenEntityValues(
+    refreshToken: RefreshToken,
+    userId: UniqueId,
+  ): EntityData<RefreshTokenEntity> {
+    return {
+      id: refreshToken.id.getId,
+      user: new ObjectId(userId.getId),
+      createdAt: refreshToken.createdAt.getDate,
+      duration: refreshToken.duration,
+      ipAddress: refreshToken.ipAddress,
+      replacedAt: refreshToken.replacedAt?.getDate ?? null,
+      replacedBy: refreshToken.replacedBy?.getId ?? null,
+      revokedAt: refreshToken.revokedAt?.getDate ?? null,
+    };
+  }
+
+  private refreshTokenEntityValues_2(
+    refreshToken: RefreshToken,
+  ): EntityData<RefreshTokenEntity> {
+    return {
+      id: refreshToken.id.getId,
+      createdAt: refreshToken.createdAt.getDate,
+      duration: refreshToken.duration,
+      ipAddress: refreshToken.ipAddress,
+      replacedAt: refreshToken.replacedAt?.getDate ?? null,
+      replacedBy: refreshToken.replacedBy?.getId ?? null,
+      revokedAt: refreshToken.revokedAt?.getDate ?? null,
     };
   }
 }
