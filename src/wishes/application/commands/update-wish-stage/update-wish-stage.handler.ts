@@ -38,7 +38,7 @@ export class UpdateWishStageHandler
 
     // Update the wish and wish stage using the repository
     this.wishRepository.updateWish(wish);
-    this.wishRepository.updateWishStage(wishStage, wish.id);
+    this.wishRepository.updateWishStage(wishStage);
 
     // Save changes using Unit of Work
     await this.unitOfWork.commitChanges();

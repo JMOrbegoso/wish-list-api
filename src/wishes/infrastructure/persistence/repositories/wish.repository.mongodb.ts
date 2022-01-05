@@ -75,71 +75,7 @@ export class WishRepositoryMongoDb
   }
 
   addWish(wish: Wish): void {
-    const newValues = this.wishEntityValues(wish);
-    const newWishEntity = this.create(newValues);
-    this.orm.em.persist(newWishEntity);
-  }
-
-  updateWish(wish: Wish): void {
-    const wishEntityFromDb = this.getReference(wish.id.getId);
-    const newValues = this.wishEntityValues(wish);
-    this.orm.em.assign(wishEntityFromDb, newValues);
-  }
-
-  async getWisherById(id: UniqueId): Promise<Wisher> {
-    const wisherEntity = await this.orm.em.findOne(WisherEntity, id.getId);
-    if (!wisherEntity) return null;
-    const wisher = wisherEntityToWisher(wisherEntity);
-    return wisher;
-  }
-
-  addWisher(wisher: Wisher): void {
-    const newValues = this.wisherEntityValues(wisher);
-    const wisherEntity = this.orm.em.create(WisherEntity, newValues);
-    this.orm.em.persist(wisherEntity);
-  }
-
-  updateWisher(wisher: Wisher): void {
-    const wisherEntityFromDb = this.orm.em.getReference(
-      WisherEntity,
-      wisher.id.getId,
-    );
-    const newValues = this.wisherEntityValues(wisher);
-    this.orm.em.assign(wisherEntityFromDb, newValues);
-  }
-
-  async getWishStageById(id: UniqueId): Promise<WishStage> {
-    const wishStageEntity = await this.orm.em.findOne(
-      WishStageEntity,
-      id.getId,
-    );
-    if (!wishStageEntity) return null;
-    const wishStage = wishStageEntityToWishStage(wishStageEntity);
-    return wishStage;
-  }
-
-  addWishStage(wishStage: WishStage, wishId: UniqueId): void {
-    const newValues = this.wishStageEntityValues(wishStage, wishId);
-    const wishStageEntity = this.orm.em.create(WishStageEntity, newValues);
-    this.orm.em.persist(wishStageEntity);
-  }
-
-  updateWishStage(wishStage: WishStage, wishId: UniqueId): void {
-    const wishStageEntityFromDb = this.orm.em.getReference(
-      WishStageEntity,
-      wishStage.id.getId,
-    );
-    const newValues = this.wishStageEntityValues(wishStage, wishId);
-    this.orm.em.assign(wishStageEntityFromDb, newValues);
-  }
-
-  deleteWishStage(id: UniqueId): void {
-    const wishStageFromDb = this.orm.em.getReference(WishStageEntity, id.getId);
-    this.remove(wishStageFromDb);
-  }
-
-  private wishEntityValues(wish: Wish): EntityData<WishEntity> {
-    return {
+    const newValues: EntityData<WishEntity> = {
       id: wish.id.getId,
       title: wish.title.getTitle,
       description: wish.description.getDescription,
@@ -154,19 +90,63 @@ export class WishRepositoryMongoDb
       startedAt: wish.startedAt?.getDate ?? null,
       completedAt: wish.completedAt?.getDate ?? null,
     };
+    const newWishEntity = this.create(newValues);
+    this.orm.em.persist(newWishEntity);
   }
 
-  private wisherEntityValues(wisher: Wisher): EntityData<WisherEntity> {
-    return {
+  updateWish(wish: Wish): void {
+    const wishEntityFromDb = this.getReference(wish.id.getId);
+    const newValues: EntityData<WishEntity> = {
+      title: wish.title.getTitle,
+      description: wish.description.getDescription,
+      privacyLevel: wish.privacyLevel.getPrivacyLevel,
+      updatedAt: wish.updatedAt.getDate,
+      urls: wish.urls.map((u) => u.getUrl),
+      imageUrls: wish.imageUrls.map((i) => i.getUrl),
+      categories: wish.categories.map((c) => c.getName),
+      deletedAt: wish.deletedAt?.getDate ?? null,
+      startedAt: wish.startedAt?.getDate ?? null,
+      completedAt: wish.completedAt?.getDate ?? null,
+    };
+    this.orm.em.assign(wishEntityFromDb, newValues);
+  }
+
+  async getWisherById(id: UniqueId): Promise<Wisher> {
+    const wisherEntity = await this.orm.em.findOne(WisherEntity, id.getId);
+    if (!wisherEntity) return null;
+    const wisher = wisherEntityToWisher(wisherEntity);
+    return wisher;
+  }
+
+  addWisher(wisher: Wisher): void {
+    const newValues: EntityData<WisherEntity> = {
       id: wisher.id.getId,
     };
+    const wisherEntity = this.orm.em.create(WisherEntity, newValues);
+    this.orm.em.persist(wisherEntity);
   }
 
-  private wishStageEntityValues(
-    wishStage: WishStage,
-    wishId: UniqueId,
-  ): EntityData<WishStageEntity> {
-    return {
+  updateWisher(wisher: Wisher): void {
+    const wisherEntityFromDb = this.orm.em.getReference(
+      WisherEntity,
+      wisher.id.getId,
+    );
+    const newValues: EntityData<WisherEntity> = {};
+    this.orm.em.assign(wisherEntityFromDb, newValues);
+  }
+
+  async getWishStageById(id: UniqueId): Promise<WishStage> {
+    const wishStageEntity = await this.orm.em.findOne(
+      WishStageEntity,
+      id.getId,
+    );
+    if (!wishStageEntity) return null;
+    const wishStage = wishStageEntityToWishStage(wishStageEntity);
+    return wishStage;
+  }
+
+  addWishStage(wishStage: WishStage, wishId: UniqueId): void {
+    const newValues: EntityData<WishStageEntity> = {
       id: wishStage.id.getId,
       wish: new ObjectId(wishId.getId),
       title: wishStage.title.getTitle,
@@ -175,5 +155,26 @@ export class WishRepositoryMongoDb
       urls: wishStage.urls.map((u) => u.getUrl),
       imageUrls: wishStage.imageUrls.map((i) => i.getUrl),
     };
+    const wishStageEntity = this.orm.em.create(WishStageEntity, newValues);
+    this.orm.em.persist(wishStageEntity);
+  }
+
+  updateWishStage(wishStage: WishStage): void {
+    const wishStageEntityFromDb = this.orm.em.getReference(
+      WishStageEntity,
+      wishStage.id.getId,
+    );
+    const newValues: EntityData<WishStageEntity> = {
+      title: wishStage.title.getTitle,
+      description: wishStage.description.getDescription,
+      urls: wishStage.urls.map((u) => u.getUrl),
+      imageUrls: wishStage.imageUrls.map((i) => i.getUrl),
+    };
+    this.orm.em.assign(wishStageEntityFromDb, newValues);
+  }
+
+  deleteWishStage(id: UniqueId): void {
+    const wishStageFromDb = this.orm.em.getReference(WishStageEntity, id.getId);
+    this.remove(wishStageFromDb);
   }
 }

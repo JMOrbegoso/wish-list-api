@@ -169,9 +169,6 @@ describe('wishes', () => {
             expect(
               wishRepository.updateWishStage.mock.calls[0][0].id.getId,
             ).toBe(wishStage.id.getId);
-            expect(wishRepository.updateWishStage.mock.calls[0][1].getId).toBe(
-              wish.id.getId,
-            );
             expect(unitOfWork.commitChanges.mock.calls).toHaveLength(1);
           },
         );
