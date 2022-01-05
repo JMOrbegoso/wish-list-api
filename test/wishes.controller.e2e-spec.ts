@@ -1,14 +1,11 @@
 import { ObjectId } from '@mikro-orm/mongodb';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import { MongoClient } from 'mongodb';
+import { MongoClient, Db as MongoDatabase } from 'mongodb';
 import request from 'supertest';
 import { AppModule } from '../src/app.module';
 import mikroOrmConfig from '../src/mikro-orm.config';
-import {
-  OutputWishDto,
-  OutputWishStageDto,
-} from '../src/wishes/application/dtos';
+import { OutputWishDto } from '../src/wishes/application/dtos';
 import { Wish } from '../src/wishes/domain/entities';
 import {
   CategoryName,
@@ -24,8 +21,9 @@ import {
 } from '../src/wishes/infrastructure/persistence/entities';
 import {
   Seed,
-  WishDb,
-  WishStageDb,
+  assertOutputWish,
+  assertOutputWishStage,
+  assertWishStage,
   dropDatabase,
   getAccessToken,
   seedDatabaseItems,
@@ -34,6 +32,7 @@ import {
 describe('WishesController (e2e)', () => {
   let app: INestApplication;
   let mongoClient: MongoClient;
+  let database: MongoDatabase;
   // Access tokens
   let accessTokenBasicUser: string;
   let accessTokenModeratorUser: string;
@@ -52,12 +51,13 @@ describe('WishesController (e2e)', () => {
     mongoClient = await MongoClient.connect(mikroOrmConfig.clientUrl, {
       useUnifiedTopology: true,
     });
+    database = mongoClient.db(mikroOrmConfig.dbName);
 
-    await dropDatabase(mongoClient, mikroOrmConfig.dbName);
+    await dropDatabase(database);
   });
 
   beforeEach(async () => {
-    seed = await seedDatabaseItems(mongoClient, mikroOrmConfig.dbName);
+    seed = await seedDatabaseItems(database);
 
     accessTokenBasicUser = await getAccessToken(app, seed.basicUser);
     accessTokenModeratorUser = await getAccessToken(app, seed.moderatorUser);
@@ -65,7 +65,7 @@ describe('WishesController (e2e)', () => {
   });
 
   afterEach(async () => {
-    await dropDatabase(mongoClient, mikroOrmConfig.dbName);
+    await dropDatabase(database);
   });
 
   afterAll(async () => {
@@ -77,19 +77,7 @@ describe('WishesController (e2e)', () => {
     describe('GET', () => {
       describe(`should return 401`, () => {
         it(`unauthenticated request`, () => {
-          return request(app.getHttpServer())
-            .get('/wishes')
-            .expect(401)
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+          return request(app.getHttpServer()).get('/wishes').expect(401);
         });
       });
 
@@ -98,17 +86,7 @@ describe('WishesController (e2e)', () => {
           return request(app.getHttpServer())
             .get('/wishes')
             .auth(accessTokenBasicUser, { type: 'bearer' })
-            .expect(403)
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            .expect(403);
         });
       });
 
@@ -225,17 +203,7 @@ describe('WishesController (e2e)', () => {
               categories,
               startedAt,
             } as CreateWishDto)
-            .expect(401)
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            .expect(401);
         });
       });
 
@@ -255,17 +223,7 @@ describe('WishesController (e2e)', () => {
               startedAt,
             } as CreateWishDto)
             .auth(accessTokenAdminUser, { type: 'bearer' })
-            .expect(403)
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            .expect(403);
         });
 
         it(`moderator user is not the same as its access token`, () => {
@@ -283,17 +241,7 @@ describe('WishesController (e2e)', () => {
               startedAt,
             } as CreateWishDto)
             .auth(accessTokenAdminUser, { type: 'bearer' })
-            .expect(403)
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            .expect(403);
         });
 
         it(`admin user is not the same as its access token`, () => {
@@ -311,17 +259,7 @@ describe('WishesController (e2e)', () => {
               startedAt,
             } as CreateWishDto)
             .auth(accessTokenBasicUser, { type: 'bearer' })
-            .expect(403)
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            .expect(403);
         });
       });
 
@@ -348,17 +286,7 @@ describe('WishesController (e2e)', () => {
                   m.match(/id should not be empty/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            );
         });
 
         it(`id must be a mongodb id`, () => {
@@ -384,17 +312,7 @@ describe('WishesController (e2e)', () => {
                   m.match(/id must be a mongodb id/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            );
         });
 
         it(`title should not be empty`, () => {
@@ -419,17 +337,7 @@ describe('WishesController (e2e)', () => {
                   m.match(/title should not be empty/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            );
         });
 
         it(`title must be a string`, () => {
@@ -455,17 +363,7 @@ describe('WishesController (e2e)', () => {
                   m.match(/title must be a string/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            );
         });
 
         it(`title is too long`, () => {
@@ -491,17 +389,7 @@ describe('WishesController (e2e)', () => {
                   m.match(/title must be shorter than or equal to /i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            );
         });
 
         it(`description should not be empty`, () => {
@@ -526,17 +414,7 @@ describe('WishesController (e2e)', () => {
                   m.match(/description should not be empty/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            );
         });
 
         it(`description must be a string`, () => {
@@ -562,17 +440,7 @@ describe('WishesController (e2e)', () => {
                   m.match(/description must be a string/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            );
         });
 
         it(`description is too long`, () => {
@@ -598,17 +466,7 @@ describe('WishesController (e2e)', () => {
                   m.match(/description must be shorter than or equal to /i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            );
         });
 
         it(`privacyLevel should not be empty`, () => {
@@ -633,17 +491,7 @@ describe('WishesController (e2e)', () => {
                   m.match(/privacyLevel must be a valid enum value/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            );
         });
 
         it(`privacyLevel must be a valid enum value`, () => {
@@ -669,17 +517,7 @@ describe('WishesController (e2e)', () => {
                   m.match(/privacyLevel must be a valid enum value/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            );
         });
 
         it(`urls must be an array`, () => {
@@ -705,17 +543,7 @@ describe('WishesController (e2e)', () => {
                   m.match(/urls must be an array/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            );
         });
 
         it(`urls have so many elements`, () => {
@@ -741,17 +569,7 @@ describe('WishesController (e2e)', () => {
                   m.match(/urls must contain not more than /i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            );
         });
 
         it(`each value in urls must be a string`, () => {
@@ -781,17 +599,7 @@ describe('WishesController (e2e)', () => {
                   m.match(/each value in urls must be a string/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            );
         });
 
         it(`imageUrls must be an array`, () => {
@@ -817,17 +625,7 @@ describe('WishesController (e2e)', () => {
                   m.match(/imageUrls must be an array/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            );
         });
 
         it(`imageUrls have so many elements`, () => {
@@ -855,17 +653,7 @@ describe('WishesController (e2e)', () => {
                   m.match(/imageUrls must contain not more than /i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            );
         });
 
         it(`each value in imageUrls must be a string`, () => {
@@ -895,17 +683,7 @@ describe('WishesController (e2e)', () => {
                   m.match(/each value in imageUrls must be a string/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            );
         });
 
         it(`categories must be an array`, () => {
@@ -931,17 +709,7 @@ describe('WishesController (e2e)', () => {
                   m.match(/categories must be an array/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            );
         });
 
         it(`categories have so many elements`, () => {
@@ -967,17 +735,7 @@ describe('WishesController (e2e)', () => {
                   m.match(/categories must contain not more than /i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            );
         });
 
         it(`each value in categories must be a string`, () => {
@@ -1003,17 +761,7 @@ describe('WishesController (e2e)', () => {
                   m.match(/each value in categories must be a string/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            );
         });
 
         it(`value in categories too long`, () => {
@@ -1045,17 +793,7 @@ describe('WishesController (e2e)', () => {
                   ),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            );
         });
 
         it(`id already in use`, () => {
@@ -1074,17 +812,7 @@ describe('WishesController (e2e)', () => {
             } as CreateWishDto)
             .auth(accessTokenBasicUser, { type: 'bearer' })
             .expect(400)
-            .expect(({ body }) => expect(body.message).toMatch(/in use/i))
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            .expect(({ body }) => expect(body.message).toMatch(/in use/i));
         });
       });
 
@@ -1107,8 +835,6 @@ describe('WishesController (e2e)', () => {
             .auth(accessTokenBasicUser, { type: 'bearer' })
             .expect(201)
             .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
               const wishesDb: WishEntity[] = await database
                 .collection('wishes')
                 .find()
@@ -1144,8 +870,6 @@ describe('WishesController (e2e)', () => {
               expect(wishCreated.deletedAt).toBeFalsy();
             })
             .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
               const wishersDb: WisherEntity[] = await database
                 .collection('wishers')
                 .find()
@@ -1182,8 +906,6 @@ describe('WishesController (e2e)', () => {
             .auth(accessTokenAdminUser, { type: 'bearer' })
             .expect(201)
             .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
               const wishesDb: WishEntity[] = await database
                 .collection('wishes')
                 .find()
@@ -1219,8 +941,6 @@ describe('WishesController (e2e)', () => {
               expect(wishCreated.deletedAt).toBeFalsy();
             })
             .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
               const wishersDb: WisherEntity[] = await database
                 .collection('wishers')
                 .find()
@@ -1270,17 +990,7 @@ describe('WishesController (e2e)', () => {
               imageUrls,
               categories,
             } as UpdateWishDto)
-            .expect(401)
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            .expect(401);
         });
       });
 
@@ -1298,17 +1008,7 @@ describe('WishesController (e2e)', () => {
               categories,
             } as UpdateWishDto)
             .auth(accessTokenBasicUser, { type: 'bearer' })
-            .expect(403)
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            .expect(403);
         });
       });
 
@@ -1326,17 +1026,7 @@ describe('WishesController (e2e)', () => {
               categories,
             } as UpdateWishDto)
             .auth(accessTokenBasicUser, { type: 'bearer' })
-            .expect(404)
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            .expect(404);
         });
       });
 
@@ -1360,17 +1050,7 @@ describe('WishesController (e2e)', () => {
                   m.match(/title should not be empty/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            );
         });
 
         it(`title must be a string`, () => {
@@ -1393,17 +1073,7 @@ describe('WishesController (e2e)', () => {
                   m.match(/title must be a string/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            );
         });
 
         it(`title is too long`, () => {
@@ -1426,17 +1096,7 @@ describe('WishesController (e2e)', () => {
                   m.match(/title must be shorter than or equal to /i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            );
         });
 
         it(`description should not be empty`, () => {
@@ -1458,17 +1118,7 @@ describe('WishesController (e2e)', () => {
                   m.match(/description should not be empty/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            );
         });
 
         it(`description must be a string`, () => {
@@ -1491,17 +1141,7 @@ describe('WishesController (e2e)', () => {
                   m.match(/description must be a string/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            );
         });
 
         it(`description is too long`, () => {
@@ -1524,17 +1164,7 @@ describe('WishesController (e2e)', () => {
                   m.match(/description must be shorter than or equal to /i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            );
         });
 
         it(`urls must be an array`, () => {
@@ -1557,17 +1187,7 @@ describe('WishesController (e2e)', () => {
                   m.match(/urls must be an array/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            );
         });
 
         it(`urls have so many elements`, () => {
@@ -1590,17 +1210,7 @@ describe('WishesController (e2e)', () => {
                   m.match(/urls must contain not more than /i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            );
         });
 
         it(`each value in urls must be a string`, () => {
@@ -1627,17 +1237,7 @@ describe('WishesController (e2e)', () => {
                   m.match(/each value in urls must be a string/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            );
         });
 
         it(`imageUrls must be an array`, () => {
@@ -1660,17 +1260,7 @@ describe('WishesController (e2e)', () => {
                   m.match(/imageUrls must be an array/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            );
         });
 
         it(`imageUrls have so many elements`, () => {
@@ -1695,17 +1285,7 @@ describe('WishesController (e2e)', () => {
                   m.match(/imageUrls must contain not more than /i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            );
         });
 
         it(`each value in imageUrls must be a string`, () => {
@@ -1732,17 +1312,7 @@ describe('WishesController (e2e)', () => {
                   m.match(/each value in imageUrls must be a string/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            );
         });
 
         it(`categories must be an array`, () => {
@@ -1765,17 +1335,7 @@ describe('WishesController (e2e)', () => {
                   m.match(/categories must be an array/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            );
         });
 
         it(`categories have so many elements`, () => {
@@ -1798,17 +1358,7 @@ describe('WishesController (e2e)', () => {
                   m.match(/categories must contain not more than /i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            );
         });
 
         it(`each value in categories must be a string`, () => {
@@ -1831,17 +1381,7 @@ describe('WishesController (e2e)', () => {
                   m.match(/each value in categories must be a string/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            );
         });
 
         it(`ids are different`, () => {
@@ -1860,17 +1400,7 @@ describe('WishesController (e2e)', () => {
             .expect(400)
             .expect(({ body }) =>
               expect(body.message).toMatch(/Id are different/i),
-            )
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const wishesDb: WishEntity[] = await database
-                .collection('wishes')
-                .find()
-                .toArray();
-
-              expect(wishesDb).toHaveLength(4);
-            });
+            );
         });
       });
 
@@ -1890,8 +1420,6 @@ describe('WishesController (e2e)', () => {
             .auth(accessTokenBasicUser, { type: 'bearer' })
             .expect(200)
             .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
               const wishesDb: WishEntity[] = await database
                 .collection('wishes')
                 .find()
@@ -1942,8 +1470,6 @@ describe('WishesController (e2e)', () => {
               );
             })
             .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
               const wishersDb: WisherEntity[] = await database
                 .collection('wishers')
                 .find()
@@ -1959,8 +1485,6 @@ describe('WishesController (e2e)', () => {
               expect(wisher).toBeTruthy();
             })
             .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
               const wishStagesDb: WishStageEntity[] = await database
                 .collection('wish-stages')
                 .find()
@@ -2033,72 +1557,3 @@ describe('WishesController (e2e)', () => {
     });
   });
 });
-
-function assertOutputWish(outputWish: OutputWishDto, wishDb: WishDb): void {
-  expect(outputWish).toBeTruthy();
-  expect(outputWish.id).toBe(wishDb._id.toString());
-  expect(outputWish.wisherId).toBe(wishDb.wisher.toString());
-  expect(outputWish.title).toBe(wishDb.title);
-  expect(outputWish.description).toBe(wishDb.description);
-  expect(outputWish.privacyLevel).toBe(wishDb.privacyLevel);
-  expect(outputWish.createdAt).toBe(wishDb.createdAt.getTime());
-  expect(outputWish.updatedAt).toBe(wishDb.updatedAt.getTime());
-
-  for (let i = 0; i < wishDb.urls.length; i++)
-    expect(outputWish.urls[i]).toBe(wishDb.urls[i]);
-
-  for (let i = 0; i < wishDb.imageUrls.length; i++)
-    expect(outputWish.imageUrls[i]).toBe(wishDb.imageUrls[i]);
-
-  for (let i = 0; i < wishDb.categories.length; i++)
-    expect(outputWish.categories[i]).toBe(wishDb.categories[i]);
-
-  if (wishDb.deletedAt)
-    expect(outputWish.deletedAt).toBe(wishDb.deletedAt.getTime());
-  else expect(outputWish.deletedAt).toBeNull();
-
-  if (wishDb.startedAt)
-    expect(outputWish.startedAt).toBe(wishDb.startedAt.getTime());
-  else expect(outputWish.startedAt).toBeNull();
-
-  if (wishDb.completedAt)
-    expect(outputWish.completedAt).toBe(wishDb.completedAt.getTime());
-  else expect(outputWish.completedAt).toBeNull();
-}
-
-function assertOutputWishStage(
-  outputWishStage: OutputWishStageDto,
-  wishStageDb: WishStageDb,
-): void {
-  expect(outputWishStage).toBeTruthy();
-  expect(outputWishStage.id).toBe(wishStageDb._id.toString());
-  expect(outputWishStage.title).toBe(wishStageDb.title);
-  expect(outputWishStage.description).toBe(wishStageDb.description);
-  expect(outputWishStage.createdAt).toBe(wishStageDb.createdAt.getTime());
-
-  for (let i = 0; i < wishStageDb.urls.length; i++)
-    expect(outputWishStage.urls[i]).toBe(wishStageDb.urls[i]);
-
-  for (let i = 0; i < wishStageDb.imageUrls.length; i++)
-    expect(outputWishStage.imageUrls[i]).toBe(wishStageDb.imageUrls[i]);
-}
-
-function assertWishStage(
-  wishStageEntity: WishStageEntity,
-  wishStageDb: WishStageDb,
-): void {
-  expect(wishStageEntity).toBeTruthy();
-
-  expect(wishStageEntity._id.toString()).toBe(wishStageDb._id.toString());
-  expect(wishStageEntity.title).toBe(wishStageDb.title);
-  expect(wishStageEntity.description).toBe(wishStageDb.description);
-  expect(wishStageEntity.createdAt.getTime()).toBe(
-    wishStageDb.createdAt.getTime(),
-  );
-
-  for (let i = 0; i < wishStageDb.urls.length; i++)
-    expect(wishStageEntity.urls[i]).toBe(wishStageDb.urls[i]);
-
-  for (let i = 0; i < wishStageDb.imageUrls.length; i++)
-    expect(wishStageEntity.imageUrls[i]).toBe(wishStageDb.imageUrls[i]);
-}

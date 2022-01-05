@@ -430,7 +430,7 @@ describe('users', () => {
 
             const userRepository = {
               getOneByUsername: jest.fn().mockReturnValue(user),
-              update: jest.fn(),
+              addRefreshToken: jest.fn(),
             } as MockedObject<UserRepository>;
 
             const unitOfWork = {
@@ -471,7 +471,7 @@ describe('users', () => {
             );
             expect(user.addRefreshToken.mock.calls).toHaveLength(1);
 
-            expect(userRepository.update.mock.calls).toHaveLength(1);
+            expect(userRepository.addRefreshToken.mock.calls).toHaveLength(1);
             expect(unitOfWork.commitChanges.mock.calls).toHaveLength(1);
 
             expect(authTokens.access_token).toBe('access-token');

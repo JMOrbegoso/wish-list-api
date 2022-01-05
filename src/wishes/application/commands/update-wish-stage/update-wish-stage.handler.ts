@@ -27,18 +27,18 @@ export class UpdateWishStageHandler
     const wish = await this.wishRepository.getWishByWishStageId(id);
     if (!wish) throw new NotFoundException();
 
-    // Get the wish stage
-    const wishStage = wish.stages.find((stage) => stage.id.equals(id));
-    if (!wishStage) throw new NotFoundException();
-
     // Check if the wish is deleted
     if (wish.isDeleted) throw new BadRequestException('Wish is deleted.');
 
     // Update the wish stage
     wish.updateStage(id, title, description, urls, imageUrls);
 
-    // Update the wish using the repository
-    await this.wishRepository.update(wish);
+    // Get the wish stage
+    const wishStage = wish.stages.find((stage) => stage.id.equals(id));
+
+    // Update the wish and wish stage using the repository
+    this.wishRepository.updateWish(wish);
+    this.wishRepository.updateWishStage(wishStage);
 
     // Save changes using Unit of Work
     await this.unitOfWork.commitChanges();

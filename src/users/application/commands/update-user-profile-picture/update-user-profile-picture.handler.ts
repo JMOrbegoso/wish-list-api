@@ -40,7 +40,7 @@ export class UpdateUserProfilePictureHandler
     user.updateProfilePicture(profilePicture);
 
     // Update the user using users repository
-    await this.userRepository.update(user);
+    this.userRepository.updateUser(user);
 
     // Save changes using Unit of Work
     await this.unitOfWork.commitChanges();

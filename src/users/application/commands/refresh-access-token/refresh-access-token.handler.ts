@@ -84,8 +84,14 @@ export class RefreshAccessTokenHandler
     // Update the User refresh Tokens
     user.replaceRefreshToken(refreshTokenToReplace.id, newRefreshToken);
 
+    // Get the used refresh Token
+    const refreshTokenReplaced = user.refreshTokens.find((rt) =>
+      rt.id.equals(refreshTokenToReplace.id),
+    );
+
     // Save changes in persistence
-    await this.userRepository.update(user);
+    this.userRepository.addRefreshToken(newRefreshToken, user.id);
+    this.userRepository.updateRefreshToken(refreshTokenReplaced);
     await this.unitOfWork.commitChanges();
 
     return {

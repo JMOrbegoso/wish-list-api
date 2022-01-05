@@ -114,7 +114,7 @@ describe('wishes', () => {
         );
 
         test.each(commands)(
-          'should call the method update from the WishRepository, the method commitChanges from the UnitOfWork',
+          'should call the method deleteWishStage from the WishRepository, the method commitChanges from the UnitOfWork',
           async (command: DeleteWishStageCommand) => {
             // Arrange
             const uniqueId = {
@@ -135,7 +135,8 @@ describe('wishes', () => {
 
             const wishRepository = {
               getWishByWishStageId: jest.fn().mockReturnValue(wish),
-              update: jest.fn(),
+              updateWish: jest.fn(),
+              deleteWishStage: jest.fn(),
             } as MockedObject<WishRepository>;
 
             const unitOfWork = {
@@ -155,9 +156,13 @@ describe('wishes', () => {
             expect(wish.removeStage.mock.calls[0][0].id.getId).toBe(
               wishStage.id.getId,
             );
-            expect(wishRepository.update.mock.calls).toHaveLength(1);
-            expect(wishRepository.update.mock.calls[0][0].id.getId).toBe(
+            expect(wishRepository.updateWish.mock.calls).toHaveLength(1);
+            expect(wishRepository.updateWish.mock.calls[0][0].id.getId).toBe(
               wish.id.getId,
+            );
+            expect(wishRepository.deleteWishStage.mock.calls).toHaveLength(1);
+            expect(wishRepository.deleteWishStage.mock.calls[0][0].getId).toBe(
+              wishStage.id.getId,
             );
             expect(unitOfWork.commitChanges.mock.calls).toHaveLength(1);
           },

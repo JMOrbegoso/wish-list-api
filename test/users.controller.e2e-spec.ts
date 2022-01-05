@@ -1,6 +1,6 @@
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import { MongoClient, ObjectId } from 'mongodb';
+import { MongoClient, Db as MongoDatabase, ObjectId } from 'mongodb';
 import request from 'supertest';
 import { AppModule } from '../src/app.module';
 import mikroOrmConfig from '../src/mikro-orm.config';
@@ -23,16 +23,17 @@ import {
 } from '../src/users/infrastructure/persistence/entities';
 import {
   Seed,
-  UserDb,
+  assertOutputUser,
+  assertRefreshToken,
   dropDatabase,
-  seedDatabaseItems,
   getAccessToken,
-  RefreshTokenDb,
+  seedDatabaseItems,
 } from './helpers';
 
 describe('UsersController (e2e)', () => {
   let app: INestApplication;
   let mongoClient: MongoClient;
+  let database: MongoDatabase;
   // Access tokens
   let accessTokenBasicUser: string;
   let accessTokenModeratorUser: string;
@@ -51,12 +52,13 @@ describe('UsersController (e2e)', () => {
     mongoClient = await MongoClient.connect(mikroOrmConfig.clientUrl, {
       useUnifiedTopology: true,
     });
+    database = mongoClient.db(mikroOrmConfig.dbName);
 
-    await dropDatabase(mongoClient, mikroOrmConfig.dbName);
+    await dropDatabase(database);
   });
 
   beforeEach(async () => {
-    seed = await seedDatabaseItems(mongoClient, mikroOrmConfig.dbName);
+    seed = await seedDatabaseItems(database);
 
     accessTokenBasicUser = await getAccessToken(app, seed.basicUser);
     accessTokenModeratorUser = await getAccessToken(app, seed.moderatorUser);
@@ -64,7 +66,7 @@ describe('UsersController (e2e)', () => {
   });
 
   afterEach(async () => {
-    await dropDatabase(mongoClient, mikroOrmConfig.dbName);
+    await dropDatabase(database);
   });
 
   afterAll(async () => {
@@ -114,6 +116,711 @@ describe('UsersController (e2e)', () => {
                 (u) => u.id === seed.adminUser._id.toString(),
               );
               assertOutputUser(outputUser_6, seed.adminUser);
+            });
+        });
+      });
+    });
+
+    describe('POST', () => {
+      const id = new ObjectId().toString();
+      const email = 'john@doe.com';
+      const username = 'john_doe';
+      const password = 'Pa$$w0rd';
+      const firstName = 'John';
+      const lastName = 'Doe';
+      const birthday = new Date().getTime();
+      const biography = 'A nice person.';
+
+      describe(`should return 400`, () => {
+        it(`id should not be empty`, () => {
+          return request(app.getHttpServer())
+            .post('/users')
+            .send({
+              email,
+              username,
+              password,
+              firstName,
+              lastName,
+              birthday,
+              biography,
+            } as CreateUserDto)
+            .expect(400)
+            .expect(({ body }) =>
+              expect(
+                (body.message as string[]).some((m) =>
+                  m.match(/id should not be empty/i),
+                ),
+              ).toBeTruthy(),
+            );
+        });
+
+        it(`id must be a mongodb id`, () => {
+          return request(app.getHttpServer())
+            .post('/users')
+            .send({
+              id: 'user-id',
+              email,
+              username,
+              password,
+              firstName,
+              lastName,
+              birthday,
+              biography,
+            } as CreateUserDto)
+            .expect(400)
+            .expect(({ body }) =>
+              expect(
+                (body.message as string[]).some((m) =>
+                  m.match(/id must be a mongodb id/i),
+                ),
+              ).toBeTruthy(),
+            );
+        });
+
+        it(`email should not be empty`, () => {
+          return request(app.getHttpServer())
+            .post('/users')
+            .send({
+              id,
+              username,
+              password,
+              firstName,
+              lastName,
+              birthday,
+              biography,
+            } as CreateUserDto)
+            .expect(400)
+            .expect(({ body }) =>
+              expect(
+                (body.message as string[]).some((m) =>
+                  m.match(/email should not be empty/i),
+                ),
+              ).toBeTruthy(),
+            );
+        });
+
+        it(`email must be a string`, () => {
+          return request(app.getHttpServer())
+            .post('/users')
+            .send({
+              id,
+              email: 1000,
+              username,
+              password,
+              firstName,
+              lastName,
+              birthday,
+              biography,
+            } as unknown as CreateUserDto)
+            .expect(400)
+            .expect(({ body }) =>
+              expect(
+                (body.message as string[]).some((m) =>
+                  m.match(/email must be a string/i),
+                ),
+              ).toBeTruthy(),
+            );
+        });
+
+        it(`email must be an email`, () => {
+          return request(app.getHttpServer())
+            .post('/users')
+            .send({
+              id,
+              email: '1000',
+              username,
+              password,
+              firstName,
+              lastName,
+              birthday,
+              biography,
+            } as unknown as CreateUserDto)
+            .expect(400)
+            .expect(({ body }) =>
+              expect(
+                (body.message as string[]).some((m) =>
+                  m.match(/email must be an email/i),
+                ),
+              ).toBeTruthy(),
+            );
+        });
+
+        it(`username should not be empty`, () => {
+          return request(app.getHttpServer())
+            .post('/users')
+            .send({
+              id,
+              email,
+              password,
+              firstName,
+              lastName,
+              birthday,
+              biography,
+            } as unknown as CreateUserDto)
+            .expect(400)
+            .expect(({ body }) =>
+              expect(
+                (body.message as string[]).some((m) =>
+                  m.match(/username should not be empty/i),
+                ),
+              ).toBeTruthy(),
+            );
+        });
+
+        it(`username must be a string`, () => {
+          return request(app.getHttpServer())
+            .post('/users')
+            .send({
+              id,
+              email,
+              username: 1000,
+              password,
+              firstName,
+              lastName,
+              birthday,
+              biography,
+            } as unknown as CreateUserDto)
+            .expect(400)
+            .expect(({ body }) =>
+              expect(
+                (body.message as string[]).some((m) =>
+                  m.match(/username must be a string/i),
+                ),
+              ).toBeTruthy(),
+            );
+        });
+
+        it(`username is too long`, () => {
+          return request(app.getHttpServer())
+            .post('/users')
+            .send({
+              id,
+              email,
+              username: 'a'.repeat(Username.MaxLength + 1),
+              password,
+              firstName,
+              lastName,
+              birthday,
+              biography,
+            } as unknown as CreateUserDto)
+            .expect(400)
+            .expect(({ body }) =>
+              expect(
+                (body.message as string[]).some((m) =>
+                  m.match(/username must be shorter than or equal to/i),
+                ),
+              ).toBeTruthy(),
+            );
+        });
+
+        it(`username is too short`, () => {
+          return request(app.getHttpServer())
+            .post('/users')
+            .send({
+              id,
+              email,
+              username: 'a'.repeat(Username.MinLength - 1),
+              password,
+              firstName,
+              lastName,
+              birthday,
+              biography,
+            } as unknown as CreateUserDto)
+            .expect(400)
+            .expect(({ body }) =>
+              expect(
+                (body.message as string[]).some((m) =>
+                  m.match(/username must be longer than or equal to/i),
+                ),
+              ).toBeTruthy(),
+            );
+        });
+
+        it(`username do not match its regex`, () => {
+          return request(app.getHttpServer())
+            .post('/users')
+            .send({
+              id,
+              email,
+              username: 'aaa%bbb',
+              password,
+              firstName,
+              lastName,
+              birthday,
+              biography,
+            } as unknown as CreateUserDto)
+            .expect(400)
+            .expect(({ body }) =>
+              expect(
+                (body.message as string[]).some((m) =>
+                  m.match(/username contains invalid characters/i),
+                ),
+              ).toBeTruthy(),
+            );
+        });
+
+        it(`password should not be empty`, () => {
+          return request(app.getHttpServer())
+            .post('/users')
+            .send({
+              id,
+              email,
+              username,
+              firstName,
+              lastName,
+              birthday,
+              biography,
+            } as unknown as CreateUserDto)
+            .expect(400)
+            .expect(({ body }) =>
+              expect(
+                (body.message as string[]).some((m) =>
+                  m.match(/password should not be empty/i),
+                ),
+              ).toBeTruthy(),
+            );
+        });
+
+        it(`password must be a string`, () => {
+          return request(app.getHttpServer())
+            .post('/users')
+            .send({
+              id,
+              email,
+              username,
+              password: 1000,
+              firstName,
+              lastName,
+              birthday,
+              biography,
+            } as unknown as CreateUserDto)
+            .expect(400)
+            .expect(({ body }) =>
+              expect(
+                (body.message as string[]).some((m) =>
+                  m.match(/password must be a string/i),
+                ),
+              ).toBeTruthy(),
+            );
+        });
+
+        it(`password is too long`, () => {
+          return request(app.getHttpServer())
+            .post('/users')
+            .send({
+              id,
+              email,
+              username,
+              password: 'a'.repeat(Password.MaxLength + 1),
+              firstName,
+              lastName,
+              birthday,
+              biography,
+            } as unknown as CreateUserDto)
+            .expect(400)
+            .expect(({ body }) =>
+              expect(
+                (body.message as string[]).some((m) =>
+                  m.match(/password must be shorter than or equal to/i),
+                ),
+              ).toBeTruthy(),
+            );
+        });
+
+        it(`password is too short`, () => {
+          return request(app.getHttpServer())
+            .post('/users')
+            .send({
+              id,
+              email,
+              username,
+              password: 'a'.repeat(Username.MinLength - 1),
+              firstName,
+              lastName,
+              birthday,
+              biography,
+            } as unknown as CreateUserDto)
+            .expect(400)
+            .expect(({ body }) =>
+              expect(
+                (body.message as string[]).some((m) =>
+                  m.match(/password must be longer than or equal to/i),
+                ),
+              ).toBeTruthy(),
+            );
+        });
+
+        it(`password do not match its regex`, () => {
+          return request(app.getHttpServer())
+            .post('/users')
+            .send({
+              id,
+              email,
+              username,
+              password: 'aaa%bbb',
+              firstName,
+              lastName,
+              birthday,
+              biography,
+            } as unknown as CreateUserDto)
+            .expect(400)
+            .expect(({ body }) =>
+              expect(
+                (body.message as string[]).some((m) =>
+                  m.match(
+                    /password must have at least one number, one capital letter, and one symbol/i,
+                  ),
+                ),
+              ).toBeTruthy(),
+            );
+        });
+
+        it(`firstName should not be empty`, () => {
+          return request(app.getHttpServer())
+            .post('/users')
+            .send({
+              id,
+              email,
+              password,
+              username,
+              lastName,
+              birthday,
+              biography,
+            } as unknown as CreateUserDto)
+            .expect(400)
+            .expect(({ body }) =>
+              expect(
+                (body.message as string[]).some((m) =>
+                  m.match(/firstName should not be empty/i),
+                ),
+              ).toBeTruthy(),
+            );
+        });
+
+        it(`firstName must be a string`, () => {
+          return request(app.getHttpServer())
+            .post('/users')
+            .send({
+              id,
+              email,
+              username,
+              password,
+              firstName: 1000,
+              lastName,
+              birthday,
+              biography,
+            } as unknown as CreateUserDto)
+            .expect(400)
+            .expect(({ body }) =>
+              expect(
+                (body.message as string[]).some((m) =>
+                  m.match(/firstName must be a string/i),
+                ),
+              ).toBeTruthy(),
+            );
+        });
+
+        it(`firstName is too long`, () => {
+          return request(app.getHttpServer())
+            .post('/users')
+            .send({
+              id,
+              email,
+              username,
+              password,
+              firstName: 'a'.repeat(FirstName.MaxLength + 1),
+              lastName,
+              birthday,
+              biography,
+            } as unknown as CreateUserDto)
+            .expect(400)
+            .expect(({ body }) =>
+              expect(
+                (body.message as string[]).some((m) =>
+                  m.match(/firstName must be shorter than or equal to/i),
+                ),
+              ).toBeTruthy(),
+            );
+        });
+
+        it(`lastName should not be empty`, () => {
+          return request(app.getHttpServer())
+            .post('/users')
+            .send({
+              id,
+              email,
+              password,
+              username,
+              firstName,
+              birthday,
+              biography,
+            } as unknown as CreateUserDto)
+            .expect(400)
+            .expect(({ body }) =>
+              expect(
+                (body.message as string[]).some((m) =>
+                  m.match(/lastName should not be empty/i),
+                ),
+              ).toBeTruthy(),
+            );
+        });
+
+        it(`lastName must be a string`, () => {
+          return request(app.getHttpServer())
+            .post('/users')
+            .send({
+              id,
+              email,
+              username,
+              password,
+              firstName,
+              lastName: 1000,
+              birthday,
+              biography,
+            } as unknown as CreateUserDto)
+            .expect(400)
+            .expect(({ body }) =>
+              expect(
+                (body.message as string[]).some((m) =>
+                  m.match(/lastName must be a string/i),
+                ),
+              ).toBeTruthy(),
+            );
+        });
+
+        it(`lastName is too long`, () => {
+          return request(app.getHttpServer())
+            .post('/users')
+            .send({
+              id,
+              email,
+              username,
+              password,
+              firstName,
+              lastName: 'a'.repeat(LastName.MaxLength + 1),
+              birthday,
+              biography,
+            } as unknown as CreateUserDto)
+            .expect(400)
+            .expect(({ body }) =>
+              expect(
+                (body.message as string[]).some((m) =>
+                  m.match(/lastName must be shorter than or equal to/i),
+                ),
+              ).toBeTruthy(),
+            );
+        });
+
+        it(`birthday should not be empty`, () => {
+          return request(app.getHttpServer())
+            .post('/users')
+            .send({
+              id,
+              email,
+              password,
+              username,
+              firstName,
+              lastName,
+              biography,
+            } as unknown as CreateUserDto)
+            .expect(400)
+            .expect(({ body }) =>
+              expect(
+                (body.message as string[]).some((m) =>
+                  m.match(/birthday should not be empty/i),
+                ),
+              ).toBeTruthy(),
+            );
+        });
+
+        it(`birthday should be a number`, () => {
+          return request(app.getHttpServer())
+            .post('/users')
+            .send({
+              id,
+              email,
+              password,
+              username,
+              firstName,
+              lastName,
+              birthday: '1000',
+              biography,
+            } as unknown as CreateUserDto)
+            .expect(400)
+            .expect(({ body }) =>
+              expect(
+                (body.message as string[]).some((m) =>
+                  m.match(/birthday must be a positive number/i),
+                ),
+              ).toBeTruthy(),
+            );
+        });
+
+        it(`biography should not be empty`, () => {
+          return request(app.getHttpServer())
+            .post('/users')
+            .send({
+              id,
+              email,
+              password,
+              username,
+              firstName,
+              lastName,
+              birthday,
+            } as unknown as CreateUserDto)
+            .expect(400)
+            .expect(({ body }) =>
+              expect(
+                (body.message as string[]).some((m) =>
+                  m.match(/biography should not be empty/i),
+                ),
+              ).toBeTruthy(),
+            );
+        });
+
+        it(`biography must be a string`, () => {
+          return request(app.getHttpServer())
+            .post('/users')
+            .send({
+              id,
+              email,
+              username,
+              password,
+              firstName,
+              lastName,
+              birthday,
+              biography: 1000,
+            } as unknown as CreateUserDto)
+            .expect(400)
+            .expect(({ body }) =>
+              expect(
+                (body.message as string[]).some((m) =>
+                  m.match(/biography must be a string/i),
+                ),
+              ).toBeTruthy(),
+            );
+        });
+
+        it(`biography is too long`, () => {
+          return request(app.getHttpServer())
+            .post('/users')
+            .send({
+              id,
+              email,
+              username,
+              password,
+              firstName,
+              lastName,
+              birthday,
+              biography: 'a'.repeat(Biography.MaxLength + 1),
+            } as unknown as CreateUserDto)
+            .expect(400)
+            .expect(({ body }) =>
+              expect(
+                (body.message as string[]).some((m) =>
+                  m.match(/biography must be shorter than or equal to/i),
+                ),
+              ).toBeTruthy(),
+            );
+        });
+
+        it(`Id already in use`, () => {
+          return request(app.getHttpServer())
+            .post('/users')
+            .send({
+              id: seed.basicUser._id.toString(),
+              email,
+              username,
+              password,
+              firstName,
+              lastName,
+              birthday,
+              biography,
+            } as CreateUserDto)
+            .expect(400)
+            .expect(({ body }) => expect(body.message).toMatch(/in use/i));
+        });
+
+        it(`Email already in use`, () => {
+          return request(app.getHttpServer())
+            .post('/users')
+            .send({
+              id,
+              email: seed.basicUser.email,
+              username,
+              password,
+              firstName,
+              lastName,
+              birthday,
+              biography,
+            } as CreateUserDto)
+            .expect(400)
+            .expect(({ body }) => expect(body.message).toMatch(/in use/i));
+        });
+
+        it(`Username already in use`, () => {
+          return request(app.getHttpServer())
+            .post('/users')
+            .send({
+              id,
+              email,
+              username: seed.basicUser.username,
+              password,
+              firstName,
+              lastName,
+              birthday,
+              biography,
+            } as CreateUserDto)
+            .expect(400)
+            .expect(({ body }) => expect(body.message).toMatch(/in use/i));
+        });
+      });
+
+      describe(`should return 201`, () => {
+        it(`User created successfully`, () => {
+          return request(app.getHttpServer())
+            .post('/users')
+            .send({
+              id,
+              email,
+              username,
+              password,
+              firstName,
+              lastName,
+              birthday,
+              biography,
+            } as CreateUserDto)
+            .expect(201)
+            .expect(async () => {
+              const usersDb: UserEntity[] = await database
+                .collection('users')
+                .find()
+                .toArray();
+
+              expect(usersDb).toHaveLength(7);
+
+              const userCreated = usersDb.find((u) => u._id.toString() === id);
+
+              expect(userCreated).toBeTruthy();
+
+              expect(userCreated._id.toString()).toBe(id);
+              expect(userCreated.email).toBe(email);
+              expect(userCreated.username).toBe(username);
+              expect(userCreated.passwordHash).toBeTruthy();
+              expect(userCreated.passwordHash).not.toBe(password);
+              expect(userCreated.isVerified).toBeFalsy();
+              expect(userCreated.verificationCode).not.toBeNull();
+              expect(userCreated.isBlocked).toBeFalsy();
+              expect(userCreated.firstName).toBe(firstName);
+              expect(userCreated.lastName).toBe(lastName);
+              expect(userCreated.birthday.getTime()).toBe(birthday);
+              expect(userCreated.createdAt).toBeTruthy();
+              expect(userCreated.updatedAt).toBeTruthy();
+              expect(userCreated.biography).toBe(biography);
+              expect(userCreated.roles).toHaveLength(1);
+              expect(userCreated.roles[0]).toBe(Role.basic().getRole);
+              expect(userCreated.profilePicture).toBeNull();
+              expect(userCreated.deletedAt).toBeNull();
             });
         });
       });
@@ -178,17 +885,7 @@ describe('UsersController (e2e)', () => {
                   m.match(/firstName should not be empty/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
+            );
         });
 
         it(`firstName must be a string`, () => {
@@ -210,17 +907,7 @@ describe('UsersController (e2e)', () => {
                   m.match(/firstName must be a string/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
+            );
         });
 
         it(`firstName is too long`, () => {
@@ -242,17 +929,7 @@ describe('UsersController (e2e)', () => {
                   m.match(/firstName must be shorter than or equal to/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
+            );
         });
 
         it(`lastName should not be empty`, () => {
@@ -273,17 +950,7 @@ describe('UsersController (e2e)', () => {
                   m.match(/lastName should not be empty/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
+            );
         });
 
         it(`lastName must be a string`, () => {
@@ -305,17 +972,7 @@ describe('UsersController (e2e)', () => {
                   m.match(/lastName must be a string/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
+            );
         });
 
         it(`lastName is too long`, () => {
@@ -337,17 +994,7 @@ describe('UsersController (e2e)', () => {
                   m.match(/lastName must be shorter than or equal to/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
+            );
         });
 
         it(`birthday should not be empty`, () => {
@@ -368,17 +1015,7 @@ describe('UsersController (e2e)', () => {
                   m.match(/birthday should not be empty/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
+            );
         });
 
         it(`birthday should be a number`, () => {
@@ -400,17 +1037,7 @@ describe('UsersController (e2e)', () => {
                   m.match(/birthday must be a positive number/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
+            );
         });
 
         it(`biography should not be empty`, () => {
@@ -431,17 +1058,7 @@ describe('UsersController (e2e)', () => {
                   m.match(/biography should not be empty/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
+            );
         });
 
         it(`biography must be a string`, () => {
@@ -463,17 +1080,7 @@ describe('UsersController (e2e)', () => {
                   m.match(/biography must be a string/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
+            );
         });
 
         it(`biography is too long`, () => {
@@ -495,17 +1102,7 @@ describe('UsersController (e2e)', () => {
                   m.match(/biography must be shorter than or equal to/i),
                 ),
               ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
+            );
         });
 
         it(`different ids`, () => {
@@ -520,17 +1117,7 @@ describe('UsersController (e2e)', () => {
               biography,
             } as UpdateUserProfileDto)
             .auth(accessTokenBasicUser, { type: 'bearer' })
-            .expect(400)
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
+            .expect(400);
         });
       });
 
@@ -546,17 +1133,7 @@ describe('UsersController (e2e)', () => {
               birthday,
               biography,
             } as UpdateUserProfileDto)
-            .expect(401)
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
+            .expect(401);
         });
       });
 
@@ -573,17 +1150,7 @@ describe('UsersController (e2e)', () => {
               biography,
             } as UpdateUserProfileDto)
             .auth(accessTokenBasicUser, { type: 'bearer' })
-            .expect(403)
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
+            .expect(403);
         });
       });
 
@@ -602,8 +1169,6 @@ describe('UsersController (e2e)', () => {
             .auth(accessTokenBasicUser, { type: 'bearer' })
             .expect(200)
             .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
               const usersDb: UserEntity[] = await database
                 .collection('users')
                 .find()
@@ -653,8 +1218,6 @@ describe('UsersController (e2e)', () => {
               expect(userUpdated.deletedAt).toBe(seed.basicUser.deletedAt);
             })
             .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
               const refreshTokensDb: RefreshTokenEntity[] = await database
                 .collection('refresh-tokens')
                 .find()
@@ -773,1061 +1336,4 @@ describe('UsersController (e2e)', () => {
       });
     });
   });
-
-  describe('/users', () => {
-    describe('POST', () => {
-      const id = new ObjectId().toString();
-      const email = 'john@doe.com';
-      const username = 'john_doe';
-      const password = 'Pa$$w0rd';
-      const firstName = 'John';
-      const lastName = 'Doe';
-      const birthday = new Date().getTime();
-      const biography = 'A nice person.';
-
-      describe(`should return 400`, () => {
-        it(`id should not be empty`, () => {
-          return request(app.getHttpServer())
-            .post('/users')
-            .send({
-              email,
-              username,
-              password,
-              firstName,
-              lastName,
-              birthday,
-              biography,
-            } as CreateUserDto)
-            .expect(400)
-            .expect(({ body }) =>
-              expect(
-                (body.message as string[]).some((m) =>
-                  m.match(/id should not be empty/i),
-                ),
-              ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
-        });
-
-        it(`id must be a mongodb id`, () => {
-          return request(app.getHttpServer())
-            .post('/users')
-            .send({
-              id: 'user-id',
-              email,
-              username,
-              password,
-              firstName,
-              lastName,
-              birthday,
-              biography,
-            } as CreateUserDto)
-            .expect(400)
-            .expect(({ body }) =>
-              expect(
-                (body.message as string[]).some((m) =>
-                  m.match(/id must be a mongodb id/i),
-                ),
-              ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
-        });
-
-        it(`email should not be empty`, () => {
-          return request(app.getHttpServer())
-            .post('/users')
-            .send({
-              id,
-              username,
-              password,
-              firstName,
-              lastName,
-              birthday,
-              biography,
-            } as CreateUserDto)
-            .expect(400)
-            .expect(({ body }) =>
-              expect(
-                (body.message as string[]).some((m) =>
-                  m.match(/email should not be empty/i),
-                ),
-              ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
-        });
-
-        it(`email must be a string`, () => {
-          return request(app.getHttpServer())
-            .post('/users')
-            .send({
-              id,
-              email: 1000,
-              username,
-              password,
-              firstName,
-              lastName,
-              birthday,
-              biography,
-            } as unknown as CreateUserDto)
-            .expect(400)
-            .expect(({ body }) =>
-              expect(
-                (body.message as string[]).some((m) =>
-                  m.match(/email must be a string/i),
-                ),
-              ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
-        });
-
-        it(`email must be an email`, () => {
-          return request(app.getHttpServer())
-            .post('/users')
-            .send({
-              id,
-              email: '1000',
-              username,
-              password,
-              firstName,
-              lastName,
-              birthday,
-              biography,
-            } as unknown as CreateUserDto)
-            .expect(400)
-            .expect(({ body }) =>
-              expect(
-                (body.message as string[]).some((m) =>
-                  m.match(/email must be an email/i),
-                ),
-              ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
-        });
-
-        it(`username should not be empty`, () => {
-          return request(app.getHttpServer())
-            .post('/users')
-            .send({
-              id,
-              email,
-              password,
-              firstName,
-              lastName,
-              birthday,
-              biography,
-            } as unknown as CreateUserDto)
-            .expect(400)
-            .expect(({ body }) =>
-              expect(
-                (body.message as string[]).some((m) =>
-                  m.match(/username should not be empty/i),
-                ),
-              ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
-        });
-
-        it(`username must be a string`, () => {
-          return request(app.getHttpServer())
-            .post('/users')
-            .send({
-              id,
-              email,
-              username: 1000,
-              password,
-              firstName,
-              lastName,
-              birthday,
-              biography,
-            } as unknown as CreateUserDto)
-            .expect(400)
-            .expect(({ body }) =>
-              expect(
-                (body.message as string[]).some((m) =>
-                  m.match(/username must be a string/i),
-                ),
-              ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
-        });
-
-        it(`username is too long`, () => {
-          return request(app.getHttpServer())
-            .post('/users')
-            .send({
-              id,
-              email,
-              username: 'a'.repeat(Username.MaxLength + 1),
-              password,
-              firstName,
-              lastName,
-              birthday,
-              biography,
-            } as unknown as CreateUserDto)
-            .expect(400)
-            .expect(({ body }) =>
-              expect(
-                (body.message as string[]).some((m) =>
-                  m.match(/username must be shorter than or equal to/i),
-                ),
-              ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
-        });
-
-        it(`username is too short`, () => {
-          return request(app.getHttpServer())
-            .post('/users')
-            .send({
-              id,
-              email,
-              username: 'a'.repeat(Username.MinLength - 1),
-              password,
-              firstName,
-              lastName,
-              birthday,
-              biography,
-            } as unknown as CreateUserDto)
-            .expect(400)
-            .expect(({ body }) =>
-              expect(
-                (body.message as string[]).some((m) =>
-                  m.match(/username must be longer than or equal to/i),
-                ),
-              ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
-        });
-
-        it(`username do not match its regex`, () => {
-          return request(app.getHttpServer())
-            .post('/users')
-            .send({
-              id,
-              email,
-              username: 'aaa%bbb',
-              password,
-              firstName,
-              lastName,
-              birthday,
-              biography,
-            } as unknown as CreateUserDto)
-            .expect(400)
-            .expect(({ body }) =>
-              expect(
-                (body.message as string[]).some((m) =>
-                  m.match(/username contains invalid characters/i),
-                ),
-              ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
-        });
-
-        it(`password should not be empty`, () => {
-          return request(app.getHttpServer())
-            .post('/users')
-            .send({
-              id,
-              email,
-              username,
-              firstName,
-              lastName,
-              birthday,
-              biography,
-            } as unknown as CreateUserDto)
-            .expect(400)
-            .expect(({ body }) =>
-              expect(
-                (body.message as string[]).some((m) =>
-                  m.match(/password should not be empty/i),
-                ),
-              ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
-        });
-
-        it(`password must be a string`, () => {
-          return request(app.getHttpServer())
-            .post('/users')
-            .send({
-              id,
-              email,
-              username,
-              password: 1000,
-              firstName,
-              lastName,
-              birthday,
-              biography,
-            } as unknown as CreateUserDto)
-            .expect(400)
-            .expect(({ body }) =>
-              expect(
-                (body.message as string[]).some((m) =>
-                  m.match(/password must be a string/i),
-                ),
-              ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
-        });
-
-        it(`password is too long`, () => {
-          return request(app.getHttpServer())
-            .post('/users')
-            .send({
-              id,
-              email,
-              username,
-              password: 'a'.repeat(Password.MaxLength + 1),
-              firstName,
-              lastName,
-              birthday,
-              biography,
-            } as unknown as CreateUserDto)
-            .expect(400)
-            .expect(({ body }) =>
-              expect(
-                (body.message as string[]).some((m) =>
-                  m.match(/password must be shorter than or equal to/i),
-                ),
-              ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
-        });
-
-        it(`password is too short`, () => {
-          return request(app.getHttpServer())
-            .post('/users')
-            .send({
-              id,
-              email,
-              username,
-              password: 'a'.repeat(Username.MinLength - 1),
-              firstName,
-              lastName,
-              birthday,
-              biography,
-            } as unknown as CreateUserDto)
-            .expect(400)
-            .expect(({ body }) =>
-              expect(
-                (body.message as string[]).some((m) =>
-                  m.match(/password must be longer than or equal to/i),
-                ),
-              ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
-        });
-
-        it(`password do not match its regex`, () => {
-          return request(app.getHttpServer())
-            .post('/users')
-            .send({
-              id,
-              email,
-              username,
-              password: 'aaa%bbb',
-              firstName,
-              lastName,
-              birthday,
-              biography,
-            } as unknown as CreateUserDto)
-            .expect(400)
-            .expect(({ body }) =>
-              expect(
-                (body.message as string[]).some((m) =>
-                  m.match(
-                    /password must have at least one number, one capital letter, and one symbol/i,
-                  ),
-                ),
-              ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
-        });
-
-        it(`firstName should not be empty`, () => {
-          return request(app.getHttpServer())
-            .post('/users')
-            .send({
-              id,
-              email,
-              password,
-              username,
-              lastName,
-              birthday,
-              biography,
-            } as unknown as CreateUserDto)
-            .expect(400)
-            .expect(({ body }) =>
-              expect(
-                (body.message as string[]).some((m) =>
-                  m.match(/firstName should not be empty/i),
-                ),
-              ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
-        });
-
-        it(`firstName must be a string`, () => {
-          return request(app.getHttpServer())
-            .post('/users')
-            .send({
-              id,
-              email,
-              username,
-              password,
-              firstName: 1000,
-              lastName,
-              birthday,
-              biography,
-            } as unknown as CreateUserDto)
-            .expect(400)
-            .expect(({ body }) =>
-              expect(
-                (body.message as string[]).some((m) =>
-                  m.match(/firstName must be a string/i),
-                ),
-              ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
-        });
-
-        it(`firstName is too long`, () => {
-          return request(app.getHttpServer())
-            .post('/users')
-            .send({
-              id,
-              email,
-              username,
-              password,
-              firstName: 'a'.repeat(FirstName.MaxLength + 1),
-              lastName,
-              birthday,
-              biography,
-            } as unknown as CreateUserDto)
-            .expect(400)
-            .expect(({ body }) =>
-              expect(
-                (body.message as string[]).some((m) =>
-                  m.match(/firstName must be shorter than or equal to/i),
-                ),
-              ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
-        });
-
-        it(`lastName should not be empty`, () => {
-          return request(app.getHttpServer())
-            .post('/users')
-            .send({
-              id,
-              email,
-              password,
-              username,
-              firstName,
-              birthday,
-              biography,
-            } as unknown as CreateUserDto)
-            .expect(400)
-            .expect(({ body }) =>
-              expect(
-                (body.message as string[]).some((m) =>
-                  m.match(/lastName should not be empty/i),
-                ),
-              ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
-        });
-
-        it(`lastName must be a string`, () => {
-          return request(app.getHttpServer())
-            .post('/users')
-            .send({
-              id,
-              email,
-              username,
-              password,
-              firstName,
-              lastName: 1000,
-              birthday,
-              biography,
-            } as unknown as CreateUserDto)
-            .expect(400)
-            .expect(({ body }) =>
-              expect(
-                (body.message as string[]).some((m) =>
-                  m.match(/lastName must be a string/i),
-                ),
-              ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
-        });
-
-        it(`lastName is too long`, () => {
-          return request(app.getHttpServer())
-            .post('/users')
-            .send({
-              id,
-              email,
-              username,
-              password,
-              firstName,
-              lastName: 'a'.repeat(LastName.MaxLength + 1),
-              birthday,
-              biography,
-            } as unknown as CreateUserDto)
-            .expect(400)
-            .expect(({ body }) =>
-              expect(
-                (body.message as string[]).some((m) =>
-                  m.match(/lastName must be shorter than or equal to/i),
-                ),
-              ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
-        });
-
-        it(`birthday should not be empty`, () => {
-          return request(app.getHttpServer())
-            .post('/users')
-            .send({
-              id,
-              email,
-              password,
-              username,
-              firstName,
-              lastName,
-              biography,
-            } as unknown as CreateUserDto)
-            .expect(400)
-            .expect(({ body }) =>
-              expect(
-                (body.message as string[]).some((m) =>
-                  m.match(/birthday should not be empty/i),
-                ),
-              ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
-        });
-
-        it(`birthday should be a number`, () => {
-          return request(app.getHttpServer())
-            .post('/users')
-            .send({
-              id,
-              email,
-              password,
-              username,
-              firstName,
-              lastName,
-              birthday: '1000',
-              biography,
-            } as unknown as CreateUserDto)
-            .expect(400)
-            .expect(({ body }) =>
-              expect(
-                (body.message as string[]).some((m) =>
-                  m.match(/birthday must be a positive number/i),
-                ),
-              ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
-        });
-
-        it(`biography should not be empty`, () => {
-          return request(app.getHttpServer())
-            .post('/users')
-            .send({
-              id,
-              email,
-              password,
-              username,
-              firstName,
-              lastName,
-              birthday,
-            } as unknown as CreateUserDto)
-            .expect(400)
-            .expect(({ body }) =>
-              expect(
-                (body.message as string[]).some((m) =>
-                  m.match(/biography should not be empty/i),
-                ),
-              ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
-        });
-
-        it(`biography must be a string`, () => {
-          return request(app.getHttpServer())
-            .post('/users')
-            .send({
-              id,
-              email,
-              username,
-              password,
-              firstName,
-              lastName,
-              birthday,
-              biography: 1000,
-            } as unknown as CreateUserDto)
-            .expect(400)
-            .expect(({ body }) =>
-              expect(
-                (body.message as string[]).some((m) =>
-                  m.match(/biography must be a string/i),
-                ),
-              ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
-        });
-
-        it(`biography is too long`, () => {
-          return request(app.getHttpServer())
-            .post('/users')
-            .send({
-              id,
-              email,
-              username,
-              password,
-              firstName,
-              lastName,
-              birthday,
-              biography: 'a'.repeat(Biography.MaxLength + 1),
-            } as unknown as CreateUserDto)
-            .expect(400)
-            .expect(({ body }) =>
-              expect(
-                (body.message as string[]).some((m) =>
-                  m.match(/biography must be shorter than or equal to/i),
-                ),
-              ).toBeTruthy(),
-            )
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
-        });
-
-        it(`Id already in use`, () => {
-          return request(app.getHttpServer())
-            .post('/users')
-            .send({
-              id: seed.basicUser._id.toString(),
-              email,
-              username,
-              password,
-              firstName,
-              lastName,
-              birthday,
-              biography,
-            } as CreateUserDto)
-            .expect(400)
-            .expect(({ body }) => expect(body.message).toMatch(/in use/i))
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
-        });
-
-        it(`Email already in use`, () => {
-          return request(app.getHttpServer())
-            .post('/users')
-            .send({
-              id,
-              email: seed.basicUser.email,
-              username,
-              password,
-              firstName,
-              lastName,
-              birthday,
-              biography,
-            } as CreateUserDto)
-            .expect(400)
-            .expect(({ body }) => expect(body.message).toMatch(/in use/i))
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
-        });
-
-        it(`Username already in use`, () => {
-          return request(app.getHttpServer())
-            .post('/users')
-            .send({
-              id,
-              email,
-              username: seed.basicUser.username,
-              password,
-              firstName,
-              lastName,
-              birthday,
-              biography,
-            } as CreateUserDto)
-            .expect(400)
-            .expect(({ body }) => expect(body.message).toMatch(/in use/i))
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(6);
-            });
-        });
-      });
-
-      describe(`should return 201`, () => {
-        it(`User created successfully`, () => {
-          return request(app.getHttpServer())
-            .post('/users')
-            .send({
-              id,
-              email,
-              username,
-              password,
-              firstName,
-              lastName,
-              birthday,
-              biography,
-            } as CreateUserDto)
-            .expect(201)
-            .expect(async () => {
-              const database = mongoClient.db(mikroOrmConfig.dbName);
-
-              const usersDb: UserEntity[] = await database
-                .collection('users')
-                .find()
-                .toArray();
-
-              expect(usersDb).toHaveLength(7);
-
-              const userCreated = usersDb.find((u) => u._id.toString() === id);
-
-              expect(userCreated).toBeTruthy();
-
-              expect(userCreated._id.toString()).toBe(id);
-              expect(userCreated.email).toBe(email);
-              expect(userCreated.username).toBe(username);
-              expect(userCreated.passwordHash).toBeTruthy();
-              expect(userCreated.passwordHash).not.toBe(password);
-              expect(userCreated.isVerified).toBeFalsy();
-              expect(userCreated.verificationCode).not.toBeNull();
-              expect(userCreated.isBlocked).toBeFalsy();
-              expect(userCreated.firstName).toBe(firstName);
-              expect(userCreated.lastName).toBe(lastName);
-              expect(userCreated.birthday.getTime()).toBe(birthday);
-              expect(userCreated.createdAt).toBeTruthy();
-              expect(userCreated.updatedAt).toBeTruthy();
-              expect(userCreated.biography).toBe(biography);
-              expect(userCreated.roles).toHaveLength(1);
-              expect(userCreated.roles[0]).toBe(Role.basic().getRole);
-              expect(userCreated.profilePicture).toBeNull();
-              expect(userCreated.deletedAt).toBeNull();
-            });
-        });
-      });
-    });
-  });
 });
-
-function assertOutputUser(outputUser: OutputUserDto, userDb: UserDb): void {
-  expect(outputUser).toBeTruthy();
-
-  expect(outputUser.id).toBe(userDb._id.toString());
-  expect(outputUser.email).toBe(userDb.email);
-  expect(outputUser.username).toBe(userDb.username);
-  expect(outputUser.isVerified).toBe(userDb.isVerified);
-  expect(outputUser.isBlocked).toBe(userDb.isBlocked);
-  expect(outputUser.firstName).toBe(userDb.firstName);
-  expect(outputUser.lastName).toBe(userDb.lastName);
-  expect(outputUser.birthday).toBe(userDb.birthday.getTime());
-  expect(outputUser.createdAt).toBe(userDb.createdAt.getTime());
-  expect(outputUser.updatedAt).toBe(userDb.updatedAt.getTime());
-  expect(outputUser.biography).toBe(userDb.biography);
-
-  for (let i = 0; i < userDb.roles.length; i++)
-    expect(outputUser.roles[i]).toBe(userDb.roles[i]);
-
-  if (userDb.profilePicture)
-    expect(outputUser.profilePicture).toBe(userDb.profilePicture);
-  else expect(outputUser.profilePicture).toBeNull();
-
-  if (userDb.deletedAt)
-    expect(outputUser.deletedAt).toBe(userDb.deletedAt.getTime());
-  else expect(outputUser.deletedAt).toBeNull();
-}
-
-function assertRefreshToken(
-  refreshToken: RefreshTokenEntity,
-  refreshTokenDb: RefreshTokenDb,
-): void {
-  expect(refreshToken).toBeTruthy();
-
-  expect(refreshToken._id.toString()).toBe(refreshTokenDb._id.toString());
-  expect(refreshToken.user.toString()).toBe(refreshTokenDb.user.toString());
-  expect(refreshToken.createdAt.getTime()).toBe(
-    refreshTokenDb.createdAt.getTime(),
-  );
-  expect(refreshToken.duration).toBe(refreshTokenDb.duration);
-  expect(refreshToken.ipAddress).toBe(refreshTokenDb.ipAddress);
-
-  if (refreshTokenDb.replacedAt)
-    expect(refreshToken.replacedAt.getTime()).toBe(
-      refreshTokenDb.replacedAt.getTime(),
-    );
-  else expect(refreshToken.replacedAt).toBeNull();
-
-  if (refreshTokenDb.replacedBy)
-    expect(refreshToken.replacedBy).toBe(refreshTokenDb.replacedBy);
-  else expect(refreshToken.replacedBy).toBeNull();
-
-  if (refreshTokenDb.revokedAt)
-    expect(refreshToken.revokedAt.getTime()).toBe(
-      refreshTokenDb.revokedAt.getTime(),
-    );
-  else expect(refreshToken.revokedAt).toBeNull();
-}

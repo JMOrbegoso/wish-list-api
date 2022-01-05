@@ -129,12 +129,14 @@ describe('wishes', () => {
         );
 
         test.each(commands)(
-          'should call the method add from the WishRepository, the method commitChanges from the UnitOfWork',
+          'wisher do not exist, should call the method addWisher and addWish from the WishRepository, the method commitChanges from the UnitOfWork',
           async (command: CreateWishCommand) => {
             // Arrange
             const wishRepository = {
               getOneById: jest.fn().mockReturnValue(null),
-              add: jest.fn(),
+              getWisherById: jest.fn().mockReturnValue(null),
+              addWisher: jest.fn(),
+              addWish: jest.fn(),
             } as MockedObject<WishRepository>;
 
             const userRepository = {
@@ -155,9 +157,51 @@ describe('wishes', () => {
             await handler.execute(command);
 
             // Assert
-            expect(wishRepository.add.mock.calls).toHaveLength(1);
+            expect(wishRepository.addWish.mock.calls).toHaveLength(1);
+            expect(wishRepository.addWisher.mock.calls).toHaveLength(1);
+            expect(wishRepository.getWisherById.mock.calls).toHaveLength(1);
             expect(unitOfWork.commitChanges.mock.calls).toHaveLength(1);
-            expect(wishRepository.add.mock.calls[0][0].id.getId).toBe(
+            expect(wishRepository.addWisher.mock.calls[0][0].id.getId).toBe(
+              command.wisherId,
+            );
+            expect(wishRepository.addWish.mock.calls[0][0].id.getId).toBe(
+              command.id,
+            );
+          },
+        );
+
+        test.each(commands)(
+          'wisher already exist, should call the method addWish from the WishRepository, the method commitChanges from the UnitOfWork',
+          async (command: CreateWishCommand) => {
+            // Arrange
+            const wishRepository = {
+              getOneById: jest.fn().mockReturnValue(null),
+              getWisherById: jest.fn().mockReturnValue(true),
+              addWish: jest.fn(),
+            } as MockedObject<WishRepository>;
+
+            const userRepository = {
+              getOneById: jest.fn().mockReturnValue(true),
+            } as MockedObject<UserRepository>;
+
+            const unitOfWork = {
+              commitChanges: jest.fn(),
+            } as MockedObject<UnitOfWork>;
+
+            const handler = new CreateWishHandler(
+              wishRepository,
+              userRepository,
+              unitOfWork,
+            );
+
+            // Act
+            await handler.execute(command);
+
+            // Assert
+            expect(wishRepository.addWish.mock.calls).toHaveLength(1);
+            expect(wishRepository.getWisherById.mock.calls).toHaveLength(1);
+            expect(unitOfWork.commitChanges.mock.calls).toHaveLength(1);
+            expect(wishRepository.addWish.mock.calls[0][0].id.getId).toBe(
               command.id,
             );
           },

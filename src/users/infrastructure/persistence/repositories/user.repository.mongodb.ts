@@ -1,18 +1,18 @@
 import {
+  EntityData,
   EntityRepository,
   MikroORM,
   Repository as MikroOrmRepository,
 } from '@mikro-orm/core';
 import { Query } from '@mikro-orm/core/typings';
+import { ObjectId } from '@mikro-orm/mongodb';
 import { UniqueId } from '../../../../shared/domain/value-objects';
 import { RefreshToken, User, VerificationCode } from '../../../domain/entities';
 import { UserRepository } from '../../../domain/repositories';
 import { Email, IpAddress, Username } from '../../../domain/value-objects';
 import {
   refreshTokenEntityToRefreshToken,
-  refreshTokenToRefreshTokenEntity,
   userEntityToUser,
-  userToUserEntity,
 } from '../../mappings';
 import { RefreshTokenEntity, UserEntity } from '../entities';
 
@@ -122,87 +122,78 @@ export class UserRepositoryMongoDb
     return refreshTokens;
   }
 
-  add(user: User): void {
-    const refreshTokenEntities = user.refreshTokens.map((token) =>
-      this.getOrCreateRefreshTokenEntity(token),
-    );
-    const userEntity = userToUserEntity(user, refreshTokenEntities);
-    const userEntityToPersist = this.create(userEntity);
-    this.persist(userEntityToPersist);
+  addUser(user: User): void {
+    const newValues: EntityData<UserEntity> = {
+      id: user.id.getId,
+      email: user.email.getEmail,
+      normalizedEmail: user.email.getNormalizedEmail,
+      username: user.username.getUsername,
+      normalizedUsername: user.username.getNormalizedUsername,
+      passwordHash: user.passwordHash.getPasswordHash,
+      isVerified: user.isVerified,
+      verificationCode: user.verificationCode,
+      isBlocked: user.isBlocked,
+      firstName: user.firstName.getFirstName,
+      lastName: user.lastName.getLastName,
+      birthday: user.birthday.getDate,
+      createdAt: user.createdAt.getDate,
+      updatedAt: user.updatedAt.getDate,
+      biography: user.biography.getBiography,
+      profilePicture: user.profilePicture?.getUrl ?? null,
+      deletedAt: user.deletedAt?.getDate ?? null,
+      roles: user.roles,
+    };
+    const newUserEntity = this.create(newValues);
+    this.orm.em.persist(newUserEntity);
   }
 
-  async update(user: User): Promise<void> {
-    const userFromDb = await this.findOne(user.id.getId, { populate: true });
+  updateUser(user: User): void {
+    const userEntityFromDb = this.getReference(user.id.getId);
+    const newValues: EntityData<UserEntity> = {
+      passwordHash: user.passwordHash.getPasswordHash,
+      isVerified: user.isVerified,
+      verificationCode: user.verificationCode,
+      isBlocked: user.isBlocked,
+      firstName: user.firstName.getFirstName,
+      lastName: user.lastName.getLastName,
+      birthday: user.birthday.getDate,
+      updatedAt: user.updatedAt.getDate,
+      biography: user.biography.getBiography,
+      profilePicture: user.profilePicture?.getUrl ?? null,
+      deletedAt: user.deletedAt?.getDate ?? null,
+      roles: user.roles,
+    };
+    this.orm.em.assign(userEntityFromDb, newValues);
+  }
 
-    // Update refreshTokens
-    const refreshTokensToUpdate = user.refreshTokens.filter((refreshToken) =>
-      userFromDb.refreshTokens
-        .getItems()
-        .some((refreshTokenDb) => refreshToken.id.getId === refreshTokenDb.id),
+  addRefreshToken(refreshToken: RefreshToken, userId: UniqueId): void {
+    const newValues: EntityData<RefreshTokenEntity> = {
+      id: refreshToken.id.getId,
+      user: new ObjectId(userId.getId),
+      createdAt: refreshToken.createdAt.getDate,
+      duration: refreshToken.duration,
+      ipAddress: refreshToken.ipAddress,
+      replacedAt: refreshToken.replacedAt?.getDate ?? null,
+      replacedBy: refreshToken.replacedBy?.getId ?? null,
+      revokedAt: refreshToken.revokedAt?.getDate ?? null,
+    };
+    const newRefreshTokenEntity = this.orm.em.create(
+      RefreshTokenEntity,
+      newValues,
     );
-    const refreshTokensToAdd = user.refreshTokens.filter(
-      (refreshToken) =>
-        !refreshTokensToUpdate.some(
-          (refreshTokenToUpdate) => refreshToken.id === refreshTokenToUpdate.id,
-        ),
-    );
-
-    // Persist user refreshTokens to add
-    refreshTokensToAdd.forEach((refreshToken) =>
-      this.persistNewRefreshToken(refreshToken, userFromDb),
-    );
-
-    // Persist user refreshTokens to update
-    refreshTokensToUpdate.forEach((refreshToken) =>
-      this.updateRefreshTokenFromPersist(refreshToken),
-    );
-
-    // Update user
-    const userEntity = userToUserEntity(user, []);
-    this.assign(userFromDb, userEntity);
+    this.orm.em.persist(newRefreshTokenEntity);
   }
 
   updateRefreshToken(refreshToken: RefreshToken): void {
-    const refreshTokenEntity = refreshTokenToRefreshTokenEntity(refreshToken);
-    const refreshTokenFromDb = this.orm.em.getReference(
+    const refreshTokenEntityFromDb = this.orm.em.getReference(
       RefreshTokenEntity,
       refreshToken.id.getId,
     );
-    this.orm.em.assign(refreshTokenFromDb, refreshTokenEntity);
-  }
-
-  private getOrCreateRefreshTokenEntity(
-    refreshToken: RefreshToken,
-  ): RefreshTokenEntity {
-    let refreshTokenEntity = this.orm.em.getReference(
-      RefreshTokenEntity,
-      refreshToken.id.getId,
-    );
-
-    if (!refreshTokenEntity) {
-      refreshTokenEntity = refreshTokenToRefreshTokenEntity(refreshToken);
-    }
-
-    return refreshTokenEntity;
-  }
-
-  private persistNewRefreshToken(
-    refreshToken: RefreshToken,
-    userFromDb: UserEntity,
-  ): void {
-    const refreshTokenEntity = refreshTokenToRefreshTokenEntity(refreshToken);
-    userFromDb.refreshTokens.add(refreshTokenEntity);
-    this.orm.em.persist(refreshTokenEntity);
-  }
-
-  private updateRefreshTokenFromPersist(refreshToken: RefreshToken): void {
-    const refreshTokenReference = this.orm.em.getReference(
-      RefreshTokenEntity,
-      refreshToken.id.getId,
-    );
-    this.orm.em.assign(
-      refreshTokenReference,
-      refreshTokenToRefreshTokenEntity(refreshToken),
-    );
+    const newValues: EntityData<RefreshTokenEntity> = {
+      replacedAt: refreshToken.replacedAt?.getDate ?? null,
+      replacedBy: refreshToken.replacedBy?.getId ?? null,
+      revokedAt: refreshToken.revokedAt?.getDate ?? null,
+    };
+    this.orm.em.assign(refreshTokenEntityFromDb, newValues);
   }
 }

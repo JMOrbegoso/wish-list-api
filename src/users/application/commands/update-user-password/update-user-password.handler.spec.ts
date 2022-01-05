@@ -290,7 +290,7 @@ describe('users', () => {
 
             const userRepository = {
               getOneById: jest.fn().mockReturnValue(user),
-              update: jest.fn(),
+              updateUser: jest.fn(),
             } as MockedObject<UserRepository>;
 
             const unitOfWork = {
@@ -313,7 +313,7 @@ describe('users', () => {
             // Assert
             expect(user.updatePasswordHash.mock.calls).toHaveLength(1);
             expect(encryptionService.hashPassword.mock.calls).toHaveLength(1);
-            expect(userRepository.update.mock.calls).toHaveLength(1);
+            expect(userRepository.updateUser.mock.calls).toHaveLength(1);
             expect(unitOfWork.commitChanges.mock.calls).toHaveLength(1);
           },
         );

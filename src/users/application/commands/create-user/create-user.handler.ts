@@ -85,7 +85,7 @@ export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
     );
 
     // Add the new user to the users repository
-    this.userRepository.add(user);
+    this.userRepository.addUser(user);
 
     // Save changes using Unit of Work
     await this.unitOfWork.commitChanges();

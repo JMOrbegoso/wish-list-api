@@ -90,7 +90,7 @@ describe('users', () => {
 
             const userRepository = {
               userExists: jest.fn().mockReturnValue(false),
-              add: jest.fn(),
+              addUser: jest.fn(),
             } as MockedObject<UserRepository>;
 
             const unitOfWork = {
@@ -110,51 +110,62 @@ describe('users', () => {
 
             // Assert
             expect(encryptionService.hashPassword.mock.calls).toHaveLength(1);
-            expect(userRepository.add.mock.calls).toHaveLength(1);
+            expect(userRepository.addUser.mock.calls).toHaveLength(1);
             expect(unitOfWork.commitChanges.mock.calls).toHaveLength(1);
             expect(uniqueIdGeneratorService.generateId.mock.calls).toHaveLength(
               1,
             );
             expect(emailSenderService.send.mock.calls).toHaveLength(1);
 
-            expect(userRepository.add.mock.calls[0][0].id.getId).toBe(
+            expect(userRepository.addUser.mock.calls[0][0].id.getId).toBe(
               command.id,
             );
-            expect(userRepository.add.mock.calls[0][0].email.getEmail).toBe(
+            expect(userRepository.addUser.mock.calls[0][0].email.getEmail).toBe(
               command.email,
             );
             expect(
-              userRepository.add.mock.calls[0][0].username.getUsername,
+              userRepository.addUser.mock.calls[0][0].username.getUsername,
             ).toBe(command.username);
             expect(
-              userRepository.add.mock.calls[0][0].passwordHash.getPasswordHash,
+              userRepository.addUser.mock.calls[0][0].passwordHash
+                .getPasswordHash,
             ).toBe('password hashed');
-            expect(userRepository.add.mock.calls[0][0].isVerified).toBe(false);
-            expect(userRepository.add.mock.calls[0][0].verificationCode).toBe(
-              'verification-code-id',
+            expect(userRepository.addUser.mock.calls[0][0].isVerified).toBe(
+              false,
             );
-            expect(userRepository.add.mock.calls[0][0].isBlocked).toBe(false);
             expect(
-              userRepository.add.mock.calls[0][0].firstName.getFirstName,
+              userRepository.addUser.mock.calls[0][0].verificationCode,
+            ).toBe('verification-code-id');
+            expect(userRepository.addUser.mock.calls[0][0].isBlocked).toBe(
+              false,
+            );
+            expect(
+              userRepository.addUser.mock.calls[0][0].firstName.getFirstName,
             ).toBe(command.firstName);
             expect(
-              userRepository.add.mock.calls[0][0].lastName.getLastName,
+              userRepository.addUser.mock.calls[0][0].lastName.getLastName,
             ).toBe(command.lastName);
             expect(
-              userRepository.add.mock.calls[0][0].birthday.getMilliseconds,
+              userRepository.addUser.mock.calls[0][0].birthday.getMilliseconds,
             ).toBe(command.birthday);
             expect(
-              userRepository.add.mock.calls[0][0].createdAt.getMilliseconds,
+              userRepository.addUser.mock.calls[0][0].createdAt.getMilliseconds,
             ).not.toBeNull();
             expect(
-              userRepository.add.mock.calls[0][0].updatedAt.getMilliseconds,
+              userRepository.addUser.mock.calls[0][0].updatedAt.getMilliseconds,
             ).not.toBeNull();
             expect(
-              userRepository.add.mock.calls[0][0].biography.getBiography,
+              userRepository.addUser.mock.calls[0][0].biography.getBiography,
             ).toBe(command.biography);
-            expect(userRepository.add.mock.calls[0][0].roles.length).toBe(1);
-            expect(userRepository.add.mock.calls[0][0].roles[0]).toBe('Basic');
-            expect(userRepository.add.mock.calls[0][0].deletedAt).toBeNull();
+            expect(userRepository.addUser.mock.calls[0][0].roles.length).toBe(
+              1,
+            );
+            expect(userRepository.addUser.mock.calls[0][0].roles[0]).toBe(
+              'Basic',
+            );
+            expect(
+              userRepository.addUser.mock.calls[0][0].deletedAt,
+            ).toBeNull();
           },
         );
       });

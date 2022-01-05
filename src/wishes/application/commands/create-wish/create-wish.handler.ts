@@ -32,7 +32,6 @@ export class CreateWishHandler implements ICommandHandler<CreateWishCommand> {
     const title = WishTitle.create(command.title);
     const description = WishDescription.create(command.description);
     const privacyLevel = WishPrivacyLevel.create(command.privacyLevel);
-    const wisher = Wisher.create(wisherId);
     const urls = command.urls.map((url) => WebUrl.create(url));
     const imageUrls = command.imageUrls.map((url) => WebUrl.create(url));
     const categories = command.categories.map((url) =>
@@ -49,6 +48,16 @@ export class CreateWishHandler implements ICommandHandler<CreateWishCommand> {
     // Check if the id is already in use by other wish
     const wishExists = await this.wishRepository.getOneById(id);
     if (wishExists) throw new BadRequestException('Id already in use.');
+
+    // Check if the wisher exist
+    let wisher = await this.wishRepository.getWisherById(wisherId);
+    if (!wisher) {
+      // Create the new wisher
+      wisher = Wisher.create(wisherId);
+
+      // Add the new wisher to the wishers repository
+      this.wishRepository.addWisher(wisher);
+    }
 
     // Create the new wish
     const wish = Wish.create(
@@ -69,7 +78,7 @@ export class CreateWishHandler implements ICommandHandler<CreateWishCommand> {
     );
 
     // Add the new wish to the wishes repository
-    this.wishRepository.add(wish);
+    this.wishRepository.addWish(wish);
 
     // Save changes using Unit of Work
     await this.unitOfWork.commitChanges();

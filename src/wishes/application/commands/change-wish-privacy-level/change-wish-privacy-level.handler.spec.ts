@@ -81,7 +81,7 @@ describe('wishes', () => {
 
             const wishRepository = {
               getOneById: jest.fn().mockReturnValue(wish),
-              update: jest.fn(),
+              updateWish: jest.fn(),
             } as MockedObject<WishRepository>;
 
             const unitOfWork = {
@@ -101,9 +101,9 @@ describe('wishes', () => {
             expect(
               wish.changePrivacyLevel.mock.calls[0][0].getPrivacyLevel,
             ).toBe(command.privacyLevel);
-            expect(wishRepository.update.mock.calls).toHaveLength(1);
+            expect(wishRepository.updateWish.mock.calls).toHaveLength(1);
             expect(unitOfWork.commitChanges.mock.calls).toHaveLength(1);
-            expect(wishRepository.update.mock.calls[0][0].id.getId).toBe(
+            expect(wishRepository.updateWish.mock.calls[0][0].id.getId).toBe(
               wish.id.getId,
             );
           },
