@@ -123,37 +123,7 @@ export class UserRepositoryMongoDb
   }
 
   addUser(user: User): void {
-    const newValues = this.userEntityValues(user);
-    const newUserEntity = this.create(newValues);
-    this.orm.em.persist(newUserEntity);
-  }
-
-  updateUser(user: User): void {
-    const userEntityFromDb = this.getReference(user.id.getId);
-    const newValues = this.userEntityValues(user);
-    this.orm.em.assign(userEntityFromDb, newValues);
-  }
-
-  addRefreshToken(refreshToken: RefreshToken, userId: UniqueId): void {
-    const newValues = this.refreshTokenEntityValues(refreshToken, userId);
-    const newRefreshTokenEntity = this.orm.em.create(
-      RefreshTokenEntity,
-      newValues,
-    );
-    this.orm.em.persist(newRefreshTokenEntity);
-  }
-
-  updateRefreshToken(refreshToken: RefreshToken): void {
-    const refreshTokenEntityFromDb = this.orm.em.getReference(
-      RefreshTokenEntity,
-      refreshToken.id.getId,
-    );
-    const newValues = this.refreshTokenEntityValues_2(refreshToken);
-    this.orm.em.assign(refreshTokenEntityFromDb, newValues);
-  }
-
-  private userEntityValues(user: User): EntityData<UserEntity> {
-    return {
+    const newValues: EntityData<UserEntity> = {
       id: user.id.getId,
       email: user.email.getEmail,
       normalizedEmail: user.email.getNormalizedEmail,
@@ -173,13 +143,31 @@ export class UserRepositoryMongoDb
       deletedAt: user.deletedAt?.getDate ?? null,
       roles: user.roles,
     };
+    const newUserEntity = this.create(newValues);
+    this.orm.em.persist(newUserEntity);
   }
 
-  private refreshTokenEntityValues(
-    refreshToken: RefreshToken,
-    userId: UniqueId,
-  ): EntityData<RefreshTokenEntity> {
-    return {
+  updateUser(user: User): void {
+    const userEntityFromDb = this.getReference(user.id.getId);
+    const newValues: EntityData<UserEntity> = {
+      passwordHash: user.passwordHash.getPasswordHash,
+      isVerified: user.isVerified,
+      verificationCode: user.verificationCode,
+      isBlocked: user.isBlocked,
+      firstName: user.firstName.getFirstName,
+      lastName: user.lastName.getLastName,
+      birthday: user.birthday.getDate,
+      updatedAt: user.updatedAt.getDate,
+      biography: user.biography.getBiography,
+      profilePicture: user.profilePicture?.getUrl ?? null,
+      deletedAt: user.deletedAt?.getDate ?? null,
+      roles: user.roles,
+    };
+    this.orm.em.assign(userEntityFromDb, newValues);
+  }
+
+  addRefreshToken(refreshToken: RefreshToken, userId: UniqueId): void {
+    const newValues: EntityData<RefreshTokenEntity> = {
       id: refreshToken.id.getId,
       user: new ObjectId(userId.getId),
       createdAt: refreshToken.createdAt.getDate,
@@ -189,19 +177,23 @@ export class UserRepositoryMongoDb
       replacedBy: refreshToken.replacedBy?.getId ?? null,
       revokedAt: refreshToken.revokedAt?.getDate ?? null,
     };
+    const newRefreshTokenEntity = this.orm.em.create(
+      RefreshTokenEntity,
+      newValues,
+    );
+    this.orm.em.persist(newRefreshTokenEntity);
   }
 
-  private refreshTokenEntityValues_2(
-    refreshToken: RefreshToken,
-  ): EntityData<RefreshTokenEntity> {
-    return {
-      id: refreshToken.id.getId,
-      createdAt: refreshToken.createdAt.getDate,
-      duration: refreshToken.duration,
-      ipAddress: refreshToken.ipAddress,
+  updateRefreshToken(refreshToken: RefreshToken): void {
+    const refreshTokenEntityFromDb = this.orm.em.getReference(
+      RefreshTokenEntity,
+      refreshToken.id.getId,
+    );
+    const newValues: EntityData<RefreshTokenEntity> = {
       replacedAt: refreshToken.replacedAt?.getDate ?? null,
       replacedBy: refreshToken.replacedBy?.getId ?? null,
       revokedAt: refreshToken.revokedAt?.getDate ?? null,
     };
+    this.orm.em.assign(refreshTokenEntityFromDb, newValues);
   }
 }
