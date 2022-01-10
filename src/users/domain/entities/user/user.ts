@@ -270,10 +270,6 @@ export class User extends AggregateRoot {
     return this._roles.map((r) => r.getRole);
   }
 
-  public get rolesLength(): number {
-    return this._roles.length;
-  }
-
   public addRole(role: Role): void {
     if (!this._roles.some((r) => r.equals(role))) this._roles.push(role);
   }
@@ -284,10 +280,6 @@ export class User extends AggregateRoot {
 
   public get refreshTokens(): RefreshToken[] {
     return [...this._refreshTokens];
-  }
-
-  public get refreshTokensLength(): number {
-    return this._refreshTokens.length;
   }
 
   public getRefreshToken(refreshTokenId: UniqueId): RefreshToken {
