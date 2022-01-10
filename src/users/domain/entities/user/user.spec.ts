@@ -1448,8 +1448,8 @@ describe('users', () => {
             );
             expect(user.biography.getBiography).toBe(biography.getBiography);
 
-            expect(user.rolesLength).toBe(0);
-            expect(user.refreshTokensLength).toBe(0);
+            expect(user.roles.length).toBe(0);
+            expect(user.refreshTokens.length).toBe(0);
             expect(user.deletedAt).toBeNull();
             expect(user.profilePicture).toBeNull();
           },
@@ -2129,7 +2129,7 @@ describe('users', () => {
             user.addRole(roleToAdd);
 
             // Assert
-            expect(user.rolesLength).toBe(1);
+            expect(user.roles.length).toBe(1);
             expect(user.roles[0]).toBe('Admin');
           },
         );
@@ -2189,7 +2189,7 @@ describe('users', () => {
             user.addRole(roleToAdd);
 
             // Assert
-            expect(user.rolesLength).toBe(2);
+            expect(user.roles.length).toBe(2);
             expect(user.roles[0]).toBe('Admin');
             expect(user.roles[1]).toBe('Moderator');
           },
@@ -2250,7 +2250,7 @@ describe('users', () => {
             user.removeRole(roleToRemove);
 
             // Assert
-            expect(user.rolesLength).toBe(1);
+            expect(user.roles.length).toBe(1);
             expect(user.roles[0]).toBe('Admin');
           },
         );
@@ -2310,7 +2310,7 @@ describe('users', () => {
             user.removeRole(roleToRemove);
 
             // Assert
-            expect(user.rolesLength).toBe(0);
+            expect(user.roles.length).toBe(0);
           },
         );
 
@@ -2373,7 +2373,7 @@ describe('users', () => {
             user.removeRole(roleToRemove);
 
             // Assert
-            expect(user.rolesLength).toBe(1);
+            expect(user.roles.length).toBe(1);
             expect(user.roles[0]).toBe('Moderator');
           },
         );
@@ -2435,7 +2435,7 @@ describe('users', () => {
             } as MockedObject<RefreshToken>;
 
             // Assert
-            expect(user.refreshTokensLength).toBe(1);
+            expect(user.refreshTokens.length).toBe(1);
             expect(user.refreshTokens[0].id.getId).toBe(originalId);
           },
         );
