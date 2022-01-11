@@ -164,6 +164,8 @@ export class WishesController {
       dto.urls,
       dto.imageUrls,
       dto.categories,
+      dto.startedAt,
+      dto.completedAt,
     );
     await this.commandBus.execute(command);
   }

@@ -2,7 +2,11 @@ import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { UpdateWishCommand } from '..';
 import { UnitOfWork } from '../../../../shared/domain/repositories';
-import { UniqueId, WebUrl } from '../../../../shared/domain/value-objects';
+import {
+  MillisecondsDate,
+  UniqueId,
+  WebUrl,
+} from '../../../../shared/domain/value-objects';
 import { WishRepository } from '../../../domain/repositories';
 import {
   CategoryName,
@@ -27,6 +31,12 @@ export class UpdateWishHandler implements ICommandHandler<UpdateWishCommand> {
     const categories = command.categories.map((url) =>
       CategoryName.create(url),
     );
+    const startedAt = command.startedAt
+      ? MillisecondsDate.createFromMilliseconds(command.startedAt)
+      : null;
+    const completedAt = command.completedAt
+      ? MillisecondsDate.createFromMilliseconds(command.completedAt)
+      : null;
 
     // Get the wish  by id
     const wish = await this.wishRepository.getOneById(id);
@@ -36,7 +46,15 @@ export class UpdateWishHandler implements ICommandHandler<UpdateWishCommand> {
     if (wish.isDeleted) throw new BadRequestException('Wish is deleted.');
 
     // Update the wish
-    wish.update(title, description, urls, imageUrls, categories);
+    wish.update(
+      title,
+      description,
+      urls,
+      imageUrls,
+      categories,
+      startedAt,
+      completedAt,
+    );
 
     // Save the wish
     this.wishRepository.updateWish(wish);

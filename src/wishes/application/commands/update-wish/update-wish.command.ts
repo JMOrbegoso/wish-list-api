@@ -6,5 +6,7 @@ export class UpdateWishCommand {
     public readonly urls: string[],
     public readonly imageUrls: string[],
     public readonly categories: string[],
+    public readonly startedAt?: number,
+    public readonly completedAt?: number,
   ) {}
 }

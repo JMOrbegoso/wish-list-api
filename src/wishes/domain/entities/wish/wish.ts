@@ -277,31 +277,30 @@ export class Wish extends AggregateRoot {
     urls: WebUrl[] = [],
     imageUrls: WebUrl[] = [],
     categories: CategoryName[] = [],
+    startedAt: MillisecondsDate = null,
+    completedAt: MillisecondsDate = null,
   ): void {
     if (this.isDeleted) throw new DeletedWishCannotBeUpdatedError();
 
     if (!title) throw new InvalidWishTitleError();
-
     if (!description) throw new InvalidWishDescriptionError();
-
     if (!urls) throw new InvalidWishUrlsError();
-
     if (urls.length > Wish.MaxUrls) throw new TooManyWishUrlsError();
-
     if (!imageUrls) throw new InvalidWishImagesError();
-
     if (imageUrls.length > Wish.MaxImages) throw new TooManyWishImagesError();
-
     if (!categories) throw new InvalidWishCategoriesError();
-
     if (categories.length > Wish.MaxCategories)
       throw new TooManyWishCategoriesError();
+    if (!startedAt) startedAt = null;
+    if (!completedAt) completedAt = null;
 
     this._title = title;
     this._description = description;
     this._urls = urls;
     this._imageUrls = imageUrls;
     this._categories = categories;
+    this._startedAt = startedAt;
+    this._completedAt = completedAt;
 
     this._updatedAt = MillisecondsDate.create();
   }

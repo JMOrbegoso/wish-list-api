@@ -2616,8 +2616,6 @@ describe('wishes', () => {
             stages: MockedObject<WishStage>[],
           ) => {
             // Arrange
-
-            // Act
             const wish = Wish.create(
               uniqueId,
               title,
@@ -2646,12 +2644,22 @@ describe('wishes', () => {
             const newCategories = Array(Wish.MaxCategories).fill({
               getName: 'new category',
             } as MockedObject<CategoryName>);
+            const startedAt = {
+              getMilliseconds: 1000,
+            } as MockedObject<MillisecondsDate>;
+            const completedAt = {
+              getMilliseconds: 1000,
+            } as MockedObject<MillisecondsDate>;
+
+            // Act
             wish.update(
               newTitle,
               newDescription,
               newUrls,
               newImages,
               newCategories,
+              startedAt,
+              completedAt,
             );
 
             // Assert
@@ -2670,6 +2678,12 @@ describe('wishes', () => {
               expect(wish.categories[i].getName).toBe(newCategories[i].getName);
             expect(wish.updatedAt.getMilliseconds).not.toBe(
               updatedAt.getMilliseconds,
+            );
+            expect(wish.startedAt.getMilliseconds).toBe(
+              startedAt.getMilliseconds,
+            );
+            expect(wish.completedAt.getMilliseconds).toBe(
+              completedAt.getMilliseconds,
             );
           },
         );

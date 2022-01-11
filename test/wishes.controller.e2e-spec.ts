@@ -1052,6 +1052,8 @@ describe('WishesController (e2e)', () => {
         'https://www.example.com/new-url/2.jpg',
       ];
       const categories = ['new category 1', 'new category 2'];
+      const startedAt = new Date().getTime();
+      const completedAt = new Date().getTime();
 
       describe(`should return 401`, () => {
         it(`unauthenticated request`, () => {
@@ -1538,12 +1540,109 @@ describe('WishesController (e2e)', () => {
                 expect(wishUpdated.categories[i]).toBe(categories[i]);
 
               expect(wishUpdated.deletedAt).toBeNull();
-              expect(wishUpdated.startedAt.getTime()).toBe(
-                seed.publicWish_1.startedAt.getTime(),
+              expect(wishUpdated.startedAt).toBeNull();
+              expect(wishUpdated.completedAt).toBeNull();
+            })
+            .expect(async () => {
+              const wishersDb: WisherEntity[] = await database
+                .collection('wishers')
+                .find()
+                .toArray();
+
+              expect(wishersDb).toHaveLength(2);
+
+              const wisher = wishersDb.find(
+                (u) =>
+                  u._id.toString() === seed.basicUserAsWisher._id.toString(),
               );
-              expect(wishUpdated.completedAt.getTime()).toBe(
-                seed.publicWish_1.completedAt.getTime(),
+
+              expect(wisher).toBeTruthy();
+            })
+            .expect(async () => {
+              const wishStagesDb: WishStageEntity[] = await database
+                .collection('wish-stages')
+                .find()
+                .toArray();
+
+              expect(wishStagesDb).toHaveLength(5);
+
+              const wishStage1 = wishStagesDb.find(
+                (u) =>
+                  u._id.toString() ===
+                  seed.wishStage_1_of_PublicWish_1._id.toString(),
               );
+              assertWishStage(wishStage1, seed.wishStage_1_of_PublicWish_1);
+
+              const wishStage2 = wishStagesDb.find(
+                (u) =>
+                  u._id.toString() ===
+                  seed.wishStage_2_of_PublicWish_1._id.toString(),
+              );
+              assertWishStage(wishStage2, seed.wishStage_2_of_PublicWish_1);
+            });
+        });
+
+        it(`wish updated successfully`, () => {
+          const id = seed.publicWish_1._id.toString();
+          return request(app.getHttpServer())
+            .patch(`/wishes/${id}`)
+            .send({
+              id,
+              title,
+              description,
+              urls,
+              imageUrls,
+              categories,
+              startedAt,
+              completedAt,
+            } as UpdateWishDto)
+            .auth(accessTokenBasicUser, { type: 'bearer' })
+            .expect(200)
+            .expect(async () => {
+              const wishesDb: WishEntity[] = await database
+                .collection('wishes')
+                .find()
+                .toArray();
+
+              expect(wishesDb).toHaveLength(4);
+
+              const wishUpdated = wishesDb.find((u) => u._id.toString() === id);
+
+              expect(wishUpdated).toBeTruthy();
+
+              expect(wishUpdated._id.toString()).toBe(id);
+              expect(wishUpdated.wisher.toString()).toBe(
+                seed.basicUser._id.toString(),
+              );
+              expect(wishUpdated.title).toBe(title);
+              expect(wishUpdated.description).toBe(description);
+              expect(wishUpdated.privacyLevel).toBe(
+                seed.publicWish_1.privacyLevel,
+              );
+              expect(wishUpdated.createdAt).toBeTruthy();
+              expect(wishUpdated.createdAt.getTime()).toBe(
+                seed.publicWish_1.createdAt.getTime(),
+              );
+              expect(wishUpdated.updatedAt).toBeTruthy();
+              expect(wishUpdated.updatedAt.getTime()).toBeGreaterThan(
+                seed.publicWish_1.updatedAt.getTime(),
+              );
+              expect(wishUpdated.urls).toHaveLength(urls.length);
+              expect(wishUpdated.imageUrls).toHaveLength(imageUrls.length);
+              expect(wishUpdated.categories).toHaveLength(categories.length);
+
+              for (let i = 0; i < urls.length; i++)
+                expect(wishUpdated.urls[i]).toBe(urls[i]);
+
+              for (let i = 0; i < imageUrls.length; i++)
+                expect(wishUpdated.imageUrls[i]).toBe(imageUrls[i]);
+
+              for (let i = 0; i < categories.length; i++)
+                expect(wishUpdated.categories[i]).toBe(categories[i]);
+
+              expect(wishUpdated.deletedAt).toBeNull();
+              expect(wishUpdated.startedAt.getTime()).toBe(startedAt);
+              expect(wishUpdated.completedAt.getTime()).toBe(completedAt);
             })
             .expect(async () => {
               const wishersDb: WisherEntity[] = await database

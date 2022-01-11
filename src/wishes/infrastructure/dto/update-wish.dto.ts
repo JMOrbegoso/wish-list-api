@@ -8,4 +8,6 @@ export class UpdateWishDto extends PickType(CreateWishDto, [
   'urls',
   'imageUrls',
   'categories',
+  'startedAt',
+  'completedAt',
 ]) {}
