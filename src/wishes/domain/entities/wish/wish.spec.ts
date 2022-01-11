@@ -2219,7 +2219,14 @@ describe('wishes', () => {
 
             // Assert
             expect(() =>
-              wish.update(title, description, urls, images, categories),
+              wish.update(
+                title,
+                description,
+                privacyLevel,
+                urls,
+                images,
+                categories,
+              ),
             ).toThrowError(DeletedWishCannotBeUpdatedError);
           },
         );
@@ -2258,7 +2265,14 @@ describe('wishes', () => {
 
             // Assert
             expect(() =>
-              wish.update(null, description, urls, images, categories),
+              wish.update(
+                null,
+                description,
+                privacyLevel,
+                urls,
+                images,
+                categories,
+              ),
             ).toThrowError(InvalidWishTitleError);
           },
         );
@@ -2297,8 +2311,47 @@ describe('wishes', () => {
 
             // Assert
             expect(() =>
-              wish.update(title, null, urls, images, categories),
+              wish.update(title, null, privacyLevel, urls, images, categories),
             ).toThrowError(InvalidWishDescriptionError);
+          },
+        );
+
+        test.each(validValues)(
+          'update a Wish using invalid privacyLevel should throw error',
+          (
+            uniqueId: MockedObject<UniqueId>,
+            title: MockedObject<WishTitle>,
+            description: MockedObject<WishDescription>,
+            privacyLevel: MockedObject<WishPrivacyLevel>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            wisher: MockedObject<Wisher>,
+            urls: MockedObject<WebUrl>[],
+            images: MockedObject<WebUrl>[],
+            categories: MockedObject<CategoryName>[],
+            stages: MockedObject<WishStage>[],
+          ) => {
+            // Arrange
+
+            // Act
+            const wish = Wish.create(
+              uniqueId,
+              title,
+              description,
+              privacyLevel,
+              createdAt,
+              updatedAt,
+              wisher,
+              urls,
+              images,
+              categories,
+              stages,
+            );
+
+            // Assert
+            expect(() =>
+              wish.update(title, description, null, urls, images, categories),
+            ).toThrowError(InvalidWishPrivacyLevelError);
           },
         );
 
@@ -2336,7 +2389,14 @@ describe('wishes', () => {
 
             // Assert
             expect(() =>
-              wish.update(title, description, null, images, categories),
+              wish.update(
+                title,
+                description,
+                privacyLevel,
+                null,
+                images,
+                categories,
+              ),
             ).toThrowError(InvalidWishUrlsError);
           },
         );
@@ -2378,7 +2438,14 @@ describe('wishes', () => {
 
             // Assert
             expect(() =>
-              wish.update(title, description, newUrls, images, categories),
+              wish.update(
+                title,
+                description,
+                privacyLevel,
+                newUrls,
+                images,
+                categories,
+              ),
             ).toThrowError(TooManyWishUrlsError);
           },
         );
@@ -2417,7 +2484,14 @@ describe('wishes', () => {
 
             // Assert
             expect(() =>
-              wish.update(title, description, urls, null, categories),
+              wish.update(
+                title,
+                description,
+                privacyLevel,
+                urls,
+                null,
+                categories,
+              ),
             ).toThrowError(InvalidWishImagesError);
           },
         );
@@ -2459,7 +2533,14 @@ describe('wishes', () => {
 
             // Assert
             expect(() =>
-              wish.update(title, description, urls, newImages, categories),
+              wish.update(
+                title,
+                description,
+                privacyLevel,
+                urls,
+                newImages,
+                categories,
+              ),
             ).toThrowError(TooManyWishImagesError);
           },
         );
@@ -2498,7 +2579,7 @@ describe('wishes', () => {
 
             // Assert
             expect(() =>
-              wish.update(title, description, urls, images, null),
+              wish.update(title, description, privacyLevel, urls, images, null),
             ).toThrowError(InvalidWishCategoriesError);
           },
         );
@@ -2540,7 +2621,14 @@ describe('wishes', () => {
 
             // Assert
             expect(() =>
-              wish.update(title, description, urls, images, newCategories),
+              wish.update(
+                title,
+                description,
+                privacyLevel,
+                urls,
+                images,
+                newCategories,
+              ),
             ).toThrowError(TooManyWishCategoriesError);
           },
         );
@@ -2580,14 +2668,20 @@ describe('wishes', () => {
             const newDescription = {
               getDescription: 'description',
             } as MockedObject<WishDescription>;
+            const newWishPrivacyLevel = {
+              getPrivacyLevel: 'OnlyMe',
+            } as MockedObject<WishPrivacyLevel>;
 
             // Act
-            wish.update(newTitle, newDescription);
+            wish.update(newTitle, newDescription, newWishPrivacyLevel);
 
             // Assert
             expect(wish.title.getTitle).toBe(newTitle.getTitle);
             expect(wish.description.getDescription).toBe(
               newDescription.getDescription,
+            );
+            expect(wish.privacyLevel.getPrivacyLevel).toBe(
+              newWishPrivacyLevel.getPrivacyLevel,
             );
             expect(wish.urls.length).toBe(0);
             expect(wish.imageUrls.length).toBe(0);
@@ -2635,6 +2729,9 @@ describe('wishes', () => {
             const newDescription = {
               getDescription: 'description',
             } as MockedObject<WishDescription>;
+            const newWishPrivacyLevel = {
+              getPrivacyLevel: 'JustFriends',
+            } as MockedObject<WishPrivacyLevel>;
             const newUrls = Array(Wish.MaxUrls).fill({
               getUrl: 'https://www.example.com/new/',
             } as MockedObject<WebUrl>);
@@ -2655,6 +2752,7 @@ describe('wishes', () => {
             wish.update(
               newTitle,
               newDescription,
+              newWishPrivacyLevel,
               newUrls,
               newImages,
               newCategories,
@@ -2666,6 +2764,9 @@ describe('wishes', () => {
             expect(wish.title.getTitle).toBe(newTitle.getTitle);
             expect(wish.description.getDescription).toBe(
               newDescription.getDescription,
+            );
+            expect(wish.privacyLevel.getPrivacyLevel).toBe(
+              newWishPrivacyLevel.getPrivacyLevel,
             );
             expect(wish.urls.length).toBe(newUrls.length);
             for (let i = 0; i < newUrls.length; i++)

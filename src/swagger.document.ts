@@ -1349,6 +1349,9 @@ export const swaggerDocument: OpenAPIObject = {
             description: 'Wish description.',
             example: 'A brand new laptop.',
           },
+          privacyLevel: {
+            $ref: '#/components/schemas/PrivacyLevel',
+          },
           urls: {
             type: 'array',
             items: { type: 'string' },
@@ -1382,6 +1385,7 @@ export const swaggerDocument: OpenAPIObject = {
           'id',
           'title',
           'description',
+          'privacyLevel',
           'urls',
           'imageUrls',
           'categories',

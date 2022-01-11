@@ -5,6 +5,7 @@ export class UpdateWishDto extends PickType(CreateWishDto, [
   'id',
   'title',
   'description',
+  'privacyLevel',
   'urls',
   'imageUrls',
   'categories',

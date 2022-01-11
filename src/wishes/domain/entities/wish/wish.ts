@@ -274,6 +274,7 @@ export class Wish extends AggregateRoot {
   public update(
     title: WishTitle,
     description: WishDescription,
+    wishPrivacyLevel: WishPrivacyLevel,
     urls: WebUrl[] = [],
     imageUrls: WebUrl[] = [],
     categories: CategoryName[] = [],
@@ -284,6 +285,7 @@ export class Wish extends AggregateRoot {
 
     if (!title) throw new InvalidWishTitleError();
     if (!description) throw new InvalidWishDescriptionError();
+    if (!wishPrivacyLevel) throw new InvalidWishPrivacyLevelError();
     if (!urls) throw new InvalidWishUrlsError();
     if (urls.length > Wish.MaxUrls) throw new TooManyWishUrlsError();
     if (!imageUrls) throw new InvalidWishImagesError();
@@ -296,6 +298,7 @@ export class Wish extends AggregateRoot {
 
     this._title = title;
     this._description = description;
+    this._privacyLevel = wishPrivacyLevel;
     this._urls = urls;
     this._imageUrls = imageUrls;
     this._categories = categories;

@@ -11,6 +11,7 @@ import { WishRepository } from '../../../domain/repositories';
 import {
   CategoryName,
   WishDescription,
+  WishPrivacyLevel,
   WishTitle,
 } from '../../../domain/value-objects';
 
@@ -26,6 +27,7 @@ export class UpdateWishHandler implements ICommandHandler<UpdateWishCommand> {
     const id = UniqueId.create(command.id);
     const title = WishTitle.create(command.title);
     const description = WishDescription.create(command.description);
+    const privacyLevel = WishPrivacyLevel.create(command.privacyLevel);
     const urls = command.urls.map((url) => WebUrl.create(url));
     const imageUrls = command.imageUrls.map((url) => WebUrl.create(url));
     const categories = command.categories.map((url) =>
@@ -49,6 +51,7 @@ export class UpdateWishHandler implements ICommandHandler<UpdateWishCommand> {
     wish.update(
       title,
       description,
+      privacyLevel,
       urls,
       imageUrls,
       categories,

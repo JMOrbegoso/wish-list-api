@@ -161,6 +161,7 @@ export class WishesController {
       dto.id,
       dto.title,
       dto.description,
+      dto.privacyLevel,
       dto.urls,
       dto.imageUrls,
       dto.categories,
