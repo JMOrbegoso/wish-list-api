@@ -4,13 +4,23 @@ import { UpdateWishCommand, UpdateWishHandler } from '..';
 import { UnitOfWork } from '../../../../shared/domain/repositories';
 import { Wish } from '../../../domain/entities';
 import { WishRepository } from '../../../domain/repositories';
+import { PrivacyLevel } from '../../../domain/value-objects';
 
 const commands = [
-  new UpdateWishCommand('id 0', 'title 0', 'description 0', [], [], []),
+  new UpdateWishCommand(
+    'id 0',
+    'title 0',
+    'description 0',
+    PrivacyLevel.Public,
+    [],
+    [],
+    [],
+  ),
   new UpdateWishCommand(
     'id 1',
     'title 1',
     'description 2',
+    PrivacyLevel.JustFriends,
     ['https://wwww.example.com/1'],
     [],
     ['tech'],
@@ -19,6 +29,7 @@ const commands = [
     'id 2',
     'title 2',
     'description 2',
+    PrivacyLevel.OnlyMe,
     ['https://wwww.example.com/2'],
     ['https://wwww.example.com/2.jpg'],
     ['tech'],

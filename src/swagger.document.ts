@@ -683,103 +683,6 @@ export const swaggerDocument: OpenAPIObject = {
         security: [{ bearer: [] }],
       },
     },
-    '/api/wishes/complete/{id}/{completionDate}': {
-      patch: {
-        operationId: 'CompleteWish',
-        parameters: [
-          {
-            name: 'id',
-            required: true,
-            in: 'path',
-            description: 'Wish id.',
-            example: '61c4c0fec96d0f2ad6858ecb',
-            schema: { type: 'string' },
-          },
-          {
-            name: 'completionDate',
-            required: true,
-            in: 'path',
-            description: 'Wish completion date in milliseconds.',
-            example: '1638123780283',
-            schema: { type: 'string' },
-          },
-        ],
-        responses: {
-          200: { description: 'Wish completed successfully.' },
-          400: { description: 'Something went wrong.' },
-          401: { description: 'User is not authenticated.' },
-          403: {
-            description:
-              'This resource is prohibited for the authenticated user.',
-          },
-          404: { description: 'Wish not found.' },
-        },
-        tags: ['Wishes'],
-        security: [{ bearer: [] }],
-      },
-    },
-    '/api/wishes/uncomplete/{id}': {
-      patch: {
-        operationId: 'UncompleteWish',
-        parameters: [
-          {
-            name: 'id',
-            required: true,
-            in: 'path',
-            description: 'Wish id.',
-            example: '61c4c0fec96d0f2ad6858ecb',
-            schema: { type: 'string' },
-          },
-        ],
-        responses: {
-          200: { description: 'Wish uncompleted successfully.' },
-          400: { description: 'Something went wrong.' },
-          401: { description: 'User is not authenticated.' },
-          403: {
-            description:
-              'This resource is prohibited for the authenticated user.',
-          },
-          404: { description: 'Wish not found.' },
-        },
-        tags: ['Wishes'],
-        security: [{ bearer: [] }],
-      },
-    },
-    '/api/wishes/change-privacy-level/{id}/{privacyLevel}': {
-      patch: {
-        operationId: 'ChangeWishPrivacyLevel',
-        parameters: [
-          {
-            name: 'id',
-            required: true,
-            in: 'path',
-            description: 'Wish id.',
-            example: '61c4c0fec96d0f2ad6858ecb',
-            schema: { type: 'string' },
-          },
-          {
-            name: 'privacyLevel',
-            required: true,
-            in: 'path',
-            description: 'Wish privacy level.',
-            example: 'Public',
-            schema: { $ref: '#/components/schemas/PrivacyLevel' },
-          },
-        ],
-        responses: {
-          200: { description: 'Wish privacy level changed successfully.' },
-          400: { description: 'Something went wrong.' },
-          401: { description: 'User is not authenticated.' },
-          403: {
-            description:
-              'This resource is prohibited for the authenticated user.',
-          },
-          404: { description: 'Wish not found.' },
-        },
-        tags: ['Wishes'],
-        security: [{ bearer: [] }],
-      },
-    },
     '/api/wish-stages': {
       post: {
         operationId: 'CreateWishStage',
@@ -1314,6 +1217,11 @@ export const swaggerDocument: OpenAPIObject = {
             description: 'Wish started at date in milliseconds.',
             example: 1636128526164,
           },
+          completedAt: {
+            type: 'number',
+            description: 'Wish completed at date in milliseconds.',
+            example: 1636128526164,
+          },
         },
         required: [
           'id',
@@ -1344,6 +1252,9 @@ export const swaggerDocument: OpenAPIObject = {
             description: 'Wish description.',
             example: 'A brand new laptop.',
           },
+          privacyLevel: {
+            $ref: '#/components/schemas/PrivacyLevel',
+          },
           urls: {
             type: 'array',
             items: { type: 'string' },
@@ -1362,11 +1273,22 @@ export const swaggerDocument: OpenAPIObject = {
             description: 'Wish categories.',
             example: ['Tech'],
           },
+          startedAt: {
+            type: 'number',
+            description: 'Wish started at date in milliseconds.',
+            example: 1636128526164,
+          },
+          completedAt: {
+            type: 'number',
+            description: 'Wish completed at date in milliseconds.',
+            example: 1636128526164,
+          },
         },
         required: [
           'id',
           'title',
           'description',
+          'privacyLevel',
           'urls',
           'imageUrls',
           'categories',

@@ -16,7 +16,6 @@ import {
   DuplicatedWishStageError,
   InvalidWishCategoriesError,
   InvalidWishCategoryNameError,
-  InvalidWishCompletedAtError,
   InvalidWishCreatedAtError,
   InvalidWishDescriptionError,
   InvalidWishImageError,
@@ -34,9 +33,7 @@ import {
   TooManyWishImagesError,
   TooManyWishStagesError,
   TooManyWishUrlsError,
-  WishIsAlreadyCompletedError,
   WishIsAlreadyDeletedError,
-  WishIsAlreadyUncompletedError,
   WishIsNotDeletedError,
 } from './exceptions';
 
@@ -243,65 +240,39 @@ export class Wish extends AggregateRoot {
     this._deletedAt = null;
   }
 
-  public complete(completedAt: MillisecondsDate): void {
-    if (this.isDeleted) throw new DeletedWishCannotBeUpdatedError();
-
-    if (this.isCompleted) throw new WishIsAlreadyCompletedError();
-
-    if (!completedAt) throw new InvalidWishCompletedAtError();
-
-    this._completedAt = completedAt;
-    this._updatedAt = MillisecondsDate.create();
-  }
-
-  public uncomplete(): void {
-    if (this.isDeleted) throw new DeletedWishCannotBeUpdatedError();
-
-    if (!this.isCompleted) throw new WishIsAlreadyUncompletedError();
-
-    this._completedAt = null;
-    this._updatedAt = MillisecondsDate.create();
-  }
-
-  public changePrivacyLevel(wishPrivacyLevel: WishPrivacyLevel): void {
-    if (this.isDeleted) throw new DeletedWishCannotBeUpdatedError();
-
-    if (!wishPrivacyLevel) throw new InvalidWishPrivacyLevelError();
-
-    this._privacyLevel = wishPrivacyLevel;
-  }
-
   public update(
     title: WishTitle,
     description: WishDescription,
+    wishPrivacyLevel: WishPrivacyLevel,
     urls: WebUrl[] = [],
     imageUrls: WebUrl[] = [],
     categories: CategoryName[] = [],
+    startedAt: MillisecondsDate = null,
+    completedAt: MillisecondsDate = null,
   ): void {
     if (this.isDeleted) throw new DeletedWishCannotBeUpdatedError();
 
     if (!title) throw new InvalidWishTitleError();
-
     if (!description) throw new InvalidWishDescriptionError();
-
+    if (!wishPrivacyLevel) throw new InvalidWishPrivacyLevelError();
     if (!urls) throw new InvalidWishUrlsError();
-
     if (urls.length > Wish.MaxUrls) throw new TooManyWishUrlsError();
-
     if (!imageUrls) throw new InvalidWishImagesError();
-
     if (imageUrls.length > Wish.MaxImages) throw new TooManyWishImagesError();
-
     if (!categories) throw new InvalidWishCategoriesError();
-
     if (categories.length > Wish.MaxCategories)
       throw new TooManyWishCategoriesError();
+    if (!startedAt) startedAt = null;
+    if (!completedAt) completedAt = null;
 
     this._title = title;
     this._description = description;
+    this._privacyLevel = wishPrivacyLevel;
     this._urls = urls;
     this._imageUrls = imageUrls;
     this._categories = categories;
+    this._startedAt = startedAt;
+    this._completedAt = completedAt;
 
     this._updatedAt = MillisecondsDate.create();
   }

@@ -7,13 +7,10 @@ import { UnitOfWorkMongoDb } from '../../../shared/infrastructure/repositories';
 import { UserRepository } from '../../../users/domain/repositories';
 import { UserRepositoryMongoDb } from '../../../users/infrastructure/persistence/repositories';
 import {
-  ChangeWishPrivacyLevelHandler,
-  CompleteWishHandler,
   CreateWishHandler,
   CreateWishStageHandler,
   DeleteWishHandler,
   DeleteWishStageHandler,
-  UncompleteWishHandler,
   UndeleteWishHandler,
   UpdateWishHandler,
   UpdateWishStageHandler,
@@ -37,13 +34,10 @@ const queryHandlers = [
   GetWishesByWisherIdHandler,
 ];
 const commandHandlers = [
-  ChangeWishPrivacyLevelHandler,
-  CompleteWishHandler,
   CreateWishHandler,
   CreateWishStageHandler,
   DeleteWishHandler,
   DeleteWishStageHandler,
-  UncompleteWishHandler,
   UndeleteWishHandler,
   UpdateWishHandler,
   UpdateWishStageHandler,

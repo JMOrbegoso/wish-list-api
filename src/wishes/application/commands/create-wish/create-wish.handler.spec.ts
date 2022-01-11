@@ -16,7 +16,8 @@ const commands = [
     [],
     [],
     [],
-    null,
+    new Date().getTime(),
+    new Date().getTime(),
   ),
   new CreateWishCommand(
     'id 1',
@@ -27,7 +28,6 @@ const commands = [
     ['https://www.example.com', 'https://www.example.net'],
     ['https://www.example.com/1.jpg', 'https://www.example.net/1.jpg'],
     [],
-    undefined,
   ),
   new CreateWishCommand(
     'id 2',
