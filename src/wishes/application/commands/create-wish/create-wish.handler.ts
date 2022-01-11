@@ -40,6 +40,9 @@ export class CreateWishHandler implements ICommandHandler<CreateWishCommand> {
     const startedAt = command.startedAt
       ? MillisecondsDate.createFromMilliseconds(command.startedAt)
       : null;
+    const completedAt = command.completedAt
+      ? MillisecondsDate.createFromMilliseconds(command.completedAt)
+      : null;
 
     // Check if the user exist
     const user = await this.userRepository.getOneById(wisherId);
@@ -74,7 +77,7 @@ export class CreateWishHandler implements ICommandHandler<CreateWishCommand> {
       [],
       null,
       startedAt,
-      null,
+      completedAt,
     );
 
     // Add the new wish to the wishes repository

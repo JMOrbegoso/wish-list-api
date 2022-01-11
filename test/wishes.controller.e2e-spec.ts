@@ -187,6 +187,7 @@ describe('WishesController (e2e)', () => {
       ];
       const categories = ['category 1', 'category 2'];
       const startedAt = new Date().getTime();
+      const completedAt = new Date().getTime();
 
       describe(`should return 401`, () => {
         it(`unauthenticated request`, () => {
@@ -830,7 +831,6 @@ describe('WishesController (e2e)', () => {
               urls,
               imageUrls,
               categories,
-              startedAt,
             } as CreateWishDto)
             .auth(accessTokenBasicUser, { type: 'bearer' })
             .expect(201)
@@ -866,8 +866,82 @@ describe('WishesController (e2e)', () => {
               for (let i = 0; i < categories.length; i++)
                 expect(wishCreated.categories[i]).toBe(categories[i]);
 
-              expect(wishCreated.startedAt.getTime()).toBe(startedAt);
               expect(wishCreated.deletedAt).toBeFalsy();
+              expect(wishCreated.startedAt).toBeFalsy();
+              expect(wishCreated.completedAt).toBeFalsy();
+            })
+            .expect(async () => {
+              const wishersDb: WisherEntity[] = await database
+                .collection('wishers')
+                .find()
+                .toArray();
+
+              expect(wishersDb).toHaveLength(2);
+
+              const wisherExistent = wishersDb.find(
+                (u) => u._id.toString() === seed.basicUser._id.toString(),
+              );
+
+              expect(wisherExistent).toBeTruthy();
+              expect(wisherExistent._id.toString()).toBe(
+                seed.basicUser._id.toString(),
+              );
+            });
+        });
+
+        it(`should create wish but not wisher because it is already created`, () => {
+          const wisherId = seed.basicUserAsWisher._id.toString();
+          return request(app.getHttpServer())
+            .post('/wishes')
+            .send({
+              id,
+              wisherId,
+              title,
+              description,
+              privacyLevel,
+              urls,
+              imageUrls,
+              categories,
+              startedAt,
+              completedAt,
+            } as CreateWishDto)
+            .auth(accessTokenBasicUser, { type: 'bearer' })
+            .expect(201)
+            .expect(async () => {
+              const wishesDb: WishEntity[] = await database
+                .collection('wishes')
+                .find()
+                .toArray();
+
+              expect(wishesDb).toHaveLength(5);
+
+              const wishCreated = wishesDb.find((u) => u._id.toString() === id);
+
+              expect(wishCreated).toBeTruthy();
+
+              expect(wishCreated._id.toString()).toBe(id);
+              expect(wishCreated.title).toBe(title);
+              expect(wishCreated.description).toBe(description);
+              expect(wishCreated.privacyLevel).toBe(privacyLevel);
+              expect(wishCreated.createdAt).toBeTruthy();
+              expect(wishCreated.updatedAt).toBeTruthy();
+              expect(wishCreated.wisher.toString()).toBe(wisherId);
+
+              expect(wishCreated.urls).toHaveLength(urls.length);
+              for (let i = 0; i < urls.length; i++)
+                expect(wishCreated.urls[i]).toBe(urls[i]);
+
+              expect(wishCreated.imageUrls).toHaveLength(imageUrls.length);
+              for (let i = 0; i < imageUrls.length; i++)
+                expect(wishCreated.imageUrls[i]).toBe(imageUrls[i]);
+
+              expect(wishCreated.categories).toHaveLength(categories.length);
+              for (let i = 0; i < categories.length; i++)
+                expect(wishCreated.categories[i]).toBe(categories[i]);
+
+              expect(wishCreated.deletedAt).toBeFalsy();
+              expect(wishCreated.startedAt.getTime()).toBe(startedAt);
+              expect(wishCreated.completedAt.getTime()).toBe(completedAt);
             })
             .expect(async () => {
               const wishersDb: WisherEntity[] = await database
@@ -902,6 +976,7 @@ describe('WishesController (e2e)', () => {
               imageUrls,
               categories,
               startedAt,
+              completedAt,
             } as CreateWishDto)
             .auth(accessTokenAdminUser, { type: 'bearer' })
             .expect(201)
@@ -937,8 +1012,9 @@ describe('WishesController (e2e)', () => {
               for (let i = 0; i < categories.length; i++)
                 expect(wishCreated.categories[i]).toBe(categories[i]);
 
-              expect(wishCreated.startedAt.getTime()).toBe(startedAt);
               expect(wishCreated.deletedAt).toBeFalsy();
+              expect(wishCreated.startedAt.getTime()).toBe(startedAt);
+              expect(wishCreated.completedAt.getTime()).toBe(completedAt);
             })
             .expect(async () => {
               const wishersDb: WisherEntity[] = await database

@@ -1314,6 +1314,11 @@ export const swaggerDocument: OpenAPIObject = {
             description: 'Wish started at date in milliseconds.',
             example: 1636128526164,
           },
+          completedAt: {
+            type: 'number',
+            description: 'Wish completed at date in milliseconds.',
+            example: 1636128526164,
+          },
         },
         required: [
           'id',
