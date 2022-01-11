@@ -16,7 +16,6 @@ import {
   DuplicatedWishStageError,
   InvalidWishCategoriesError,
   InvalidWishCategoryNameError,
-  InvalidWishCompletedAtError,
   InvalidWishCreatedAtError,
   InvalidWishDescriptionError,
   InvalidWishImageError,
@@ -34,9 +33,7 @@ import {
   TooManyWishImagesError,
   TooManyWishStagesError,
   TooManyWishUrlsError,
-  WishIsAlreadyCompletedError,
   WishIsAlreadyDeletedError,
-  WishIsAlreadyUncompletedError,
   WishIsNotDeletedError,
 } from './exceptions';
 
@@ -241,34 +238,6 @@ export class Wish extends AggregateRoot {
     if (!this.isDeleted) throw new WishIsNotDeletedError();
 
     this._deletedAt = null;
-  }
-
-  public complete(completedAt: MillisecondsDate): void {
-    if (this.isDeleted) throw new DeletedWishCannotBeUpdatedError();
-
-    if (this.isCompleted) throw new WishIsAlreadyCompletedError();
-
-    if (!completedAt) throw new InvalidWishCompletedAtError();
-
-    this._completedAt = completedAt;
-    this._updatedAt = MillisecondsDate.create();
-  }
-
-  public uncomplete(): void {
-    if (this.isDeleted) throw new DeletedWishCannotBeUpdatedError();
-
-    if (!this.isCompleted) throw new WishIsAlreadyUncompletedError();
-
-    this._completedAt = null;
-    this._updatedAt = MillisecondsDate.create();
-  }
-
-  public changePrivacyLevel(wishPrivacyLevel: WishPrivacyLevel): void {
-    if (this.isDeleted) throw new DeletedWishCannotBeUpdatedError();
-
-    if (!wishPrivacyLevel) throw new InvalidWishPrivacyLevelError();
-
-    this._privacyLevel = wishPrivacyLevel;
   }
 
   public update(
