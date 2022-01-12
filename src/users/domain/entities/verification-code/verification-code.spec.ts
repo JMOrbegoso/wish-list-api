@@ -1,56 +1,34 @@
 import { MockedObject } from 'ts-jest/dist/utils/testing';
-import { VerificationCode } from '..';
-import { UniqueId } from '../../../../shared/domain/value-objects';
-
-const validValues = [
-  {
-    getId: 'id-0',
-    equals: jest.fn(),
-  } as MockedObject<UniqueId>,
-  {
-    getId: 'id-1',
-    equals: jest.fn(),
-  } as MockedObject<UniqueId>,
-  {
-    getId: 'id-2',
-    equals: jest.fn(),
-  } as MockedObject<UniqueId>,
-  {
-    getId: 'id-3',
-    equals: jest.fn(),
-  } as MockedObject<UniqueId>,
-];
+import { VerificationCode, VerificationCodeId } from '..';
 
 describe('users', () => {
   describe('domain', () => {
     describe('entities', () => {
       describe('verification-code', () => {
-        test.each(validValues)(
-          'should create a VerificationCode with [id: %p]',
-          (uniqueId: MockedObject<UniqueId>) => {
-            // Arrange
+        it('should create a VerificationCode with [id: %p]', () => {
+          // Arrange
+          const verificationCodeId = {} as MockedObject<VerificationCodeId>;
 
-            // Act
-            const verificationCode = VerificationCode.create(uniqueId);
+          // Act
+          const verificationCode = VerificationCode.create(verificationCodeId);
 
-            // Assert
-            expect(verificationCode.id.getId).toBe(uniqueId.getId);
-          },
-        );
+          // Assert
+          expect(verificationCode.id.value).toBe(verificationCodeId.value);
+        });
 
-        test.each(validValues)(
-          'comparing two entities should call "equals" method from UniqueId',
-          (uniqueId: MockedObject<UniqueId>) => {
-            // Arrange
-            const verificationCode = VerificationCode.create(uniqueId);
+        it('comparing two entities should call "equals" method from VerificationCodeId', () => {
+          // Arrange
+          const verificationCodeId = {
+            equals: jest.fn(),
+          } as MockedObject<VerificationCodeId>;
+          const verificationCode = VerificationCode.create(verificationCodeId);
 
-            // Act
-            verificationCode.equals(verificationCode);
+          // Act
+          verificationCode.equals(verificationCode);
 
-            // Assert
-            expect(uniqueId.equals.mock.calls).toHaveLength(1);
-          },
-        );
+          // Assert
+          expect(verificationCodeId.equals.mock.calls).toHaveLength(1);
+        });
       });
     });
   });

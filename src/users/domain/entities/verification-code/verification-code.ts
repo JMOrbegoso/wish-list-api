@@ -1,16 +1,12 @@
+import { VerificationCodeId } from '..';
 import { Entity } from '../../../../shared/domain/entities';
-import { UniqueId } from '../../../../shared/domain/value-objects';
 
-export class VerificationCode extends Entity {
-  private constructor(id: UniqueId) {
+export class VerificationCode extends Entity<VerificationCodeId> {
+  private constructor(id: VerificationCodeId) {
     super(id);
   }
 
-  public static create(id: UniqueId): VerificationCode {
+  public static create(id: VerificationCodeId): VerificationCode {
     return new VerificationCode(id);
-  }
-
-  public get id(): UniqueId {
-    return this._id;
   }
 }
