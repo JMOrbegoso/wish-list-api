@@ -2,8 +2,7 @@ import { UnauthorizedException } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { RefreshAccessTokenCommand } from '..';
 import { UnitOfWork } from '../../../../shared/domain/repositories';
-import { UniqueId } from '../../../../shared/domain/value-objects';
-import { RefreshToken, User } from '../../../domain/entities';
+import { RefreshToken, RefreshTokenId, User } from '../../../domain/entities';
 import { UserRepository } from '../../../domain/repositories';
 import { IpAddress } from '../../../domain/value-objects';
 import { AuthTokensDto } from '../../dtos';
@@ -22,7 +21,7 @@ export class RefreshAccessTokenHandler
   ) {}
 
   async execute(command: RefreshAccessTokenCommand): Promise<AuthTokensDto> {
-    const refreshTokenToReplaceId = UniqueId.create(
+    const refreshTokenToReplaceId = RefreshTokenId.create(
       command.refreshTokenToReplace,
     );
     const ipAddress = IpAddress.create(command.ipAddress);
@@ -76,10 +75,10 @@ export class RefreshAccessTokenHandler
     const access_token = this.generateAccessToken(user);
 
     // Generate the new refresh token
-    const newRefreshToken = RefreshToken.create(
+    const refreshTokenId = RefreshTokenId.create(
       this.uniqueIdGeneratorService.generateId(),
-      ipAddress,
     );
+    const newRefreshToken = RefreshToken.create(refreshTokenId, ipAddress);
 
     // Update the User refresh Tokens
     user.replaceRefreshToken(refreshTokenToReplace.id, newRefreshToken);
@@ -96,7 +95,7 @@ export class RefreshAccessTokenHandler
 
     return {
       access_token,
-      refresh_token: newRefreshToken.id.getId,
+      refresh_token: newRefreshToken.id.value.toString(),
     };
   }
 

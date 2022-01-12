@@ -2,8 +2,7 @@ import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { VerifyUserCommand } from '..';
 import { UnitOfWork } from '../../../../shared/domain/repositories';
-import { UniqueId } from '../../../../shared/domain/value-objects';
-import { VerificationCode } from '../../../domain/entities';
+import { VerificationCode, VerificationCodeId } from '../../../domain/entities';
 import { UserRepository } from '../../../domain/repositories';
 
 @CommandHandler(VerifyUserCommand)
@@ -14,8 +13,10 @@ export class VerifyUserHandler implements ICommandHandler<VerifyUserCommand> {
   ) {}
 
   async execute(command: VerifyUserCommand): Promise<void> {
-    const id = UniqueId.create(command.verificationCode);
-    const verificationCode = VerificationCode.create(id);
+    const verificationCodeId = VerificationCodeId.create(
+      command.verificationCode,
+    );
+    const verificationCode = VerificationCode.create(verificationCodeId);
 
     // Get user by verification code
     const user = await this.userRepository.getOneByVerificationCode(

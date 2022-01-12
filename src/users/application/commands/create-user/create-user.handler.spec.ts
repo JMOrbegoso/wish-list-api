@@ -2,7 +2,6 @@ import { BadRequestException } from '@nestjs/common';
 import { MockedObject } from 'ts-jest/dist/utils/testing';
 import { CreateUserCommand, CreateUserHandler } from '..';
 import { UnitOfWork } from '../../../../shared/domain/repositories';
-import { UniqueId } from '../../../../shared/domain/value-objects';
 import { UserRepository } from '../../../domain/repositories';
 import {
   EmailSenderService,
@@ -76,12 +75,10 @@ describe('users', () => {
               hashPassword: jest.fn().mockReturnValue('password hashed'),
             } as MockedObject<EncryptionService>;
 
-            const uniqueId = {
-              getId: 'verification-code-id',
-            } as MockedObject<UniqueId>;
+            const verificationCodeId = 'verification-code-id';
 
             const uniqueIdGeneratorService = {
-              generateId: jest.fn().mockReturnValue(uniqueId),
+              generateId: jest.fn().mockReturnValue(verificationCodeId),
             } as MockedObject<UniqueIdGeneratorService>;
 
             const emailSenderService = {
@@ -117,7 +114,7 @@ describe('users', () => {
             );
             expect(emailSenderService.send.mock.calls).toHaveLength(1);
 
-            expect(userRepository.addUser.mock.calls[0][0].id.getId).toBe(
+            expect(userRepository.addUser.mock.calls[0][0].id.value).toBe(
               command.id,
             );
             expect(userRepository.addUser.mock.calls[0][0].email.getEmail).toBe(
@@ -134,8 +131,8 @@ describe('users', () => {
               false,
             );
             expect(
-              userRepository.addUser.mock.calls[0][0].verificationCode,
-            ).toBe('verification-code-id');
+              userRepository.addUser.mock.calls[0][0].verificationCode.id.value,
+            ).toBe(verificationCodeId);
             expect(userRepository.addUser.mock.calls[0][0].isBlocked).toBe(
               false,
             );
