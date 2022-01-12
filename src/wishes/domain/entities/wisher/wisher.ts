@@ -1,16 +1,12 @@
+import { WisherId } from '..';
 import { Entity } from '../../../../shared/domain/entities';
-import { UniqueId } from '../../../../shared/domain/value-objects';
 
-export class Wisher extends Entity {
-  private constructor(id: UniqueId) {
+export class Wisher extends Entity<WisherId> {
+  private constructor(id: WisherId) {
     super(id);
   }
 
-  public static create(id: UniqueId): Wisher {
+  public static create(id: WisherId): Wisher {
     return new Wisher(id);
-  }
-
-  public get id(): UniqueId {
-    return this._id;
   }
 }

@@ -1,56 +1,45 @@
 import { MockedObject } from 'ts-jest/dist/utils/testing';
-import { Wisher } from '..';
-import { UniqueId } from '../../../../shared/domain/value-objects';
-
-const validValues = [
-  {
-    getId: 'id-0',
-    equals: jest.fn(),
-  } as MockedObject<UniqueId>,
-  {
-    getId: 'id-1',
-    equals: jest.fn(),
-  } as MockedObject<UniqueId>,
-  {
-    getId: 'id-2',
-    equals: jest.fn(),
-  } as MockedObject<UniqueId>,
-  {
-    getId: 'id-3',
-    equals: jest.fn(),
-  } as MockedObject<UniqueId>,
-];
+import { Wisher, WisherId } from '..';
+import { InvalidEntityIdError } from '../../../../shared/domain/entities';
 
 describe('wishes', () => {
   describe('domain', () => {
     describe('entities', () => {
       describe('wisher', () => {
-        test.each(validValues)(
-          'should create a Wisher with [id: %p]',
-          (uniqueId: MockedObject<UniqueId>) => {
-            // Arrange
+        it('create a Wisher with invalid id should throw error', () => {
+          // Arrange
 
-            // Act
-            const wisher = Wisher.create(uniqueId);
+          // Act
 
-            // Assert
-            expect(wisher.id.getId).toBe(uniqueId.getId);
-          },
-        );
+          // Assert
+          expect(() => Wisher.create(null)).toThrowError(InvalidEntityIdError);
+        });
 
-        test.each(validValues)(
-          'comparing two entities should call "equals" method from UniqueId',
-          (uniqueId: MockedObject<UniqueId>) => {
-            // Arrange
-            const wisher = Wisher.create(uniqueId);
+        it('should create a Wisher', () => {
+          // Arrange
+          const wisherId = { value: 'id-0' } as MockedObject<WisherId>;
 
-            // Act
-            wisher.equals(wisher);
+          // Act
+          const wisher = Wisher.create(wisherId);
 
-            // Assert
-            expect(uniqueId.equals.mock.calls).toHaveLength(1);
-          },
-        );
+          // Assert
+          expect(wisher.id.value).toBe(wisherId.value);
+        });
+
+        it('comparing two entities should call "equals" method from WisherId', () => {
+          // Arrange
+          const wisherId = {
+            value: 'id-0',
+            equals: jest.fn(),
+          } as MockedObject<WisherId>;
+          const wisher = Wisher.create(wisherId);
+
+          // Act
+          wisher.equals(wisher);
+
+          // Assert
+          expect(wisherId.equals.mock.calls).toHaveLength(1);
+        });
       });
     });
   });
