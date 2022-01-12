@@ -1,116 +1,95 @@
 import { MockedObject } from 'ts-jest/dist/utils/testing';
-import { InvalidUniqueIdError, UniqueId } from '../value-objects';
 import { Entity } from './entity';
-
-class Product extends Entity {
-  public price: number;
-
-  private constructor(id: UniqueId, price: number) {
-    super(id);
-
-    this.price = price;
-  }
-
-  static create(id: UniqueId, price: number): Product {
-    return new Product(id, price);
-  }
-
-  public get id(): UniqueId {
-    return this._id;
-  }
-}
-
-const validValues = [
-  [
-    {
-      getId: 'id-0',
-      equals: jest.fn(),
-    } as MockedObject<UniqueId>,
-    0,
-  ],
-  [
-    {
-      getId: 'id-1',
-      equals: jest.fn(),
-    } as MockedObject<UniqueId>,
-    10,
-  ],
-  [
-    {
-      getId: 'id-2',
-      equals: jest.fn(),
-    } as MockedObject<UniqueId>,
-    20,
-  ],
-  [
-    {
-      getId: 'id-3',
-      equals: jest.fn(),
-    } as MockedObject<UniqueId>,
-    30,
-  ],
-];
+import { EntityId, InvalidEntityIdError } from '.';
 
 describe('shared', () => {
   describe('domain', () => {
     describe('entities', () => {
       describe('entity', () => {
-        test.each(validValues)(
-          'create a Product with id null should throw error',
-          (uniqueId: MockedObject<UniqueId>, price: number) => {
-            // Arrange
+        class ProductId extends EntityId {
+          protected readonly entityIdType = 'ProductId';
 
-            // Act
+          private constructor(id: string) {
+            super(id);
+          }
 
-            // Assert
-            expect(() => Product.create(null, price)).toThrowError(
-              InvalidUniqueIdError,
-            );
-          },
-        );
+          static create(id: string): ProductId {
+            return new ProductId(id);
+          }
+        }
 
-        test.each(validValues)(
-          'should create a Product with [id: %p] and [price: %p]',
-          (uniqueId: MockedObject<UniqueId>, price: number) => {
-            // Arrange
+        class Product extends Entity<ProductId> {
+          public price: number;
 
-            // Act
-            const product = Product.create(uniqueId, price);
+          private constructor(id: ProductId, price: number) {
+            super(id);
 
-            // Assert
-            expect(product.id.getId).toBe(uniqueId.getId);
-            expect(product.price).toBe(price);
-          },
-        );
+            this.price = price;
+          }
 
-        test.each(validValues)(
-          'comparing an entity with null should return false',
-          (uniqueId: MockedObject<UniqueId>, price: number) => {
-            // Arrange
-            const product = Product.create(uniqueId, price);
+          static create(id: ProductId, price: number): Product {
+            return new Product(id, price);
+          }
+        }
 
-            // Act
-            const result = product.equals(null);
+        it('create a Product with id null should throw error', () => {
+          // Arrange
+          const price = 100;
 
-            // Assert
-            expect(result).toBeFalsy();
-            expect(uniqueId.equals.mock.calls).toHaveLength(0);
-          },
-        );
+          // Act
 
-        test.each(validValues)(
-          'comparing two entities should call "equals" method from UniqueId',
-          (uniqueId: MockedObject<UniqueId>, price: number) => {
-            // Arrange
-            const product = Product.create(uniqueId, price);
+          // Assert
+          expect(() => Product.create(null, price)).toThrowError(
+            InvalidEntityIdError,
+          );
+        });
 
-            // Act
-            product.equals(product);
+        it('should create a Product', () => {
+          // Arrange
+          const productId = { value: 'id-0' } as MockedObject<ProductId>;
+          const price = 100;
 
-            // Assert
-            expect(uniqueId.equals.mock.calls).toHaveLength(1);
-          },
-        );
+          // Act
+          const product = Product.create(productId, price);
+
+          // Assert
+          expect(product.id.value).toBe(productId.value);
+          expect(product.price).toBe(price);
+        });
+
+        it('comparing an entity with null should return false without call the "equals" method from ProductId', () => {
+          // Arrange
+          const productId = {
+            value: 'id-0',
+            equals: jest.fn(),
+          } as MockedObject<ProductId>;
+          const price = 100;
+          const product = Product.create(productId, price);
+
+          // Act
+          const result = product.equals(null);
+
+          // Assert
+          expect(result).toBe(false);
+          expect(productId.equals.mock.calls).toHaveLength(0);
+        });
+
+        it('comparing two entities should call "equals" method from ProductId', () => {
+          // Arrange
+          const productId = {
+            value: 'id-0',
+            equals: jest.fn().mockReturnValue(true),
+          } as MockedObject<ProductId>;
+          const price = 100;
+          const product = Product.create(productId, price);
+
+          // Act
+          const result = product.equals(product);
+
+          // Assert
+          expect(result).toBe(true);
+          expect(productId.equals.mock.calls).toHaveLength(1);
+        });
       });
     });
   });

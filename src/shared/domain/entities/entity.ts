@@ -1,15 +1,19 @@
-import { InvalidUniqueIdError, UniqueId } from '../value-objects';
+import { EntityId, InvalidEntityIdError } from '.';
 
-export abstract class Entity {
-  protected readonly _id: UniqueId;
+export abstract class Entity<T extends EntityId> {
+  protected readonly _id: T;
 
-  protected constructor(id: UniqueId) {
-    if (!id) throw new InvalidUniqueIdError();
+  public get id(): T {
+    return this._id;
+  }
+
+  protected constructor(id: T) {
+    if (!id) throw new InvalidEntityIdError();
 
     this._id = id;
   }
 
-  public equals(other?: Entity): boolean {
+  public equals(other?: Entity<T>): boolean {
     if (other === null || other === undefined) {
       return false;
     }
