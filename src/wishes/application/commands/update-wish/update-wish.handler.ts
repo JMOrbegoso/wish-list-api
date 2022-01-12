@@ -4,9 +4,9 @@ import { UpdateWishCommand } from '..';
 import { UnitOfWork } from '../../../../shared/domain/repositories';
 import {
   MillisecondsDate,
-  UniqueId,
   WebUrl,
 } from '../../../../shared/domain/value-objects';
+import { WishId } from '../../../domain/entities';
 import { WishRepository } from '../../../domain/repositories';
 import {
   CategoryName,
@@ -24,7 +24,7 @@ export class UpdateWishHandler implements ICommandHandler<UpdateWishCommand> {
 
   async execute(command: UpdateWishCommand): Promise<void> {
     // Generate the properties of the new Wish
-    const id = UniqueId.create(command.id);
+    const wishId = WishId.create(command.id);
     const title = WishTitle.create(command.title);
     const description = WishDescription.create(command.description);
     const privacyLevel = WishPrivacyLevel.create(command.privacyLevel);
@@ -41,7 +41,7 @@ export class UpdateWishHandler implements ICommandHandler<UpdateWishCommand> {
       : null;
 
     // Get the wish  by id
-    const wish = await this.wishRepository.getOneById(id);
+    const wish = await this.wishRepository.getOneById(wishId);
     if (!wish) throw new NotFoundException();
 
     // Check if the wish is deleted

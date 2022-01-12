@@ -161,10 +161,10 @@ describe('wishes', () => {
             expect(wishRepository.addWisher.mock.calls).toHaveLength(1);
             expect(wishRepository.getWisherById.mock.calls).toHaveLength(1);
             expect(unitOfWork.commitChanges.mock.calls).toHaveLength(1);
-            expect(wishRepository.addWisher.mock.calls[0][0].id.getId).toBe(
+            expect(wishRepository.addWisher.mock.calls[0][0].id.value).toBe(
               command.wisherId,
             );
-            expect(wishRepository.addWish.mock.calls[0][0].id.getId).toBe(
+            expect(wishRepository.addWish.mock.calls[0][0].id.value).toBe(
               command.id,
             );
           },
@@ -201,7 +201,7 @@ describe('wishes', () => {
             expect(wishRepository.addWish.mock.calls).toHaveLength(1);
             expect(wishRepository.getWisherById.mock.calls).toHaveLength(1);
             expect(unitOfWork.commitChanges.mock.calls).toHaveLength(1);
-            expect(wishRepository.addWish.mock.calls[0][0].id.getId).toBe(
+            expect(wishRepository.addWish.mock.calls[0][0].id.value).toBe(
               command.id,
             );
           },

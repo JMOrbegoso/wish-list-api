@@ -2,7 +2,7 @@ import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { DeleteWishCommand } from '..';
 import { UnitOfWork } from '../../../../shared/domain/repositories';
-import { UniqueId } from '../../../../shared/domain/value-objects';
+import { WishId } from '../../../domain/entities';
 import { WishRepository } from '../../../domain/repositories';
 
 @CommandHandler(DeleteWishCommand)
@@ -14,10 +14,10 @@ export class DeleteWishHandler implements ICommandHandler<DeleteWishCommand> {
 
   async execute(command: DeleteWishCommand): Promise<void> {
     // Generate the properties of the new Wish
-    const id = UniqueId.create(command.id);
+    const wishId = WishId.create(command.id);
 
     // Get the wish  by id
-    const wish = await this.wishRepository.getOneById(id);
+    const wish = await this.wishRepository.getOneById(wishId);
     if (!wish) throw new NotFoundException();
 
     // Check if the wish is deleted

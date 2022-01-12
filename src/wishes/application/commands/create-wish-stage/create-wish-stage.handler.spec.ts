@@ -90,7 +90,7 @@ describe('wishes', () => {
             // Arrange
             const wish = {
               id: {
-                getId: 'id',
+                value: 'id',
               },
               isDeleted: true,
             } as MockedObject<Wish>;
@@ -122,7 +122,7 @@ describe('wishes', () => {
             // Arrange
             const wish = {
               id: {
-                getId: 'id',
+                value: 'id',
               },
               isDeleted: false,
               stages: { length: Wish.MaxStages },
@@ -155,7 +155,7 @@ describe('wishes', () => {
             // Arrange
             const wish = {
               id: {
-                getId: command.wishId,
+                value: command.wishId,
               },
               isDeleted: false,
               stages: { length: 1 },
@@ -184,14 +184,14 @@ describe('wishes', () => {
             // Assert
             expect(wish.addStage.mock.calls).toHaveLength(1);
             expect(wishRepository.updateWish.mock.calls).toHaveLength(1);
-            expect(wishRepository.updateWish.mock.calls[0][0].id.getId).toBe(
-              wish.id.getId,
+            expect(wishRepository.updateWish.mock.calls[0][0].id.value).toBe(
+              wish.id.value,
             );
             expect(wishRepository.addWishStage.mock.calls).toHaveLength(1);
-            expect(wishRepository.addWishStage.mock.calls[0][0].id.getId).toBe(
+            expect(wishRepository.addWishStage.mock.calls[0][0].id.value).toBe(
               command.id,
             );
-            expect(wishRepository.addWishStage.mock.calls[0][1].getId).toBe(
+            expect(wishRepository.addWishStage.mock.calls[0][1].value).toBe(
               command.wishId,
             );
             expect(unitOfWork.commitChanges.mock.calls).toHaveLength(1);
