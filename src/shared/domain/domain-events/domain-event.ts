@@ -1,4 +1,5 @@
-import { MillisecondsDate, UniqueId } from '../value-objects';
+import { EntityId } from '../entities';
+import { MillisecondsDate } from '../value-objects';
 
 export abstract class DomainEvent {
   public readonly createdAt: MillisecondsDate;
@@ -7,5 +8,5 @@ export abstract class DomainEvent {
     this.createdAt = MillisecondsDate.create();
   }
 
-  abstract getAggregateRootId(): UniqueId;
+  abstract getAggregateRootId(): EntityId;
 }
