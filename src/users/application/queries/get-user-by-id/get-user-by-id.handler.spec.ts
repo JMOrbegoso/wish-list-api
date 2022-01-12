@@ -39,7 +39,7 @@ describe('users', () => {
             // Arrange
             const user = {
               id: {
-                getId: 'id-0',
+                value: 'id-0',
               },
               email: {
                 getEmail: 'email0@email.com',
@@ -88,7 +88,7 @@ describe('users', () => {
             const outputUserDto = await handler.execute(query);
 
             // Assert
-            expect(outputUserDto.id).toBe(user.id.getId);
+            expect(outputUserDto.id).toBe(user.id.value);
           },
         );
       });
