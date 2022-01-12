@@ -40,7 +40,7 @@ describe('wishes', () => {
             // Arrange
             const wish = {
               id: {
-                getId: 'id 0',
+                value: 'id 0',
               },
               title: {
                 getTitle: 'title 0',
@@ -59,7 +59,7 @@ describe('wishes', () => {
               },
               wisher: {
                 id: {
-                  getId: 'wisher id 0',
+                  value: 'wisher id 0',
                 },
               },
               urls: [],
@@ -84,7 +84,7 @@ describe('wishes', () => {
             const outputWish = await handler.execute(query);
 
             // Assert
-            expect(outputWish.id).toBe(wish.id.getId);
+            expect(outputWish.id).toBe(wish.id.value);
           },
         );
       });
