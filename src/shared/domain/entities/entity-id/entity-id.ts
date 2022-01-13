@@ -20,9 +20,9 @@ export abstract class EntityId {
   }
 
   public equals(other?: EntityId): boolean {
-    if (!other) return false;
-
-    if (this.constructor.name !== other.constructor.name) return false;
+    if (other === null || other === undefined) {
+      return false;
+    }
 
     return this.id === other.id;
   }

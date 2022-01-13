@@ -16,18 +16,6 @@ describe('shared', () => {
           }
         }
 
-        class OrderId extends EntityId {
-          protected readonly entityIdType: string = 'OrderId';
-
-          private constructor(id: string) {
-            super(id);
-          }
-
-          static create(id: string): OrderId {
-            return new OrderId(id);
-          }
-        }
-
         it('create a ProductId with id null should throw error', () => {
           // Arrange
 
@@ -60,19 +48,7 @@ describe('shared', () => {
           expect(result).toBe(false);
         });
 
-        it('comparing two entity ids of different classes should return false', () => {
-          // Arrange
-          const productId_1 = ProductId.create('id-1');
-          const orderId_1 = OrderId.create('id-1');
-
-          // Act
-          const result = productId_1.equals(orderId_1);
-
-          // Assert
-          expect(result).toBe(false);
-        });
-
-        it('comparing two different entity ids of the same class should return false', () => {
+        it('comparing two different entity ids should return false', () => {
           // Arrange
           const productId_1 = ProductId.create('id-1');
           const productId_2 = ProductId.create('id-2');
@@ -84,7 +60,7 @@ describe('shared', () => {
           expect(result).toBe(false);
         });
 
-        it('comparing two equals entity ids of the same class should return true', () => {
+        it('comparing two equals entity ids should return true', () => {
           // Arrange
           const productId_1 = ProductId.create('id-1');
           const productId_2 = ProductId.create('id-1');
