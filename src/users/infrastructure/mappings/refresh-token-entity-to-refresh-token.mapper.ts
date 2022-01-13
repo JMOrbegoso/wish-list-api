@@ -1,15 +1,12 @@
-import {
-  MillisecondsDate,
-  UniqueId,
-} from '../../../shared/domain/value-objects';
-import { RefreshToken } from '../../domain/entities';
+import { MillisecondsDate } from '../../../shared/domain/value-objects';
+import { RefreshToken, RefreshTokenId } from '../../domain/entities';
 import { IpAddress, SecondsDuration } from '../../domain/value-objects';
 import { RefreshTokenEntity } from '../persistence/entities';
 
 export function refreshTokenEntityToRefreshToken(
   refreshTokenEntity: RefreshTokenEntity,
 ): RefreshToken {
-  const id = UniqueId.create(refreshTokenEntity.id);
+  const refreshTokenId = RefreshTokenId.create(refreshTokenEntity.id);
   const createdAt = MillisecondsDate.createFromDate(
     refreshTokenEntity.createdAt,
   );
@@ -18,20 +15,20 @@ export function refreshTokenEntityToRefreshToken(
   const replacedAt = refreshTokenEntity.replacedAt
     ? MillisecondsDate.createFromDate(refreshTokenEntity.replacedAt)
     : null;
-  const replacedBy = refreshTokenEntity.replacedBy
-    ? UniqueId.create(refreshTokenEntity.replacedBy)
+  const replacedByRefreshTokenId = refreshTokenEntity.replacedBy
+    ? RefreshTokenId.create(refreshTokenEntity.replacedBy)
     : null;
   const revokedAt = refreshTokenEntity.revokedAt
     ? MillisecondsDate.createFromDate(refreshTokenEntity.revokedAt)
     : null;
 
   return RefreshToken.create(
-    id,
+    refreshTokenId,
     ipAddress,
     createdAt,
     secondsDuration,
     replacedAt,
-    replacedBy,
+    replacedByRefreshTokenId,
     revokedAt,
   );
 }
