@@ -1,6 +1,6 @@
 import { MockedObject } from 'ts-jest/dist/utils/testing';
-import { DomainEvent } from '../domain-events';
-import { AggregateRoot, EntityId } from '.';
+import { AggregateRoot, EntityId } from '..';
+import { DomainEvent } from '../../domain-events';
 
 describe('shared', () => {
   describe('domain', () => {

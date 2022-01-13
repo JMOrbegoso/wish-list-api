@@ -1,4 +1,4 @@
-import { InvalidEntityIdError } from '.';
+import { InvalidEntityIdError } from '..';
 
 export abstract class EntityId {
   /**

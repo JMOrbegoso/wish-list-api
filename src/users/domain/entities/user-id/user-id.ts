@@ -1,4 +1,4 @@
-import { EntityId } from '../../../../shared/domain/entities/entity-id';
+import { EntityId } from '../../../../shared/domain/entities';
 
 export class UserId extends EntityId {
   protected readonly entityIdType = 'UserId';

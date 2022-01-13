@@ -1,4 +1,4 @@
-import { EntityId, InvalidEntityIdError } from '.';
+import { EntityId, InvalidEntityIdError } from '..';
 
 export abstract class Entity<T extends EntityId> {
   protected readonly _id: T;

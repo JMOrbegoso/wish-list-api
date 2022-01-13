@@ -1,6 +1,6 @@
-export * from './entity-id';
-export * from './invalid-unique-id.error';
+export * from './entity-id/entity-id';
+export * from './entity-id/invalid-unique-id.error';
 
-export * from './entity';
+export * from './entity/entity';
 
-export * from './aggregate-root';
+export * from './aggregate-root/aggregate-root';

@@ -1,5 +1,5 @@
 import { MockedObject } from 'ts-jest/dist/utils/testing';
-import { Entity, EntityId, InvalidEntityIdError } from '.';
+import { Entity, EntityId, InvalidEntityIdError } from '..';
 
 describe('shared', () => {
   describe('domain', () => {

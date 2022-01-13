@@ -1,4 +1,4 @@
-import { EntityId, InvalidEntityIdError } from '.';
+import { EntityId, InvalidEntityIdError } from '..';
 
 describe('shared', () => {
   describe('domain', () => {
