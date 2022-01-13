@@ -837,9 +837,8 @@ describe('UsersController (e2e)', () => {
 
       describe(`should return 404`, () => {
         it(`user not found`, () => {
-          return request(app.getHttpServer())
-            .get('/users/61cce183b8917063ed614a0b')
-            .expect(404);
+          const id = new ObjectId().toString();
+          return request(app.getHttpServer()).get(`/users/${id}`).expect(404);
         });
       });
 
