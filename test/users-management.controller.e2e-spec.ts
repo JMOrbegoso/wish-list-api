@@ -94,8 +94,9 @@ describe('UsersManagementController (e2e)', () => {
 
       describe(`should return 404`, () => {
         it(`user not found`, () => {
+          const id = new ObjectId().toString();
           return request(app.getHttpServer())
-            .delete(`/users/61cce183b8917063ed614a0b`)
+            .delete(`/users/${id}`)
             .auth(accessTokenAdminUser, { type: 'bearer' })
             .expect(404);
         });
@@ -158,8 +159,9 @@ describe('UsersManagementController (e2e)', () => {
 
       describe(`should return 404`, () => {
         it(`user not found`, () => {
+          const id = new ObjectId().toString();
           return request(app.getHttpServer())
-            .patch(`/users/undelete/61cce183b8917063ed614a0b`)
+            .patch(`/users/undelete/${id}`)
             .auth(accessTokenAdminUser, { type: 'bearer' })
             .expect(404);
         });
@@ -222,8 +224,9 @@ describe('UsersManagementController (e2e)', () => {
 
       describe(`should return 404`, () => {
         it(`user not found`, () => {
+          const id = new ObjectId().toString();
           return request(app.getHttpServer())
-            .patch(`/users/block/61cce183b8917063ed614a0b`)
+            .patch(`/users/block/${id}`)
             .auth(accessTokenAdminUser, { type: 'bearer' })
             .expect(404);
         });
@@ -286,8 +289,9 @@ describe('UsersManagementController (e2e)', () => {
 
       describe(`should return 404`, () => {
         it(`user not found`, () => {
+          const id = new ObjectId().toString();
           return request(app.getHttpServer())
-            .patch(`/users/unblock/61cce183b8917063ed614a0b`)
+            .patch(`/users/unblock/${id}`)
             .auth(accessTokenAdminUser, { type: 'bearer' })
             .expect(404);
         });
