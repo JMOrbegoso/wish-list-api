@@ -6,8 +6,13 @@ import {
 } from '@mikro-orm/core';
 import { Query } from '@mikro-orm/core/typings';
 import { ObjectId } from '@mikro-orm/mongodb';
-import { UniqueId } from '../../../../shared/domain/value-objects';
-import { RefreshToken, User, VerificationCode } from '../../../domain/entities';
+import {
+  RefreshToken,
+  RefreshTokenId,
+  User,
+  UserId,
+  VerificationCode,
+} from '../../../domain/entities';
 import { UserRepository } from '../../../domain/repositories';
 import { Email, IpAddress, Username } from '../../../domain/value-objects';
 import {
@@ -26,13 +31,13 @@ export class UserRepositoryMongoDb
   }
 
   async userExists(
-    id: UniqueId,
+    id: UserId,
     email: Email,
     username: Username,
   ): Promise<boolean> {
     const queries: Query<UserEntity>[] = [];
 
-    if (id) queries.push({ id: id.getId });
+    if (id) queries.push({ _id: new ObjectId(id.value) });
     if (email) queries.push({ normalizedEmail: email.getNormalizedEmail });
     if (username)
       queries.push({ normalizedUsername: username.getNormalizedUsername });
@@ -44,8 +49,9 @@ export class UserRepositoryMongoDb
     return count > 0;
   }
 
-  async getOneById(id: UniqueId): Promise<User> {
-    const userEntity = await this.findOne(id.getId);
+  async getOneById(id: UserId): Promise<User> {
+    const userObjectId = new ObjectId(id.value);
+    const userEntity = await this.findOne(userObjectId);
     if (!userEntity) return null;
     const user = userEntityToUser(userEntity);
     return user;
@@ -72,18 +78,20 @@ export class UserRepositoryMongoDb
   async getOneByVerificationCode(
     verificationCode: VerificationCode,
   ): Promise<User> {
+    const verificationCodeObjectId = new ObjectId(verificationCode.id.value);
     const userEntity = await this.findOne({
-      verificationCode: verificationCode.id.getId,
+      verificationCode: verificationCodeObjectId.toString(),
     });
     if (!userEntity) return null;
     const user = userEntityToUser(userEntity);
     return user;
   }
 
-  async getOneByRefreshTokenId(refreshTokenId: UniqueId): Promise<User> {
+  async getOneByRefreshTokenId(refreshTokenId: RefreshTokenId): Promise<User> {
+    const refreshTokenIdObjectId = new ObjectId(refreshTokenId.value);
     const refreshTokenEntity = await this.orm.em.findOne(
       RefreshTokenEntity,
-      refreshTokenId.getId,
+      refreshTokenIdObjectId,
       { populate: true },
     );
 
@@ -99,8 +107,9 @@ export class UserRepositoryMongoDb
     return users;
   }
 
-  async getAllRefreshTokensByUserId(id: UniqueId): Promise<RefreshToken[]> {
-    const userEntity = await this.findOne({ id: id.getId }, { populate: true });
+  async getAllRefreshTokensByUserId(id: UserId): Promise<RefreshToken[]> {
+    const userObjectId = new ObjectId(id.value);
+    const userEntity = await this.findOne(userObjectId, { populate: true });
     if (!userEntity) return null;
 
     const refreshTokens = userEntity.refreshTokens
@@ -124,7 +133,7 @@ export class UserRepositoryMongoDb
 
   addUser(user: User): void {
     const newValues: EntityData<UserEntity> = {
-      id: user.id.getId,
+      id: user.id.value,
       email: user.email.getEmail,
       normalizedEmail: user.email.getNormalizedEmail,
       username: user.username.getUsername,
@@ -148,11 +157,12 @@ export class UserRepositoryMongoDb
   }
 
   updateUser(user: User): void {
-    const userEntityFromDb = this.getReference(user.id.getId);
+    const userObjectId = new ObjectId(user.id.value);
+    const userEntityFromDb = this.getReference(userObjectId);
     const newValues: EntityData<UserEntity> = {
       passwordHash: user.passwordHash.getPasswordHash,
       isVerified: user.isVerified,
-      verificationCode: user.verificationCode,
+      verificationCode: user.verificationCode.id.value,
       isBlocked: user.isBlocked,
       firstName: user.firstName.getFirstName,
       lastName: user.lastName.getLastName,
@@ -166,15 +176,16 @@ export class UserRepositoryMongoDb
     this.orm.em.assign(userEntityFromDb, newValues);
   }
 
-  addRefreshToken(refreshToken: RefreshToken, userId: UniqueId): void {
+  addRefreshToken(refreshToken: RefreshToken, userId: UserId): void {
+    const userObjectId = new ObjectId(userId.value);
     const newValues: EntityData<RefreshTokenEntity> = {
-      id: refreshToken.id.getId,
-      user: new ObjectId(userId.getId),
+      id: refreshToken.id.value,
+      user: userObjectId,
       createdAt: refreshToken.createdAt.getDate,
       duration: refreshToken.duration,
       ipAddress: refreshToken.ipAddress,
       replacedAt: refreshToken.replacedAt?.getDate ?? null,
-      replacedBy: refreshToken.replacedBy?.getId ?? null,
+      replacedBy: refreshToken.replacedBy?.value ?? null,
       revokedAt: refreshToken.revokedAt?.getDate ?? null,
     };
     const newRefreshTokenEntity = this.orm.em.create(
@@ -185,13 +196,14 @@ export class UserRepositoryMongoDb
   }
 
   updateRefreshToken(refreshToken: RefreshToken): void {
+    const refreshTokenObjectId = new ObjectId(refreshToken.id.value);
     const refreshTokenEntityFromDb = this.orm.em.getReference(
       RefreshTokenEntity,
-      refreshToken.id.getId,
+      refreshTokenObjectId,
     );
     const newValues: EntityData<RefreshTokenEntity> = {
       replacedAt: refreshToken.replacedAt?.getDate ?? null,
-      replacedBy: refreshToken.replacedBy?.getId ?? null,
+      replacedBy: refreshToken.replacedBy?.value ?? null,
       revokedAt: refreshToken.revokedAt?.getDate ?? null,
     };
     this.orm.em.assign(refreshTokenEntityFromDb, newValues);
