@@ -2,57 +2,57 @@ import { MockedObject } from 'ts-jest/dist/utils/testing';
 import { RefreshToken } from '../../domain/entities';
 import { refreshTokenToRefreshTokenEntity } from '.';
 
-const validValues = [
-  {
-    id: {
-      getId: 'id-0',
-    },
-    createdAt: { getDate: new Date(2000, 5, 5) },
-    duration: 100,
-    ipAddress: '192.168.1.1',
-    replacedAt: { getDate: new Date(2000, 5, 5) },
-    replacedBy: { getId: 'user-id-1' },
-    revokedAt: { getDate: new Date(2000, 5, 5) },
-  } as MockedObject<RefreshToken>,
-  {
-    id: {
-      getId: 'id-0',
-    },
-    createdAt: { getDate: new Date(2000, 5, 5) },
-    duration: 100,
-    ipAddress: '192.168.1.1',
-    replacedAt: null,
-    replacedBy: null,
-    revokedAt: { getDate: new Date(2000, 5, 5) },
-  } as MockedObject<RefreshToken>,
-  {
-    id: {
-      getId: 'id-0',
-    },
-    createdAt: { getDate: new Date(2000, 5, 5) },
-    duration: 100,
-    ipAddress: '192.168.1.1',
-    replacedAt: { getDate: new Date(2000, 5, 5) },
-    replacedBy: { getId: 'user-id-1' },
-    revokedAt: null,
-  } as MockedObject<RefreshToken>,
-  {
-    id: {
-      getId: 'id-0',
-    },
-    createdAt: { getDate: new Date(2000, 5, 5) },
-    duration: 100,
-    ipAddress: '192.168.1.1',
-    replacedAt: null,
-    replacedBy: null,
-    revokedAt: null,
-  } as MockedObject<RefreshToken>,
-];
-
 describe('users', () => {
   describe('infrastructure', () => {
     describe('mappings', () => {
       describe('RefreshToken to RefreshTokenEntity', () => {
+        const validValues = [
+          {
+            id: {
+              value: 'id-0',
+            },
+            createdAt: { getDate: new Date(2000, 5, 5) },
+            duration: 100,
+            ipAddress: '192.168.1.1',
+            replacedAt: { getDate: new Date(2000, 5, 5) },
+            replacedBy: { value: 'user-id-1' },
+            revokedAt: { getDate: new Date(2000, 5, 5) },
+          } as MockedObject<RefreshToken>,
+          {
+            id: {
+              value: 'id-0',
+            },
+            createdAt: { getDate: new Date(2000, 5, 5) },
+            duration: 100,
+            ipAddress: '192.168.1.1',
+            replacedAt: null,
+            replacedBy: null,
+            revokedAt: { getDate: new Date(2000, 5, 5) },
+          } as MockedObject<RefreshToken>,
+          {
+            id: {
+              value: 'id-0',
+            },
+            createdAt: { getDate: new Date(2000, 5, 5) },
+            duration: 100,
+            ipAddress: '192.168.1.1',
+            replacedAt: { getDate: new Date(2000, 5, 5) },
+            replacedBy: { value: 'user-id-1' },
+            revokedAt: null,
+          } as MockedObject<RefreshToken>,
+          {
+            id: {
+              value: 'id-0',
+            },
+            createdAt: { getDate: new Date(2000, 5, 5) },
+            duration: 100,
+            ipAddress: '192.168.1.1',
+            replacedAt: null,
+            replacedBy: null,
+            revokedAt: null,
+          } as MockedObject<RefreshToken>,
+        ];
+
         test.each(validValues)(
           'should map RefreshToken to RefreshTokenEntity keeping all the property values',
           (refreshToken: RefreshToken) => {
@@ -63,8 +63,8 @@ describe('users', () => {
               refreshTokenToRefreshTokenEntity(refreshToken);
 
             // Assert
-            expect(refreshTokenEntity.id).toBe(refreshToken.id.getId);
-            expect(refreshTokenEntity.id).toBe(refreshToken.id.getId);
+            expect(refreshTokenEntity.id).toBe(refreshToken.id.value);
+            expect(refreshTokenEntity.id).toBe(refreshToken.id.value);
             expect(refreshTokenEntity.createdAt).toBe(
               refreshToken.createdAt.getDate,
             );
@@ -79,7 +79,7 @@ describe('users', () => {
 
             if (refreshToken.replacedBy)
               expect(refreshTokenEntity.replacedBy).toBe(
-                refreshToken.replacedBy.getId,
+                refreshToken.replacedBy.value,
               );
             else expect(refreshTokenEntity.replacedBy).toBeNull();
 

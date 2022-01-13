@@ -1,15 +1,13 @@
 import { ObjectId } from '@mikro-orm/mongodb';
 import { Injectable } from '@nestjs/common';
-import { UniqueId } from '../../../shared/domain/value-objects';
 import { UniqueIdGeneratorService } from '../../application/services/unique-id-generator.service';
 
 @Injectable()
 export class UniqueIdGeneratorServiceMongoDb
   implements UniqueIdGeneratorService
 {
-  public generateId(): UniqueId {
+  public generateId(): string {
     const objectId = new ObjectId();
-    const id = objectId.toString();
-    return UniqueId.create(id);
+    return objectId.toString();
   }
 }

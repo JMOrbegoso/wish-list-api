@@ -2,7 +2,7 @@ import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { DeleteWishStageCommand } from '..';
 import { UnitOfWork } from '../../../../shared/domain/repositories';
-import { UniqueId } from '../../../../shared/domain/value-objects';
+import { WishStageId } from '../../../../wishes/domain/entities';
 import { WishRepository } from '../../../domain/repositories';
 
 @CommandHandler(DeleteWishStageCommand)
@@ -16,14 +16,14 @@ export class DeleteWishStageHandler
 
   async execute(command: DeleteWishStageCommand): Promise<void> {
     // Generate the properties of the wish stage
-    const id = UniqueId.create(command.id);
+    const wishStageId = WishStageId.create(command.id);
 
     // Get the wish
-    const wish = await this.wishRepository.getWishByWishStageId(id);
+    const wish = await this.wishRepository.getWishByWishStageId(wishStageId);
     if (!wish) throw new NotFoundException();
 
     // Get the wish stage
-    const wishStage = wish.stages.find((stage) => stage.id.equals(id));
+    const wishStage = wish.stages.find((stage) => stage.id.equals(wishStageId));
     if (!wishStage) throw new NotFoundException();
 
     // Check if the wish is deleted

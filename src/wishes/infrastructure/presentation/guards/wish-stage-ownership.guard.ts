@@ -5,11 +5,11 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { UniqueId } from '../../../../shared/domain/value-objects';
 import {
   Ownership,
   RoleOwnership,
 } from '../../../../shared/infrastructure/presentation/decorators';
+import { WishStageId } from '../../../domain/entities';
 import { WishRepository } from '../../../domain/repositories';
 
 export const WishStageOwnershipKey = 'WishStageOwnership';
@@ -41,10 +41,10 @@ export class WishStageOwnershipGuard implements CanActivate {
         request[wishStageOwnership.idProperty.target][
           wishStageOwnership.idProperty.name
         ];
-      const uniqueId = UniqueId.create(id);
-      const wish = await this.wishRepository.getWishByWishStageId(uniqueId);
+      const wishStageId = WishStageId.create(id);
+      const wish = await this.wishRepository.getWishByWishStageId(wishStageId);
       if (!wish) throw new NotFoundException();
-      if (request.user.id == wish.wisher.id.getId) return true;
+      if (request.user.id == wish.wisher.id.value) return true;
     }
 
     return false;

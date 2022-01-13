@@ -8,14 +8,14 @@ export function userToUserEntity(
 ): UserEntity {
   const userEntity = new UserEntity();
 
-  userEntity.id = user.id.getId;
+  userEntity.id = user.id.value.toString();
   userEntity.email = user.email.getEmail;
   userEntity.normalizedEmail = user.email.getNormalizedEmail;
   userEntity.username = user.username.getUsername;
   userEntity.normalizedUsername = user.username.getNormalizedUsername;
   userEntity.passwordHash = user.passwordHash.getPasswordHash;
   userEntity.isVerified = user.isVerified;
-  userEntity.verificationCode = user.verificationCode;
+  userEntity.verificationCode = user.verificationCode.id.value.toString();
   userEntity.isBlocked = user.isBlocked;
   userEntity.firstName = user.firstName.getFirstName;
   userEntity.lastName = user.lastName.getLastName;

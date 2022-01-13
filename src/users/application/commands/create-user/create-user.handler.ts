@@ -2,11 +2,13 @@ import { BadRequestException } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { CreateUserCommand } from '..';
 import { UnitOfWork } from '../../../../shared/domain/repositories';
+import { MillisecondsDate } from '../../../../shared/domain/value-objects';
 import {
-  MillisecondsDate,
-  UniqueId,
-} from '../../../../shared/domain/value-objects';
-import { User, VerificationCode } from '../../../domain/entities';
+  User,
+  UserId,
+  VerificationCode,
+  VerificationCodeId,
+} from '../../../domain/entities';
 import { UserRepository } from '../../../domain/repositories';
 import {
   Biography,
@@ -37,13 +39,13 @@ export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
 
   async execute(command: CreateUserCommand): Promise<void> {
     // Generate the email and username properties of the new user first to validate them
-    const id = UniqueId.create(command.id);
+    const userId = UserId.create(command.id);
     const email = Email.create(command.email);
     const username = Username.create(command.username);
 
     // Check if the id is in use by other user
     const userExists = await this.userRepository.userExists(
-      id,
+      userId,
       email,
       username,
     );
@@ -63,12 +65,14 @@ export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
     const roles = [Role.basic()];
 
     // Generate the verfication code
-    const verificationCodeId = this.uniqueIdGeneratorService.generateId();
+    const verificationCodeId = VerificationCodeId.create(
+      this.uniqueIdGeneratorService.generateId(),
+    );
     const verificationCode = VerificationCode.create(verificationCodeId);
 
     // Create the new user
     const user = User.create(
-      id,
+      userId,
       email,
       username,
       passwordHash,

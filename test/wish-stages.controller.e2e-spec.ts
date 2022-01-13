@@ -1058,7 +1058,7 @@ describe('WishStagesController (e2e)', () => {
 
       describe(`should return 404`, () => {
         it(`unauthenticated request`, () => {
-          const id = 'wish-stage-id';
+          const id = new ObjectId().toString();
           return request(app.getHttpServer())
             .delete(`/wish-stages/${id}`)
             .auth(accessTokenBasicUser, { type: 'bearer' })

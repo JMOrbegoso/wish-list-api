@@ -1,8 +1,7 @@
-import { WishStage, Wisher } from '..';
+import { WishId, WishStage, WishStageId, Wisher } from '..';
 import { AggregateRoot } from '../../../../shared/domain/entities';
 import {
   MillisecondsDate,
-  UniqueId,
   WebUrl,
 } from '../../../../shared/domain/value-objects';
 import {
@@ -37,7 +36,7 @@ import {
   WishIsNotDeletedError,
 } from './exceptions';
 
-export class Wish extends AggregateRoot {
+export class Wish extends AggregateRoot<WishId> {
   public static readonly MaxUrls = 5;
   public static readonly MaxImages = 5;
   public static readonly MaxCategories = 5;
@@ -58,7 +57,7 @@ export class Wish extends AggregateRoot {
   private _completedAt?: MillisecondsDate;
 
   private constructor(
-    id: UniqueId,
+    id: WishId,
     title: WishTitle,
     description: WishDescription,
     privacyLevel: WishPrivacyLevel,
@@ -122,7 +121,7 @@ export class Wish extends AggregateRoot {
   }
 
   public static create(
-    id: UniqueId,
+    id: WishId,
     title: WishTitle,
     description: WishDescription,
     privacyLevel: WishPrivacyLevel,
@@ -153,10 +152,6 @@ export class Wish extends AggregateRoot {
       startedAt,
       completedAt,
     );
-  }
-
-  public get id(): UniqueId {
-    return this._id;
   }
 
   public get title(): WishTitle {
@@ -294,7 +289,7 @@ export class Wish extends AggregateRoot {
   }
 
   public updateStage(
-    id: UniqueId,
+    id: WishStageId,
     title: WishTitle,
     description: WishDescription,
     urls: WebUrl[] = [],

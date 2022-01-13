@@ -4,10 +4,9 @@ import { CreateWishStageCommand } from '..';
 import { UnitOfWork } from '../../../../shared/domain/repositories';
 import {
   MillisecondsDate,
-  UniqueId,
   WebUrl,
 } from '../../../../shared/domain/value-objects';
-import { Wish, WishStage } from '../../../domain/entities';
+import { Wish, WishId, WishStage, WishStageId } from '../../../domain/entities';
 import { WishRepository } from '../../../domain/repositories';
 import { WishDescription, WishTitle } from '../../../domain/value-objects';
 
@@ -22,8 +21,8 @@ export class CreateWishStageHandler
 
   async execute(command: CreateWishStageCommand): Promise<void> {
     // Generate the properties of the new Wish
-    const id = UniqueId.create(command.id);
-    const wishId = UniqueId.create(command.wishId);
+    const wishStageId = WishStageId.create(command.id);
+    const wishId = WishId.create(command.wishId);
     const title = WishTitle.create(command.title);
     const description = WishDescription.create(command.description);
     const createdAt = MillisecondsDate.create();
@@ -31,7 +30,9 @@ export class CreateWishStageHandler
     const imageUrls = command.imageUrls.map((url) => WebUrl.create(url));
 
     // Check if the wish stage exist
-    const wishStageExist = await this.wishRepository.getWishStageById(id);
+    const wishStageExist = await this.wishRepository.getWishStageById(
+      wishStageId,
+    );
     if (wishStageExist) throw new BadRequestException('Id already in use.');
 
     // Check if the wish exist
@@ -47,7 +48,7 @@ export class CreateWishStageHandler
 
     // Create the new wish stage
     const wishStage = WishStage.create(
-      id,
+      wishStageId,
       title,
       description,
       createdAt,

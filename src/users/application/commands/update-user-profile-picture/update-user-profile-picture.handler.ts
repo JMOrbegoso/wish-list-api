@@ -2,7 +2,8 @@ import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { UpdateUserProfilePictureCommand } from '..';
 import { UnitOfWork } from '../../../../shared/domain/repositories';
-import { UniqueId, WebUrl } from '../../../../shared/domain/value-objects';
+import { WebUrl } from '../../../../shared/domain/value-objects';
+import { UserId } from '../../../domain/entities';
 import { UserRepository } from '../../../domain/repositories';
 
 @CommandHandler(UpdateUserProfilePictureCommand)
@@ -15,10 +16,10 @@ export class UpdateUserProfilePictureHandler
   ) {}
 
   async execute(command: UpdateUserProfilePictureCommand): Promise<void> {
-    const id = UniqueId.create(command.id);
+    const userId = UserId.create(command.id);
 
     // Get user by id
-    const user = await this.userRepository.getOneById(id);
+    const user = await this.userRepository.getOneById(userId);
     if (!user) throw new NotFoundException();
 
     // Check if the user was deleted

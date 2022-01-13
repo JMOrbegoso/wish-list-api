@@ -2,7 +2,7 @@ import { NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { LocalLoginCommand } from '..';
 import { UnitOfWork } from '../../../../shared/domain/repositories';
-import { RefreshToken, User } from '../../../domain/entities';
+import { RefreshToken, RefreshTokenId, User } from '../../../domain/entities';
 import { UserRepository } from '../../../domain/repositories';
 import { IpAddress, Username } from '../../../domain/value-objects';
 import { AuthTokensDto } from '../../dtos';
@@ -54,10 +54,10 @@ export class LocalLoginHandler implements ICommandHandler<LocalLoginCommand> {
     const access_token = this.generateAccessToken(user);
 
     // Generate the new refresh token
-    const newRefreshToken = RefreshToken.create(
+    const newRefreshTokenId = RefreshTokenId.create(
       this.uniqueIdGeneratorService.generateId(),
-      ipAddress,
     );
+    const newRefreshToken = RefreshToken.create(newRefreshTokenId, ipAddress);
 
     // Update the user
     user.addRefreshToken(newRefreshToken);
@@ -68,7 +68,7 @@ export class LocalLoginHandler implements ICommandHandler<LocalLoginCommand> {
 
     return {
       access_token,
-      refresh_token: newRefreshToken.id.getId,
+      refresh_token: newRefreshToken.id.value.toString(),
     };
   }
 

@@ -2,7 +2,6 @@ import { NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { MockedObject } from 'ts-jest/dist/utils/testing';
 import { LocalLoginCommand, LocalLoginHandler } from '..';
 import { UnitOfWork } from '../../../../shared/domain/repositories';
-import { UniqueId } from '../../../../shared/domain/value-objects';
 import { User } from '../../../domain/entities';
 import { UserRepository } from '../../../domain/repositories';
 import { InvalidIpAddressError } from '../../../domain/value-objects';
@@ -92,7 +91,7 @@ describe('users', () => {
             // Arrange
             const user = {
               id: {
-                getId: 'id-0',
+                value: 'id-0',
               },
               email: {
                 getEmail: 'email0@email.com',
@@ -165,7 +164,7 @@ describe('users', () => {
             // Arrange
             const user = {
               id: {
-                getId: 'id-0',
+                value: 'id-0',
               },
               email: {
                 getEmail: 'email0@email.com',
@@ -241,7 +240,7 @@ describe('users', () => {
             // Arrange
             const user = {
               id: {
-                getId: 'id-0',
+                value: 'id-0',
               },
               email: {
                 getEmail: 'email0@email.com',
@@ -315,7 +314,7 @@ describe('users', () => {
             // Arrange
             const user = {
               id: {
-                getId: 'id-0',
+                value: 'id-0',
               },
               email: {
                 getEmail: 'email0@email.com',
@@ -389,7 +388,7 @@ describe('users', () => {
             // Arrange
             const user = {
               id: {
-                getId: 'id-0',
+                value: 'id-0',
               },
               email: {
                 getEmail: 'email0@email.com',
@@ -441,16 +440,14 @@ describe('users', () => {
               passwordMatch: jest.fn().mockReturnValue(true),
             } as MockedObject<EncryptionService>;
 
+            const accessToken = 'access-token';
             const tokenService = {
-              signPayload: jest.fn().mockReturnValue('access-token'),
+              signPayload: jest.fn().mockReturnValue(accessToken),
             } as MockedObject<TokenService>;
 
-            const uniqueId = {
-              getId: 'id-0',
-            } as MockedObject<UniqueId>;
-
+            const refreshTokenId = 'refresh-token-id';
             const uniqueIdGeneratorService = {
-              generateId: jest.fn().mockRejectedValue(uniqueId),
+              generateId: jest.fn().mockReturnValue(refreshTokenId),
             } as MockedObject<UniqueIdGeneratorService>;
 
             const handler = new LocalLoginHandler(
@@ -474,8 +471,8 @@ describe('users', () => {
             expect(userRepository.addRefreshToken.mock.calls).toHaveLength(1);
             expect(unitOfWork.commitChanges.mock.calls).toHaveLength(1);
 
-            expect(authTokens.access_token).toBe('access-token');
-            expect(authTokens.refresh_token).not.toBeNull();
+            expect(authTokens.access_token).toBe(accessToken);
+            expect(authTokens.refresh_token).toBe(refreshTokenId);
           },
         );
       });

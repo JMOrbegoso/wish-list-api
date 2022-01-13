@@ -1,9 +1,8 @@
-import { UniqueId } from '../../../shared/domain/value-objects';
-import { Wisher } from '../../domain/entities';
+import { Wisher, WisherId } from '../../domain/entities';
 import { WisherEntity } from '../persistence/entities';
 
 export function wisherEntityToWisher(wisherEntity: WisherEntity): Wisher {
-  const id = UniqueId.create(wisherEntity.id);
+  const wisherId = WisherId.create(wisherEntity.id);
 
-  return Wisher.create(id);
+  return Wisher.create(wisherId);
 }

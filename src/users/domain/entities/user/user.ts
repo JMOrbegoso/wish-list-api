@@ -1,8 +1,7 @@
-import { RefreshToken, VerificationCode } from '..';
+import { RefreshToken, RefreshTokenId, UserId, VerificationCode } from '..';
 import { AggregateRoot } from '../../../../shared/domain/entities';
 import {
   MillisecondsDate,
-  UniqueId,
   WebUrl,
 } from '../../../../shared/domain/value-objects';
 import {
@@ -40,7 +39,7 @@ import {
   UnverifiedUserCannotBeUpdatedError,
 } from './exceptions';
 
-export class User extends AggregateRoot {
+export class User extends AggregateRoot<UserId> {
   private _email: Email;
   private _username: Username;
   private _passwordHash: PasswordHash;
@@ -59,7 +58,7 @@ export class User extends AggregateRoot {
   private _deletedAt?: MillisecondsDate;
 
   private constructor(
-    id: UniqueId,
+    id: UserId,
     email: Email,
     username: Username,
     passwordHash: PasswordHash,
@@ -121,7 +120,7 @@ export class User extends AggregateRoot {
   }
 
   public static create(
-    id: UniqueId,
+    id: UserId,
     email: Email,
     username: Username,
     passwordHash: PasswordHash,
@@ -160,10 +159,6 @@ export class User extends AggregateRoot {
     );
   }
 
-  public get id(): UniqueId {
-    return this._id;
-  }
-
   public get email(): Email {
     return this._email;
   }
@@ -180,8 +175,8 @@ export class User extends AggregateRoot {
     return this._isVerified.getStatus;
   }
 
-  public get verificationCode(): string {
-    return this._verificationCode.id.getId;
+  public get verificationCode(): VerificationCode {
+    return this._verificationCode;
   }
 
   public get isBlocked(): boolean {
@@ -282,7 +277,7 @@ export class User extends AggregateRoot {
     return [...this._refreshTokens];
   }
 
-  public getRefreshToken(refreshTokenId: UniqueId): RefreshToken {
+  public getRefreshToken(refreshTokenId: RefreshTokenId): RefreshToken {
     const refreshToken = this._refreshTokens.find((token) =>
       token.id.equals(refreshTokenId),
     );
@@ -307,7 +302,7 @@ export class User extends AggregateRoot {
   }
 
   public replaceRefreshToken(
-    refreshTokenIdToReplace: UniqueId,
+    refreshTokenIdToReplace: RefreshTokenId,
     replacedByToken: RefreshToken,
   ): void {
     if (this.isDeleted) throw new DeletedUserCannotBeUpdatedError();

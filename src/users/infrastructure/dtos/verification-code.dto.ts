@@ -1,7 +1,8 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsMongoId, IsNotEmpty, IsString } from 'class-validator';
 
 export class VerificationCodeDto {
   @IsString()
   @IsNotEmpty()
+  @IsMongoId()
   code: string;
 }

@@ -1,11 +1,10 @@
-import { DomainEvent } from '../domain-events';
-import { UniqueId } from '../value-objects';
-import { Entity } from '.';
+import { Entity, EntityId } from '..';
+import { DomainEvent } from '../../domain-events';
 
-export abstract class AggregateRoot extends Entity {
+export abstract class AggregateRoot<T extends EntityId> extends Entity<T> {
   private readonly _domainEvents: DomainEvent[] = [];
 
-  protected constructor(id: UniqueId) {
+  protected constructor(id: T) {
     super(id);
   }
 

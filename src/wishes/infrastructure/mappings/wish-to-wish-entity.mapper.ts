@@ -13,7 +13,7 @@ export function wishToWishEntity(
 ): WishEntity {
   const wishEntity = new WishEntity();
 
-  wishEntity.id = wish.id.getId;
+  wishEntity.id = wish.id.value.toString();
   wishEntity.title = wish.title.getTitle;
   wishEntity.description = wish.description.getDescription;
   wishEntity.privacyLevel = wish.privacyLevel.getPrivacyLevel;
