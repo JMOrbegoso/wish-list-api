@@ -8,6 +8,10 @@ export class SecondsDuration extends ValueObject<number> {
     return new SecondsDuration(0);
   }
 
+  static oneDay(): SecondsDuration {
+    return new SecondsDuration(86400);
+  }
+
   static oneWeek(): SecondsDuration {
     return new SecondsDuration(604800);
   }
