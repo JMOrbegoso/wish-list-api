@@ -1095,7 +1095,7 @@ describe('WishesController (e2e)', () => {
 
       describe(`should return 404`, () => {
         it(`wish not found`, () => {
-          const id = '61cce183b8917063ed614a17';
+          const id = new ObjectId().toString();
           return request(app.getHttpServer())
             .patch(`/wishes/${id}`)
             .send({
