@@ -5,11 +5,11 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { UniqueId } from '../../../../shared/domain/value-objects';
 import {
   Ownership,
   RoleOwnership,
 } from '../../../../shared/infrastructure/presentation/decorators';
+import { WishId } from '../../../domain/entities';
 import { WishRepository } from '../../../domain/repositories';
 
 export const WishOwnershipKey = 'WishOwnership';
@@ -39,10 +39,10 @@ export class WishOwnershipGuard implements CanActivate {
       // Check if the user is owner of the wish
       const id =
         request[wishOwnership.idProperty.target][wishOwnership.idProperty.name];
-      const uniqueId = UniqueId.create(id);
-      const wish = await this.wishRepository.getOneById(uniqueId);
+      const wishId = WishId.create(id);
+      const wish = await this.wishRepository.getOneById(wishId);
       if (!wish) throw new NotFoundException();
-      if (request.user.id == wish.wisher.id.getId) return true;
+      if (request.user.id == wish.wisher.id.value) return true;
     }
 
     return false;
