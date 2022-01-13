@@ -45,7 +45,7 @@ export class UserEntity {
   isVerified: boolean;
 
   @Property()
-  verificationCode: ObjectId;
+  verificationCode: string;
 
   @Property()
   isBlocked: boolean;
