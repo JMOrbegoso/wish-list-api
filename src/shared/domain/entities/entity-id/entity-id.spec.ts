@@ -11,8 +11,12 @@ describe('shared', () => {
             super(id);
           }
 
-          static create(id: string): ProductId {
+          public static create(id: string): ProductId {
             return new ProductId(id);
+          }
+
+          public equals(other?: ProductId): boolean {
+            return super._equals(other);
           }
         }
 

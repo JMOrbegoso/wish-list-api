@@ -19,11 +19,11 @@ export abstract class EntityId {
     this.id = id;
   }
 
-  public equals(other?: EntityId): boolean {
-    if (other === null || other === undefined) {
-      return false;
-    }
+  protected _equals(other?: EntityId): boolean {
+    if (!other) return false;
 
-    return this.id === other.id;
+    return this.value === other.value;
   }
+
+  public abstract equals(other?: EntityId): boolean;
 }

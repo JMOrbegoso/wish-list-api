@@ -10,4 +10,8 @@ export class VerificationCodeId extends EntityId {
   public static create(id: string): VerificationCodeId {
     return new VerificationCodeId(id);
   }
+
+  public equals(other?: VerificationCodeId): boolean {
+    return super._equals(other);
+  }
 }

@@ -10,4 +10,8 @@ export class WishId extends EntityId {
   public static create(id: string): WishId {
     return new WishId(id);
   }
+
+  public equals(other?: WishId): boolean {
+    return super._equals(other);
+  }
 }

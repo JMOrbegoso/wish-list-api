@@ -13,8 +13,12 @@ describe('shared', () => {
             super(id);
           }
 
-          static create(id: string): OrderId {
+          public static create(id: string): OrderId {
             return new OrderId(id);
+          }
+
+          public equals(other?: OrderId): boolean {
+            return super._equals(other);
           }
         }
 

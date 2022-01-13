@@ -10,4 +10,8 @@ export class RefreshTokenId extends EntityId {
   public static create(id: string): RefreshTokenId {
     return new RefreshTokenId(id);
   }
+
+  public equals(other?: RefreshTokenId): boolean {
+    return super._equals(other);
+  }
 }

@@ -10,4 +10,8 @@ export class UserId extends EntityId {
   public static create(id: string): UserId {
     return new UserId(id);
   }
+
+  public equals(other?: UserId): boolean {
+    return super._equals(other);
+  }
 }
