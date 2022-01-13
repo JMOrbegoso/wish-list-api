@@ -6,7 +6,7 @@ export function wishStageToWishStageEntity(
 ): WishStageEntity {
   const wishStageEntity = new WishStageEntity();
 
-  wishStageEntity.id = wishStage.id.getId;
+  wishStageEntity.id = wishStage.id.value.toString();
   wishStageEntity.title = wishStage.title.getTitle;
   wishStageEntity.description = wishStage.description.getDescription;
   wishStageEntity.createdAt = wishStage.createdAt.getDate;
