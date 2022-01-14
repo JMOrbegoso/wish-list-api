@@ -4,11 +4,13 @@ import { PrivacyLevel } from '../../src/wishes/domain/value-objects';
 import {
   RefreshTokenDb,
   UserDb,
+  VerificationCodeDb,
   WishDb,
   WishStageDb,
   WisherDb,
   seedRefreshToken,
   seedUser,
+  seedVerificationCode,
   seedWish,
   seedWishStage,
   seedWisher,
@@ -67,6 +69,18 @@ export type Seed = {
    * - Roles: Admin.
    */
   adminUser: UserDb;
+  /**
+   * Valid verification code created by **basicUser**.
+   */
+  basicUserVerificationCode: VerificationCodeDb;
+  /**
+   * Expired verification code created by **unverifiedUser**.
+   */
+  unverifiedUserExpiredVerificationCode: VerificationCodeDb;
+  /**
+   * Valid verification code created by **unverifiedUser**.
+   */
+  unverifiedUserValidVerificationCode: VerificationCodeDb;
   /**
    * Expired refresh token created by **basicUser**.
    */
@@ -250,6 +264,24 @@ export async function seedDatabaseItems(
     [Role.admin().getRole],
   );
 
+  // Seed verification codes
+
+  const basicUserVerificationCode = await seedVerificationCode(
+    database,
+    basicUser._id.toString(),
+  );
+
+  const unverifiedUserExpiredVerificationCode = await seedVerificationCode(
+    database,
+    unverifiedUser._id.toString(),
+    new Date(2000, 1, 1),
+  );
+
+  const unverifiedUserValidVerificationCode = await seedVerificationCode(
+    database,
+    unverifiedUser._id.toString(),
+  );
+
   // Seed refresh tokens
 
   const expiredRefreshToken = await seedRefreshToken(
@@ -431,6 +463,9 @@ export async function seedDatabaseItems(
     basicUser,
     moderatorUser,
     adminUser,
+    basicUserVerificationCode,
+    unverifiedUserExpiredVerificationCode,
+    unverifiedUserValidVerificationCode,
     expiredRefreshToken,
     validRefreshToken_1,
     usedRefreshToken,
