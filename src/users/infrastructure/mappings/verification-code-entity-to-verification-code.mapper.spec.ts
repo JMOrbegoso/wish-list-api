@@ -24,7 +24,7 @@ describe('users', () => {
           expect(verificationCode.createdAt.getDate.getTime()).toBe(
             verificationCodeEntity.createdAt.getTime(),
           );
-          expect(verificationCode.duration).toBe(
+          expect(verificationCode.duration.getDuration).toBe(
             verificationCodeEntity.duration,
           );
         });
