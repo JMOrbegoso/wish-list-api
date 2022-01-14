@@ -4,6 +4,7 @@ import {
   User,
   UserId,
   VerificationCode,
+  VerificationCodeId,
 } from '../entities';
 import { Email, IpAddress, Username } from '../value-objects';
 
@@ -20,8 +21,8 @@ export abstract class UserRepository {
 
   abstract getOneByUsername(username: Username): Promise<User>;
 
-  abstract getOneByVerificationCode(
-    verificationCode: VerificationCode,
+  abstract getOneByVerificationCodeId(
+    verificationCodeId: VerificationCodeId,
   ): Promise<User>;
 
   abstract getOneByRefreshTokenId(
@@ -38,6 +39,11 @@ export abstract class UserRepository {
 
   abstract addUser(user: User): void;
   abstract updateUser(user: User): void;
+
+  abstract addVerificationCode(
+    verificationCode: VerificationCode,
+    userId: UserId,
+  ): void;
 
   abstract addRefreshToken(refreshToken: RefreshToken, userId: UserId): void;
   abstract updateRefreshToken(refreshToken: RefreshToken): void;
