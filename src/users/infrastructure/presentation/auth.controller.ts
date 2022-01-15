@@ -1,12 +1,4 @@
-import {
-  Body,
-  Controller,
-  Get,
-  HttpCode,
-  Ip,
-  Post,
-  Query,
-} from '@nestjs/common';
+import { Body, Controller, HttpCode, Ip, Post } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 import {
   LocalLoginCommand,
@@ -44,9 +36,10 @@ export class AuthController {
     return await this.commandBus.execute(command);
   }
 
-  @Get('verify')
-  async verify(@Query() query: VerificationCodeDto): Promise<void> {
-    const command = new VerifyUserCommand(query.code);
+  @Post('verify')
+  @HttpCode(200)
+  async verify(@Body() dto: VerificationCodeDto): Promise<void> {
+    const command = new VerifyUserCommand(dto.code);
     await this.commandBus.execute(command);
   }
 }
