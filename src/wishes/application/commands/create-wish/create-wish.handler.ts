@@ -4,11 +4,11 @@ import { CreateWishCommand } from '..';
 import { UnitOfWork } from '../../../../shared/domain/repositories';
 import {
   MillisecondsDate,
-  UniqueId,
   WebUrl,
 } from '../../../../shared/domain/value-objects';
+import { UserId } from '../../../../users/domain/entities';
 import { UserRepository } from '../../../../users/domain/repositories';
-import { Wish, Wisher } from '../../../domain/entities';
+import { Wish, WishId, Wisher, WisherId } from '../../../domain/entities';
 import { WishRepository } from '../../../domain/repositories';
 import {
   CategoryName,
@@ -27,8 +27,9 @@ export class CreateWishHandler implements ICommandHandler<CreateWishCommand> {
 
   async execute(command: CreateWishCommand): Promise<void> {
     // Generate the properties of the new Wish
-    const id = UniqueId.create(command.id);
-    const wisherId = UniqueId.create(command.wisherId);
+    const wishId = WishId.create(command.id);
+    const wisherId = WisherId.create(command.wisherId);
+    const userId = UserId.create(command.wisherId);
     const title = WishTitle.create(command.title);
     const description = WishDescription.create(command.description);
     const privacyLevel = WishPrivacyLevel.create(command.privacyLevel);
@@ -40,13 +41,16 @@ export class CreateWishHandler implements ICommandHandler<CreateWishCommand> {
     const startedAt = command.startedAt
       ? MillisecondsDate.createFromMilliseconds(command.startedAt)
       : null;
+    const completedAt = command.completedAt
+      ? MillisecondsDate.createFromMilliseconds(command.completedAt)
+      : null;
 
     // Check if the user exist
-    const user = await this.userRepository.getOneById(wisherId);
+    const user = await this.userRepository.getOneById(userId);
     if (!user) throw new NotFoundException();
 
     // Check if the id is already in use by other wish
-    const wishExists = await this.wishRepository.getOneById(id);
+    const wishExists = await this.wishRepository.getOneById(wishId);
     if (wishExists) throw new BadRequestException('Id already in use.');
 
     // Check if the wisher exist
@@ -61,7 +65,7 @@ export class CreateWishHandler implements ICommandHandler<CreateWishCommand> {
 
     // Create the new wish
     const wish = Wish.create(
-      id,
+      wishId,
       title,
       description,
       privacyLevel,
@@ -74,7 +78,7 @@ export class CreateWishHandler implements ICommandHandler<CreateWishCommand> {
       [],
       null,
       startedAt,
-      null,
+      completedAt,
     );
 
     // Add the new wish to the wishes repository

@@ -2,11 +2,13 @@ import { BadRequestException } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { CreateUserCommand } from '..';
 import { UnitOfWork } from '../../../../shared/domain/repositories';
+import { MillisecondsDate } from '../../../../shared/domain/value-objects';
 import {
-  MillisecondsDate,
-  UniqueId,
-} from '../../../../shared/domain/value-objects';
-import { User, VerificationCode } from '../../../domain/entities';
+  User,
+  UserId,
+  VerificationCode,
+  VerificationCodeId,
+} from '../../../domain/entities';
 import { UserRepository } from '../../../domain/repositories';
 import {
   Biography,
@@ -37,13 +39,13 @@ export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
 
   async execute(command: CreateUserCommand): Promise<void> {
     // Generate the email and username properties of the new user first to validate them
-    const id = UniqueId.create(command.id);
+    const userId = UserId.create(command.id);
     const email = Email.create(command.email);
     const username = Username.create(command.username);
 
     // Check if the id is in use by other user
     const userExists = await this.userRepository.userExists(
-      id,
+      userId,
       email,
       username,
     );
@@ -62,18 +64,14 @@ export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
     const biography = Biography.create(command.biography);
     const roles = [Role.basic()];
 
-    // Generate the verfication code
-    const verificationCodeId = this.uniqueIdGeneratorService.generateId();
-    const verificationCode = VerificationCode.create(verificationCodeId);
-
     // Create the new user
     const user = User.create(
-      id,
+      userId,
       email,
       username,
       passwordHash,
       isVerified,
-      verificationCode,
+      [],
       isBlocked,
       firstName,
       lastName,
@@ -84,17 +82,32 @@ export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
       roles,
     );
 
-    // Add the new user to the users repository
+    // Create the new verification code
+    const verificationCodeId = VerificationCodeId.create(
+      this.uniqueIdGeneratorService.generateId(),
+    );
+    const verificationCode = VerificationCode.create(
+      verificationCodeId,
+      MillisecondsDate.create(),
+      VerificationCode.defaultDuration,
+    );
+
+    // Add the new entities to the transaction
     this.userRepository.addUser(user);
+    this.userRepository.addVerificationCode(verificationCode, user.id);
 
     // Save changes using Unit of Work
     await this.unitOfWork.commitChanges();
 
     // Send an account confirmation code the user email
+    const verificationCodeBase64 = Buffer.from(
+      verificationCode.id.value.toString(),
+    ).toString('base64');
+
     await this.emailSenderService.send(
       user.email.getEmail,
       'Confirm Account',
-      `your code is ${user.verificationCode}`,
+      `your code is ${verificationCodeBase64}`,
     );
   }
 }

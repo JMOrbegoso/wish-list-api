@@ -26,11 +26,8 @@ import {
   RolesGuard,
 } from '../../../users/infrastructure/presentation/guards';
 import {
-  ChangeWishPrivacyLevelCommand,
-  CompleteWishCommand,
   CreateWishCommand,
   DeleteWishCommand,
-  UncompleteWishCommand,
   UndeleteWishCommand,
   UpdateWishCommand,
 } from '../../application/commands';
@@ -41,14 +38,7 @@ import {
   GetWishesByWisherIdQuery,
   GetWishesQuery,
 } from '../../application/queries';
-import {
-  ChangeWishPrivacyLevelDto,
-  CompleteWishDto,
-  CreateWishDto,
-  UpdateWishDto,
-  WishIdDto,
-  WisherIdDto,
-} from '../dto';
+import { CreateWishDto, UpdateWishDto, WishIdDto, WisherIdDto } from '../dto';
 import { WishOwnershipGuard, WishOwnershipKey } from './guards';
 
 @Controller('wishes')
@@ -131,6 +121,7 @@ export class WishesController {
       dto.imageUrls,
       dto.categories,
       dto.startedAt,
+      dto.completedAt,
     );
     await this.commandBus.execute(command);
   }
@@ -160,9 +151,12 @@ export class WishesController {
       dto.id,
       dto.title,
       dto.description,
+      dto.privacyLevel,
       dto.urls,
       dto.imageUrls,
       dto.categories,
+      dto.startedAt,
+      dto.completedAt,
     );
     await this.commandBus.execute(command);
   }
@@ -200,68 +194,6 @@ export class WishesController {
   @Patch('undelete/:id')
   async undeleteWish(@Param() params: WishIdDto): Promise<void> {
     const command = new UndeleteWishCommand(params.id);
-    await this.commandBus.execute(command);
-  }
-
-  @SetMetadata<string, RoleOwnership>(WishOwnershipKey, {
-    ownerships: [
-      { role: Role.admin(), ownership: Ownership.Own },
-      { role: Role.moderator(), ownership: Ownership.Own },
-      { role: Role.basic(), ownership: Ownership.Own },
-    ],
-    idProperty: {
-      target: 'params',
-      name: 'id',
-    },
-  })
-  @UseGuards(AuthGuard('jwt'), WishOwnershipGuard)
-  @Patch('complete/:id/:completionDate')
-  async completeWish(@Param() params: CompleteWishDto): Promise<void> {
-    const command = new CompleteWishCommand(
-      params.id,
-      parseInt(params.completionDate),
-    );
-    await this.commandBus.execute(command);
-  }
-
-  @SetMetadata<string, RoleOwnership>(WishOwnershipKey, {
-    ownerships: [
-      { role: Role.admin(), ownership: Ownership.Own },
-      { role: Role.moderator(), ownership: Ownership.Own },
-      { role: Role.basic(), ownership: Ownership.Own },
-    ],
-    idProperty: {
-      target: 'params',
-      name: 'id',
-    },
-  })
-  @UseGuards(AuthGuard('jwt'), WishOwnershipGuard)
-  @Patch('uncomplete/:id')
-  async uncompleteWish(@Param() params: WishIdDto): Promise<void> {
-    const command = new UncompleteWishCommand(params.id);
-    await this.commandBus.execute(command);
-  }
-
-  @SetMetadata<string, RoleOwnership>(WishOwnershipKey, {
-    ownerships: [
-      { role: Role.admin(), ownership: Ownership.Own },
-      { role: Role.moderator(), ownership: Ownership.Own },
-      { role: Role.basic(), ownership: Ownership.Own },
-    ],
-    idProperty: {
-      target: 'params',
-      name: 'id',
-    },
-  })
-  @UseGuards(AuthGuard('jwt'), WishOwnershipGuard)
-  @Patch('change-privacy-level/:id/:privacyLevel')
-  async changeWishPrivacyLevel(
-    @Param() params: ChangeWishPrivacyLevelDto,
-  ): Promise<void> {
-    const command = new ChangeWishPrivacyLevelCommand(
-      params.id,
-      params.privacyLevel,
-    );
     await this.commandBus.execute(command);
   }
 }

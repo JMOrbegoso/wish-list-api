@@ -2,7 +2,7 @@ import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { UndeleteUserCommand } from '..';
 import { UnitOfWork } from '../../../../shared/domain/repositories';
-import { UniqueId } from '../../../../shared/domain/value-objects';
+import { UserId } from '../../../domain/entities';
 import { UserRepository } from '../../../domain/repositories';
 
 @CommandHandler(UndeleteUserCommand)
@@ -15,10 +15,10 @@ export class UndeleteUserHandler
   ) {}
 
   async execute(command: UndeleteUserCommand): Promise<void> {
-    const id = UniqueId.create(command.id);
+    const userId = UserId.create(command.id);
 
     // Get user by id
-    const user = await this.userRepository.getOneById(id);
+    const user = await this.userRepository.getOneById(userId);
     if (!user) throw new NotFoundException();
 
     // Check if the user is not deleted

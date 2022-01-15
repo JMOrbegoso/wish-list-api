@@ -1,9 +1,14 @@
 import { MockedObject } from 'ts-jest/dist/utils/testing';
-import { RefreshToken, User, VerificationCode } from '..';
 import {
-  InvalidUniqueIdError,
+  RefreshToken,
+  RefreshTokenId,
+  User,
+  UserId,
+  VerificationCode,
+} from '..';
+import { InvalidEntityIdError } from '../../../../shared/domain/entities';
+import {
   MillisecondsDate,
-  UniqueId,
   WebUrl,
 } from '../../../../shared/domain/value-objects';
 import {
@@ -19,7 +24,9 @@ import {
 } from '../../value-objects';
 import {
   BlockedUserCannotBeUpdatedError,
+  BlockedUserCannotGenerateNewVerificationCodesError,
   DeletedUserCannotBeUpdatedError,
+  DeletedUserCannotGenerateNewVerificationCodesError,
   DuplicatedUserRefreshTokenError,
   InvalidUserBiographyError,
   InvalidUserBirthdayError,
@@ -36,17 +43,19 @@ import {
   InvalidUserUpdatedAtError,
   InvalidUserUsernameError,
   InvalidUserVerificationCodeError,
+  InvalidUserVerificationCodesError,
   InvalidUserVerificationStatusError,
   RefreshTokenNotFoundError,
   UnverifiedUserCannotBeUpdatedError,
+  VerifiedUserCannotGenerateNewVerificationCodesError,
 } from './exceptions';
 
 const validValues = [
   [
     {
-      getId: 'id-0',
+      value: 'id-0',
       equals: jest.fn(),
-    } as MockedObject<UniqueId>,
+    } as MockedObject<UserId>,
     {
       getEmail: 'email0@email.com',
       equals: jest.fn().mockReturnValue(true),
@@ -63,9 +72,12 @@ const validValues = [
       getStatus: true,
       equals: jest.fn().mockReturnValue(true),
     } as MockedObject<IsVerified>,
-    {
-      equals: jest.fn().mockReturnValue(true),
-    } as MockedObject<VerificationCode>,
+    [
+      {
+        id: { value: 'verification-code-0' },
+        equals: jest.fn().mockReturnValue(true),
+      } as MockedObject<VerificationCode>,
+    ],
     {
       getStatus: false,
       equals: jest.fn().mockReturnValue(true),
@@ -96,12 +108,12 @@ const validValues = [
     } as MockedObject<Biography>,
     [] as MockedObject<Role[]>,
     [
-      { id: { getId: 'refresh-token-id-0' } },
-      { id: { getId: 'refresh-token-id-1' } },
-      { id: { getId: 'refresh-token-id-2' } },
-      { id: { getId: 'refresh-token-id-3' } },
-      { id: { getId: 'refresh-token-id-4' } },
-      { id: { getId: 'refresh-token-id-5' } },
+      { id: { value: 'refresh-token-id-0' } },
+      { id: { value: 'refresh-token-id-1' } },
+      { id: { value: 'refresh-token-id-2' } },
+      { id: { value: 'refresh-token-id-3' } },
+      { id: { value: 'refresh-token-id-4' } },
+      { id: { value: 'refresh-token-id-5' } },
     ] as MockedObject<RefreshToken[]>,
     {
       getUrl: 'https://www.example.com/0.jpg',
@@ -114,9 +126,9 @@ const validValues = [
   ],
   [
     {
-      getId: 'id-1',
+      value: 'id-1',
       equals: jest.fn(),
-    } as MockedObject<UniqueId>,
+    } as MockedObject<UserId>,
     {
       getEmail: 'email1@email.com',
       equals: jest.fn().mockReturnValue(true),
@@ -133,9 +145,12 @@ const validValues = [
       getStatus: true,
       equals: jest.fn().mockReturnValue(true),
     } as MockedObject<IsVerified>,
-    {
-      equals: jest.fn().mockReturnValue(true),
-    } as MockedObject<VerificationCode>,
+    [
+      {
+        id: { value: 'verification-code-1' },
+        equals: jest.fn().mockReturnValue(true),
+      } as MockedObject<VerificationCode>,
+    ],
     {
       getStatus: false,
       equals: jest.fn().mockReturnValue(true),
@@ -166,8 +181,8 @@ const validValues = [
     } as MockedObject<Biography>,
     [] as MockedObject<Role[]>,
     [
-      { id: { getId: 'refresh-token-id-0' } },
-      { id: { getId: 'refresh-token-id-1' } },
+      { id: { value: 'refresh-token-id-0' } },
+      { id: { value: 'refresh-token-id-1' } },
     ] as MockedObject<RefreshToken[]>,
     {
       getUrl: 'https://www.example.com/1.jpg',
@@ -180,9 +195,9 @@ const validValues = [
   ],
   [
     {
-      getId: 'id-2',
+      value: 'id-2',
       equals: jest.fn(),
-    } as MockedObject<UniqueId>,
+    } as MockedObject<UserId>,
     {
       getEmail: 'email2@email.com',
       equals: jest.fn().mockReturnValue(true),
@@ -199,9 +214,12 @@ const validValues = [
       getStatus: true,
       equals: jest.fn().mockReturnValue(true),
     } as MockedObject<IsVerified>,
-    {
-      equals: jest.fn().mockReturnValue(true),
-    } as MockedObject<VerificationCode>,
+    [
+      {
+        id: { value: 'verification-code-2' },
+        equals: jest.fn().mockReturnValue(true),
+      } as MockedObject<VerificationCode>,
+    ],
     {
       getStatus: false,
       equals: jest.fn().mockReturnValue(true),
@@ -240,9 +258,9 @@ const validValues = [
   ],
   [
     {
-      getId: 'id-3',
+      value: 'id-3',
       equals: jest.fn(),
-    } as MockedObject<UniqueId>,
+    } as MockedObject<UserId>,
     {
       getEmail: 'email3@email.com',
       equals: jest.fn().mockReturnValue(true),
@@ -259,9 +277,12 @@ const validValues = [
       getStatus: true,
       equals: jest.fn().mockReturnValue(true),
     } as MockedObject<IsVerified>,
-    {
-      equals: jest.fn().mockReturnValue(true),
-    } as MockedObject<VerificationCode>,
+    [
+      {
+        id: { value: 'verification-code-3' },
+        equals: jest.fn().mockReturnValue(true),
+      } as MockedObject<VerificationCode>,
+    ],
     {
       getStatus: false,
       equals: jest.fn().mockReturnValue(true),
@@ -300,9 +321,9 @@ const validValues = [
   ],
   [
     {
-      getId: 'id-4',
+      value: 'id-4',
       equals: jest.fn(),
-    } as MockedObject<UniqueId>,
+    } as MockedObject<UserId>,
     {
       getEmail: 'email4@email.com',
       equals: jest.fn().mockReturnValue(true),
@@ -319,9 +340,12 @@ const validValues = [
       getStatus: true,
       equals: jest.fn().mockReturnValue(true),
     } as MockedObject<IsVerified>,
-    {
-      equals: jest.fn().mockReturnValue(true),
-    } as MockedObject<VerificationCode>,
+    [
+      {
+        id: { value: 'verification-code-4' },
+        equals: jest.fn().mockReturnValue(true),
+      } as MockedObject<VerificationCode>,
+    ],
     {
       getStatus: false,
       equals: jest.fn().mockReturnValue(true),
@@ -360,9 +384,9 @@ const validValues = [
   ],
   [
     {
-      getId: 'id-5',
+      value: 'id-5',
       equals: jest.fn(),
-    } as MockedObject<UniqueId>,
+    } as MockedObject<UserId>,
     {
       getEmail: 'email5@email.com',
       equals: jest.fn().mockReturnValue(true),
@@ -379,9 +403,12 @@ const validValues = [
       getStatus: true,
       equals: jest.fn().mockReturnValue(true),
     } as MockedObject<IsVerified>,
-    {
-      equals: jest.fn().mockReturnValue(true),
-    } as MockedObject<VerificationCode>,
+    [
+      {
+        id: { value: 'verification-code-5' },
+        equals: jest.fn().mockReturnValue(true),
+      } as MockedObject<VerificationCode>,
+    ],
     {
       getStatus: false,
       equals: jest.fn().mockReturnValue(true),
@@ -420,9 +447,9 @@ const validValues = [
   ],
   [
     {
-      getId: 'id-6',
+      value: 'id-6',
       equals: jest.fn(),
-    } as MockedObject<UniqueId>,
+    } as MockedObject<UserId>,
     {
       getEmail: 'email6@email.com',
       equals: jest.fn().mockReturnValue(true),
@@ -439,9 +466,12 @@ const validValues = [
       getStatus: true,
       equals: jest.fn().mockReturnValue(true),
     } as MockedObject<IsVerified>,
-    {
-      equals: jest.fn().mockReturnValue(true),
-    } as MockedObject<VerificationCode>,
+    [
+      {
+        id: { value: 'verification-code-6' },
+        equals: jest.fn().mockReturnValue(true),
+      } as MockedObject<VerificationCode>,
+    ],
     {
       getStatus: false,
       equals: jest.fn().mockReturnValue(true),
@@ -477,9 +507,9 @@ const validValues = [
   ],
   [
     {
-      getId: 'id-7',
+      value: 'id-7',
       equals: jest.fn(),
-    } as MockedObject<UniqueId>,
+    } as MockedObject<UserId>,
     {
       getEmail: 'email7@email.com',
       equals: jest.fn().mockReturnValue(true),
@@ -496,9 +526,12 @@ const validValues = [
       getStatus: true,
       equals: jest.fn().mockReturnValue(true),
     } as MockedObject<IsVerified>,
-    {
-      equals: jest.fn().mockReturnValue(true),
-    } as MockedObject<VerificationCode>,
+    [
+      {
+        id: { value: 'verification-code-7' },
+        equals: jest.fn().mockReturnValue(true),
+      } as MockedObject<VerificationCode>,
+    ],
     {
       getStatus: false,
       equals: jest.fn().mockReturnValue(true),
@@ -541,12 +574,12 @@ describe('users', () => {
         test.each(validValues)(
           'create a User with invalid id should throw error',
           (
-            uniqueId: MockedObject<UniqueId>,
+            userId: MockedObject<UserId>,
             email: MockedObject<Email>,
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -571,7 +604,7 @@ describe('users', () => {
                 username,
                 passwordHash,
                 isVerified,
-                verificationCode,
+                verificationCodes,
                 isBlocked,
                 firstName,
                 lastName,
@@ -584,19 +617,19 @@ describe('users', () => {
                 profilePicture,
                 deletedAt,
               ),
-            ).toThrowError(InvalidUniqueIdError);
+            ).toThrowError(InvalidEntityIdError);
           },
         );
 
         test.each(validValues)(
           'create a User with invalid email should throw error',
           (
-            uniqueId: MockedObject<UniqueId>,
+            userId: MockedObject<UserId>,
             email: MockedObject<Email>,
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -616,12 +649,12 @@ describe('users', () => {
             // Assert
             expect(() =>
               User.create(
-                uniqueId,
+                userId,
                 null,
                 username,
                 passwordHash,
                 isVerified,
-                verificationCode,
+                verificationCodes,
                 isBlocked,
                 firstName,
                 lastName,
@@ -641,12 +674,12 @@ describe('users', () => {
         test.each(validValues)(
           'create a User with invalid username should throw error',
           (
-            uniqueId: MockedObject<UniqueId>,
+            userId: MockedObject<UserId>,
             email: MockedObject<Email>,
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -666,12 +699,12 @@ describe('users', () => {
             // Assert
             expect(() =>
               User.create(
-                uniqueId,
+                userId,
                 email,
                 null,
                 passwordHash,
                 isVerified,
-                verificationCode,
+                verificationCodes,
                 isBlocked,
                 firstName,
                 lastName,
@@ -691,12 +724,12 @@ describe('users', () => {
         test.each(validValues)(
           'create a User with invalid passwordHash should throw error',
           (
-            uniqueId: MockedObject<UniqueId>,
+            userId: MockedObject<UserId>,
             email: MockedObject<Email>,
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -716,12 +749,12 @@ describe('users', () => {
             // Assert
             expect(() =>
               User.create(
-                uniqueId,
+                userId,
                 email,
                 username,
                 null,
                 isVerified,
-                verificationCode,
+                verificationCodes,
                 isBlocked,
                 firstName,
                 lastName,
@@ -741,12 +774,12 @@ describe('users', () => {
         test.each(validValues)(
           'create a User with invalid isVerified should throw error',
           (
-            uniqueId: MockedObject<UniqueId>,
+            userId: MockedObject<UserId>,
             email: MockedObject<Email>,
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -766,12 +799,12 @@ describe('users', () => {
             // Assert
             expect(() =>
               User.create(
-                uniqueId,
+                userId,
                 email,
                 username,
                 passwordHash,
                 null,
-                verificationCode,
+                verificationCodes,
                 isBlocked,
                 firstName,
                 lastName,
@@ -791,12 +824,12 @@ describe('users', () => {
         test.each(validValues)(
           'create a User with invalid verificationCode should throw error',
           (
-            uniqueId: MockedObject<UniqueId>,
+            userId: MockedObject<UserId>,
             email: MockedObject<Email>,
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -816,12 +849,63 @@ describe('users', () => {
             // Assert
             expect(() =>
               User.create(
-                uniqueId,
+                userId,
                 email,
                 username,
                 passwordHash,
                 isVerified,
                 null,
+                isBlocked,
+                firstName,
+                lastName,
+                birthday,
+                createdAt,
+                updatedAt,
+                biography,
+                roles,
+                refreshTokens,
+                profilePicture,
+                deletedAt,
+              ),
+            ).toThrowError(InvalidUserVerificationCodesError);
+          },
+        );
+
+        test.each(validValues)(
+          'create a User with a invalid refreshToken inside a valid refreshTokens array should throw error',
+          (
+            userId: MockedObject<UserId>,
+            email: MockedObject<Email>,
+            username: MockedObject<Username>,
+            passwordHash: MockedObject<PasswordHash>,
+            isVerified: MockedObject<IsVerified>,
+            verificationCodes: MockedObject<VerificationCode>[],
+            isBlocked: MockedObject<IsBlocked>,
+            firstName: MockedObject<FirstName>,
+            lastName: MockedObject<LastName>,
+            birthday: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            biography: MockedObject<Biography>,
+            roles: MockedObject<Role[]>,
+            refreshTokens: MockedObject<RefreshToken[]>,
+            profilePicture: MockedObject<WebUrl>,
+            deletedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+            verificationCodes = [{} as MockedObject<VerificationCode>, null];
+
+            // Act
+
+            // Assert
+            expect(() =>
+              User.create(
+                userId,
+                email,
+                username,
+                passwordHash,
+                isVerified,
+                verificationCodes,
                 isBlocked,
                 firstName,
                 lastName,
@@ -841,12 +925,12 @@ describe('users', () => {
         test.each(validValues)(
           'create a User with invalid isBlocked should throw error',
           (
-            uniqueId: MockedObject<UniqueId>,
+            userId: MockedObject<UserId>,
             email: MockedObject<Email>,
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -866,12 +950,12 @@ describe('users', () => {
             // Assert
             expect(() =>
               User.create(
-                uniqueId,
+                userId,
                 email,
                 username,
                 passwordHash,
                 isVerified,
-                verificationCode,
+                verificationCodes,
                 null,
                 firstName,
                 lastName,
@@ -891,12 +975,12 @@ describe('users', () => {
         test.each(validValues)(
           'create a User with invalid firstName should throw error',
           (
-            uniqueId: MockedObject<UniqueId>,
+            userId: MockedObject<UserId>,
             email: MockedObject<Email>,
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -916,12 +1000,12 @@ describe('users', () => {
             // Assert
             expect(() =>
               User.create(
-                uniqueId,
+                userId,
                 email,
                 username,
                 passwordHash,
                 isVerified,
-                verificationCode,
+                verificationCodes,
                 isBlocked,
                 null,
                 lastName,
@@ -941,12 +1025,12 @@ describe('users', () => {
         test.each(validValues)(
           'create a User with invalid lastName should throw error',
           (
-            uniqueId: MockedObject<UniqueId>,
+            userId: MockedObject<UserId>,
             email: MockedObject<Email>,
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -966,12 +1050,12 @@ describe('users', () => {
             // Assert
             expect(() =>
               User.create(
-                uniqueId,
+                userId,
                 email,
                 username,
                 passwordHash,
                 isVerified,
-                verificationCode,
+                verificationCodes,
                 isBlocked,
                 firstName,
                 null,
@@ -991,12 +1075,12 @@ describe('users', () => {
         test.each(validValues)(
           'create a User with invalid birthday should throw error',
           (
-            uniqueId: MockedObject<UniqueId>,
+            userId: MockedObject<UserId>,
             email: MockedObject<Email>,
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -1016,12 +1100,12 @@ describe('users', () => {
             // Assert
             expect(() =>
               User.create(
-                uniqueId,
+                userId,
                 email,
                 username,
                 passwordHash,
                 isVerified,
-                verificationCode,
+                verificationCodes,
                 isBlocked,
                 firstName,
                 lastName,
@@ -1041,12 +1125,12 @@ describe('users', () => {
         test.each(validValues)(
           'create a User with invalid createdAt should throw error',
           (
-            uniqueId: MockedObject<UniqueId>,
+            userId: MockedObject<UserId>,
             email: MockedObject<Email>,
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -1066,12 +1150,12 @@ describe('users', () => {
             // Assert
             expect(() =>
               User.create(
-                uniqueId,
+                userId,
                 email,
                 username,
                 passwordHash,
                 isVerified,
-                verificationCode,
+                verificationCodes,
                 isBlocked,
                 firstName,
                 lastName,
@@ -1091,12 +1175,12 @@ describe('users', () => {
         test.each(validValues)(
           'create a User with invalid updatedAt should throw error',
           (
-            uniqueId: MockedObject<UniqueId>,
+            userId: MockedObject<UserId>,
             email: MockedObject<Email>,
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -1116,12 +1200,12 @@ describe('users', () => {
             // Assert
             expect(() =>
               User.create(
-                uniqueId,
+                userId,
                 email,
                 username,
                 passwordHash,
                 isVerified,
-                verificationCode,
+                verificationCodes,
                 isBlocked,
                 firstName,
                 lastName,
@@ -1141,12 +1225,12 @@ describe('users', () => {
         test.each(validValues)(
           'create a User with invalid biography should throw error',
           (
-            uniqueId: MockedObject<UniqueId>,
+            userId: MockedObject<UserId>,
             email: MockedObject<Email>,
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -1166,12 +1250,12 @@ describe('users', () => {
             // Assert
             expect(() =>
               User.create(
-                uniqueId,
+                userId,
                 email,
                 username,
                 passwordHash,
                 isVerified,
-                verificationCode,
+                verificationCodes,
                 isBlocked,
                 firstName,
                 lastName,
@@ -1191,12 +1275,12 @@ describe('users', () => {
         test.each(validValues)(
           'create a User with invalid roles should throw error',
           (
-            uniqueId: MockedObject<UniqueId>,
+            userId: MockedObject<UserId>,
             email: MockedObject<Email>,
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -1216,12 +1300,12 @@ describe('users', () => {
             // Assert
             expect(() =>
               User.create(
-                uniqueId,
+                userId,
                 email,
                 username,
                 passwordHash,
                 isVerified,
-                verificationCode,
+                verificationCodes,
                 isBlocked,
                 firstName,
                 lastName,
@@ -1241,12 +1325,12 @@ describe('users', () => {
         test.each(validValues)(
           'create a User with a invalid role inside a valid roles array should throw error',
           (
-            uniqueId: MockedObject<UniqueId>,
+            userId: MockedObject<UserId>,
             email: MockedObject<Email>,
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -1267,12 +1351,12 @@ describe('users', () => {
             // Assert
             expect(() =>
               User.create(
-                uniqueId,
+                userId,
                 email,
                 username,
                 passwordHash,
                 isVerified,
-                verificationCode,
+                verificationCodes,
                 isBlocked,
                 firstName,
                 lastName,
@@ -1292,12 +1376,12 @@ describe('users', () => {
         test.each(validValues)(
           'create a User with invalid refreshTokens should throw error',
           (
-            uniqueId: MockedObject<UniqueId>,
+            userId: MockedObject<UserId>,
             email: MockedObject<Email>,
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -1317,12 +1401,12 @@ describe('users', () => {
             // Assert
             expect(() =>
               User.create(
-                uniqueId,
+                userId,
                 email,
                 username,
                 passwordHash,
                 isVerified,
-                verificationCode,
+                verificationCodes,
                 isBlocked,
                 firstName,
                 lastName,
@@ -1342,12 +1426,12 @@ describe('users', () => {
         test.each(validValues)(
           'create a User with a invalid refreshToken inside a valid refreshTokens array should throw error',
           (
-            uniqueId: MockedObject<UniqueId>,
+            userId: MockedObject<UserId>,
             email: MockedObject<Email>,
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -1368,12 +1452,12 @@ describe('users', () => {
             // Assert
             expect(() =>
               User.create(
-                uniqueId,
+                userId,
                 email,
                 username,
                 passwordHash,
                 isVerified,
-                verificationCode,
+                verificationCodes,
                 isBlocked,
                 firstName,
                 lastName,
@@ -1391,14 +1475,14 @@ describe('users', () => {
         );
 
         test.each(validValues)(
-          'should create an User with [id: %p], [email: %p], [username: %p], [passwordHash: %p], [isVerified: %p], [isBlocked: %p], [firstName: %p], [lastName: %p], [birthday: %p], [createdAt: %p], [updatedAt: %p], [biography: %p], [roles: %p], [refreshTokens: %p], [profilePicture: %p] and [deletedAt: %p]',
+          'should create an User with [id: %p], [email: %p], [username: %p], [passwordHash: %p], [isVerified: %p], [verificationCodes: %p], [isBlocked: %p], [firstName: %p], [lastName: %p], [birthday: %p], [createdAt: %p], [updatedAt: %p], [biography: %p]',
           (
-            uniqueId: MockedObject<UniqueId>,
+            userId: MockedObject<UserId>,
             email: MockedObject<Email>,
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -1411,12 +1495,12 @@ describe('users', () => {
 
             // Act
             const user = User.create(
-              uniqueId,
+              userId,
               email,
               username,
               passwordHash,
               isVerified,
-              verificationCode,
+              verificationCodes,
               isBlocked,
               firstName,
               lastName,
@@ -1427,13 +1511,18 @@ describe('users', () => {
             );
 
             // Assert
-            expect(user.id.getId).toBe(uniqueId.getId);
+            expect(user.id.value).toBe(userId.value);
             expect(user.email.getEmail).toBe(email.getEmail);
             expect(user.username.getUsername).toBe(username.getUsername);
             expect(user.passwordHash.getPasswordHash).toBe(
               passwordHash.getPasswordHash,
             );
             expect(user.isVerified).toBe(isVerified.getStatus);
+            for (let i = 0; i < verificationCodes.length; i++) {
+              expect(user.verificationCodes[i].id.value).toBe(
+                verificationCodes[i].id.value,
+              );
+            }
             expect(user.isBlocked).toBe(isBlocked.getStatus);
             expect(user.firstName.getFirstName).toBe(firstName.getFirstName);
             expect(user.lastName.getLastName).toBe(lastName.getLastName);
@@ -1448,22 +1537,22 @@ describe('users', () => {
             );
             expect(user.biography.getBiography).toBe(biography.getBiography);
 
-            expect(user.rolesLength).toBe(0);
-            expect(user.refreshTokensLength).toBe(0);
+            expect(user.roles.length).toBe(0);
+            expect(user.refreshTokens.length).toBe(0);
             expect(user.deletedAt).toBeNull();
             expect(user.profilePicture).toBeNull();
           },
         );
 
         test.each(validValues)(
-          'should create an User with [id: %p], [email: %p], [username: %p], [passwordHash: %p], [isVerified: %p], [isBlocked: %p], [firstName: %p], [lastName: %p], [birthday: %p], [createdAt: %p], [updatedAt: %p], [biography: %p], [roles: %p], [refreshTokens: %p], [profilePicture: %p] and [deletedAt: %p]',
+          'should create an User with [id: %p], [email: %p], [username: %p], [passwordHash: %p], [isVerified: %p], [verificationCodes: %p], [isBlocked: %p], [firstName: %p], [lastName: %p], [birthday: %p], [createdAt: %p], [updatedAt: %p], [biography: %p], [roles: %p], [refreshTokens: %p], [profilePicture: %p] and [deletedAt: %p]',
           (
-            uniqueId: MockedObject<UniqueId>,
+            userId: MockedObject<UserId>,
             email: MockedObject<Email>,
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -1480,12 +1569,12 @@ describe('users', () => {
 
             // Act
             const user = User.create(
-              uniqueId,
+              userId,
               email,
               username,
               passwordHash,
               isVerified,
-              verificationCode,
+              verificationCodes,
               isBlocked,
               firstName,
               lastName,
@@ -1500,13 +1589,18 @@ describe('users', () => {
             );
 
             // Assert
-            expect(user.id.getId).toBe(uniqueId.getId);
+            expect(user.id.value).toBe(userId.value);
             expect(user.email.getEmail).toBe(email.getEmail);
             expect(user.username.getUsername).toBe(username.getUsername);
             expect(user.passwordHash.getPasswordHash).toBe(
               passwordHash.getPasswordHash,
             );
             expect(user.isVerified).toBe(isVerified.getStatus);
+            for (let i = 0; i < verificationCodes.length; i++) {
+              expect(user.verificationCodes[i].id.value).toBe(
+                verificationCodes[i].id.value,
+              );
+            }
             expect(user.isBlocked).toBe(isBlocked.getStatus);
             expect(user.firstName.getFirstName).toBe(firstName.getFirstName);
             expect(user.lastName.getLastName).toBe(lastName.getLastName);
@@ -1538,14 +1632,14 @@ describe('users', () => {
         );
 
         test.each(validValues)(
-          'comparing two entities should call "equals" method from UniqueId',
+          'comparing two entities should call "equals" method from UserId',
           (
-            uniqueId: MockedObject<UniqueId>,
+            userId: MockedObject<UserId>,
             email: MockedObject<Email>,
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -1560,12 +1654,12 @@ describe('users', () => {
           ) => {
             // Arrange
             const user = User.create(
-              uniqueId,
+              userId,
               email,
               username,
               passwordHash,
               isVerified,
-              verificationCode,
+              verificationCodes,
               isBlocked,
               firstName,
               lastName,
@@ -1583,19 +1677,19 @@ describe('users', () => {
             user.equals(user);
 
             // Assert
-            expect(uniqueId.equals.mock.calls).toHaveLength(1);
+            expect(userId.equals.mock.calls).toHaveLength(1);
           },
         );
 
         test.each(validValues)(
           'update password of User should change the property value',
           (
-            uniqueId: MockedObject<UniqueId>,
+            userId: MockedObject<UserId>,
             email: MockedObject<Email>,
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -1610,12 +1704,12 @@ describe('users', () => {
           ) => {
             // Arrange
             const user = User.create(
-              uniqueId,
+              userId,
               email,
               username,
               passwordHash,
               isVerified,
-              verificationCode,
+              verificationCodes,
               isBlocked,
               firstName,
               lastName,
@@ -1644,12 +1738,12 @@ describe('users', () => {
         test.each(validValues)(
           'verify User should change the property value',
           (
-            uniqueId: MockedObject<UniqueId>,
+            userId: MockedObject<UserId>,
             email: MockedObject<Email>,
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -1664,12 +1758,12 @@ describe('users', () => {
           ) => {
             // Arrange
             const user = User.create(
-              uniqueId,
+              userId,
               email,
               username,
               passwordHash,
               isVerified,
-              verificationCode,
+              verificationCodes,
               isBlocked,
               firstName,
               lastName,
@@ -1692,14 +1786,410 @@ describe('users', () => {
         );
 
         test.each(validValues)(
-          'block User should change the property value',
+          'make changes on verificationCodes getter should make no changes on the original verificationCodes array',
           (
-            uniqueId: MockedObject<UniqueId>,
+            userId: MockedObject<UserId>,
             email: MockedObject<Email>,
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
+            isBlocked: MockedObject<IsBlocked>,
+            firstName: MockedObject<FirstName>,
+            lastName: MockedObject<LastName>,
+            birthday: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            biography: MockedObject<Biography>,
+            roles: MockedObject<Role[]>,
+            refreshTokens: MockedObject<RefreshToken[]>,
+            profilePicture: MockedObject<WebUrl>,
+            deletedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+            const originalId = 'original-verification-code-id';
+            verificationCodes = [
+              {
+                id: { value: originalId },
+              } as MockedObject<VerificationCode>,
+            ];
+            const user = User.create(
+              userId,
+              email,
+              username,
+              passwordHash,
+              isVerified,
+              verificationCodes,
+              isBlocked,
+              firstName,
+              lastName,
+              birthday,
+              createdAt,
+              updatedAt,
+              biography,
+              roles,
+              refreshTokens,
+              profilePicture,
+              deletedAt,
+            );
+
+            // Act
+            user.verificationCodes.push({
+              id: { value: 'new-verification-code-1' },
+            } as MockedObject<VerificationCode>);
+            user.verificationCodes[0] = {
+              id: { value: 'new-verification-code-2' },
+            } as MockedObject<VerificationCode>;
+
+            // Assert
+            expect(user.verificationCodes.length).toBe(1);
+            expect(user.verificationCodes[0].id.value).toBe(originalId);
+          },
+        );
+
+        test.each(validValues)(
+          'add a new verification code in a deleted User should throw error',
+          (
+            userId: MockedObject<UserId>,
+            email: MockedObject<Email>,
+            username: MockedObject<Username>,
+            passwordHash: MockedObject<PasswordHash>,
+            isVerified: MockedObject<IsVerified>,
+            verificationCodes: MockedObject<VerificationCode>[],
+            isBlocked: MockedObject<IsBlocked>,
+            firstName: MockedObject<FirstName>,
+            lastName: MockedObject<LastName>,
+            birthday: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            biography: MockedObject<Biography>,
+            roles: MockedObject<Role[]>,
+            refreshTokens: MockedObject<RefreshToken[]>,
+            profilePicture: MockedObject<WebUrl>,
+            deletedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+            const originalId = 'original-verification-code-id';
+            verificationCodes = [
+              {
+                id: { value: originalId },
+              } as MockedObject<VerificationCode>,
+            ];
+            deletedAt = {
+              getMilliseconds: 4,
+            } as MockedObject<MillisecondsDate>;
+            const user = User.create(
+              userId,
+              email,
+              username,
+              passwordHash,
+              isVerified,
+              verificationCodes,
+              isBlocked,
+              firstName,
+              lastName,
+              birthday,
+              createdAt,
+              updatedAt,
+              biography,
+              roles,
+              refreshTokens,
+              profilePicture,
+              deletedAt,
+            );
+
+            // Act
+            const newId = 'new-verification-code-id';
+            const newVerificationCode = {
+              id: { value: newId },
+            } as MockedObject<VerificationCode>;
+
+            // Assert
+            expect(() =>
+              user.addVerificationCode(newVerificationCode),
+            ).toThrowError(DeletedUserCannotGenerateNewVerificationCodesError);
+          },
+        );
+
+        test.each(validValues)(
+          'add a new verification code in a blocked User should throw error',
+          (
+            userId: MockedObject<UserId>,
+            email: MockedObject<Email>,
+            username: MockedObject<Username>,
+            passwordHash: MockedObject<PasswordHash>,
+            isVerified: MockedObject<IsVerified>,
+            verificationCodes: MockedObject<VerificationCode>[],
+            isBlocked: MockedObject<IsBlocked>,
+            firstName: MockedObject<FirstName>,
+            lastName: MockedObject<LastName>,
+            birthday: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            biography: MockedObject<Biography>,
+            roles: MockedObject<Role[]>,
+            refreshTokens: MockedObject<RefreshToken[]>,
+            profilePicture: MockedObject<WebUrl>,
+            deletedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+            const originalId = 'original-verification-code-id';
+            verificationCodes = [
+              {
+                id: { value: originalId },
+              } as MockedObject<VerificationCode>,
+            ];
+            isBlocked = {
+              getStatus: true,
+            } as MockedObject<IsBlocked>;
+            deletedAt = null;
+
+            const user = User.create(
+              userId,
+              email,
+              username,
+              passwordHash,
+              isVerified,
+              verificationCodes,
+              isBlocked,
+              firstName,
+              lastName,
+              birthday,
+              createdAt,
+              updatedAt,
+              biography,
+              roles,
+              refreshTokens,
+              profilePicture,
+              deletedAt,
+            );
+
+            // Act
+            const newId = 'new-verification-code-id';
+            const newVerificationCode = {
+              id: { value: newId },
+            } as MockedObject<VerificationCode>;
+
+            // Assert
+            expect(() =>
+              user.addVerificationCode(newVerificationCode),
+            ).toThrowError(BlockedUserCannotGenerateNewVerificationCodesError);
+          },
+        );
+
+        test.each(validValues)(
+          'add a new verification code in a already verified User should throw error',
+          (
+            userId: MockedObject<UserId>,
+            email: MockedObject<Email>,
+            username: MockedObject<Username>,
+            passwordHash: MockedObject<PasswordHash>,
+            isVerified: MockedObject<IsVerified>,
+            verificationCodes: MockedObject<VerificationCode>[],
+            isBlocked: MockedObject<IsBlocked>,
+            firstName: MockedObject<FirstName>,
+            lastName: MockedObject<LastName>,
+            birthday: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            biography: MockedObject<Biography>,
+            roles: MockedObject<Role[]>,
+            refreshTokens: MockedObject<RefreshToken[]>,
+            profilePicture: MockedObject<WebUrl>,
+            deletedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+            const originalId = 'original-verification-code-id';
+            verificationCodes = [
+              {
+                id: { value: originalId },
+              } as MockedObject<VerificationCode>,
+            ];
+            isBlocked = {
+              getStatus: false,
+            } as MockedObject<IsBlocked>;
+            isVerified = {
+              getStatus: true,
+            } as MockedObject<IsVerified>;
+            deletedAt = null;
+
+            const user = User.create(
+              userId,
+              email,
+              username,
+              passwordHash,
+              isVerified,
+              verificationCodes,
+              isBlocked,
+              firstName,
+              lastName,
+              birthday,
+              createdAt,
+              updatedAt,
+              biography,
+              roles,
+              refreshTokens,
+              profilePicture,
+              deletedAt,
+            );
+
+            // Act
+            const newId = 'new-verification-code-id';
+            const newVerificationCode = {
+              id: { value: newId },
+            } as MockedObject<VerificationCode>;
+
+            // Assert
+            expect(() =>
+              user.addVerificationCode(newVerificationCode),
+            ).toThrowError(VerifiedUserCannotGenerateNewVerificationCodesError);
+          },
+        );
+
+        test.each(validValues)(
+          'add a null verification code in an User should throw error',
+          (
+            userId: MockedObject<UserId>,
+            email: MockedObject<Email>,
+            username: MockedObject<Username>,
+            passwordHash: MockedObject<PasswordHash>,
+            isVerified: MockedObject<IsVerified>,
+            verificationCodes: MockedObject<VerificationCode>[],
+            isBlocked: MockedObject<IsBlocked>,
+            firstName: MockedObject<FirstName>,
+            lastName: MockedObject<LastName>,
+            birthday: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            biography: MockedObject<Biography>,
+            roles: MockedObject<Role[]>,
+            refreshTokens: MockedObject<RefreshToken[]>,
+            profilePicture: MockedObject<WebUrl>,
+            deletedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+            const originalId = 'original-verification-code-id';
+            verificationCodes = [
+              {
+                id: { value: originalId },
+              } as MockedObject<VerificationCode>,
+            ];
+            isBlocked = {
+              getStatus: false,
+            } as MockedObject<IsBlocked>;
+            isVerified = {
+              getStatus: false,
+            } as MockedObject<IsVerified>;
+            deletedAt = null;
+
+            const user = User.create(
+              userId,
+              email,
+              username,
+              passwordHash,
+              isVerified,
+              verificationCodes,
+              isBlocked,
+              firstName,
+              lastName,
+              birthday,
+              createdAt,
+              updatedAt,
+              biography,
+              roles,
+              refreshTokens,
+              profilePicture,
+              deletedAt,
+            );
+
+            // Act
+
+            // Assert
+            expect(() => user.addVerificationCode(null)).toThrowError(
+              InvalidUserVerificationCodeError,
+            );
+          },
+        );
+
+        test.each(validValues)(
+          'add a new verification code in an User should update the verificationCode array',
+          (
+            userId: MockedObject<UserId>,
+            email: MockedObject<Email>,
+            username: MockedObject<Username>,
+            passwordHash: MockedObject<PasswordHash>,
+            isVerified: MockedObject<IsVerified>,
+            verificationCodes: MockedObject<VerificationCode>[],
+            isBlocked: MockedObject<IsBlocked>,
+            firstName: MockedObject<FirstName>,
+            lastName: MockedObject<LastName>,
+            birthday: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            biography: MockedObject<Biography>,
+            roles: MockedObject<Role[]>,
+            refreshTokens: MockedObject<RefreshToken[]>,
+            profilePicture: MockedObject<WebUrl>,
+            deletedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+            const originalId = 'original-verification-code-id';
+            verificationCodes = [
+              {
+                id: { value: originalId },
+              } as MockedObject<VerificationCode>,
+            ];
+            isBlocked = {
+              getStatus: false,
+            } as MockedObject<IsBlocked>;
+            isVerified = {
+              getStatus: false,
+            } as MockedObject<IsVerified>;
+            deletedAt = null;
+
+            const user = User.create(
+              userId,
+              email,
+              username,
+              passwordHash,
+              isVerified,
+              verificationCodes,
+              isBlocked,
+              firstName,
+              lastName,
+              birthday,
+              createdAt,
+              updatedAt,
+              biography,
+              roles,
+              refreshTokens,
+              profilePicture,
+              deletedAt,
+            );
+
+            // Act
+            const newId = 'new-verification-code-id';
+            const newVerificationCode = {
+              id: { value: newId },
+            } as MockedObject<VerificationCode>;
+            user.addVerificationCode(newVerificationCode);
+
+            // Assert
+            expect(user.verificationCodes.length).toBe(2);
+            expect(user.verificationCodes[0].id.value).toBe(originalId);
+            expect(user.verificationCodes[1].id.value).toBe(newId);
+          },
+        );
+
+        test.each(validValues)(
+          'block User should change the property value',
+          (
+            userId: MockedObject<UserId>,
+            email: MockedObject<Email>,
+            username: MockedObject<Username>,
+            passwordHash: MockedObject<PasswordHash>,
+            isVerified: MockedObject<IsVerified>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -1714,12 +2204,12 @@ describe('users', () => {
           ) => {
             // Arrange
             const user = User.create(
-              uniqueId,
+              userId,
               email,
               username,
               passwordHash,
               isVerified,
-              verificationCode,
+              verificationCodes,
               isBlocked,
               firstName,
               lastName,
@@ -1744,12 +2234,12 @@ describe('users', () => {
         test.each(validValues)(
           'unblock User should change the property value',
           (
-            uniqueId: MockedObject<UniqueId>,
+            userId: MockedObject<UserId>,
             email: MockedObject<Email>,
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -1764,12 +2254,12 @@ describe('users', () => {
           ) => {
             // Arrange
             const user = User.create(
-              uniqueId,
+              userId,
               email,
               username,
               passwordHash,
               isVerified,
-              verificationCode,
+              verificationCodes,
               isBlocked,
               firstName,
               lastName,
@@ -1794,12 +2284,12 @@ describe('users', () => {
         test.each(validValues)(
           'update User profile should change the property values',
           (
-            uniqueId: MockedObject<UniqueId>,
+            userId: MockedObject<UserId>,
             email: MockedObject<Email>,
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -1814,12 +2304,12 @@ describe('users', () => {
           ) => {
             // Arrange
             const user = User.create(
-              uniqueId,
+              userId,
               email,
               username,
               passwordHash,
               isVerified,
-              verificationCode,
+              verificationCodes,
               isBlocked,
               firstName,
               lastName,
@@ -1871,12 +2361,12 @@ describe('users', () => {
         test.each(validValues)(
           'update User profile picture should change the property value',
           (
-            uniqueId: MockedObject<UniqueId>,
+            userId: MockedObject<UserId>,
             email: MockedObject<Email>,
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -1891,12 +2381,12 @@ describe('users', () => {
           ) => {
             // Arrange
             const user = User.create(
-              uniqueId,
+              userId,
               email,
               username,
               passwordHash,
               isVerified,
-              verificationCode,
+              verificationCodes,
               isBlocked,
               firstName,
               lastName,
@@ -1925,12 +2415,12 @@ describe('users', () => {
         test.each(validValues)(
           'update User profile picture with null value should change the property value',
           (
-            uniqueId: MockedObject<UniqueId>,
+            userId: MockedObject<UserId>,
             email: MockedObject<Email>,
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -1945,12 +2435,12 @@ describe('users', () => {
           ) => {
             // Arrange
             const user = User.create(
-              uniqueId,
+              userId,
               email,
               username,
               passwordHash,
               isVerified,
-              verificationCode,
+              verificationCodes,
               isBlocked,
               firstName,
               lastName,
@@ -1975,12 +2465,12 @@ describe('users', () => {
         test.each(validValues)(
           'delete User should change the property value',
           (
-            uniqueId: MockedObject<UniqueId>,
+            userId: MockedObject<UserId>,
             email: MockedObject<Email>,
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -1995,12 +2485,12 @@ describe('users', () => {
           ) => {
             // Arrange
             const user = User.create(
-              uniqueId,
+              userId,
               email,
               username,
               passwordHash,
               isVerified,
-              verificationCode,
+              verificationCodes,
               isBlocked,
               firstName,
               lastName,
@@ -2026,12 +2516,12 @@ describe('users', () => {
         test.each(validValues)(
           'undelete User should change the property value',
           (
-            uniqueId: MockedObject<UniqueId>,
+            userId: MockedObject<UserId>,
             email: MockedObject<Email>,
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -2046,12 +2536,12 @@ describe('users', () => {
           ) => {
             // Arrange
             const user = User.create(
-              uniqueId,
+              userId,
               email,
               username,
               passwordHash,
               isVerified,
-              verificationCode,
+              verificationCodes,
               isBlocked,
               firstName,
               lastName,
@@ -2077,12 +2567,12 @@ describe('users', () => {
         test.each(validValues)(
           'add role to a User who already has that role',
           (
-            uniqueId: MockedObject<UniqueId>,
+            userId: MockedObject<UserId>,
             email: MockedObject<Email>,
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -2106,12 +2596,12 @@ describe('users', () => {
               getRole: 'Admin',
             } as MockedObject<Role>;
             const user = User.create(
-              uniqueId,
+              userId,
               email,
               username,
               passwordHash,
               isVerified,
-              verificationCode,
+              verificationCodes,
               isBlocked,
               firstName,
               lastName,
@@ -2129,7 +2619,7 @@ describe('users', () => {
             user.addRole(roleToAdd);
 
             // Assert
-            expect(user.rolesLength).toBe(1);
+            expect(user.roles.length).toBe(1);
             expect(user.roles[0]).toBe('Admin');
           },
         );
@@ -2137,12 +2627,12 @@ describe('users', () => {
         test.each(validValues)(
           'add role to a User who has not that role',
           (
-            uniqueId: MockedObject<UniqueId>,
+            userId: MockedObject<UserId>,
             email: MockedObject<Email>,
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -2166,12 +2656,12 @@ describe('users', () => {
               getRole: 'Moderator',
             } as MockedObject<Role>;
             const user = User.create(
-              uniqueId,
+              userId,
               email,
               username,
               passwordHash,
               isVerified,
-              verificationCode,
+              verificationCodes,
               isBlocked,
               firstName,
               lastName,
@@ -2189,7 +2679,7 @@ describe('users', () => {
             user.addRole(roleToAdd);
 
             // Assert
-            expect(user.rolesLength).toBe(2);
+            expect(user.roles.length).toBe(2);
             expect(user.roles[0]).toBe('Admin');
             expect(user.roles[1]).toBe('Moderator');
           },
@@ -2198,12 +2688,12 @@ describe('users', () => {
         test.each(validValues)(
           'remove role from an User who has not that role',
           (
-            uniqueId: MockedObject<UniqueId>,
+            userId: MockedObject<UserId>,
             email: MockedObject<Email>,
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -2227,12 +2717,12 @@ describe('users', () => {
               getRole: 'Moderator',
             } as MockedObject<Role>;
             const user = User.create(
-              uniqueId,
+              userId,
               email,
               username,
               passwordHash,
               isVerified,
-              verificationCode,
+              verificationCodes,
               isBlocked,
               firstName,
               lastName,
@@ -2250,7 +2740,7 @@ describe('users', () => {
             user.removeRole(roleToRemove);
 
             // Assert
-            expect(user.rolesLength).toBe(1);
+            expect(user.roles.length).toBe(1);
             expect(user.roles[0]).toBe('Admin');
           },
         );
@@ -2258,12 +2748,12 @@ describe('users', () => {
         test.each(validValues)(
           'remove role from an User who has that role',
           (
-            uniqueId: MockedObject<UniqueId>,
+            userId: MockedObject<UserId>,
             email: MockedObject<Email>,
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -2287,12 +2777,12 @@ describe('users', () => {
               getRole: 'Admin',
             } as MockedObject<Role>;
             const user = User.create(
-              uniqueId,
+              userId,
               email,
               username,
               passwordHash,
               isVerified,
-              verificationCode,
+              verificationCodes,
               isBlocked,
               firstName,
               lastName,
@@ -2310,19 +2800,19 @@ describe('users', () => {
             user.removeRole(roleToRemove);
 
             // Assert
-            expect(user.rolesLength).toBe(0);
+            expect(user.roles.length).toBe(0);
           },
         );
 
         test.each(validValues)(
           'remove role from an User who has that role',
           (
-            uniqueId: MockedObject<UniqueId>,
+            userId: MockedObject<UserId>,
             email: MockedObject<Email>,
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -2350,12 +2840,12 @@ describe('users', () => {
               getRole: 'Admin',
             } as MockedObject<Role>;
             const user = User.create(
-              uniqueId,
+              userId,
               email,
               username,
               passwordHash,
               isVerified,
-              verificationCode,
+              verificationCodes,
               isBlocked,
               firstName,
               lastName,
@@ -2373,7 +2863,7 @@ describe('users', () => {
             user.removeRole(roleToRemove);
 
             // Assert
-            expect(user.rolesLength).toBe(1);
+            expect(user.roles.length).toBe(1);
             expect(user.roles[0]).toBe('Moderator');
           },
         );
@@ -2381,12 +2871,12 @@ describe('users', () => {
         test.each(validValues)(
           'make changes on refreshTokens getter should make no changes on the original refreshTokens array',
           (
-            uniqueId: MockedObject<UniqueId>,
+            userId: MockedObject<UserId>,
             email: MockedObject<Email>,
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -2403,16 +2893,16 @@ describe('users', () => {
             const originalId = 'refresh-token-id';
             refreshTokens = [
               {
-                id: { getId: originalId },
+                id: { value: originalId },
               } as MockedObject<RefreshToken>,
             ];
             const user = User.create(
-              uniqueId,
+              userId,
               email,
               username,
               passwordHash,
               isVerified,
-              verificationCode,
+              verificationCodes,
               isBlocked,
               firstName,
               lastName,
@@ -2428,27 +2918,27 @@ describe('users', () => {
 
             // Act
             user.refreshTokens.push({
-              id: { getId: 'new-refresh-token-1' },
+              id: { value: 'new-refresh-token-1' },
             } as MockedObject<RefreshToken>);
             user.refreshTokens[0] = {
-              id: { getId: 'new-refresh-token-2' },
+              id: { value: 'new-refresh-token-2' },
             } as MockedObject<RefreshToken>;
 
             // Assert
-            expect(user.refreshTokensLength).toBe(1);
-            expect(user.refreshTokens[0].id.getId).toBe(originalId);
+            expect(user.refreshTokens.length).toBe(1);
+            expect(user.refreshTokens[0].id.value).toBe(originalId);
           },
         );
 
         test.each(validValues)(
           'get RefreshToken from a User that do not have it should return null',
           (
-            uniqueId: MockedObject<UniqueId>,
+            userId: MockedObject<UserId>,
             email: MockedObject<Email>,
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -2462,21 +2952,21 @@ describe('users', () => {
             deletedAt: MockedObject<MillisecondsDate>,
           ) => {
             // Arrange
-            const refreshTokenUniqueId = {
+            const refreshTokenId = {
               equals: jest.fn().mockReturnValue(false),
-            } as MockedObject<UniqueId>;
+            } as MockedObject<RefreshTokenId>;
             const refreshToken = {
-              id: refreshTokenUniqueId as UniqueId,
+              id: refreshTokenId as RefreshTokenId,
             } as MockedObject<RefreshToken>;
             refreshTokens = [refreshToken];
 
             const user = User.create(
-              uniqueId,
+              userId,
               email,
               username,
               passwordHash,
               isVerified,
-              verificationCode,
+              verificationCodes,
               isBlocked,
               firstName,
               lastName,
@@ -2491,10 +2981,9 @@ describe('users', () => {
             );
 
             // Act
-            const refreshTokenUniqueIdToFind = {} as MockedObject<UniqueId>;
-            const refreshTokenFound = user.getRefreshToken(
-              refreshTokenUniqueIdToFind,
-            );
+            const refreshTokenIdToFind = {} as RefreshTokenId;
+            const refreshTokenFound =
+              user.getRefreshToken(refreshTokenIdToFind);
 
             // Assert
             expect(refreshTokenFound).toBeNull();
@@ -2504,12 +2993,12 @@ describe('users', () => {
         test.each(validValues)(
           'get RefreshToken from a User that have it should return it',
           (
-            uniqueId: MockedObject<UniqueId>,
+            userId: MockedObject<UserId>,
             email: MockedObject<Email>,
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -2523,30 +3012,30 @@ describe('users', () => {
             deletedAt: MockedObject<MillisecondsDate>,
           ) => {
             // Arrange
-            const refreshTokenUniqueId1 = {
+            const refreshTokenId1 = {
               equals: jest.fn().mockReturnValue(false),
-            } as MockedObject<UniqueId>;
+            } as MockedObject<RefreshTokenId>;
             const refreshToken1 = {
-              id: refreshTokenUniqueId1 as UniqueId,
+              id: refreshTokenId1 as RefreshTokenId,
             } as MockedObject<RefreshToken>;
 
-            const refreshTokenUniqueId2 = {
+            const refreshTokenId2 = {
               equals: jest.fn().mockReturnValue(true),
-            } as MockedObject<UniqueId>;
+            } as MockedObject<RefreshTokenId>;
             const refreshToken2 = {
-              id: refreshTokenUniqueId2 as UniqueId,
+              id: refreshTokenId2 as RefreshTokenId,
               ipAddress: '1.1.1.1',
             } as MockedObject<RefreshToken>;
 
             refreshTokens = [refreshToken1, refreshToken2];
 
             const user = User.create(
-              uniqueId,
+              userId,
               email,
               username,
               passwordHash,
               isVerified,
-              verificationCode,
+              verificationCodes,
               isBlocked,
               firstName,
               lastName,
@@ -2561,10 +3050,9 @@ describe('users', () => {
             );
 
             // Act
-            const refreshTokenUniqueIdToFind = {} as MockedObject<UniqueId>;
-            const refreshTokenFound = user.getRefreshToken(
-              refreshTokenUniqueIdToFind,
-            );
+            const refreshTokenIdToFind = {} as MockedObject<RefreshTokenId>;
+            const refreshTokenFound =
+              user.getRefreshToken(refreshTokenIdToFind);
 
             // Assert
             expect(refreshTokenFound.ipAddress).toBe('1.1.1.1');
@@ -2574,12 +3062,12 @@ describe('users', () => {
         test.each(validValues)(
           'add RefreshToken to a deleted User should throw exception',
           (
-            uniqueId: MockedObject<UniqueId>,
+            userId: MockedObject<UserId>,
             email: MockedObject<Email>,
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -2598,12 +3086,12 @@ describe('users', () => {
             } as MockedObject<MillisecondsDate>;
 
             const user = User.create(
-              uniqueId,
+              userId,
               email,
               username,
               passwordHash,
               isVerified,
-              verificationCode,
+              verificationCodes,
               isBlocked,
               firstName,
               lastName,
@@ -2629,12 +3117,12 @@ describe('users', () => {
         test.each(validValues)(
           'add RefreshToken to a blocked User should throw exception',
           (
-            uniqueId: MockedObject<UniqueId>,
+            userId: MockedObject<UserId>,
             email: MockedObject<Email>,
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -2654,12 +3142,12 @@ describe('users', () => {
             deletedAt = null;
 
             const user = User.create(
-              uniqueId,
+              userId,
               email,
               username,
               passwordHash,
               isVerified,
-              verificationCode,
+              verificationCodes,
               isBlocked,
               firstName,
               lastName,
@@ -2686,12 +3174,12 @@ describe('users', () => {
         test.each(validValues)(
           'add RefreshToken to a unverified User should throw exception',
           (
-            uniqueId: MockedObject<UniqueId>,
+            userId: MockedObject<UserId>,
             email: MockedObject<Email>,
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -2714,12 +3202,12 @@ describe('users', () => {
             deletedAt = null;
 
             const user = User.create(
-              uniqueId,
+              userId,
               email,
               username,
               passwordHash,
               isVerified,
-              verificationCode,
+              verificationCodes,
               isBlocked,
               firstName,
               lastName,
@@ -2746,12 +3234,12 @@ describe('users', () => {
         test.each(validValues)(
           'add a null RefreshToken to a User should throw exception',
           (
-            uniqueId: MockedObject<UniqueId>,
+            userId: MockedObject<UserId>,
             email: MockedObject<Email>,
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -2774,12 +3262,12 @@ describe('users', () => {
             deletedAt = null;
 
             const user = User.create(
-              uniqueId,
+              userId,
               email,
               username,
               passwordHash,
               isVerified,
-              verificationCode,
+              verificationCodes,
               isBlocked,
               firstName,
               lastName,
@@ -2805,12 +3293,12 @@ describe('users', () => {
         test.each(validValues)(
           'add a RefreshToken to a User that already have it should throw exception',
           (
-            uniqueId: MockedObject<UniqueId>,
+            userId: MockedObject<UserId>,
             email: MockedObject<Email>,
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -2837,12 +3325,12 @@ describe('users', () => {
             deletedAt = null;
 
             const user = User.create(
-              uniqueId,
+              userId,
               email,
               username,
               passwordHash,
               isVerified,
-              verificationCode,
+              verificationCodes,
               isBlocked,
               firstName,
               lastName,
@@ -2869,12 +3357,12 @@ describe('users', () => {
         test.each(validValues)(
           'add a RefreshToken to a User should add it',
           (
-            uniqueId: MockedObject<UniqueId>,
+            userId: MockedObject<UserId>,
             email: MockedObject<Email>,
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -2901,12 +3389,12 @@ describe('users', () => {
             deletedAt = null;
 
             const user = User.create(
-              uniqueId,
+              userId,
               email,
               username,
               passwordHash,
               isVerified,
-              verificationCode,
+              verificationCodes,
               isBlocked,
               firstName,
               lastName,
@@ -2932,12 +3420,12 @@ describe('users', () => {
         test.each(validValues)(
           'replace RefreshToken of a deleted User should throw exception',
           (
-            uniqueId: MockedObject<UniqueId>,
+            userId: MockedObject<UserId>,
             email: MockedObject<Email>,
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -2956,12 +3444,12 @@ describe('users', () => {
             } as MockedObject<MillisecondsDate>;
 
             const user = User.create(
-              uniqueId,
+              userId,
               email,
               username,
               passwordHash,
               isVerified,
-              verificationCode,
+              verificationCodes,
               isBlocked,
               firstName,
               lastName,
@@ -2987,12 +3475,12 @@ describe('users', () => {
         test.each(validValues)(
           'replace a RefreshToken of a blocked User should throw exception',
           (
-            uniqueId: MockedObject<UniqueId>,
+            userId: MockedObject<UserId>,
             email: MockedObject<Email>,
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -3012,12 +3500,12 @@ describe('users', () => {
             deletedAt = null;
 
             const user = User.create(
-              uniqueId,
+              userId,
               email,
               username,
               passwordHash,
               isVerified,
-              verificationCode,
+              verificationCodes,
               isBlocked,
               firstName,
               lastName,
@@ -3043,12 +3531,12 @@ describe('users', () => {
         test.each(validValues)(
           'replace a RefreshToken of a unverified User should throw exception',
           (
-            uniqueId: MockedObject<UniqueId>,
+            userId: MockedObject<UserId>,
             email: MockedObject<Email>,
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -3071,12 +3559,12 @@ describe('users', () => {
             deletedAt = null;
 
             const user = User.create(
-              uniqueId,
+              userId,
               email,
               username,
               passwordHash,
               isVerified,
-              verificationCode,
+              verificationCodes,
               isBlocked,
               firstName,
               lastName,
@@ -3102,12 +3590,12 @@ describe('users', () => {
         test.each(validValues)(
           'replace a null RefreshToken of a User should throw exception',
           (
-            uniqueId: MockedObject<UniqueId>,
+            userId: MockedObject<UserId>,
             email: MockedObject<Email>,
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -3130,12 +3618,12 @@ describe('users', () => {
             deletedAt = null;
 
             const user = User.create(
-              uniqueId,
+              userId,
               email,
               username,
               passwordHash,
               isVerified,
-              verificationCode,
+              verificationCodes,
               isBlocked,
               firstName,
               lastName,
@@ -3161,12 +3649,12 @@ describe('users', () => {
         test.each(validValues)(
           'replace a RefreshToken to a User that not have it should throw exception',
           (
-            uniqueId: MockedObject<UniqueId>,
+            userId: MockedObject<UserId>,
             email: MockedObject<Email>,
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -3180,11 +3668,11 @@ describe('users', () => {
             deletedAt: MockedObject<MillisecondsDate>,
           ) => {
             // Arrange
-            const refreshTokenUniqueId = {
+            const refreshTokenId = {
               equals: jest.fn().mockReturnValue(false),
-            } as MockedObject<UniqueId>;
+            } as MockedObject<RefreshTokenId>;
             const refreshTokenToReplace = {
-              id: refreshTokenUniqueId as UniqueId,
+              id: refreshTokenId as RefreshTokenId,
             } as MockedObject<RefreshToken>;
             refreshTokens = [refreshTokenToReplace];
             isVerified = {
@@ -3196,12 +3684,12 @@ describe('users', () => {
             deletedAt = null;
 
             const user = User.create(
-              uniqueId,
+              userId,
               email,
               username,
               passwordHash,
               isVerified,
-              verificationCode,
+              verificationCodes,
               isBlocked,
               firstName,
               lastName,
@@ -3228,12 +3716,12 @@ describe('users', () => {
         test.each(validValues)(
           'replace a RefreshToken to a User that already have it should throw exception',
           (
-            uniqueId: MockedObject<UniqueId>,
+            userId: MockedObject<UserId>,
             email: MockedObject<Email>,
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -3247,11 +3735,11 @@ describe('users', () => {
             deletedAt: MockedObject<MillisecondsDate>,
           ) => {
             // Arrange
-            const refreshTokenUniqueId = {
+            const refreshTokenId = {
               equals: jest.fn().mockReturnValue(true),
-            } as MockedObject<UniqueId>;
+            } as MockedObject<RefreshTokenId>;
             const refreshTokenToReplace = {
-              id: refreshTokenUniqueId as UniqueId,
+              id: refreshTokenId as RefreshTokenId,
               equals: jest.fn().mockReturnValue(true),
             } as MockedObject<RefreshToken>;
             refreshTokens = [refreshTokenToReplace];
@@ -3264,12 +3752,12 @@ describe('users', () => {
             deletedAt = null;
 
             const user = User.create(
-              uniqueId,
+              userId,
               email,
               username,
               passwordHash,
               isVerified,
-              verificationCode,
+              verificationCodes,
               isBlocked,
               firstName,
               lastName,
@@ -3296,12 +3784,12 @@ describe('users', () => {
         test.each(validValues)(
           'replace a RefreshToken of a User should update it',
           (
-            uniqueId: MockedObject<UniqueId>,
+            userId: MockedObject<UserId>,
             email: MockedObject<Email>,
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -3315,11 +3803,11 @@ describe('users', () => {
             deletedAt: MockedObject<MillisecondsDate>,
           ) => {
             // Arrange
-            const refreshTokenUniqueId = {
+            const refreshTokenId = {
               equals: jest.fn().mockReturnValue(true),
-            } as MockedObject<UniqueId>;
+            } as MockedObject<RefreshTokenId>;
             const refreshTokenToReplace = {
-              id: refreshTokenUniqueId as UniqueId,
+              id: refreshTokenId as RefreshTokenId,
               equals: jest.fn().mockReturnValue(false),
               replace: jest.fn(),
             } as MockedObject<RefreshToken>;
@@ -3333,12 +3821,12 @@ describe('users', () => {
             deletedAt = null;
 
             const user = User.create(
-              uniqueId,
+              userId,
               email,
               username,
               passwordHash,
               isVerified,
-              verificationCode,
+              verificationCodes,
               isBlocked,
               firstName,
               lastName,

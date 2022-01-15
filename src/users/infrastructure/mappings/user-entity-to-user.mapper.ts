@@ -1,9 +1,5 @@
-import {
-  MillisecondsDate,
-  UniqueId,
-  WebUrl,
-} from '../../../shared/domain/value-objects';
-import { User, VerificationCode } from '../../domain/entities';
+import { MillisecondsDate, WebUrl } from '../../../shared/domain/value-objects';
+import { User, UserId } from '../../domain/entities';
 import {
   Biography,
   Email,
@@ -15,17 +11,27 @@ import {
   Role,
   Username,
 } from '../../domain/value-objects';
-import { RefreshTokenEntity, UserEntity } from '../persistence/entities';
-import { refreshTokenEntityToRefreshToken } from '.';
+import {
+  RefreshTokenEntity,
+  UserEntity,
+  VerificationCodeEntity,
+} from '../persistence/entities';
+import {
+  refreshTokenEntityToRefreshToken,
+  verificationCodeEntityToVerificationCode,
+} from '.';
 
 export function userEntityToUser(userEntity: UserEntity): User {
-  const id = UniqueId.create(userEntity.id);
+  const userId = UserId.create(userEntity.id);
   const email = Email.create(userEntity.email);
   const username = Username.create(userEntity.username);
   const passwordHash = PasswordHash.create(userEntity.passwordHash);
   const isVerified = IsVerified.create(userEntity.isVerified);
-  const verificationCodeId = UniqueId.create(userEntity.verificationCode);
-  const verificationCode = VerificationCode.create(verificationCodeId);
+  const verificationCodes = userEntity.verificationCodes
+    .toArray()
+    .map((vc: VerificationCodeEntity) =>
+      verificationCodeEntityToVerificationCode(vc),
+    );
   const isBlocked = IsBlocked.create(userEntity.isBlocked);
   const firstName = FirstName.create(userEntity.firstName);
   const lastName = LastName.create(userEntity.lastName);
@@ -45,12 +51,12 @@ export function userEntityToUser(userEntity: UserEntity): User {
     .map((rt: RefreshTokenEntity) => refreshTokenEntityToRefreshToken(rt));
 
   return User.create(
-    id,
+    userId,
     email,
     username,
     passwordHash,
     isVerified,
-    verificationCode,
+    verificationCodes,
     isBlocked,
     firstName,
     lastName,

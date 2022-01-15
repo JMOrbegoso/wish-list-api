@@ -3,51 +3,51 @@ import { WebUrl } from '../../../shared/domain/value-objects';
 import { WishStage } from '../../domain/entities';
 import { wishStageToOutputWishStageDto } from '.';
 
-const validValues = [
-  {
-    id: {
-      getId: 'id 0',
-    },
-    title: {
-      getTitle: 'title 0',
-    },
-    description: {
-      getDescription: 'description 0',
-    },
-    createdAt: {
-      getMilliseconds: 2,
-    },
-    urls: [],
-    imageUrls: [],
-  } as MockedObject<WishStage>,
-  {
-    id: {
-      getId: 'id 1',
-    },
-    title: {
-      getTitle: 'title 1',
-    },
-    description: {
-      getDescription: 'description 1',
-    },
-    createdAt: {
-      getMilliseconds: 2,
-    },
-    urls: [
-      { getUrl: 'url 1' } as MockedObject<WebUrl>,
-      { getUrl: 'url 1 (1)' } as MockedObject<WebUrl>,
-    ] as MockedObject<WebUrl[]>,
-    imageUrls: [
-      { getUrl: 'image url 1' } as MockedObject<WebUrl>,
-      { getUrl: 'image url 1 (1)' } as MockedObject<WebUrl>,
-    ] as MockedObject<WebUrl[]>,
-  } as MockedObject<WishStage>,
-];
-
 describe('wishes', () => {
   describe('application', () => {
     describe('mappings', () => {
       describe('WishStage to OutputWishStageDto', () => {
+        const validValues = [
+          {
+            id: {
+              value: 'id 0',
+            },
+            title: {
+              getTitle: 'title 0',
+            },
+            description: {
+              getDescription: 'description 0',
+            },
+            createdAt: {
+              getMilliseconds: 2,
+            },
+            urls: [],
+            imageUrls: [],
+          } as MockedObject<WishStage>,
+          {
+            id: {
+              value: 'id 1',
+            },
+            title: {
+              getTitle: 'title 1',
+            },
+            description: {
+              getDescription: 'description 1',
+            },
+            createdAt: {
+              getMilliseconds: 2,
+            },
+            urls: [
+              { getUrl: 'url 1' } as MockedObject<WebUrl>,
+              { getUrl: 'url 1 (1)' } as MockedObject<WebUrl>,
+            ] as MockedObject<WebUrl[]>,
+            imageUrls: [
+              { getUrl: 'image url 1' } as MockedObject<WebUrl>,
+              { getUrl: 'image url 1 (1)' } as MockedObject<WebUrl>,
+            ] as MockedObject<WebUrl[]>,
+          } as MockedObject<WishStage>,
+        ];
+
         test.each(validValues)(
           'should map WishStage to OutputWishStageDto keeping all the property values',
           (wishStage: WishStage) => {
@@ -57,7 +57,7 @@ describe('wishes', () => {
             const dto = wishStageToOutputWishStageDto(wishStage);
 
             // Assert
-            expect(dto.id).toBe(wishStage.id.getId);
+            expect(dto.id).toBe(wishStage.id.value);
             expect(dto.title).toBe(wishStage.title.getTitle);
             expect(dto.description).toBe(wishStage.description.getDescription);
             expect(dto.createdAt).toBe(wishStage.createdAt.getMilliseconds);

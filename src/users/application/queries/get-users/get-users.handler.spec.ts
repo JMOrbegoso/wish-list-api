@@ -33,7 +33,7 @@ describe('users', () => {
             // Arrange
             const user = {
               id: {
-                getId: 'id-0',
+                value: 'id-0',
               },
               email: {
                 getEmail: 'email0@email.com',

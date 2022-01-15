@@ -2,8 +2,7 @@ import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { VerifyUserCommand } from '..';
 import { UnitOfWork } from '../../../../shared/domain/repositories';
-import { UniqueId } from '../../../../shared/domain/value-objects';
-import { VerificationCode } from '../../../domain/entities';
+import { VerificationCodeId } from '../../../domain/entities';
 import { UserRepository } from '../../../domain/repositories';
 
 @CommandHandler(VerifyUserCommand)
@@ -14,12 +13,16 @@ export class VerifyUserHandler implements ICommandHandler<VerifyUserCommand> {
   ) {}
 
   async execute(command: VerifyUserCommand): Promise<void> {
-    const id = UniqueId.create(command.verificationCode);
-    const verificationCode = VerificationCode.create(id);
+    if (!command?.verificationCode)
+      throw new BadRequestException('Invalid verification code.');
+
+    const verificationCodeId = VerificationCodeId.create(
+      command.verificationCode,
+    );
 
     // Get user by verification code
-    const user = await this.userRepository.getOneByVerificationCode(
-      verificationCode,
+    const user = await this.userRepository.getOneByVerificationCodeId(
+      verificationCodeId,
     );
     if (!user) throw new NotFoundException();
 
@@ -28,6 +31,13 @@ export class VerifyUserHandler implements ICommandHandler<VerifyUserCommand> {
     if (user.isBlocked) throw new BadRequestException('User is blocked.');
     if (user.isVerified)
       throw new BadRequestException('User is already verified.');
+
+    // Check if the verification code is valid
+    if (
+      user.verificationCodes.find((code) => code.id.equals(verificationCodeId))
+        .isExpired
+    )
+      throw new BadRequestException('Verification code is expired.');
 
     // Update the user properties
     user.verify();

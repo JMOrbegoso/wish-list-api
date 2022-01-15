@@ -1,7 +1,7 @@
+import { WishStageId } from '..';
 import { Entity } from '../../../../shared/domain/entities';
 import {
   MillisecondsDate,
-  UniqueId,
   WebUrl,
 } from '../../../../shared/domain/value-objects';
 import { WishDescription, WishTitle } from '../../value-objects';
@@ -17,7 +17,7 @@ import {
   TooManyWishStageUrlsError,
 } from './exceptions';
 
-export class WishStage extends Entity {
+export class WishStage extends Entity<WishStageId> {
   public static readonly MaxUrls = 5;
   public static readonly MaxImages = 5;
 
@@ -28,7 +28,7 @@ export class WishStage extends Entity {
   private _imageUrls: WebUrl[];
 
   private constructor(
-    id: UniqueId,
+    id: WishStageId,
     title: WishTitle,
     description: WishDescription,
     createdAt: MillisecondsDate,
@@ -60,7 +60,7 @@ export class WishStage extends Entity {
   }
 
   public static create(
-    id: UniqueId,
+    id: WishStageId,
     title: WishTitle,
     description: WishDescription,
     createdAt: MillisecondsDate,
@@ -68,10 +68,6 @@ export class WishStage extends Entity {
     imageUrls: WebUrl[] = [],
   ): WishStage {
     return new WishStage(id, title, description, createdAt, urls, imageUrls);
-  }
-
-  public get id(): UniqueId {
-    return this._id;
   }
 
   public get title(): WishTitle {
@@ -90,16 +86,8 @@ export class WishStage extends Entity {
     return [...this._urls];
   }
 
-  public get urlsLength(): number {
-    return this._urls.length;
-  }
-
   public get imageUrls(): WebUrl[] {
     return [...this._imageUrls];
-  }
-
-  public get imageUrlsLength(): number {
-    return this._imageUrls.length;
   }
 
   public update(

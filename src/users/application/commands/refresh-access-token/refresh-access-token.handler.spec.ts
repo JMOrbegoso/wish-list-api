@@ -2,8 +2,7 @@ import { UnauthorizedException } from '@nestjs/common';
 import { MockedObject } from 'ts-jest/dist/utils/testing';
 import { RefreshAccessTokenCommand, RefreshAccessTokenHandler } from '..';
 import { UnitOfWork } from '../../../../shared/domain/repositories';
-import { UniqueId } from '../../../../shared/domain/value-objects';
-import { RefreshToken, User } from '../../../domain/entities';
+import { RefreshToken, RefreshTokenId, User } from '../../../domain/entities';
 import { UserRepository } from '../../../domain/repositories';
 import { TokenService, UniqueIdGeneratorService } from '../../services';
 
@@ -91,7 +90,7 @@ describe('users', () => {
 
             const user = {
               id: {
-                getId: 'id-0',
+                value: 'id-0',
               },
               getRefreshToken: jest.fn().mockReturnValue(refreshTokenToReplace),
             } as MockedObject<User>;
@@ -135,7 +134,7 @@ describe('users', () => {
 
             const user = {
               id: {
-                getId: 'id-0',
+                value: 'id-0',
               },
               getRefreshToken: jest.fn().mockReturnValue(refreshTokenToReplace),
             } as MockedObject<User>;
@@ -212,7 +211,7 @@ describe('users', () => {
 
             const user = {
               id: {
-                getId: 'id-0',
+                value: 'id-0',
               },
               getRefreshToken: jest.fn().mockReturnValue(refreshTokenToReplace),
             } as MockedObject<User>;
@@ -291,7 +290,7 @@ describe('users', () => {
 
             const user = {
               id: {
-                getId: 'id-0',
+                value: 'id-0',
               },
               email: {
                 getEmail: 'email',
@@ -368,7 +367,7 @@ describe('users', () => {
 
             const user = {
               id: {
-                getId: 'id-0',
+                value: 'id-0',
               },
               email: {
                 getEmail: 'email',
@@ -445,7 +444,7 @@ describe('users', () => {
 
             const user = {
               id: {
-                getId: 'id-0',
+                value: 'id-0',
               },
               email: {
                 getEmail: 'email',
@@ -512,12 +511,12 @@ describe('users', () => {
               commitChanges: jest.fn(),
             } as MockedObject<UnitOfWork>;
 
-            const uniqueId = {
+            const refreshTokenToReplaceId = {
               equals: jest.fn().mockReturnValue(true),
-            } as MockedObject<UniqueId>;
+            } as MockedObject<RefreshTokenId>;
 
             const refreshTokenToReplace = {
-              id: uniqueId as UniqueId,
+              id: refreshTokenToReplaceId as RefreshTokenId,
               isExpired: false,
               isRevoked: false,
               wasReplaced: false,
@@ -527,7 +526,7 @@ describe('users', () => {
 
             const user = {
               id: {
-                getId: 'id-0',
+                value: 'id-0',
               },
               email: {
                 getEmail: 'email',
@@ -570,14 +569,14 @@ describe('users', () => {
               updateRefreshToken: jest.fn(),
             } as MockedObject<UserRepository>;
 
+            const accessToken = 'access-token';
             const tokenService = {
-              signPayload: jest.fn().mockReturnValue('access-token'),
+              signPayload: jest.fn().mockReturnValue(accessToken),
             } as MockedObject<TokenService>;
 
+            const refreshTokenId = 'refresh-token-id';
             const uniqueIdGeneratorService = {
-              generateId: jest.fn().mockReturnValue({
-                getId: 'new-refresh-token-id',
-              } as MockedObject<UniqueId>),
+              generateId: jest.fn().mockReturnValue(refreshTokenId),
             } as MockedObject<UniqueIdGeneratorService>;
 
             const handler = new RefreshAccessTokenHandler(
@@ -603,8 +602,8 @@ describe('users', () => {
             );
             expect(unitOfWork.commitChanges.mock.calls).toHaveLength(1);
 
-            expect(authTokens.access_token).toBe('access-token');
-            expect(authTokens.refresh_token).toBe('new-refresh-token-id');
+            expect(authTokens.access_token).toBe(accessToken);
+            expect(authTokens.refresh_token).toBe(refreshTokenId);
           },
         );
       });

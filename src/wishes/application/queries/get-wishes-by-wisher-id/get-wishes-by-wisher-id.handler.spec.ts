@@ -38,7 +38,7 @@ describe('wishes', () => {
             // Arrange
             const wish = {
               id: {
-                getId: 'id 0',
+                value: 'id 0',
               },
               title: {
                 getTitle: 'title 0',
@@ -57,7 +57,7 @@ describe('wishes', () => {
               },
               wisher: {
                 id: {
-                  getId: 'wisher id 0',
+                  value: 'wisher id 0',
                 },
               },
               urls: [],
@@ -83,7 +83,7 @@ describe('wishes', () => {
 
             // Assert
             expect(outputWishes.length).toBe(1);
-            expect(outputWishes[0].id).toBe(wish.id.getId);
+            expect(outputWishes[0].id).toBe(wish.id.value);
           },
         );
       });

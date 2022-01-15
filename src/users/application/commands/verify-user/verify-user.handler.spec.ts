@@ -2,294 +2,214 @@ import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { MockedObject } from 'ts-jest/dist/utils/testing';
 import { VerifyUserCommand, VerifyUserHandler } from '..';
 import { UnitOfWork } from '../../../../shared/domain/repositories';
-import { User } from '../../../domain/entities';
+import {
+  User,
+  VerificationCode,
+  VerificationCodeId,
+} from '../../../domain/entities';
 import { UserRepository } from '../../../domain/repositories';
-
-const commands = [
-  new VerifyUserCommand('code-0'),
-  new VerifyUserCommand('code-1'),
-  new VerifyUserCommand('code-2'),
-];
 
 describe('users', () => {
   describe('application', () => {
     describe('commands', () => {
       describe('verify-user', () => {
-        test.each(commands)(
-          'should throw NotFoundException',
-          (command: VerifyUserCommand) => {
-            // Arrange
-            const userRepository = {
-              getOneByVerificationCode: jest.fn().mockReturnValue(null),
-            } as MockedObject<UserRepository>;
+        it('command is null, so handler should throw BadRequestException', () => {
+          // Arrange
+          const userRepository = {} as MockedObject<UserRepository>;
+          const unitOfWork = {} as MockedObject<UnitOfWork>;
 
-            const unitOfWork = {} as MockedObject<UnitOfWork>;
+          const handler = new VerifyUserHandler(unitOfWork, userRepository);
 
-            const handler = new VerifyUserHandler(unitOfWork, userRepository);
+          // Act
 
-            // Act
+          // Assert
+          return expect(handler.execute(null)).rejects.toThrowError(
+            BadRequestException,
+          );
+        });
 
-            // Assert
-            return expect(handler.execute(command)).rejects.toThrowError(
-              NotFoundException,
-            );
-          },
-        );
+        it('verification code in command is null, so handler should throw BadRequestException', () => {
+          // Arrange
+          const userRepository = {} as MockedObject<UserRepository>;
+          const unitOfWork = {} as MockedObject<UnitOfWork>;
 
-        test.each(commands)(
-          'should throw BadRequestException because the user is deleted',
-          (command: VerifyUserCommand) => {
-            // Arrange
-            const user = {
-              id: {
-                getId: 'id-0',
-              },
-              email: {
-                getEmail: 'email0@email.com',
-              },
-              username: {
-                getUsername: 'John_Doe_0',
-              },
-              passwordHash: {
-                getPasswordHash: 'hash0',
-              },
-              isVerified: false,
-              isBlocked: false,
-              isDeleted: true,
-              firstName: {
-                getFirstName: 'FirstName0',
-              },
-              lastName: {
-                getLastName: 'LastName0',
-              },
-              birthday: {
-                getMilliseconds: 1,
-              },
-              createdAt: {
-                getMilliseconds: 2,
-              },
-              updatedAt: {
-                getMilliseconds: 3,
-              },
-              biography: {
-                getBiography: 'A nice person 0.',
-              },
-              profilePicture: {
-                getUrl: 'https://www.example.com/0.jpg',
-              },
-              deletedAt: {
-                getMilliseconds: 4,
-              },
-            } as MockedObject<User>;
+          const handler = new VerifyUserHandler(unitOfWork, userRepository);
 
-            const userRepository = {
-              getOneByVerificationCode: jest.fn().mockReturnValue(user),
-            } as MockedObject<UserRepository>;
+          const command = new VerifyUserCommand(null);
 
-            const unitOfWork = {} as MockedObject<UnitOfWork>;
+          // Act
 
-            const handler = new VerifyUserHandler(unitOfWork, userRepository);
+          // Assert
+          return expect(handler.execute(command)).rejects.toThrowError(
+            BadRequestException,
+          );
+        });
 
-            // Act
+        it('user does not exist, so should throw NotFoundException', () => {
+          // Arrange
+          const userRepository = {
+            getOneByVerificationCodeId: jest.fn().mockReturnValue(null),
+          } as MockedObject<UserRepository>;
 
-            // Assert
-            return expect(handler.execute(command)).rejects.toThrowError(
-              BadRequestException,
-            );
-          },
-        );
+          const unitOfWork = {} as MockedObject<UnitOfWork>;
 
-        test.each(commands)(
-          'should throw BadRequestException because the user is blocked',
-          (command: VerifyUserCommand) => {
-            // Arrange
-            const user = {
-              id: {
-                getId: 'id-0',
-              },
-              email: {
-                getEmail: 'email0@email.com',
-              },
-              username: {
-                getUsername: 'John_Doe_0',
-              },
-              passwordHash: {
-                getPasswordHash: 'hash0',
-              },
-              isVerified: false,
-              isBlocked: true,
-              isDeleted: false,
-              firstName: {
-                getFirstName: 'FirstName0',
-              },
-              lastName: {
-                getLastName: 'LastName0',
-              },
-              birthday: {
-                getMilliseconds: 1,
-              },
-              createdAt: {
-                getMilliseconds: 2,
-              },
-              updatedAt: {
-                getMilliseconds: 3,
-              },
-              biography: {
-                getBiography: 'A nice person 0.',
-              },
-              profilePicture: {
-                getUrl: 'https://www.example.com/0.jpg',
-              },
-              deletedAt: {
-                getMilliseconds: 4,
-              },
-            } as MockedObject<User>;
+          const handler = new VerifyUserHandler(unitOfWork, userRepository);
 
-            const userRepository = {
-              getOneByVerificationCode: jest.fn().mockReturnValue(user),
-            } as MockedObject<UserRepository>;
+          const command = new VerifyUserCommand('id-0');
 
-            const unitOfWork = {} as MockedObject<UnitOfWork>;
+          // Act
 
-            const handler = new VerifyUserHandler(unitOfWork, userRepository);
+          // Assert
+          return expect(handler.execute(command)).rejects.toThrowError(
+            NotFoundException,
+          );
+        });
 
-            // Act
+        it('user is deleted, so should throw BadRequestException', () => {
+          // Arrange
+          const user = { isDeleted: true } as MockedObject<User>;
 
-            // Assert
-            return expect(handler.execute(command)).rejects.toThrowError(
-              BadRequestException,
-            );
-          },
-        );
+          const userRepository = {
+            getOneByVerificationCodeId: jest.fn().mockReturnValue(user),
+          } as MockedObject<UserRepository>;
 
-        test.each(commands)(
-          'should throw BadRequestException because the user is already verified',
-          (command: VerifyUserCommand) => {
-            // Arrange
-            const user = {
-              id: {
-                getId: 'id-0',
-              },
-              email: {
-                getEmail: 'email0@email.com',
-              },
-              username: {
-                getUsername: 'John_Doe_0',
-              },
-              passwordHash: {
-                getPasswordHash: 'hash0',
-              },
-              isVerified: true,
-              isBlocked: false,
-              firstName: {
-                getFirstName: 'FirstName0',
-              },
-              lastName: {
-                getLastName: 'LastName0',
-              },
-              birthday: {
-                getMilliseconds: 1,
-              },
-              createdAt: {
-                getMilliseconds: 2,
-              },
-              updatedAt: {
-                getMilliseconds: 3,
-              },
-              biography: {
-                getBiography: 'A nice person 0.',
-              },
-              profilePicture: {
-                getUrl: 'https://www.example.com/0.jpg',
-              },
-              deletedAt: {
-                getMilliseconds: 4,
-              },
-            } as MockedObject<User>;
+          const unitOfWork = {} as MockedObject<UnitOfWork>;
 
-            const userRepository = {
-              getOneByVerificationCode: jest.fn().mockReturnValue(user),
-            } as MockedObject<UserRepository>;
+          const handler = new VerifyUserHandler(unitOfWork, userRepository);
 
-            const unitOfWork = {} as MockedObject<UnitOfWork>;
+          const command = new VerifyUserCommand('id-0');
 
-            const handler = new VerifyUserHandler(unitOfWork, userRepository);
+          // Act
 
-            // Act
+          // Assert
+          return expect(handler.execute(command)).rejects.toThrowError(
+            BadRequestException,
+          );
+        });
 
-            // Assert
-            return expect(handler.execute(command)).rejects.toThrowError(
-              BadRequestException,
-            );
-          },
-        );
+        it('user is blocked, so should throw BadRequestException', () => {
+          // Arrange
+          const user = {
+            isDeleted: false,
+            isBlocked: true,
+          } as MockedObject<User>;
 
-        test.each(commands)(
-          'should call the method verify of the User, call the update method of the UserRepository and the commitChanges method of the UnitOfWork',
-          async (command: VerifyUserCommand) => {
-            // Arrange
-            const user = {
-              id: {
-                getId: 'id-0',
-              },
-              email: {
-                getEmail: 'email0@email.com',
-              },
-              username: {
-                getUsername: 'John_Doe_0',
-              },
-              passwordHash: {
-                getPasswordHash: 'hash0',
-              },
-              isVerified: false,
-              isBlocked: false,
-              firstName: {
-                getFirstName: 'FirstName0',
-              },
-              lastName: {
-                getLastName: 'LastName0',
-              },
-              birthday: {
-                getMilliseconds: 1,
-              },
-              createdAt: {
-                getMilliseconds: 2,
-              },
-              updatedAt: {
-                getMilliseconds: 3,
-              },
-              biography: {
-                getBiography: 'A nice person 0.',
-              },
-              profilePicture: {
-                getUrl: 'https://www.example.com/0.jpg',
-              },
-              deletedAt: {
-                getMilliseconds: 4,
-              },
-              verify: jest.fn(),
-            } as MockedObject<User>;
+          const userRepository = {
+            getOneByVerificationCodeId: jest.fn().mockReturnValue(user),
+          } as MockedObject<UserRepository>;
 
-            const userRepository = {
-              getOneByVerificationCode: jest.fn().mockReturnValue(user),
-              updateUser: jest.fn(),
-            } as MockedObject<UserRepository>;
+          const unitOfWork = {} as MockedObject<UnitOfWork>;
 
-            const unitOfWork = {
-              commitChanges: jest.fn(),
-            } as MockedObject<UnitOfWork>;
+          const handler = new VerifyUserHandler(unitOfWork, userRepository);
 
-            const handler = new VerifyUserHandler(unitOfWork, userRepository);
+          const command = new VerifyUserCommand('id-0');
 
-            // Act
-            await handler.execute(command);
+          // Act
 
-            // Assert
-            expect(user.verify.mock.calls).toHaveLength(1);
-            expect(userRepository.updateUser.mock.calls).toHaveLength(1);
-            expect(unitOfWork.commitChanges.mock.calls).toHaveLength(1);
-          },
-        );
+          // Assert
+          return expect(handler.execute(command)).rejects.toThrowError(
+            BadRequestException,
+          );
+        });
+
+        it('user is already verified, so should throw BadRequestException', () => {
+          // Arrange
+          const user = {
+            isDeleted: false,
+            isBlocked: false,
+            isVerified: true,
+          } as MockedObject<User>;
+
+          const userRepository = {
+            getOneByVerificationCodeId: jest.fn().mockReturnValue(user),
+          } as MockedObject<UserRepository>;
+
+          const unitOfWork = {} as MockedObject<UnitOfWork>;
+
+          const handler = new VerifyUserHandler(unitOfWork, userRepository);
+
+          const command = new VerifyUserCommand('id-0');
+
+          // Act
+
+          // Assert
+          return expect(handler.execute(command)).rejects.toThrowError(
+            BadRequestException,
+          );
+        });
+
+        it('verification code is expired, so should throw BadRequestException', () => {
+          // Arrange
+          const verificationCode = {
+            id: {
+              equals: jest.fn().mockReturnValue(true),
+            } as MockedObject<VerificationCodeId> as VerificationCodeId,
+            isExpired: true,
+          } as MockedObject<VerificationCode>;
+          const user = {
+            isDeleted: false,
+            isBlocked: false,
+            isVerified: false,
+            verify: jest.fn(),
+            verificationCodes: [verificationCode] as VerificationCode[],
+          } as MockedObject<User>;
+
+          const userRepository = {
+            getOneByVerificationCodeId: jest.fn().mockReturnValue(user),
+            updateUser: jest.fn(),
+          } as MockedObject<UserRepository>;
+
+          const unitOfWork = {} as MockedObject<UnitOfWork>;
+
+          const handler = new VerifyUserHandler(unitOfWork, userRepository);
+
+          const command = new VerifyUserCommand('id-0');
+
+          // Act
+
+          // Assert
+          return expect(handler.execute(command)).rejects.toThrowError(
+            BadRequestException,
+          );
+        });
+
+        it('should call the method verify of the User, call the updateUser method of the UserRepository and the commitChanges method of the UnitOfWork', async () => {
+          // Arrange
+          const verificationCode = {
+            id: {
+              equals: jest.fn().mockReturnValue(true),
+            } as MockedObject<VerificationCodeId> as VerificationCodeId,
+            isExpired: false,
+          } as MockedObject<VerificationCode>;
+          const user = {
+            isDeleted: false,
+            isBlocked: false,
+            isVerified: false,
+            verify: jest.fn(),
+            verificationCodes: [verificationCode] as VerificationCode[],
+          } as MockedObject<User>;
+
+          const userRepository = {
+            getOneByVerificationCodeId: jest.fn().mockReturnValue(user),
+            updateUser: jest.fn(),
+          } as MockedObject<UserRepository>;
+
+          const unitOfWork = {
+            commitChanges: jest.fn(),
+          } as MockedObject<UnitOfWork>;
+
+          const handler = new VerifyUserHandler(unitOfWork, userRepository);
+
+          const command = new VerifyUserCommand('id-0');
+
+          // Act
+          await handler.execute(command);
+
+          // Assert
+          expect(user.verify.mock.calls).toHaveLength(1);
+          expect(userRepository.updateUser.mock.calls).toHaveLength(1);
+          expect(unitOfWork.commitChanges.mock.calls).toHaveLength(1);
+        });
       });
     });
   });

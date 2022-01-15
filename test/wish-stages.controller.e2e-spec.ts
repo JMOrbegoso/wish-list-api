@@ -868,7 +868,7 @@ describe('WishStagesController (e2e)', () => {
 
       describe(`should return 404`, () => {
         it(`wish stage not found`, () => {
-          const id = '61cce183b8917063ed614a0a';
+          const id = new ObjectId().toString();
           return request(app.getHttpServer())
             .patch(`/wish-stages/${id}`)
             .send({
@@ -905,27 +905,27 @@ describe('WishStagesController (e2e)', () => {
 
               expect(wishStagesDb).toHaveLength(5);
 
-              const wishStageCreated = wishStagesDb.find(
+              const wishStageUpdated = wishStagesDb.find(
                 (u) => u._id.toString() === id,
               );
 
-              expect(wishStageCreated).toBeTruthy();
+              expect(wishStageUpdated).toBeTruthy();
 
-              expect(wishStageCreated._id.toString()).toBe(id);
-              expect(wishStageCreated.wish.toString()).toBe(
+              expect(wishStageUpdated._id.toString()).toBe(id);
+              expect(wishStageUpdated.wish.toString()).toBe(
                 seed.publicWish_1._id.toString(),
               );
-              expect(wishStageCreated.title).toBe(title);
-              expect(wishStageCreated.description).toBe(description);
-              expect(wishStageCreated.createdAt).toBeTruthy();
-              expect(wishStageCreated.urls).toHaveLength(urls.length);
-              expect(wishStageCreated.imageUrls).toHaveLength(imageUrls.length);
+              expect(wishStageUpdated.title).toBe(title);
+              expect(wishStageUpdated.description).toBe(description);
+              expect(wishStageUpdated.createdAt).toBeTruthy();
+              expect(wishStageUpdated.urls).toHaveLength(urls.length);
+              expect(wishStageUpdated.imageUrls).toHaveLength(imageUrls.length);
 
               for (let i = 0; i < urls.length; i++)
-                expect(wishStageCreated.urls[i]).toBe(urls[i]);
+                expect(wishStageUpdated.urls[i]).toBe(urls[i]);
 
               for (let i = 0; i < imageUrls.length; i++)
-                expect(wishStageCreated.imageUrls[i]).toBe(imageUrls[i]);
+                expect(wishStageUpdated.imageUrls[i]).toBe(imageUrls[i]);
             })
             .expect(async () => {
               // Check if the wish has not changed
@@ -1047,7 +1047,7 @@ describe('WishStagesController (e2e)', () => {
       });
 
       describe(`should return 403`, () => {
-        it(`unauthenticated request`, () => {
+        it(`publicWish_2 does not belong to the basicUser`, () => {
           const id = seed.wishStage_of_PublicWish_2._id.toString();
           return request(app.getHttpServer())
             .delete(`/wish-stages/${id}`)
@@ -1057,8 +1057,8 @@ describe('WishStagesController (e2e)', () => {
       });
 
       describe(`should return 404`, () => {
-        it(`unauthenticated request`, () => {
-          const id = 'wish-stage-id';
+        it(`wish stage not found`, () => {
+          const id = new ObjectId().toString();
           return request(app.getHttpServer())
             .delete(`/wish-stages/${id}`)
             .auth(accessTokenBasicUser, { type: 'bearer' })

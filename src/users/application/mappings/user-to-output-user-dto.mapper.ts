@@ -4,7 +4,7 @@ import { OutputUserDto } from '../dtos';
 export function userToOutputUserDto(user: User): OutputUserDto {
   const dto = new OutputUserDto();
 
-  dto.id = user.id.getId;
+  dto.id = user.id.value.toString();
   dto.email = user.email.getEmail;
   dto.username = user.username.getUsername;
   dto.isVerified = user.isVerified;

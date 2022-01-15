@@ -187,6 +187,7 @@ describe('WishesController (e2e)', () => {
       ];
       const categories = ['category 1', 'category 2'];
       const startedAt = new Date().getTime();
+      const completedAt = new Date().getTime();
 
       describe(`should return 401`, () => {
         it(`unauthenticated request`, () => {
@@ -830,7 +831,6 @@ describe('WishesController (e2e)', () => {
               urls,
               imageUrls,
               categories,
-              startedAt,
             } as CreateWishDto)
             .auth(accessTokenBasicUser, { type: 'bearer' })
             .expect(201)
@@ -866,8 +866,82 @@ describe('WishesController (e2e)', () => {
               for (let i = 0; i < categories.length; i++)
                 expect(wishCreated.categories[i]).toBe(categories[i]);
 
-              expect(wishCreated.startedAt.getTime()).toBe(startedAt);
               expect(wishCreated.deletedAt).toBeFalsy();
+              expect(wishCreated.startedAt).toBeFalsy();
+              expect(wishCreated.completedAt).toBeFalsy();
+            })
+            .expect(async () => {
+              const wishersDb: WisherEntity[] = await database
+                .collection('wishers')
+                .find()
+                .toArray();
+
+              expect(wishersDb).toHaveLength(2);
+
+              const wisherExistent = wishersDb.find(
+                (u) => u._id.toString() === seed.basicUser._id.toString(),
+              );
+
+              expect(wisherExistent).toBeTruthy();
+              expect(wisherExistent._id.toString()).toBe(
+                seed.basicUser._id.toString(),
+              );
+            });
+        });
+
+        it(`should create wish but not wisher because it is already created`, () => {
+          const wisherId = seed.basicUserAsWisher._id.toString();
+          return request(app.getHttpServer())
+            .post('/wishes')
+            .send({
+              id,
+              wisherId,
+              title,
+              description,
+              privacyLevel,
+              urls,
+              imageUrls,
+              categories,
+              startedAt,
+              completedAt,
+            } as CreateWishDto)
+            .auth(accessTokenBasicUser, { type: 'bearer' })
+            .expect(201)
+            .expect(async () => {
+              const wishesDb: WishEntity[] = await database
+                .collection('wishes')
+                .find()
+                .toArray();
+
+              expect(wishesDb).toHaveLength(5);
+
+              const wishCreated = wishesDb.find((u) => u._id.toString() === id);
+
+              expect(wishCreated).toBeTruthy();
+
+              expect(wishCreated._id.toString()).toBe(id);
+              expect(wishCreated.title).toBe(title);
+              expect(wishCreated.description).toBe(description);
+              expect(wishCreated.privacyLevel).toBe(privacyLevel);
+              expect(wishCreated.createdAt).toBeTruthy();
+              expect(wishCreated.updatedAt).toBeTruthy();
+              expect(wishCreated.wisher.toString()).toBe(wisherId);
+
+              expect(wishCreated.urls).toHaveLength(urls.length);
+              for (let i = 0; i < urls.length; i++)
+                expect(wishCreated.urls[i]).toBe(urls[i]);
+
+              expect(wishCreated.imageUrls).toHaveLength(imageUrls.length);
+              for (let i = 0; i < imageUrls.length; i++)
+                expect(wishCreated.imageUrls[i]).toBe(imageUrls[i]);
+
+              expect(wishCreated.categories).toHaveLength(categories.length);
+              for (let i = 0; i < categories.length; i++)
+                expect(wishCreated.categories[i]).toBe(categories[i]);
+
+              expect(wishCreated.deletedAt).toBeFalsy();
+              expect(wishCreated.startedAt.getTime()).toBe(startedAt);
+              expect(wishCreated.completedAt.getTime()).toBe(completedAt);
             })
             .expect(async () => {
               const wishersDb: WisherEntity[] = await database
@@ -902,6 +976,7 @@ describe('WishesController (e2e)', () => {
               imageUrls,
               categories,
               startedAt,
+              completedAt,
             } as CreateWishDto)
             .auth(accessTokenAdminUser, { type: 'bearer' })
             .expect(201)
@@ -937,8 +1012,9 @@ describe('WishesController (e2e)', () => {
               for (let i = 0; i < categories.length; i++)
                 expect(wishCreated.categories[i]).toBe(categories[i]);
 
-              expect(wishCreated.startedAt.getTime()).toBe(startedAt);
               expect(wishCreated.deletedAt).toBeFalsy();
+              expect(wishCreated.startedAt.getTime()).toBe(startedAt);
+              expect(wishCreated.completedAt.getTime()).toBe(completedAt);
             })
             .expect(async () => {
               const wishersDb: WisherEntity[] = await database
@@ -966,6 +1042,7 @@ describe('WishesController (e2e)', () => {
     describe('PATCH', () => {
       const title = 'New name';
       const description = 'New description.';
+      const privacyLevel = 'JustFriends';
       const urls = [
         'https://www.example.com/new-url/1',
         'https://www.example.com/new-url/2',
@@ -976,6 +1053,8 @@ describe('WishesController (e2e)', () => {
         'https://www.example.com/new-url/2.jpg',
       ];
       const categories = ['new category 1', 'new category 2'];
+      const startedAt = new Date().getTime();
+      const completedAt = new Date().getTime();
 
       describe(`should return 401`, () => {
         it(`unauthenticated request`, () => {
@@ -986,6 +1065,7 @@ describe('WishesController (e2e)', () => {
               id,
               title,
               description,
+              privacyLevel,
               urls,
               imageUrls,
               categories,
@@ -1003,6 +1083,7 @@ describe('WishesController (e2e)', () => {
               id,
               title,
               description,
+              privacyLevel,
               urls,
               imageUrls,
               categories,
@@ -1014,13 +1095,14 @@ describe('WishesController (e2e)', () => {
 
       describe(`should return 404`, () => {
         it(`wish not found`, () => {
-          const id = '61cce183b8917063ed614a17';
+          const id = new ObjectId().toString();
           return request(app.getHttpServer())
             .patch(`/wishes/${id}`)
             .send({
               id,
               title,
               description,
+              privacyLevel,
               urls,
               imageUrls,
               categories,
@@ -1038,6 +1120,7 @@ describe('WishesController (e2e)', () => {
             .send({
               id,
               description,
+              privacyLevel,
               urls,
               imageUrls,
               categories,
@@ -1061,6 +1144,7 @@ describe('WishesController (e2e)', () => {
               id,
               title: 1000,
               description,
+              privacyLevel,
               urls,
               imageUrls,
               categories,
@@ -1084,6 +1168,7 @@ describe('WishesController (e2e)', () => {
               id,
               title: 'a'.repeat(WishTitle.MaxLength + 1),
               description,
+              privacyLevel,
               urls,
               imageUrls,
               categories,
@@ -1106,6 +1191,7 @@ describe('WishesController (e2e)', () => {
             .send({
               id,
               title,
+              privacyLevel,
               urls,
               imageUrls,
               categories,
@@ -1129,6 +1215,7 @@ describe('WishesController (e2e)', () => {
               id,
               title,
               description: 1000,
+              privacyLevel,
               urls,
               imageUrls,
               categories,
@@ -1152,6 +1239,7 @@ describe('WishesController (e2e)', () => {
               id,
               title,
               description: 'a'.repeat(WishDescription.MaxLength + 1),
+              privacyLevel,
               urls,
               imageUrls,
               categories,
@@ -1167,6 +1255,53 @@ describe('WishesController (e2e)', () => {
             );
         });
 
+        it(`privacyLevel should not be empty`, () => {
+          const id = seed.publicWish_1._id.toString();
+          return request(app.getHttpServer())
+            .patch(`/wishes/${id}`)
+            .send({
+              id,
+              title,
+              description,
+              urls,
+              imageUrls,
+              categories,
+            } as UpdateWishDto)
+            .auth(accessTokenBasicUser, { type: 'bearer' })
+            .expect(400)
+            .expect(({ body }) =>
+              expect(
+                (body.message as string[]).some((m) =>
+                  m.match(/privacyLevel must be a valid enum value/i),
+                ),
+              ).toBeTruthy(),
+            );
+        });
+
+        it(`privacyLevel must be a valid enum value`, () => {
+          const id = seed.publicWish_1._id.toString();
+          return request(app.getHttpServer())
+            .patch(`/wishes/${id}`)
+            .send({
+              id,
+              title,
+              description,
+              privacyLevel: 10,
+              urls: 'https://www.example.com',
+              imageUrls,
+              categories,
+            } as unknown as UpdateWishDto)
+            .auth(accessTokenBasicUser, { type: 'bearer' })
+            .expect(400)
+            .expect(({ body }) =>
+              expect(
+                (body.message as string[]).some((m) =>
+                  m.match(/privacyLevel must be a valid enum value/i),
+                ),
+              ).toBeTruthy(),
+            );
+        });
+
         it(`urls must be an array`, () => {
           const id = seed.publicWish_1._id.toString();
           return request(app.getHttpServer())
@@ -1175,6 +1310,7 @@ describe('WishesController (e2e)', () => {
               id,
               title,
               description,
+              privacyLevel,
               urls: 'https://www.example.com',
               imageUrls,
               categories,
@@ -1198,6 +1334,7 @@ describe('WishesController (e2e)', () => {
               id,
               title,
               description,
+              privacyLevel,
               urls: Array(Wish.MaxUrls + 1).fill('https://www.example.com'),
               imageUrls,
               categories,
@@ -1221,6 +1358,7 @@ describe('WishesController (e2e)', () => {
               id,
               title,
               description,
+              privacyLevel,
               urls: [
                 'https://www.example.com',
                 1000,
@@ -1248,6 +1386,7 @@ describe('WishesController (e2e)', () => {
               id,
               title,
               description,
+              privacyLevel,
               urls,
               imageUrls: 'https://www.example.com/1.jpg',
               categories,
@@ -1271,6 +1410,7 @@ describe('WishesController (e2e)', () => {
               id,
               title,
               description,
+              privacyLevel,
               urls,
               imageUrls: Array(Wish.MaxUrls + 1).fill(
                 'https://www.example.com',
@@ -1296,6 +1436,7 @@ describe('WishesController (e2e)', () => {
               id,
               title,
               description,
+              privacyLevel,
               urls,
               imageUrls: [
                 'https://www.example.com/1.jpg',
@@ -1323,6 +1464,7 @@ describe('WishesController (e2e)', () => {
               id,
               title,
               description,
+              privacyLevel,
               urls,
               imageUrls,
               categories: 'new category',
@@ -1346,6 +1488,7 @@ describe('WishesController (e2e)', () => {
               id,
               title,
               description,
+              privacyLevel,
               urls,
               imageUrls,
               categories: Array(Wish.MaxCategories + 1).fill('new category'),
@@ -1369,6 +1512,7 @@ describe('WishesController (e2e)', () => {
               id,
               title,
               description,
+              privacyLevel,
               urls,
               imageUrls,
               categories: ['new category 1', 1000, 'new category 2'],
@@ -1392,6 +1536,7 @@ describe('WishesController (e2e)', () => {
               id: 'wish-id-2',
               title,
               description,
+              privacyLevel,
               urls,
               imageUrls,
               categories,
@@ -1413,6 +1558,7 @@ describe('WishesController (e2e)', () => {
               id,
               title,
               description,
+              privacyLevel,
               urls,
               imageUrls,
               categories,
@@ -1437,9 +1583,7 @@ describe('WishesController (e2e)', () => {
               );
               expect(wishUpdated.title).toBe(title);
               expect(wishUpdated.description).toBe(description);
-              expect(wishUpdated.privacyLevel).toBe(
-                seed.publicWish_1.privacyLevel,
-              );
+              expect(wishUpdated.privacyLevel).toBe(privacyLevel);
               expect(wishUpdated.createdAt).toBeTruthy();
               expect(wishUpdated.createdAt.getTime()).toBe(
                 seed.publicWish_1.createdAt.getTime(),
@@ -1462,12 +1606,108 @@ describe('WishesController (e2e)', () => {
                 expect(wishUpdated.categories[i]).toBe(categories[i]);
 
               expect(wishUpdated.deletedAt).toBeNull();
-              expect(wishUpdated.startedAt.getTime()).toBe(
-                seed.publicWish_1.startedAt.getTime(),
+              expect(wishUpdated.startedAt).toBeNull();
+              expect(wishUpdated.completedAt).toBeNull();
+            })
+            .expect(async () => {
+              const wishersDb: WisherEntity[] = await database
+                .collection('wishers')
+                .find()
+                .toArray();
+
+              expect(wishersDb).toHaveLength(2);
+
+              const wisher = wishersDb.find(
+                (u) =>
+                  u._id.toString() === seed.basicUserAsWisher._id.toString(),
               );
-              expect(wishUpdated.completedAt.getTime()).toBe(
-                seed.publicWish_1.completedAt.getTime(),
+
+              expect(wisher).toBeTruthy();
+            })
+            .expect(async () => {
+              const wishStagesDb: WishStageEntity[] = await database
+                .collection('wish-stages')
+                .find()
+                .toArray();
+
+              expect(wishStagesDb).toHaveLength(5);
+
+              const wishStage1 = wishStagesDb.find(
+                (u) =>
+                  u._id.toString() ===
+                  seed.wishStage_1_of_PublicWish_1._id.toString(),
               );
+              assertWishStage(wishStage1, seed.wishStage_1_of_PublicWish_1);
+
+              const wishStage2 = wishStagesDb.find(
+                (u) =>
+                  u._id.toString() ===
+                  seed.wishStage_2_of_PublicWish_1._id.toString(),
+              );
+              assertWishStage(wishStage2, seed.wishStage_2_of_PublicWish_1);
+            });
+        });
+
+        it(`wish updated successfully`, () => {
+          const id = seed.publicWish_1._id.toString();
+          return request(app.getHttpServer())
+            .patch(`/wishes/${id}`)
+            .send({
+              id,
+              title,
+              description,
+              privacyLevel,
+              urls,
+              imageUrls,
+              categories,
+              startedAt,
+              completedAt,
+            } as UpdateWishDto)
+            .auth(accessTokenBasicUser, { type: 'bearer' })
+            .expect(200)
+            .expect(async () => {
+              const wishesDb: WishEntity[] = await database
+                .collection('wishes')
+                .find()
+                .toArray();
+
+              expect(wishesDb).toHaveLength(4);
+
+              const wishUpdated = wishesDb.find((u) => u._id.toString() === id);
+
+              expect(wishUpdated).toBeTruthy();
+
+              expect(wishUpdated._id.toString()).toBe(id);
+              expect(wishUpdated.wisher.toString()).toBe(
+                seed.basicUser._id.toString(),
+              );
+              expect(wishUpdated.title).toBe(title);
+              expect(wishUpdated.description).toBe(description);
+              expect(wishUpdated.privacyLevel).toBe(privacyLevel);
+              expect(wishUpdated.createdAt).toBeTruthy();
+              expect(wishUpdated.createdAt.getTime()).toBe(
+                seed.publicWish_1.createdAt.getTime(),
+              );
+              expect(wishUpdated.updatedAt).toBeTruthy();
+              expect(wishUpdated.updatedAt.getTime()).toBeGreaterThan(
+                seed.publicWish_1.updatedAt.getTime(),
+              );
+              expect(wishUpdated.urls).toHaveLength(urls.length);
+              expect(wishUpdated.imageUrls).toHaveLength(imageUrls.length);
+              expect(wishUpdated.categories).toHaveLength(categories.length);
+
+              for (let i = 0; i < urls.length; i++)
+                expect(wishUpdated.urls[i]).toBe(urls[i]);
+
+              for (let i = 0; i < imageUrls.length; i++)
+                expect(wishUpdated.imageUrls[i]).toBe(imageUrls[i]);
+
+              for (let i = 0; i < categories.length; i++)
+                expect(wishUpdated.categories[i]).toBe(categories[i]);
+
+              expect(wishUpdated.deletedAt).toBeNull();
+              expect(wishUpdated.startedAt.getTime()).toBe(startedAt);
+              expect(wishUpdated.completedAt.getTime()).toBe(completedAt);
             })
             .expect(async () => {
               const wishersDb: WisherEntity[] = await database

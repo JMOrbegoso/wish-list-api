@@ -571,12 +571,12 @@ describe('AuthController (e2e)', () => {
   });
 
   describe('/verify', () => {
-    describe('GET', () => {
+    describe('POST', () => {
       describe(`should return 400`, () => {
         it(`verification code should not be empty`, () => {
           return request(app.getHttpServer())
-            .get('/verify')
-            .query({ code: '' })
+            .post('/verify')
+            .send({ code: '' })
             .expect(400)
             .expect(({ body }) =>
               expect(
@@ -587,22 +587,46 @@ describe('AuthController (e2e)', () => {
             );
         });
 
+        it(`verification code is not a mongoId`, () => {
+          return request(app.getHttpServer())
+            .post('/verify')
+            .send({ code: 'verification-code' })
+            .expect(400)
+            .expect(({ body }) =>
+              expect(
+                (body.message as string[]).some((m) =>
+                  m.match(/code must be a mongodb id/i),
+                ),
+              ).toBeTruthy(),
+            );
+        });
+
         it(`User is already verified`, () => {
           return request(app.getHttpServer())
-            .get('/verify')
-            .query({ code: seed.basicUser.verificationCode })
+            .post('/verify')
+            .send({ code: seed.basicUserVerificationCode._id.toString() })
             .expect(400)
             .expect(({ body }) =>
               expect(body.message).toMatch(/already verified/i),
             );
+        });
+
+        it(`Verification code is expired`, () => {
+          return request(app.getHttpServer())
+            .post('/verify')
+            .send({
+              code: seed.unverifiedUserExpiredVerificationCode._id.toString(),
+            })
+            .expect(400)
+            .expect(({ body }) => expect(body.message).toMatch(/is expired/i));
         });
       });
 
       describe(`should return 404`, () => {
         it(`Not found user related to the verification code`, () => {
           return request(app.getHttpServer())
-            .get('/verify')
-            .query({ code: 'verification-code' })
+            .post('/verify')
+            .send({ code: new ObjectId().toString() })
             .expect(404)
             .expect(({ body }) => expect(body.message).toMatch(/not found/i));
         });
@@ -611,8 +635,10 @@ describe('AuthController (e2e)', () => {
       describe(`should return 200`, () => {
         it(`User verified successfully`, () => {
           return request(app.getHttpServer())
-            .get('/verify')
-            .query({ code: seed.unverifiedUser.verificationCode })
+            .post('/verify')
+            .send({
+              code: seed.unverifiedUserValidVerificationCode._id.toString(),
+            })
             .expect(200)
             .expect(async () => {
               const user: UserEntity = await database

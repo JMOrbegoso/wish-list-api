@@ -1,6 +1,6 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetWishesByWisherIdQuery } from '..';
-import { UniqueId } from '../../../../shared/domain/value-objects';
+import { WisherId } from '../../../domain/entities';
 import { WishRepository } from '../../../domain/repositories';
 import { OutputWishDto } from '../../dtos';
 import { wishToOutputWishDto } from '../../mappings';
@@ -12,9 +12,9 @@ export class GetWishesByWisherIdHandler
   constructor(private readonly wishRepository: WishRepository) {}
 
   async execute(query: GetWishesByWisherIdQuery): Promise<OutputWishDto[]> {
-    const id = UniqueId.create(query.id);
+    const wisherId = WisherId.create(query.id);
 
-    const wishes = await this.wishRepository.getAllWishesByWisher(id);
+    const wishes = await this.wishRepository.getAllWishesByWisher(wisherId);
 
     return wishes.map((wish) => wishToOutputWishDto(wish));
   }

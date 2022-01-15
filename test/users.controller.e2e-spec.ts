@@ -20,6 +20,7 @@ import {
 import {
   RefreshTokenEntity,
   UserEntity,
+  VerificationCodeEntity,
 } from '../src/users/infrastructure/persistence/entities';
 import {
   Seed,
@@ -809,7 +810,6 @@ describe('UsersController (e2e)', () => {
               expect(userCreated.passwordHash).toBeTruthy();
               expect(userCreated.passwordHash).not.toBe(password);
               expect(userCreated.isVerified).toBeFalsy();
-              expect(userCreated.verificationCode).not.toBeNull();
               expect(userCreated.isBlocked).toBeFalsy();
               expect(userCreated.firstName).toBe(firstName);
               expect(userCreated.lastName).toBe(lastName);
@@ -821,6 +821,25 @@ describe('UsersController (e2e)', () => {
               expect(userCreated.roles[0]).toBe(Role.basic().getRole);
               expect(userCreated.profilePicture).toBeNull();
               expect(userCreated.deletedAt).toBeNull();
+            })
+            .expect(async () => {
+              const verificationCodesDb: VerificationCodeEntity[] =
+                await database
+                  .collection('user-verification-codes')
+                  .find()
+                  .toArray();
+
+              expect(verificationCodesDb).toHaveLength(4);
+
+              const verificationCodeCreated = verificationCodesDb.find(
+                (vc) => vc.user.toString() === id,
+              );
+
+              expect(verificationCodeCreated).toBeTruthy();
+
+              expect(verificationCodeCreated.user.toString()).toBe(id);
+              expect(verificationCodeCreated.createdAt.getTime()).toBeTruthy();
+              expect(verificationCodeCreated.duration).toBeTruthy();
             });
         });
       });
@@ -837,9 +856,8 @@ describe('UsersController (e2e)', () => {
 
       describe(`should return 404`, () => {
         it(`user not found`, () => {
-          return request(app.getHttpServer())
-            .get('/users/61cce183b8917063ed614a0b')
-            .expect(404);
+          const id = new ObjectId().toString();
+          return request(app.getHttpServer()).get(`/users/${id}`).expect(404);
         });
       });
 
@@ -1192,9 +1210,6 @@ describe('UsersController (e2e)', () => {
                 seed.basicUser.password,
               );
               expect(userUpdated.isVerified).toBe(seed.basicUser.isVerified);
-              expect(userUpdated.verificationCode).toBe(
-                seed.basicUser.verificationCode,
-              );
               expect(userUpdated.isBlocked).toBe(seed.basicUser.isBlocked);
               expect(userUpdated.firstName).toBe(firstName);
               expect(userUpdated.lastName).toBe(lastName);
@@ -1216,6 +1231,15 @@ describe('UsersController (e2e)', () => {
                 seed.basicUser.profilePicture,
               );
               expect(userUpdated.deletedAt).toBe(seed.basicUser.deletedAt);
+            })
+            .expect(async () => {
+              const verificationCodesDb: VerificationCodeEntity[] =
+                await database
+                  .collection('user-verification-codes')
+                  .find()
+                  .toArray();
+
+              expect(verificationCodesDb).toHaveLength(3);
             })
             .expect(async () => {
               const refreshTokensDb: RefreshTokenEntity[] = await database

@@ -1,7 +1,7 @@
 import { NotFoundException } from '@nestjs/common';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetWishByIdQuery } from '..';
-import { UniqueId } from '../../../../shared/domain/value-objects';
+import { WishId } from '../../../domain/entities';
 import { WishRepository } from '../../../domain/repositories';
 import { OutputWishDto } from '../../dtos';
 import { wishToOutputWishDto } from '../../mappings';
@@ -11,9 +11,9 @@ export class GetWishByIdHandler implements IQueryHandler<GetWishByIdQuery> {
   constructor(private readonly wishRepository: WishRepository) {}
 
   async execute(query: GetWishByIdQuery): Promise<OutputWishDto> {
-    const id = UniqueId.create(query.id);
+    const wishId = WishId.create(query.id);
 
-    const wish = await this.wishRepository.getOneById(id);
+    const wish = await this.wishRepository.getOneById(wishId);
 
     if (!wish) throw new NotFoundException();
 

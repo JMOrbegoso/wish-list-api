@@ -6,7 +6,7 @@ export function wishStageToOutputWishStageDto(
 ): OutputWishStageDto {
   const dto = new OutputWishStageDto();
 
-  dto.id = wishStage.id.getId;
+  dto.id = wishStage.id.value.toString();
   dto.title = wishStage.title.getTitle;
   dto.description = wishStage.description.getDescription;
   dto.createdAt = wishStage.createdAt.getMilliseconds;

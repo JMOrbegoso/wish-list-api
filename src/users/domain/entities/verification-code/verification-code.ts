@@ -1,16 +1,55 @@
+import { VerificationCodeId } from '..';
 import { Entity } from '../../../../shared/domain/entities';
-import { UniqueId } from '../../../../shared/domain/value-objects';
+import { MillisecondsDate } from '../../../../shared/domain/value-objects';
+import { SecondsDuration } from '../../value-objects';
+import {
+  InvalidVerificationCodeCreatedAtError,
+  InvalidVerificationCodeDurationError,
+} from './exceptions';
 
-export class VerificationCode extends Entity {
-  private constructor(id: UniqueId) {
+export class VerificationCode extends Entity<VerificationCodeId> {
+  public static readonly defaultDuration = SecondsDuration.oneDay();
+
+  private _createdAt: MillisecondsDate;
+  private _secondsDuration: SecondsDuration;
+
+  private constructor(
+    id: VerificationCodeId,
+    createdAt: MillisecondsDate,
+    secondsDuration: SecondsDuration,
+  ) {
     super(id);
+
+    if (!createdAt) throw new InvalidVerificationCodeCreatedAtError();
+    if (!secondsDuration) throw new InvalidVerificationCodeDurationError();
+
+    this._createdAt = createdAt;
+    this._secondsDuration = secondsDuration;
   }
 
-  public static create(id: UniqueId): VerificationCode {
-    return new VerificationCode(id);
+  public static create(
+    id: VerificationCodeId,
+    createdAt: MillisecondsDate,
+    secondsDuration: SecondsDuration,
+  ): VerificationCode {
+    return new VerificationCode(id, createdAt, secondsDuration);
   }
 
-  public get id(): UniqueId {
-    return this._id;
+  public get createdAt(): MillisecondsDate {
+    return this._createdAt;
+  }
+
+  public get duration(): SecondsDuration {
+    return this._secondsDuration;
+  }
+
+  public get expireAt(): MillisecondsDate {
+    return MillisecondsDate.createFromMilliseconds(
+      this.createdAt.getMilliseconds + 1000 * this._secondsDuration.getDuration,
+    );
+  }
+
+  public get isExpired(): boolean {
+    return new Date() > this.expireAt.getDate;
   }
 }

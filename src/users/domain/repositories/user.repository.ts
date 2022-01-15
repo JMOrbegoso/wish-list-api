@@ -1,30 +1,37 @@
-import { Repository } from '../../../shared/domain/repositories';
-import { UniqueId } from '../../../shared/domain/value-objects';
-import { RefreshToken, User, VerificationCode } from '../entities';
+import {
+  RefreshToken,
+  RefreshTokenId,
+  User,
+  UserId,
+  VerificationCode,
+  VerificationCodeId,
+} from '../entities';
 import { Email, IpAddress, Username } from '../value-objects';
 
-export abstract class UserRepository implements Repository<User> {
+export abstract class UserRepository {
   abstract userExists(
-    id: UniqueId,
+    id: UserId,
     email: Email,
     username: Username,
   ): Promise<boolean>;
 
-  abstract getOneById(id: UniqueId): Promise<User>;
+  abstract getOneById(id: UserId): Promise<User>;
 
   abstract getOneByEmail(email: Email): Promise<User>;
 
   abstract getOneByUsername(username: Username): Promise<User>;
 
-  abstract getOneByVerificationCode(
-    verificationCode: VerificationCode,
+  abstract getOneByVerificationCodeId(
+    verificationCodeId: VerificationCodeId,
   ): Promise<User>;
 
-  abstract getOneByRefreshTokenId(refreshTokenId: UniqueId): Promise<User>;
+  abstract getOneByRefreshTokenId(
+    refreshTokenId: RefreshTokenId,
+  ): Promise<User>;
 
   abstract getAll(): Promise<User[]>;
 
-  abstract getAllRefreshTokensByUserId(id: UniqueId): Promise<RefreshToken[]>;
+  abstract getAllRefreshTokensByUserId(id: UserId): Promise<RefreshToken[]>;
 
   abstract getAllRefreshTokensByIpAddress(
     ipAddress: IpAddress,
@@ -33,6 +40,11 @@ export abstract class UserRepository implements Repository<User> {
   abstract addUser(user: User): void;
   abstract updateUser(user: User): void;
 
-  abstract addRefreshToken(refreshToken: RefreshToken, userId: UniqueId): void;
+  abstract addVerificationCode(
+    verificationCode: VerificationCode,
+    userId: UserId,
+  ): void;
+
+  abstract addRefreshToken(refreshToken: RefreshToken, userId: UserId): void;
   abstract updateRefreshToken(refreshToken: RefreshToken): void;
 }

@@ -66,7 +66,7 @@ describe('wishes', () => {
           async (command: UndeleteWishCommand) => {
             // Arrange
             const wish = {
-              id: { getId: 'id' },
+              id: { value: 'id' },
               isDeleted: true,
               undelete: jest.fn(),
             } as MockedObject<Wish>;
@@ -89,8 +89,8 @@ describe('wishes', () => {
             expect(wish.undelete.mock.calls).toHaveLength(1);
             expect(wishRepository.updateWish.mock.calls).toHaveLength(1);
             expect(unitOfWork.commitChanges.mock.calls).toHaveLength(1);
-            expect(wishRepository.updateWish.mock.calls[0][0].id.getId).toBe(
-              wish.id.getId,
+            expect(wishRepository.updateWish.mock.calls[0][0].id.value).toBe(
+              wish.id.value,
             );
           },
         );

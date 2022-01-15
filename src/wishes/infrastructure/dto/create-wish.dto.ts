@@ -60,4 +60,9 @@ export class CreateWishDto {
   @IsPositive()
   @IsOptional()
   startedAt: number;
+
+  @IsNumber()
+  @IsPositive()
+  @IsOptional()
+  completedAt: number;
 }

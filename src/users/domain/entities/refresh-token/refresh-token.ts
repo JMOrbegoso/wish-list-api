@@ -1,8 +1,6 @@
+import { RefreshTokenId } from '..';
 import { Entity } from '../../../../shared/domain/entities';
-import {
-  MillisecondsDate,
-  UniqueId,
-} from '../../../../shared/domain/value-objects';
+import { MillisecondsDate } from '../../../../shared/domain/value-objects';
 import { IpAddress, SecondsDuration } from '../../value-objects';
 import {
   InvalidRefreshTokenCreatedAtError,
@@ -11,23 +9,23 @@ import {
   InvalidRefreshTokenIpAddressError,
 } from './exceptions';
 
-export class RefreshToken extends Entity {
+export class RefreshToken extends Entity<RefreshTokenId> {
   public static readonly defaultDuration = SecondsDuration.twoWeeks();
 
   private _createdAt: MillisecondsDate;
   private _secondsDuration: SecondsDuration;
   private _ipAddress: IpAddress;
   private _replacedAt?: MillisecondsDate;
-  private _replacedBy?: UniqueId;
+  private _replacedBy?: RefreshTokenId;
   private _revokedAt?: MillisecondsDate;
 
   private constructor(
-    id: UniqueId,
+    id: RefreshTokenId,
     createdAt: MillisecondsDate,
     secondsDuration: SecondsDuration,
     ipAddress: IpAddress,
     replacedAt?: MillisecondsDate,
-    replacedBy?: UniqueId,
+    replacedBy?: RefreshTokenId,
     revokedAt?: MillisecondsDate,
   ) {
     super(id);
@@ -48,12 +46,12 @@ export class RefreshToken extends Entity {
   }
 
   public static create(
-    id: UniqueId,
+    id: RefreshTokenId,
     ipAddress: IpAddress,
     createdAt: MillisecondsDate = MillisecondsDate.create(),
     secondsDuration: SecondsDuration = RefreshToken.defaultDuration,
     replacedAt: MillisecondsDate = null,
-    replacedBy: UniqueId = null,
+    replacedBy: RefreshTokenId = null,
     revokedAt: MillisecondsDate = null,
   ): RefreshToken {
     return new RefreshToken(
@@ -65,10 +63,6 @@ export class RefreshToken extends Entity {
       replacedBy,
       revokedAt,
     );
-  }
-
-  public get id(): UniqueId {
-    return this._id;
   }
 
   public get createdAt(): MillisecondsDate {
@@ -97,7 +91,7 @@ export class RefreshToken extends Entity {
     return this._replacedAt;
   }
 
-  public get replacedBy(): UniqueId {
+  public get replacedBy(): RefreshTokenId {
     return this._replacedBy;
   }
 

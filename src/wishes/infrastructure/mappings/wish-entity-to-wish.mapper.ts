@@ -1,9 +1,5 @@
-import {
-  MillisecondsDate,
-  UniqueId,
-  WebUrl,
-} from '../../../shared/domain/value-objects';
-import { Wish } from '../../domain/entities';
+import { MillisecondsDate, WebUrl } from '../../../shared/domain/value-objects';
+import { Wish, WishId } from '../../domain/entities';
 import {
   CategoryName,
   WishDescription,
@@ -14,7 +10,7 @@ import { WishEntity, WishStageEntity } from '../persistence/entities';
 import { wishStageEntityToWishStage, wisherEntityToWisher } from '.';
 
 export function wishEntityToWish(wishEntity: WishEntity): Wish {
-  const id = UniqueId.create(wishEntity.id);
+  const wishId = WishId.create(wishEntity.id);
   const title = WishTitle.create(wishEntity.title);
   const description = WishDescription.create(wishEntity.description);
   const privacyLevel = WishPrivacyLevel.create(wishEntity.privacyLevel);
@@ -40,7 +36,7 @@ export function wishEntityToWish(wishEntity: WishEntity): Wish {
     : null;
 
   return Wish.create(
-    id,
+    wishId,
     title,
     description,
     privacyLevel,

@@ -4,13 +4,23 @@ import { UpdateWishCommand, UpdateWishHandler } from '..';
 import { UnitOfWork } from '../../../../shared/domain/repositories';
 import { Wish } from '../../../domain/entities';
 import { WishRepository } from '../../../domain/repositories';
+import { PrivacyLevel } from '../../../domain/value-objects';
 
 const commands = [
-  new UpdateWishCommand('id 0', 'title 0', 'description 0', [], [], []),
+  new UpdateWishCommand(
+    'id 0',
+    'title 0',
+    'description 0',
+    PrivacyLevel.Public,
+    [],
+    [],
+    [],
+  ),
   new UpdateWishCommand(
     'id 1',
     'title 1',
     'description 2',
+    PrivacyLevel.JustFriends,
     ['https://wwww.example.com/1'],
     [],
     ['tech'],
@@ -19,6 +29,7 @@ const commands = [
     'id 2',
     'title 2',
     'description 2',
+    PrivacyLevel.OnlyMe,
     ['https://wwww.example.com/2'],
     ['https://wwww.example.com/2.jpg'],
     ['tech'],
@@ -78,7 +89,7 @@ describe('wishes', () => {
           async (command: UpdateWishCommand) => {
             // Arrange
             const wish = {
-              id: { getId: 'id' },
+              id: { value: 'id' },
               isDeleted: false,
               update: jest.fn(),
             } as MockedObject<Wish>;
@@ -101,8 +112,8 @@ describe('wishes', () => {
             expect(wish.update.mock.calls).toHaveLength(1);
             expect(wishRepository.updateWish.mock.calls).toHaveLength(1);
             expect(unitOfWork.commitChanges.mock.calls).toHaveLength(1);
-            expect(wishRepository.updateWish.mock.calls[0][0].id.getId).toBe(
-              wish.id.getId,
+            expect(wishRepository.updateWish.mock.calls[0][0].id.value).toBe(
+              wish.id.value,
             );
           },
         );

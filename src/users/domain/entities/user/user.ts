@@ -1,8 +1,7 @@
-import { RefreshToken, VerificationCode } from '..';
+import { RefreshToken, RefreshTokenId, UserId, VerificationCode } from '..';
 import { AggregateRoot } from '../../../../shared/domain/entities';
 import {
   MillisecondsDate,
-  UniqueId,
   WebUrl,
 } from '../../../../shared/domain/value-objects';
 import {
@@ -18,7 +17,9 @@ import {
 } from '../../value-objects';
 import {
   BlockedUserCannotBeUpdatedError,
+  BlockedUserCannotGenerateNewVerificationCodesError,
   DeletedUserCannotBeUpdatedError,
+  DeletedUserCannotGenerateNewVerificationCodesError,
   DuplicatedUserRefreshTokenError,
   InvalidUserBiographyError,
   InvalidUserBirthdayError,
@@ -35,17 +36,19 @@ import {
   InvalidUserUpdatedAtError,
   InvalidUserUsernameError,
   InvalidUserVerificationCodeError,
+  InvalidUserVerificationCodesError,
   InvalidUserVerificationStatusError,
   RefreshTokenNotFoundError,
   UnverifiedUserCannotBeUpdatedError,
+  VerifiedUserCannotGenerateNewVerificationCodesError,
 } from './exceptions';
 
-export class User extends AggregateRoot {
+export class User extends AggregateRoot<UserId> {
   private _email: Email;
   private _username: Username;
   private _passwordHash: PasswordHash;
   private _isVerified: IsVerified;
-  private _verificationCode: VerificationCode;
+  private _verificationCodes: VerificationCode[];
   private _isBlocked: IsBlocked;
   private _firstName: FirstName;
   private _lastName: LastName;
@@ -59,12 +62,12 @@ export class User extends AggregateRoot {
   private _deletedAt?: MillisecondsDate;
 
   private constructor(
-    id: UniqueId,
+    id: UserId,
     email: Email,
     username: Username,
     passwordHash: PasswordHash,
     isVerified: IsVerified,
-    verificationCode: VerificationCode,
+    verificationCodes: VerificationCode[],
     isBlocked: IsBlocked,
     firstName: FirstName,
     lastName: LastName,
@@ -83,7 +86,10 @@ export class User extends AggregateRoot {
     if (!username) throw new InvalidUserUsernameError();
     if (!passwordHash) throw new InvalidUserPasswordHashError();
     if (!isVerified) throw new InvalidUserVerificationStatusError();
-    if (!verificationCode) throw new InvalidUserVerificationCodeError();
+    if (!verificationCodes) throw new InvalidUserVerificationCodesError();
+    verificationCodes.forEach((verificationCode) => {
+      if (!verificationCode) throw new InvalidUserVerificationCodeError();
+    });
     if (!isBlocked) throw new InvalidUserBlockedStatusError();
     if (!firstName) throw new InvalidUserFirstNameError();
     if (!lastName) throw new InvalidUserLastNameError();
@@ -106,7 +112,7 @@ export class User extends AggregateRoot {
     this._username = username;
     this._passwordHash = passwordHash;
     this._isVerified = isVerified;
-    this._verificationCode = verificationCode;
+    this._verificationCodes = verificationCodes;
     this._isBlocked = isBlocked;
     this._firstName = firstName;
     this._lastName = lastName;
@@ -121,12 +127,12 @@ export class User extends AggregateRoot {
   }
 
   public static create(
-    id: UniqueId,
+    id: UserId,
     email: Email,
     username: Username,
     passwordHash: PasswordHash,
     isVerified: IsVerified,
-    verificationCode: VerificationCode,
+    verificationCodes: VerificationCode[],
     isBlocked: IsBlocked,
     firstName: FirstName,
     lastName: LastName,
@@ -145,7 +151,7 @@ export class User extends AggregateRoot {
       username,
       passwordHash,
       isVerified,
-      verificationCode,
+      verificationCodes,
       isBlocked,
       firstName,
       lastName,
@@ -158,10 +164,6 @@ export class User extends AggregateRoot {
       profilePicture,
       deletedAt,
     );
-  }
-
-  public get id(): UniqueId {
-    return this._id;
   }
 
   public get email(): Email {
@@ -180,8 +182,27 @@ export class User extends AggregateRoot {
     return this._isVerified.getStatus;
   }
 
-  public get verificationCode(): string {
-    return this._verificationCode.id.getId;
+  public get verificationCodes(): VerificationCode[] {
+    return [...this._verificationCodes];
+  }
+
+  public addVerificationCode(verificationCode: VerificationCode): void {
+    if (this.isDeleted)
+      throw new DeletedUserCannotGenerateNewVerificationCodesError();
+
+    if (this.isBlocked)
+      throw new BlockedUserCannotGenerateNewVerificationCodesError();
+
+    if (this.isVerified)
+      throw new VerifiedUserCannotGenerateNewVerificationCodesError();
+
+    if (!verificationCode) throw new InvalidUserVerificationCodeError();
+
+    this._verificationCodes.push(verificationCode);
+  }
+
+  public verify(): void {
+    this._isVerified = IsVerified.verified();
   }
 
   public get isBlocked(): boolean {
@@ -228,10 +249,6 @@ export class User extends AggregateRoot {
     this._passwordHash = passwordHash;
   }
 
-  public verify(): void {
-    this._isVerified = IsVerified.verified();
-  }
-
   public block(): void {
     this._isBlocked = IsBlocked.blocked();
   }
@@ -270,10 +287,6 @@ export class User extends AggregateRoot {
     return this._roles.map((r) => r.getRole);
   }
 
-  public get rolesLength(): number {
-    return this._roles.length;
-  }
-
   public addRole(role: Role): void {
     if (!this._roles.some((r) => r.equals(role))) this._roles.push(role);
   }
@@ -286,11 +299,7 @@ export class User extends AggregateRoot {
     return [...this._refreshTokens];
   }
 
-  public get refreshTokensLength(): number {
-    return this._refreshTokens.length;
-  }
-
-  public getRefreshToken(refreshTokenId: UniqueId): RefreshToken {
+  public getRefreshToken(refreshTokenId: RefreshTokenId): RefreshToken {
     const refreshToken = this._refreshTokens.find((token) =>
       token.id.equals(refreshTokenId),
     );
@@ -315,7 +324,7 @@ export class User extends AggregateRoot {
   }
 
   public replaceRefreshToken(
-    refreshTokenIdToReplace: UniqueId,
+    refreshTokenIdToReplace: RefreshTokenId,
     replacedByToken: RefreshToken,
   ): void {
     if (this.isDeleted) throw new DeletedUserCannotBeUpdatedError();
