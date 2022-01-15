@@ -71,16 +71,17 @@ export const swaggerDocument: OpenAPIObject = {
       },
     },
     '/api/verify': {
-      get: {
+      post: {
         operationId: 'Verify',
-        parameters: [
-          {
-            name: 'code',
-            required: true,
-            in: 'query',
-            schema: { type: 'string' },
+        parameters: [],
+        requestBody: {
+          required: true,
+          content: {
+            'application/json': {
+              schema: { $ref: '#/components/schemas/VerificationCodeDto' },
+            },
           },
-        ],
+        },
         responses: {
           200: { description: 'User verified successfully.' },
           400: {
@@ -790,6 +791,17 @@ export const swaggerDocument: OpenAPIObject = {
           },
         },
         required: ['username', 'password'],
+      },
+      VerificationCodeDto: {
+        type: 'object',
+        properties: {
+          code: {
+            type: 'string',
+            description: 'User verification code.',
+            example: '61872ad79452fa50b7b70d54',
+          },
+        },
+        required: ['code'],
       },
       AuthTokensDto: {
         type: 'object',
