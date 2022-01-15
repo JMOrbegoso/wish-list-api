@@ -192,7 +192,7 @@ export class UserRepositoryMongoDb
       id: verificationCode.id.value,
       user: userObjectId,
       createdAt: verificationCode.createdAt.getDate,
-      duration: verificationCode.duration,
+      duration: verificationCode.duration.getDuration,
     };
     const newVerificationCode = this.orm.em.create(
       VerificationCodeEntity,
