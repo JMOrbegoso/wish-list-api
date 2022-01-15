@@ -24,6 +24,8 @@ describe('users', () => {
 
           // Assert
           expect(verificationCodeId.value).toBe('id-1');
+          expect(verificationCodeId.base64).not.toBe('id-1');
+          expect(verificationCodeId.base64).toBeTruthy();
         });
 
         it('comparing an entity id with null should return false', () => {
