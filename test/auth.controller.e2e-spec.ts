@@ -6,10 +6,15 @@ import { AppModule } from '../src/app.module';
 import mikroOrmConfig from '../src/mikro-orm.config';
 import { AuthTokensDto } from '../src/users/application/dtos';
 import { Password, Username } from '../src/users/domain/value-objects';
-import { LoginDto, RefreshTokenDto } from '../src/users/infrastructure/dtos';
+import {
+  LoginDto,
+  RefreshTokenDto,
+  UserEmailDto,
+} from '../src/users/infrastructure/dtos';
 import {
   RefreshTokenEntity,
   UserEntity,
+  VerificationCodeEntity,
 } from '../src/users/infrastructure/persistence/entities';
 import { Seed, dropDatabase, seedDatabaseItems } from './helpers';
 
@@ -647,6 +652,83 @@ describe('AuthController (e2e)', () => {
 
               expect(user).toBeTruthy();
               expect(user.isVerified).toBeTruthy();
+            });
+        });
+      });
+    });
+  });
+
+  describe('/add-verification-code', () => {
+    describe('POST', () => {
+      describe(`should return 400`, () => {
+        it(`User email empty`, () => {
+          return request(app.getHttpServer())
+            .post('/add-verification-code')
+            .send({} as UserEmailDto)
+            .expect(400);
+        });
+
+        it(`User email empty`, () => {
+          return request(app.getHttpServer())
+            .post('/add-verification-code')
+            .send({
+              email: '',
+            } as UserEmailDto)
+            .expect(400);
+        });
+
+        it(`User is deleted`, () => {
+          return request(app.getHttpServer())
+            .post('/add-verification-code')
+            .send({
+              email: seed.deletedUser.email,
+            } as UserEmailDto)
+            .expect(400);
+        });
+
+        it(`User is blocked`, () => {
+          return request(app.getHttpServer())
+            .post('/add-verification-code')
+            .send({
+              email: seed.blockedUser.email,
+            } as UserEmailDto)
+            .expect(400);
+        });
+
+        it(`User is already verified`, () => {
+          return request(app.getHttpServer())
+            .post('/add-verification-code')
+            .send({
+              email: seed.basicUser.email,
+            } as UserEmailDto)
+            .expect(400);
+        });
+      });
+
+      describe(`should return 404`, () => {
+        it(`User not found`, () => {
+          return request(app.getHttpServer())
+            .post('/add-verification-code')
+            .send({ email: 'email@email.com' } as UserEmailDto)
+            .expect(404)
+            .expect(({ body }) => expect(body.message).toMatch(/not found/i));
+        });
+      });
+
+      describe(`should return 200`, () => {
+        it(`Verification code added successfully`, () => {
+          return request(app.getHttpServer())
+            .post('/add-verification-code')
+            .send({ email: seed.unverifiedUser.email } as UserEmailDto)
+            .expect(200)
+            .expect(async () => {
+              const verificationCodesDb: VerificationCodeEntity[] =
+                await database
+                  .collection('user-verification-codes')
+                  .find()
+                  .toArray();
+
+              expect(verificationCodesDb).toHaveLength(4);
             });
         });
       });

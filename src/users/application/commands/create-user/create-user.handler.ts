@@ -99,15 +99,16 @@ export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
     // Save changes using Unit of Work
     await this.unitOfWork.commitChanges();
 
-    // Send an account confirmation code the user email
-    const verificationCodeBase64 = Buffer.from(
-      verificationCode.id.value.toString(),
-    ).toString('base64');
-
+    // Send the account confirmation email
     await this.emailSenderService.send(
-      user.email.getEmail,
-      'Confirm Account',
-      `your code is ${verificationCodeBase64}`,
+      email.getEmail,
+      'Welcome to Wish List - Account confirmation email',
+      `<h1>
+        Welcome ${firstName.getFirstName} ${lastName.getLastName}
+      </h1>
+      <p>
+        You can activate your account ${username.getUsername} using this verification code: ${verificationCode.id.base64}
+      </p>`,
     );
   }
 }

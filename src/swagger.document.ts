@@ -92,6 +92,28 @@ export const swaggerDocument: OpenAPIObject = {
         tags: ['Auth'],
       },
     },
+    '/api/add-verification-code': {
+      post: {
+        operationId: 'AddVerificationCode',
+        parameters: [],
+        requestBody: {
+          required: true,
+          content: {
+            'application/json': {
+              schema: { $ref: '#/components/schemas/UserEmailDto' },
+            },
+          },
+        },
+        responses: {
+          200: { description: 'Verification code successfully sent.' },
+          400: {
+            description: 'Invalid user email or user.',
+          },
+          404: { description: 'User not found.' },
+        },
+        tags: ['Auth'],
+      },
+    },
     '/api/users': {
       get: {
         operationId: 'GetAllUsers',
@@ -802,6 +824,17 @@ export const swaggerDocument: OpenAPIObject = {
           },
         },
         required: ['code'],
+      },
+      UserEmailDto: {
+        type: 'object',
+        properties: {
+          email: {
+            type: 'string',
+            description: 'User email.',
+            example: 'john@doe.com',
+          },
+        },
+        required: ['email'],
       },
       AuthTokensDto: {
         type: 'object',
