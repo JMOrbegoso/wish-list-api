@@ -1,9 +1,14 @@
 import { Collection } from '@mikro-orm/core';
 import { User } from '../../domain/entities';
-import { RefreshTokenEntity, UserEntity } from '../persistence/entities';
+import {
+  RefreshTokenEntity,
+  UserEntity,
+  VerificationCodeEntity,
+} from '../persistence/entities';
 
 export function userToUserEntity(
   user: User,
+  verificationCodeEntities: VerificationCodeEntity[],
   refreshTokenEntities: RefreshTokenEntity[],
 ): UserEntity {
   const userEntity = new UserEntity();
@@ -15,7 +20,10 @@ export function userToUserEntity(
   userEntity.normalizedUsername = user.username.getNormalizedUsername;
   userEntity.passwordHash = user.passwordHash.getPasswordHash;
   userEntity.isVerified = user.isVerified;
-  userEntity.verificationCode = user.verificationCode.id.value.toString();
+  userEntity.verificationCodes = new Collection<VerificationCodeEntity>(
+    userEntity,
+    verificationCodeEntities,
+  );
   userEntity.isBlocked = user.isBlocked;
   userEntity.firstName = user.firstName.getFirstName;
   userEntity.lastName = user.lastName.getLastName;

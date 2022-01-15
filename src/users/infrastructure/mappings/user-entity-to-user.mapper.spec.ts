@@ -1,51 +1,78 @@
 import { ObjectId } from '@mikro-orm/mongodb';
 import { MockedObject } from 'ts-jest/dist/utils/testing';
-import { RefreshTokenEntity, UserEntity } from '../persistence/entities';
+import {
+  RefreshTokenEntity,
+  UserEntity,
+  VerificationCodeEntity,
+} from '../persistence/entities';
 import { userEntityToUser } from '.';
-
-const validRefreshTokenEntities = [
-  {
-    id: 'id-0',
-    createdAt: new Date(2021, 5, 5),
-    duration: 100,
-    ipAddress: '192.168.0.1',
-    replacedAt: null,
-    replacedBy: null,
-    revokedAt: null,
-  } as MockedObject<RefreshTokenEntity>,
-  {
-    id: 'id-1',
-    createdAt: new Date(2021, 5, 5),
-    duration: 100,
-    ipAddress: '192.168.0.1',
-    replacedAt: null,
-    replacedBy: null,
-    revokedAt: new Date(2021, 5, 5),
-  } as MockedObject<RefreshTokenEntity>,
-  {
-    id: 'id-2',
-    createdAt: new Date(2021, 5, 5),
-    duration: 100,
-    ipAddress: '192.168.0.1',
-    replacedAt: new Date(2021, 5, 5),
-    replacedBy: new ObjectId().toString(),
-    revokedAt: null,
-  } as MockedObject<RefreshTokenEntity>,
-  {
-    id: 'id-3',
-    createdAt: new Date(2021, 5, 5),
-    duration: 100,
-    ipAddress: '192.168.0.1',
-    replacedAt: new Date(2021, 5, 5),
-    replacedBy: new ObjectId().toString(),
-    revokedAt: new Date(2021, 5, 5),
-  } as MockedObject<RefreshTokenEntity>,
-];
 
 describe('users', () => {
   describe('infrastructure', () => {
     describe('mappings', () => {
       describe('UserEntity to User', () => {
+        const validVerificationCodeEntities = [
+          {
+            id: 'id-0',
+            createdAt: new Date(2021, 5, 5),
+            duration: 100,
+          } as MockedObject<VerificationCodeEntity>,
+          {
+            id: 'id-1',
+            createdAt: new Date(2021, 5, 5),
+            duration: 100,
+          } as MockedObject<VerificationCodeEntity>,
+          {
+            id: 'id-2',
+            createdAt: new Date(2021, 5, 5),
+            duration: 100,
+          } as MockedObject<VerificationCodeEntity>,
+          {
+            id: 'id-3',
+            createdAt: new Date(2021, 5, 5),
+            duration: 100,
+          } as MockedObject<VerificationCodeEntity>,
+        ];
+
+        const validRefreshTokenEntities = [
+          {
+            id: 'id-0',
+            createdAt: new Date(2021, 5, 5),
+            duration: 100,
+            ipAddress: '192.168.0.1',
+            replacedAt: null,
+            replacedBy: null,
+            revokedAt: null,
+          } as MockedObject<RefreshTokenEntity>,
+          {
+            id: 'id-1',
+            createdAt: new Date(2021, 5, 5),
+            duration: 100,
+            ipAddress: '192.168.0.1',
+            replacedAt: null,
+            replacedBy: null,
+            revokedAt: new Date(2021, 5, 5),
+          } as MockedObject<RefreshTokenEntity>,
+          {
+            id: 'id-2',
+            createdAt: new Date(2021, 5, 5),
+            duration: 100,
+            ipAddress: '192.168.0.1',
+            replacedAt: new Date(2021, 5, 5),
+            replacedBy: new ObjectId().toString(),
+            revokedAt: null,
+          } as MockedObject<RefreshTokenEntity>,
+          {
+            id: 'id-3',
+            createdAt: new Date(2021, 5, 5),
+            duration: 100,
+            ipAddress: '192.168.0.1',
+            replacedAt: new Date(2021, 5, 5),
+            replacedBy: new ObjectId().toString(),
+            revokedAt: new Date(2021, 5, 5),
+          } as MockedObject<RefreshTokenEntity>,
+        ];
+
         const validValues = [
           {
             id: 'id-0',
@@ -55,7 +82,16 @@ describe('users', () => {
             normalizedUsername: 'john_doe_0',
             passwordHash: 'password0',
             isVerified: true,
-            verificationCode: new ObjectId().toString(),
+            verificationCodes: {
+              toArray: jest
+                .fn()
+                .mockReturnValue([
+                  validVerificationCodeEntities[0],
+                  validVerificationCodeEntities[1],
+                  validVerificationCodeEntities[2],
+                  validVerificationCodeEntities[3],
+                ] as MockedObject<VerificationCodeEntity[]>),
+            } as unknown,
             isBlocked: true,
             firstName: 'FirstName0',
             lastName: 'LastName0',
@@ -85,7 +121,13 @@ describe('users', () => {
             normalizedUsername: 'john_doe_1',
             passwordHash: 'hash1',
             isVerified: true,
-            verificationCode: new ObjectId().toString(),
+            verificationCodes: {
+              toArray: jest
+                .fn()
+                .mockReturnValue([
+                  validVerificationCodeEntities[0],
+                ] as MockedObject<VerificationCodeEntity[]>),
+            } as unknown,
             isBlocked: false,
             firstName: 'FirstName1',
             lastName: 'LastName1',
@@ -112,7 +154,14 @@ describe('users', () => {
             normalizedUsername: 'john_doe_2',
             passwordHash: 'hash2',
             isVerified: false,
-            verificationCode: new ObjectId().toString(),
+            verificationCodes: {
+              toArray: jest
+                .fn()
+                .mockReturnValue([
+                  validVerificationCodeEntities[1],
+                  validVerificationCodeEntities[2],
+                ] as MockedObject<VerificationCodeEntity[]>),
+            } as unknown,
             isBlocked: true,
             firstName: 'FirstName2',
             lastName: 'LastName2',
@@ -140,7 +189,11 @@ describe('users', () => {
             normalizedUsername: 'john_doe_3',
             passwordHash: 'hash3',
             isVerified: false,
-            verificationCode: new ObjectId().toString(),
+            verificationCodes: {
+              toArray: jest
+                .fn()
+                .mockReturnValue([] as MockedObject<VerificationCodeEntity[]>),
+            } as unknown,
             isBlocked: false,
             firstName: 'FirstName3',
             lastName: 'LastName3',
@@ -165,7 +218,15 @@ describe('users', () => {
             normalizedUsername: 'john_doe_4',
             passwordHash: 'hash4',
             isVerified: false,
-            verificationCode: new ObjectId().toString(),
+            verificationCodes: {
+              toArray: jest
+                .fn()
+                .mockReturnValue([
+                  validVerificationCodeEntities[1],
+                  validVerificationCodeEntities[2],
+                  validVerificationCodeEntities[3],
+                ] as MockedObject<VerificationCodeEntity[]>),
+            } as unknown,
             isBlocked: true,
             firstName: 'FirstName4',
             lastName: 'LastName4',
@@ -194,7 +255,14 @@ describe('users', () => {
             normalizedUsername: 'john_doe_5',
             passwordHash: 'hash5',
             isVerified: true,
-            verificationCode: new ObjectId().toString(),
+            verificationCodes: {
+              toArray: jest
+                .fn()
+                .mockReturnValue([
+                  validVerificationCodeEntities[0],
+                  validVerificationCodeEntities[3],
+                ] as MockedObject<VerificationCodeEntity[]>),
+            } as unknown,
             isBlocked: false,
             firstName: 'FirstName5',
             lastName: 'lastname5',
@@ -222,7 +290,11 @@ describe('users', () => {
             normalizedUsername: 'john_doe_6',
             passwordHash: 'hash6',
             isVerified: true,
-            verificationCode: new ObjectId().toString(),
+            verificationCodes: {
+              toArray: jest
+                .fn()
+                .mockReturnValue([] as MockedObject<VerificationCodeEntity[]>),
+            } as unknown,
             isBlocked: true,
             firstName: 'FirstName6',
             lastName: 'lastname6',
@@ -247,7 +319,14 @@ describe('users', () => {
             normalizedUsername: 'john_doe_7',
             passwordHash: 'hash7',
             isVerified: false,
-            verificationCode: new ObjectId().toString(),
+            verificationCodes: {
+              toArray: jest
+                .fn()
+                .mockReturnValue([
+                  validVerificationCodeEntities[0],
+                  validVerificationCodeEntities[2],
+                ] as MockedObject<VerificationCodeEntity[]>),
+            } as unknown,
             isBlocked: false,
             firstName: 'FirstName7',
             lastName: 'LastName7',
@@ -289,9 +368,6 @@ describe('users', () => {
               userEntity.passwordHash,
             );
             expect(user.isVerified).toBe(userEntity.isVerified);
-            expect(user.verificationCode.id.value).toBe(
-              userEntity.verificationCode,
-            );
             expect(user.isBlocked).toBe(userEntity.isBlocked);
             expect(user.firstName.getFirstName).toBe(userEntity.firstName);
             expect(user.lastName.getLastName).toBe(userEntity.lastName);
@@ -318,6 +394,17 @@ describe('users', () => {
             for (let i = 0; i < userEntity.roles.length; i++) {
               expect(user.roles[i]).toBe(userEntity.roles[i]);
             }
+
+            for (
+              let i = 0;
+              i < userEntity.verificationCodes.toArray().length;
+              i++
+            ) {
+              expect(user.verificationCodes[i].id.value).toBe(
+                userEntity.verificationCodes.toArray()[i].id,
+              );
+            }
+
             for (
               let i = 0;
               i < userEntity.refreshTokens.toArray().length;

@@ -10,7 +10,7 @@ import {
 } from '@mikro-orm/core';
 import { ObjectId } from '@mikro-orm/mongodb';
 import { UserRepositoryMongoDb } from '../repositories';
-import { RefreshTokenEntity } from '.';
+import { RefreshTokenEntity, VerificationCodeEntity } from '.';
 
 @Entity({ collection: 'users' })
 export class UserEntity {
@@ -44,8 +44,8 @@ export class UserEntity {
   @Property()
   isVerified: boolean;
 
-  @Property()
-  verificationCode: string;
+  @OneToMany(() => VerificationCodeEntity, (code) => code.user)
+  verificationCodes = new Collection<VerificationCodeEntity>(this);
 
   @Property()
   isBlocked: boolean;

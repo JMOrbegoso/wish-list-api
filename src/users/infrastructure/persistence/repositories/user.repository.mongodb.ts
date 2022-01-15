@@ -12,6 +12,7 @@ import {
   User,
   UserId,
   VerificationCode,
+  VerificationCodeId,
 } from '../../../domain/entities';
 import { UserRepository } from '../../../domain/repositories';
 import { Email, IpAddress, Username } from '../../../domain/value-objects';
@@ -19,7 +20,11 @@ import {
   refreshTokenEntityToRefreshToken,
   userEntityToUser,
 } from '../../mappings';
-import { RefreshTokenEntity, UserEntity } from '../entities';
+import {
+  RefreshTokenEntity,
+  UserEntity,
+  VerificationCodeEntity,
+} from '../entities';
 
 @MikroOrmRepository(UserEntity)
 export class UserRepositoryMongoDb
@@ -75,16 +80,20 @@ export class UserRepositoryMongoDb
     return user;
   }
 
-  async getOneByVerificationCode(
-    verificationCode: VerificationCode,
+  async getOneByVerificationCodeId(
+    verificationCodeId: VerificationCodeId,
   ): Promise<User> {
-    const verificationCodeObjectId = new ObjectId(verificationCode.id.value);
-    const userEntity = await this.findOne({
-      verificationCode: verificationCodeObjectId.toString(),
-    });
-    if (!userEntity) return null;
-    const user = userEntityToUser(userEntity);
-    return user;
+    const verificationCodeIdObjectId = new ObjectId(verificationCodeId.value);
+    const verificationCodeEntity = await this.orm.em.findOne(
+      VerificationCodeEntity,
+      verificationCodeIdObjectId,
+      { populate: true },
+    );
+
+    if (!verificationCodeEntity) return null;
+    const userEntity = verificationCodeEntity.user.getEntity();
+
+    return userEntityToUser(userEntity);
   }
 
   async getOneByRefreshTokenId(refreshTokenId: RefreshTokenId): Promise<User> {
@@ -140,7 +149,6 @@ export class UserRepositoryMongoDb
       normalizedUsername: user.username.getNormalizedUsername,
       passwordHash: user.passwordHash.getPasswordHash,
       isVerified: user.isVerified,
-      verificationCode: user.verificationCode,
       isBlocked: user.isBlocked,
       firstName: user.firstName.getFirstName,
       lastName: user.lastName.getLastName,
@@ -162,7 +170,6 @@ export class UserRepositoryMongoDb
     const newValues: EntityData<UserEntity> = {
       passwordHash: user.passwordHash.getPasswordHash,
       isVerified: user.isVerified,
-      verificationCode: user.verificationCode.id.value,
       isBlocked: user.isBlocked,
       firstName: user.firstName.getFirstName,
       lastName: user.lastName.getLastName,
@@ -174,6 +181,24 @@ export class UserRepositoryMongoDb
       roles: user.roles,
     };
     this.orm.em.assign(userEntityFromDb, newValues);
+  }
+
+  addVerificationCode(
+    verificationCode: VerificationCode,
+    userId: UserId,
+  ): void {
+    const userObjectId = new ObjectId(userId.value);
+    const newValues: EntityData<VerificationCodeEntity> = {
+      id: verificationCode.id.value,
+      user: userObjectId,
+      createdAt: verificationCode.createdAt.getDate,
+      duration: verificationCode.duration,
+    };
+    const newVerificationCode = this.orm.em.create(
+      VerificationCodeEntity,
+      newValues,
+    );
+    this.orm.em.persist(newVerificationCode);
   }
 
   addRefreshToken(refreshToken: RefreshToken, userId: UserId): void {

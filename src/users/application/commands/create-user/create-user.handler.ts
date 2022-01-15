@@ -64,12 +64,6 @@ export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
     const biography = Biography.create(command.biography);
     const roles = [Role.basic()];
 
-    // Generate the verfication code
-    const verificationCodeId = VerificationCodeId.create(
-      this.uniqueIdGeneratorService.generateId(),
-    );
-    const verificationCode = VerificationCode.create(verificationCodeId);
-
     // Create the new user
     const user = User.create(
       userId,
@@ -77,7 +71,7 @@ export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
       username,
       passwordHash,
       isVerified,
-      verificationCode,
+      [],
       isBlocked,
       firstName,
       lastName,
@@ -88,8 +82,19 @@ export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
       roles,
     );
 
-    // Add the new user to the users repository
+    // Create the new verification code
+    const verificationCodeId = VerificationCodeId.create(
+      this.uniqueIdGeneratorService.generateId(),
+    );
+    const verificationCode = VerificationCode.create(
+      verificationCodeId,
+      MillisecondsDate.create(),
+      VerificationCode.defaultDuration,
+    );
+
+    // Add the new entities to the transaction
     this.userRepository.addUser(user);
+    this.userRepository.addVerificationCode(verificationCode, user.id);
 
     // Save changes using Unit of Work
     await this.unitOfWork.commitChanges();
@@ -98,7 +103,7 @@ export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
     await this.emailSenderService.send(
       user.email.getEmail,
       'Confirm Account',
-      `your code is ${user.verificationCode}`,
+      `your code is ${verificationCode.id.value}`,
     );
   }
 }

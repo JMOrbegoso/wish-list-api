@@ -1,10 +1,5 @@
 import { MillisecondsDate, WebUrl } from '../../../shared/domain/value-objects';
-import {
-  User,
-  UserId,
-  VerificationCode,
-  VerificationCodeId,
-} from '../../domain/entities';
+import { User, UserId } from '../../domain/entities';
 import {
   Biography,
   Email,
@@ -16,8 +11,15 @@ import {
   Role,
   Username,
 } from '../../domain/value-objects';
-import { RefreshTokenEntity, UserEntity } from '../persistence/entities';
-import { refreshTokenEntityToRefreshToken } from '.';
+import {
+  RefreshTokenEntity,
+  UserEntity,
+  VerificationCodeEntity,
+} from '../persistence/entities';
+import {
+  refreshTokenEntityToRefreshToken,
+  verificationCodeEntityToVerificationCode,
+} from '.';
 
 export function userEntityToUser(userEntity: UserEntity): User {
   const userId = UserId.create(userEntity.id);
@@ -25,10 +27,11 @@ export function userEntityToUser(userEntity: UserEntity): User {
   const username = Username.create(userEntity.username);
   const passwordHash = PasswordHash.create(userEntity.passwordHash);
   const isVerified = IsVerified.create(userEntity.isVerified);
-  const verificationCodeId = VerificationCodeId.create(
-    userEntity.verificationCode,
-  );
-  const verificationCode = VerificationCode.create(verificationCodeId);
+  const verificationCodes = userEntity.verificationCodes
+    .toArray()
+    .map((vc: VerificationCodeEntity) =>
+      verificationCodeEntityToVerificationCode(vc),
+    );
   const isBlocked = IsBlocked.create(userEntity.isBlocked);
   const firstName = FirstName.create(userEntity.firstName);
   const lastName = LastName.create(userEntity.lastName);
@@ -53,7 +56,7 @@ export function userEntityToUser(userEntity: UserEntity): User {
     username,
     passwordHash,
     isVerified,
-    verificationCode,
+    verificationCodes,
     isBlocked,
     firstName,
     lastName,

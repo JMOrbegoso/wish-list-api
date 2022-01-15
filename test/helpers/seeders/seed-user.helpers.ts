@@ -12,7 +12,6 @@ export type UserDb = {
   password: string;
   passwordHash: string;
   isVerified: boolean;
-  verificationCode: string;
   isBlocked: boolean;
   firstName: string;
   lastName: string;
@@ -51,7 +50,6 @@ export async function seedUser(
   user.normalizedUsername = normalizeString(username);
   user.passwordHash = new EncryptionServiceBcrypt().hashPassword(password);
   user.isVerified = isVerified;
-  user.verificationCode = new ObjectId().toString();
   user.isBlocked = isBlocked;
   user.firstName = firstName;
   user.lastName = lastName;
@@ -63,6 +61,7 @@ export async function seedUser(
   user.deletedAt = deletedAt;
   user.roles = roles;
 
+  delete user.verificationCodes;
   delete user.refreshTokens;
 
   const record = { ...user };

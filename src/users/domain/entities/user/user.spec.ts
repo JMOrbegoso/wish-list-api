@@ -24,7 +24,9 @@ import {
 } from '../../value-objects';
 import {
   BlockedUserCannotBeUpdatedError,
+  BlockedUserCannotGenerateNewVerificationCodesError,
   DeletedUserCannotBeUpdatedError,
+  DeletedUserCannotGenerateNewVerificationCodesError,
   DuplicatedUserRefreshTokenError,
   InvalidUserBiographyError,
   InvalidUserBirthdayError,
@@ -41,9 +43,11 @@ import {
   InvalidUserUpdatedAtError,
   InvalidUserUsernameError,
   InvalidUserVerificationCodeError,
+  InvalidUserVerificationCodesError,
   InvalidUserVerificationStatusError,
   RefreshTokenNotFoundError,
   UnverifiedUserCannotBeUpdatedError,
+  VerifiedUserCannotGenerateNewVerificationCodesError,
 } from './exceptions';
 
 const validValues = [
@@ -68,9 +72,12 @@ const validValues = [
       getStatus: true,
       equals: jest.fn().mockReturnValue(true),
     } as MockedObject<IsVerified>,
-    {
-      equals: jest.fn().mockReturnValue(true),
-    } as MockedObject<VerificationCode>,
+    [
+      {
+        id: { value: 'verification-code-0' },
+        equals: jest.fn().mockReturnValue(true),
+      } as MockedObject<VerificationCode>,
+    ],
     {
       getStatus: false,
       equals: jest.fn().mockReturnValue(true),
@@ -138,9 +145,12 @@ const validValues = [
       getStatus: true,
       equals: jest.fn().mockReturnValue(true),
     } as MockedObject<IsVerified>,
-    {
-      equals: jest.fn().mockReturnValue(true),
-    } as MockedObject<VerificationCode>,
+    [
+      {
+        id: { value: 'verification-code-1' },
+        equals: jest.fn().mockReturnValue(true),
+      } as MockedObject<VerificationCode>,
+    ],
     {
       getStatus: false,
       equals: jest.fn().mockReturnValue(true),
@@ -204,9 +214,12 @@ const validValues = [
       getStatus: true,
       equals: jest.fn().mockReturnValue(true),
     } as MockedObject<IsVerified>,
-    {
-      equals: jest.fn().mockReturnValue(true),
-    } as MockedObject<VerificationCode>,
+    [
+      {
+        id: { value: 'verification-code-2' },
+        equals: jest.fn().mockReturnValue(true),
+      } as MockedObject<VerificationCode>,
+    ],
     {
       getStatus: false,
       equals: jest.fn().mockReturnValue(true),
@@ -264,9 +277,12 @@ const validValues = [
       getStatus: true,
       equals: jest.fn().mockReturnValue(true),
     } as MockedObject<IsVerified>,
-    {
-      equals: jest.fn().mockReturnValue(true),
-    } as MockedObject<VerificationCode>,
+    [
+      {
+        id: { value: 'verification-code-3' },
+        equals: jest.fn().mockReturnValue(true),
+      } as MockedObject<VerificationCode>,
+    ],
     {
       getStatus: false,
       equals: jest.fn().mockReturnValue(true),
@@ -324,9 +340,12 @@ const validValues = [
       getStatus: true,
       equals: jest.fn().mockReturnValue(true),
     } as MockedObject<IsVerified>,
-    {
-      equals: jest.fn().mockReturnValue(true),
-    } as MockedObject<VerificationCode>,
+    [
+      {
+        id: { value: 'verification-code-4' },
+        equals: jest.fn().mockReturnValue(true),
+      } as MockedObject<VerificationCode>,
+    ],
     {
       getStatus: false,
       equals: jest.fn().mockReturnValue(true),
@@ -384,9 +403,12 @@ const validValues = [
       getStatus: true,
       equals: jest.fn().mockReturnValue(true),
     } as MockedObject<IsVerified>,
-    {
-      equals: jest.fn().mockReturnValue(true),
-    } as MockedObject<VerificationCode>,
+    [
+      {
+        id: { value: 'verification-code-5' },
+        equals: jest.fn().mockReturnValue(true),
+      } as MockedObject<VerificationCode>,
+    ],
     {
       getStatus: false,
       equals: jest.fn().mockReturnValue(true),
@@ -444,9 +466,12 @@ const validValues = [
       getStatus: true,
       equals: jest.fn().mockReturnValue(true),
     } as MockedObject<IsVerified>,
-    {
-      equals: jest.fn().mockReturnValue(true),
-    } as MockedObject<VerificationCode>,
+    [
+      {
+        id: { value: 'verification-code-6' },
+        equals: jest.fn().mockReturnValue(true),
+      } as MockedObject<VerificationCode>,
+    ],
     {
       getStatus: false,
       equals: jest.fn().mockReturnValue(true),
@@ -501,9 +526,12 @@ const validValues = [
       getStatus: true,
       equals: jest.fn().mockReturnValue(true),
     } as MockedObject<IsVerified>,
-    {
-      equals: jest.fn().mockReturnValue(true),
-    } as MockedObject<VerificationCode>,
+    [
+      {
+        id: { value: 'verification-code-7' },
+        equals: jest.fn().mockReturnValue(true),
+      } as MockedObject<VerificationCode>,
+    ],
     {
       getStatus: false,
       equals: jest.fn().mockReturnValue(true),
@@ -551,7 +579,7 @@ describe('users', () => {
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -576,7 +604,7 @@ describe('users', () => {
                 username,
                 passwordHash,
                 isVerified,
-                verificationCode,
+                verificationCodes,
                 isBlocked,
                 firstName,
                 lastName,
@@ -601,7 +629,7 @@ describe('users', () => {
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -626,7 +654,7 @@ describe('users', () => {
                 username,
                 passwordHash,
                 isVerified,
-                verificationCode,
+                verificationCodes,
                 isBlocked,
                 firstName,
                 lastName,
@@ -651,7 +679,7 @@ describe('users', () => {
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -676,7 +704,7 @@ describe('users', () => {
                 null,
                 passwordHash,
                 isVerified,
-                verificationCode,
+                verificationCodes,
                 isBlocked,
                 firstName,
                 lastName,
@@ -701,7 +729,7 @@ describe('users', () => {
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -726,7 +754,7 @@ describe('users', () => {
                 username,
                 null,
                 isVerified,
-                verificationCode,
+                verificationCodes,
                 isBlocked,
                 firstName,
                 lastName,
@@ -751,7 +779,7 @@ describe('users', () => {
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -776,7 +804,7 @@ describe('users', () => {
                 username,
                 passwordHash,
                 null,
-                verificationCode,
+                verificationCodes,
                 isBlocked,
                 firstName,
                 lastName,
@@ -801,7 +829,7 @@ describe('users', () => {
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -827,6 +855,57 @@ describe('users', () => {
                 passwordHash,
                 isVerified,
                 null,
+                isBlocked,
+                firstName,
+                lastName,
+                birthday,
+                createdAt,
+                updatedAt,
+                biography,
+                roles,
+                refreshTokens,
+                profilePicture,
+                deletedAt,
+              ),
+            ).toThrowError(InvalidUserVerificationCodesError);
+          },
+        );
+
+        test.each(validValues)(
+          'create a User with a invalid refreshToken inside a valid refreshTokens array should throw error',
+          (
+            userId: MockedObject<UserId>,
+            email: MockedObject<Email>,
+            username: MockedObject<Username>,
+            passwordHash: MockedObject<PasswordHash>,
+            isVerified: MockedObject<IsVerified>,
+            verificationCodes: MockedObject<VerificationCode>[],
+            isBlocked: MockedObject<IsBlocked>,
+            firstName: MockedObject<FirstName>,
+            lastName: MockedObject<LastName>,
+            birthday: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            biography: MockedObject<Biography>,
+            roles: MockedObject<Role[]>,
+            refreshTokens: MockedObject<RefreshToken[]>,
+            profilePicture: MockedObject<WebUrl>,
+            deletedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+            verificationCodes = [{} as MockedObject<VerificationCode>, null];
+
+            // Act
+
+            // Assert
+            expect(() =>
+              User.create(
+                userId,
+                email,
+                username,
+                passwordHash,
+                isVerified,
+                verificationCodes,
                 isBlocked,
                 firstName,
                 lastName,
@@ -851,7 +930,7 @@ describe('users', () => {
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -876,7 +955,7 @@ describe('users', () => {
                 username,
                 passwordHash,
                 isVerified,
-                verificationCode,
+                verificationCodes,
                 null,
                 firstName,
                 lastName,
@@ -901,7 +980,7 @@ describe('users', () => {
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -926,7 +1005,7 @@ describe('users', () => {
                 username,
                 passwordHash,
                 isVerified,
-                verificationCode,
+                verificationCodes,
                 isBlocked,
                 null,
                 lastName,
@@ -951,7 +1030,7 @@ describe('users', () => {
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -976,7 +1055,7 @@ describe('users', () => {
                 username,
                 passwordHash,
                 isVerified,
-                verificationCode,
+                verificationCodes,
                 isBlocked,
                 firstName,
                 null,
@@ -1001,7 +1080,7 @@ describe('users', () => {
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -1026,7 +1105,7 @@ describe('users', () => {
                 username,
                 passwordHash,
                 isVerified,
-                verificationCode,
+                verificationCodes,
                 isBlocked,
                 firstName,
                 lastName,
@@ -1051,7 +1130,7 @@ describe('users', () => {
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -1076,7 +1155,7 @@ describe('users', () => {
                 username,
                 passwordHash,
                 isVerified,
-                verificationCode,
+                verificationCodes,
                 isBlocked,
                 firstName,
                 lastName,
@@ -1101,7 +1180,7 @@ describe('users', () => {
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -1126,7 +1205,7 @@ describe('users', () => {
                 username,
                 passwordHash,
                 isVerified,
-                verificationCode,
+                verificationCodes,
                 isBlocked,
                 firstName,
                 lastName,
@@ -1151,7 +1230,7 @@ describe('users', () => {
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -1176,7 +1255,7 @@ describe('users', () => {
                 username,
                 passwordHash,
                 isVerified,
-                verificationCode,
+                verificationCodes,
                 isBlocked,
                 firstName,
                 lastName,
@@ -1201,7 +1280,7 @@ describe('users', () => {
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -1226,7 +1305,7 @@ describe('users', () => {
                 username,
                 passwordHash,
                 isVerified,
-                verificationCode,
+                verificationCodes,
                 isBlocked,
                 firstName,
                 lastName,
@@ -1251,7 +1330,7 @@ describe('users', () => {
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -1277,7 +1356,7 @@ describe('users', () => {
                 username,
                 passwordHash,
                 isVerified,
-                verificationCode,
+                verificationCodes,
                 isBlocked,
                 firstName,
                 lastName,
@@ -1302,7 +1381,7 @@ describe('users', () => {
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -1327,7 +1406,7 @@ describe('users', () => {
                 username,
                 passwordHash,
                 isVerified,
-                verificationCode,
+                verificationCodes,
                 isBlocked,
                 firstName,
                 lastName,
@@ -1352,7 +1431,7 @@ describe('users', () => {
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -1378,7 +1457,7 @@ describe('users', () => {
                 username,
                 passwordHash,
                 isVerified,
-                verificationCode,
+                verificationCodes,
                 isBlocked,
                 firstName,
                 lastName,
@@ -1396,14 +1475,14 @@ describe('users', () => {
         );
 
         test.each(validValues)(
-          'should create an User with [id: %p], [email: %p], [username: %p], [passwordHash: %p], [isVerified: %p], [isBlocked: %p], [firstName: %p], [lastName: %p], [birthday: %p], [createdAt: %p], [updatedAt: %p], [biography: %p], [roles: %p], [refreshTokens: %p], [profilePicture: %p] and [deletedAt: %p]',
+          'should create an User with [id: %p], [email: %p], [username: %p], [passwordHash: %p], [isVerified: %p], [verificationCodes: %p], [isBlocked: %p], [firstName: %p], [lastName: %p], [birthday: %p], [createdAt: %p], [updatedAt: %p], [biography: %p]',
           (
             userId: MockedObject<UserId>,
             email: MockedObject<Email>,
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -1421,7 +1500,7 @@ describe('users', () => {
               username,
               passwordHash,
               isVerified,
-              verificationCode,
+              verificationCodes,
               isBlocked,
               firstName,
               lastName,
@@ -1439,6 +1518,11 @@ describe('users', () => {
               passwordHash.getPasswordHash,
             );
             expect(user.isVerified).toBe(isVerified.getStatus);
+            for (let i = 0; i < verificationCodes.length; i++) {
+              expect(user.verificationCodes[i].id.value).toBe(
+                verificationCodes[i].id.value,
+              );
+            }
             expect(user.isBlocked).toBe(isBlocked.getStatus);
             expect(user.firstName.getFirstName).toBe(firstName.getFirstName);
             expect(user.lastName.getLastName).toBe(lastName.getLastName);
@@ -1461,14 +1545,14 @@ describe('users', () => {
         );
 
         test.each(validValues)(
-          'should create an User with [id: %p], [email: %p], [username: %p], [passwordHash: %p], [isVerified: %p], [isBlocked: %p], [firstName: %p], [lastName: %p], [birthday: %p], [createdAt: %p], [updatedAt: %p], [biography: %p], [roles: %p], [refreshTokens: %p], [profilePicture: %p] and [deletedAt: %p]',
+          'should create an User with [id: %p], [email: %p], [username: %p], [passwordHash: %p], [isVerified: %p], [verificationCodes: %p], [isBlocked: %p], [firstName: %p], [lastName: %p], [birthday: %p], [createdAt: %p], [updatedAt: %p], [biography: %p], [roles: %p], [refreshTokens: %p], [profilePicture: %p] and [deletedAt: %p]',
           (
             userId: MockedObject<UserId>,
             email: MockedObject<Email>,
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -1490,7 +1574,7 @@ describe('users', () => {
               username,
               passwordHash,
               isVerified,
-              verificationCode,
+              verificationCodes,
               isBlocked,
               firstName,
               lastName,
@@ -1512,6 +1596,11 @@ describe('users', () => {
               passwordHash.getPasswordHash,
             );
             expect(user.isVerified).toBe(isVerified.getStatus);
+            for (let i = 0; i < verificationCodes.length; i++) {
+              expect(user.verificationCodes[i].id.value).toBe(
+                verificationCodes[i].id.value,
+              );
+            }
             expect(user.isBlocked).toBe(isBlocked.getStatus);
             expect(user.firstName.getFirstName).toBe(firstName.getFirstName);
             expect(user.lastName.getLastName).toBe(lastName.getLastName);
@@ -1550,7 +1639,7 @@ describe('users', () => {
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -1570,7 +1659,7 @@ describe('users', () => {
               username,
               passwordHash,
               isVerified,
-              verificationCode,
+              verificationCodes,
               isBlocked,
               firstName,
               lastName,
@@ -1600,7 +1689,7 @@ describe('users', () => {
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -1620,7 +1709,7 @@ describe('users', () => {
               username,
               passwordHash,
               isVerified,
-              verificationCode,
+              verificationCodes,
               isBlocked,
               firstName,
               lastName,
@@ -1654,7 +1743,7 @@ describe('users', () => {
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -1674,7 +1763,7 @@ describe('users', () => {
               username,
               passwordHash,
               isVerified,
-              verificationCode,
+              verificationCodes,
               isBlocked,
               firstName,
               lastName,
@@ -1697,6 +1786,402 @@ describe('users', () => {
         );
 
         test.each(validValues)(
+          'make changes on verificationCodes getter should make no changes on the original verificationCodes array',
+          (
+            userId: MockedObject<UserId>,
+            email: MockedObject<Email>,
+            username: MockedObject<Username>,
+            passwordHash: MockedObject<PasswordHash>,
+            isVerified: MockedObject<IsVerified>,
+            verificationCodes: MockedObject<VerificationCode>[],
+            isBlocked: MockedObject<IsBlocked>,
+            firstName: MockedObject<FirstName>,
+            lastName: MockedObject<LastName>,
+            birthday: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            biography: MockedObject<Biography>,
+            roles: MockedObject<Role[]>,
+            refreshTokens: MockedObject<RefreshToken[]>,
+            profilePicture: MockedObject<WebUrl>,
+            deletedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+            const originalId = 'original-verification-code-id';
+            verificationCodes = [
+              {
+                id: { value: originalId },
+              } as MockedObject<VerificationCode>,
+            ];
+            const user = User.create(
+              userId,
+              email,
+              username,
+              passwordHash,
+              isVerified,
+              verificationCodes,
+              isBlocked,
+              firstName,
+              lastName,
+              birthday,
+              createdAt,
+              updatedAt,
+              biography,
+              roles,
+              refreshTokens,
+              profilePicture,
+              deletedAt,
+            );
+
+            // Act
+            user.verificationCodes.push({
+              id: { value: 'new-verification-code-1' },
+            } as MockedObject<VerificationCode>);
+            user.verificationCodes[0] = {
+              id: { value: 'new-verification-code-2' },
+            } as MockedObject<VerificationCode>;
+
+            // Assert
+            expect(user.verificationCodes.length).toBe(1);
+            expect(user.verificationCodes[0].id.value).toBe(originalId);
+          },
+        );
+
+        test.each(validValues)(
+          'add a new verification code in a deleted User should throw error',
+          (
+            userId: MockedObject<UserId>,
+            email: MockedObject<Email>,
+            username: MockedObject<Username>,
+            passwordHash: MockedObject<PasswordHash>,
+            isVerified: MockedObject<IsVerified>,
+            verificationCodes: MockedObject<VerificationCode>[],
+            isBlocked: MockedObject<IsBlocked>,
+            firstName: MockedObject<FirstName>,
+            lastName: MockedObject<LastName>,
+            birthday: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            biography: MockedObject<Biography>,
+            roles: MockedObject<Role[]>,
+            refreshTokens: MockedObject<RefreshToken[]>,
+            profilePicture: MockedObject<WebUrl>,
+            deletedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+            const originalId = 'original-verification-code-id';
+            verificationCodes = [
+              {
+                id: { value: originalId },
+              } as MockedObject<VerificationCode>,
+            ];
+            deletedAt = {
+              getMilliseconds: 4,
+            } as MockedObject<MillisecondsDate>;
+            const user = User.create(
+              userId,
+              email,
+              username,
+              passwordHash,
+              isVerified,
+              verificationCodes,
+              isBlocked,
+              firstName,
+              lastName,
+              birthday,
+              createdAt,
+              updatedAt,
+              biography,
+              roles,
+              refreshTokens,
+              profilePicture,
+              deletedAt,
+            );
+
+            // Act
+            const newId = 'new-verification-code-id';
+            const newVerificationCode = {
+              id: { value: newId },
+            } as MockedObject<VerificationCode>;
+
+            // Assert
+            expect(() =>
+              user.addVerificationCode(newVerificationCode),
+            ).toThrowError(DeletedUserCannotGenerateNewVerificationCodesError);
+          },
+        );
+
+        test.each(validValues)(
+          'add a new verification code in a blocked User should throw error',
+          (
+            userId: MockedObject<UserId>,
+            email: MockedObject<Email>,
+            username: MockedObject<Username>,
+            passwordHash: MockedObject<PasswordHash>,
+            isVerified: MockedObject<IsVerified>,
+            verificationCodes: MockedObject<VerificationCode>[],
+            isBlocked: MockedObject<IsBlocked>,
+            firstName: MockedObject<FirstName>,
+            lastName: MockedObject<LastName>,
+            birthday: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            biography: MockedObject<Biography>,
+            roles: MockedObject<Role[]>,
+            refreshTokens: MockedObject<RefreshToken[]>,
+            profilePicture: MockedObject<WebUrl>,
+            deletedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+            const originalId = 'original-verification-code-id';
+            verificationCodes = [
+              {
+                id: { value: originalId },
+              } as MockedObject<VerificationCode>,
+            ];
+            isBlocked = {
+              getStatus: true,
+            } as MockedObject<IsBlocked>;
+            deletedAt = null;
+
+            const user = User.create(
+              userId,
+              email,
+              username,
+              passwordHash,
+              isVerified,
+              verificationCodes,
+              isBlocked,
+              firstName,
+              lastName,
+              birthday,
+              createdAt,
+              updatedAt,
+              biography,
+              roles,
+              refreshTokens,
+              profilePicture,
+              deletedAt,
+            );
+
+            // Act
+            const newId = 'new-verification-code-id';
+            const newVerificationCode = {
+              id: { value: newId },
+            } as MockedObject<VerificationCode>;
+
+            // Assert
+            expect(() =>
+              user.addVerificationCode(newVerificationCode),
+            ).toThrowError(BlockedUserCannotGenerateNewVerificationCodesError);
+          },
+        );
+
+        test.each(validValues)(
+          'add a new verification code in a already verified User should throw error',
+          (
+            userId: MockedObject<UserId>,
+            email: MockedObject<Email>,
+            username: MockedObject<Username>,
+            passwordHash: MockedObject<PasswordHash>,
+            isVerified: MockedObject<IsVerified>,
+            verificationCodes: MockedObject<VerificationCode>[],
+            isBlocked: MockedObject<IsBlocked>,
+            firstName: MockedObject<FirstName>,
+            lastName: MockedObject<LastName>,
+            birthday: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            biography: MockedObject<Biography>,
+            roles: MockedObject<Role[]>,
+            refreshTokens: MockedObject<RefreshToken[]>,
+            profilePicture: MockedObject<WebUrl>,
+            deletedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+            const originalId = 'original-verification-code-id';
+            verificationCodes = [
+              {
+                id: { value: originalId },
+              } as MockedObject<VerificationCode>,
+            ];
+            isBlocked = {
+              getStatus: false,
+            } as MockedObject<IsBlocked>;
+            isVerified = {
+              getStatus: true,
+            } as MockedObject<IsVerified>;
+            deletedAt = null;
+
+            const user = User.create(
+              userId,
+              email,
+              username,
+              passwordHash,
+              isVerified,
+              verificationCodes,
+              isBlocked,
+              firstName,
+              lastName,
+              birthday,
+              createdAt,
+              updatedAt,
+              biography,
+              roles,
+              refreshTokens,
+              profilePicture,
+              deletedAt,
+            );
+
+            // Act
+            const newId = 'new-verification-code-id';
+            const newVerificationCode = {
+              id: { value: newId },
+            } as MockedObject<VerificationCode>;
+
+            // Assert
+            expect(() =>
+              user.addVerificationCode(newVerificationCode),
+            ).toThrowError(VerifiedUserCannotGenerateNewVerificationCodesError);
+          },
+        );
+
+        test.each(validValues)(
+          'add a null verification code in an User should throw error',
+          (
+            userId: MockedObject<UserId>,
+            email: MockedObject<Email>,
+            username: MockedObject<Username>,
+            passwordHash: MockedObject<PasswordHash>,
+            isVerified: MockedObject<IsVerified>,
+            verificationCodes: MockedObject<VerificationCode>[],
+            isBlocked: MockedObject<IsBlocked>,
+            firstName: MockedObject<FirstName>,
+            lastName: MockedObject<LastName>,
+            birthday: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            biography: MockedObject<Biography>,
+            roles: MockedObject<Role[]>,
+            refreshTokens: MockedObject<RefreshToken[]>,
+            profilePicture: MockedObject<WebUrl>,
+            deletedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+            const originalId = 'original-verification-code-id';
+            verificationCodes = [
+              {
+                id: { value: originalId },
+              } as MockedObject<VerificationCode>,
+            ];
+            isBlocked = {
+              getStatus: false,
+            } as MockedObject<IsBlocked>;
+            isVerified = {
+              getStatus: false,
+            } as MockedObject<IsVerified>;
+            deletedAt = null;
+
+            const user = User.create(
+              userId,
+              email,
+              username,
+              passwordHash,
+              isVerified,
+              verificationCodes,
+              isBlocked,
+              firstName,
+              lastName,
+              birthday,
+              createdAt,
+              updatedAt,
+              biography,
+              roles,
+              refreshTokens,
+              profilePicture,
+              deletedAt,
+            );
+
+            // Act
+
+            // Assert
+            expect(() => user.addVerificationCode(null)).toThrowError(
+              InvalidUserVerificationCodeError,
+            );
+          },
+        );
+
+        test.each(validValues)(
+          'add a new verification code in an User should update the verificationCode array',
+          (
+            userId: MockedObject<UserId>,
+            email: MockedObject<Email>,
+            username: MockedObject<Username>,
+            passwordHash: MockedObject<PasswordHash>,
+            isVerified: MockedObject<IsVerified>,
+            verificationCodes: MockedObject<VerificationCode>[],
+            isBlocked: MockedObject<IsBlocked>,
+            firstName: MockedObject<FirstName>,
+            lastName: MockedObject<LastName>,
+            birthday: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<MillisecondsDate>,
+            updatedAt: MockedObject<MillisecondsDate>,
+            biography: MockedObject<Biography>,
+            roles: MockedObject<Role[]>,
+            refreshTokens: MockedObject<RefreshToken[]>,
+            profilePicture: MockedObject<WebUrl>,
+            deletedAt: MockedObject<MillisecondsDate>,
+          ) => {
+            // Arrange
+            const originalId = 'original-verification-code-id';
+            verificationCodes = [
+              {
+                id: { value: originalId },
+              } as MockedObject<VerificationCode>,
+            ];
+            isBlocked = {
+              getStatus: false,
+            } as MockedObject<IsBlocked>;
+            isVerified = {
+              getStatus: false,
+            } as MockedObject<IsVerified>;
+            deletedAt = null;
+
+            const user = User.create(
+              userId,
+              email,
+              username,
+              passwordHash,
+              isVerified,
+              verificationCodes,
+              isBlocked,
+              firstName,
+              lastName,
+              birthday,
+              createdAt,
+              updatedAt,
+              biography,
+              roles,
+              refreshTokens,
+              profilePicture,
+              deletedAt,
+            );
+
+            // Act
+            const newId = 'new-verification-code-id';
+            const newVerificationCode = {
+              id: { value: newId },
+            } as MockedObject<VerificationCode>;
+            user.addVerificationCode(newVerificationCode);
+
+            // Assert
+            expect(user.verificationCodes.length).toBe(2);
+            expect(user.verificationCodes[0].id.value).toBe(originalId);
+            expect(user.verificationCodes[1].id.value).toBe(newId);
+          },
+        );
+
+        test.each(validValues)(
           'block User should change the property value',
           (
             userId: MockedObject<UserId>,
@@ -1704,7 +2189,7 @@ describe('users', () => {
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -1724,7 +2209,7 @@ describe('users', () => {
               username,
               passwordHash,
               isVerified,
-              verificationCode,
+              verificationCodes,
               isBlocked,
               firstName,
               lastName,
@@ -1754,7 +2239,7 @@ describe('users', () => {
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -1774,7 +2259,7 @@ describe('users', () => {
               username,
               passwordHash,
               isVerified,
-              verificationCode,
+              verificationCodes,
               isBlocked,
               firstName,
               lastName,
@@ -1804,7 +2289,7 @@ describe('users', () => {
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -1824,7 +2309,7 @@ describe('users', () => {
               username,
               passwordHash,
               isVerified,
-              verificationCode,
+              verificationCodes,
               isBlocked,
               firstName,
               lastName,
@@ -1881,7 +2366,7 @@ describe('users', () => {
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -1901,7 +2386,7 @@ describe('users', () => {
               username,
               passwordHash,
               isVerified,
-              verificationCode,
+              verificationCodes,
               isBlocked,
               firstName,
               lastName,
@@ -1935,7 +2420,7 @@ describe('users', () => {
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -1955,7 +2440,7 @@ describe('users', () => {
               username,
               passwordHash,
               isVerified,
-              verificationCode,
+              verificationCodes,
               isBlocked,
               firstName,
               lastName,
@@ -1985,7 +2470,7 @@ describe('users', () => {
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -2005,7 +2490,7 @@ describe('users', () => {
               username,
               passwordHash,
               isVerified,
-              verificationCode,
+              verificationCodes,
               isBlocked,
               firstName,
               lastName,
@@ -2036,7 +2521,7 @@ describe('users', () => {
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -2056,7 +2541,7 @@ describe('users', () => {
               username,
               passwordHash,
               isVerified,
-              verificationCode,
+              verificationCodes,
               isBlocked,
               firstName,
               lastName,
@@ -2087,7 +2572,7 @@ describe('users', () => {
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -2116,7 +2601,7 @@ describe('users', () => {
               username,
               passwordHash,
               isVerified,
-              verificationCode,
+              verificationCodes,
               isBlocked,
               firstName,
               lastName,
@@ -2147,7 +2632,7 @@ describe('users', () => {
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -2176,7 +2661,7 @@ describe('users', () => {
               username,
               passwordHash,
               isVerified,
-              verificationCode,
+              verificationCodes,
               isBlocked,
               firstName,
               lastName,
@@ -2208,7 +2693,7 @@ describe('users', () => {
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -2237,7 +2722,7 @@ describe('users', () => {
               username,
               passwordHash,
               isVerified,
-              verificationCode,
+              verificationCodes,
               isBlocked,
               firstName,
               lastName,
@@ -2268,7 +2753,7 @@ describe('users', () => {
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -2297,7 +2782,7 @@ describe('users', () => {
               username,
               passwordHash,
               isVerified,
-              verificationCode,
+              verificationCodes,
               isBlocked,
               firstName,
               lastName,
@@ -2327,7 +2812,7 @@ describe('users', () => {
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -2360,7 +2845,7 @@ describe('users', () => {
               username,
               passwordHash,
               isVerified,
-              verificationCode,
+              verificationCodes,
               isBlocked,
               firstName,
               lastName,
@@ -2391,7 +2876,7 @@ describe('users', () => {
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -2417,7 +2902,7 @@ describe('users', () => {
               username,
               passwordHash,
               isVerified,
-              verificationCode,
+              verificationCodes,
               isBlocked,
               firstName,
               lastName,
@@ -2453,7 +2938,7 @@ describe('users', () => {
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -2481,7 +2966,7 @@ describe('users', () => {
               username,
               passwordHash,
               isVerified,
-              verificationCode,
+              verificationCodes,
               isBlocked,
               firstName,
               lastName,
@@ -2513,7 +2998,7 @@ describe('users', () => {
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -2550,7 +3035,7 @@ describe('users', () => {
               username,
               passwordHash,
               isVerified,
-              verificationCode,
+              verificationCodes,
               isBlocked,
               firstName,
               lastName,
@@ -2582,7 +3067,7 @@ describe('users', () => {
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -2606,7 +3091,7 @@ describe('users', () => {
               username,
               passwordHash,
               isVerified,
-              verificationCode,
+              verificationCodes,
               isBlocked,
               firstName,
               lastName,
@@ -2637,7 +3122,7 @@ describe('users', () => {
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -2662,7 +3147,7 @@ describe('users', () => {
               username,
               passwordHash,
               isVerified,
-              verificationCode,
+              verificationCodes,
               isBlocked,
               firstName,
               lastName,
@@ -2694,7 +3179,7 @@ describe('users', () => {
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -2722,7 +3207,7 @@ describe('users', () => {
               username,
               passwordHash,
               isVerified,
-              verificationCode,
+              verificationCodes,
               isBlocked,
               firstName,
               lastName,
@@ -2754,7 +3239,7 @@ describe('users', () => {
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -2782,7 +3267,7 @@ describe('users', () => {
               username,
               passwordHash,
               isVerified,
-              verificationCode,
+              verificationCodes,
               isBlocked,
               firstName,
               lastName,
@@ -2813,7 +3298,7 @@ describe('users', () => {
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -2845,7 +3330,7 @@ describe('users', () => {
               username,
               passwordHash,
               isVerified,
-              verificationCode,
+              verificationCodes,
               isBlocked,
               firstName,
               lastName,
@@ -2877,7 +3362,7 @@ describe('users', () => {
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -2909,7 +3394,7 @@ describe('users', () => {
               username,
               passwordHash,
               isVerified,
-              verificationCode,
+              verificationCodes,
               isBlocked,
               firstName,
               lastName,
@@ -2940,7 +3425,7 @@ describe('users', () => {
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -2964,7 +3449,7 @@ describe('users', () => {
               username,
               passwordHash,
               isVerified,
-              verificationCode,
+              verificationCodes,
               isBlocked,
               firstName,
               lastName,
@@ -2995,7 +3480,7 @@ describe('users', () => {
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -3020,7 +3505,7 @@ describe('users', () => {
               username,
               passwordHash,
               isVerified,
-              verificationCode,
+              verificationCodes,
               isBlocked,
               firstName,
               lastName,
@@ -3051,7 +3536,7 @@ describe('users', () => {
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -3079,7 +3564,7 @@ describe('users', () => {
               username,
               passwordHash,
               isVerified,
-              verificationCode,
+              verificationCodes,
               isBlocked,
               firstName,
               lastName,
@@ -3110,7 +3595,7 @@ describe('users', () => {
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -3138,7 +3623,7 @@ describe('users', () => {
               username,
               passwordHash,
               isVerified,
-              verificationCode,
+              verificationCodes,
               isBlocked,
               firstName,
               lastName,
@@ -3169,7 +3654,7 @@ describe('users', () => {
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -3204,7 +3689,7 @@ describe('users', () => {
               username,
               passwordHash,
               isVerified,
-              verificationCode,
+              verificationCodes,
               isBlocked,
               firstName,
               lastName,
@@ -3236,7 +3721,7 @@ describe('users', () => {
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -3272,7 +3757,7 @@ describe('users', () => {
               username,
               passwordHash,
               isVerified,
-              verificationCode,
+              verificationCodes,
               isBlocked,
               firstName,
               lastName,
@@ -3304,7 +3789,7 @@ describe('users', () => {
             username: MockedObject<Username>,
             passwordHash: MockedObject<PasswordHash>,
             isVerified: MockedObject<IsVerified>,
-            verificationCode: MockedObject<VerificationCode>,
+            verificationCodes: MockedObject<VerificationCode>[],
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
@@ -3341,7 +3826,7 @@ describe('users', () => {
               username,
               passwordHash,
               isVerified,
-              verificationCode,
+              verificationCodes,
               isBlocked,
               firstName,
               lastName,

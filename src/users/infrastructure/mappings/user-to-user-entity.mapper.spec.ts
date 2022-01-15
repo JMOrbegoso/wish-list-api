@@ -1,13 +1,39 @@
 import { ObjectId } from '@mikro-orm/mongodb';
 import { MockedObject } from 'ts-jest/dist/utils/testing';
 import { User } from '../../domain/entities';
-import { RefreshTokenEntity } from '../persistence/entities';
+import {
+  RefreshTokenEntity,
+  VerificationCodeEntity,
+} from '../persistence/entities';
 import { userToUserEntity } from '.';
 
 describe('users', () => {
   describe('infrastructure', () => {
     describe('mappings', () => {
       describe('User to UserEntity', () => {
+        const validVerificationCodeEntities = [
+          {
+            id: 'id-0',
+            createdAt: new Date(2021, 5, 5),
+            duration: 100,
+          } as MockedObject<VerificationCodeEntity>,
+          {
+            id: 'id-1',
+            createdAt: new Date(2021, 5, 5),
+            duration: 100,
+          } as MockedObject<VerificationCodeEntity>,
+          {
+            id: 'id-2',
+            createdAt: new Date(2021, 5, 5),
+            duration: 100,
+          } as MockedObject<VerificationCodeEntity>,
+          {
+            id: 'id-3',
+            createdAt: new Date(2021, 5, 5),
+            duration: 100,
+          } as MockedObject<VerificationCodeEntity>,
+        ];
+
         const validRefreshTokenEntities = [
           {
             id: 'id-0',
@@ -63,11 +89,6 @@ describe('users', () => {
                 getPasswordHash: 'hash0',
               },
               isVerified: true,
-              verificationCode: {
-                id: {
-                  value: new ObjectId().toString(),
-                },
-              },
               isBlocked: false,
               firstName: {
                 getFirstName: 'FirstName0',
@@ -96,6 +117,12 @@ describe('users', () => {
               },
             } as MockedObject<User>,
             [
+              validVerificationCodeEntities[0],
+              validVerificationCodeEntities[1],
+              validVerificationCodeEntities[2],
+              validVerificationCodeEntities[3],
+            ] as MockedObject<VerificationCodeEntity[]>,
+            [
               validRefreshTokenEntities[0],
               validRefreshTokenEntities[1],
               validRefreshTokenEntities[2],
@@ -117,11 +144,6 @@ describe('users', () => {
                 getPasswordHash: 'hash1',
               },
               isVerified: true,
-              verificationCode: {
-                id: {
-                  value: new ObjectId().toString(),
-                },
-              },
               isBlocked: false,
               firstName: {
                 getFirstName: 'FirstName1',
@@ -150,6 +172,10 @@ describe('users', () => {
               },
             } as MockedObject<User>,
             [
+              validVerificationCodeEntities[0],
+              validVerificationCodeEntities[3],
+            ] as MockedObject<VerificationCodeEntity[]>,
+            [
               validRefreshTokenEntities[0],
               validRefreshTokenEntities[3],
             ] as MockedObject<RefreshTokenEntity[]>,
@@ -169,11 +195,6 @@ describe('users', () => {
                 getPasswordHash: 'hash2',
               },
               isVerified: true,
-              verificationCode: {
-                id: {
-                  value: new ObjectId().toString(),
-                },
-              },
               isBlocked: false,
               firstName: {
                 getFirstName: 'FirstName2',
@@ -200,6 +221,11 @@ describe('users', () => {
               },
             } as MockedObject<User>,
             [
+              validVerificationCodeEntities[1],
+              validVerificationCodeEntities[2],
+              validVerificationCodeEntities[3],
+            ] as MockedObject<VerificationCodeEntity[]>,
+            [
               validRefreshTokenEntities[1],
               validRefreshTokenEntities[2],
               validRefreshTokenEntities[3],
@@ -220,11 +246,6 @@ describe('users', () => {
                 getPasswordHash: 'hash3',
               },
               isVerified: true,
-              verificationCode: {
-                id: {
-                  value: new ObjectId().toString(),
-                },
-              },
               isBlocked: false,
               firstName: {
                 getFirstName: 'FirstName3',
@@ -251,6 +272,11 @@ describe('users', () => {
               deletedAt: null,
             } as MockedObject<User>,
             [
+              validVerificationCodeEntities[0],
+              validVerificationCodeEntities[1],
+              validVerificationCodeEntities[2],
+            ] as MockedObject<VerificationCodeEntity[]>,
+            [
               validRefreshTokenEntities[0],
               validRefreshTokenEntities[1],
               validRefreshTokenEntities[2],
@@ -271,11 +297,6 @@ describe('users', () => {
                 getPasswordHash: 'hash4',
               },
               isVerified: true,
-              verificationCode: {
-                id: {
-                  value: new ObjectId().toString(),
-                },
-              },
               isBlocked: false,
               firstName: {
                 getFirstName: 'FirstName4',
@@ -302,6 +323,10 @@ describe('users', () => {
               },
             } as MockedObject<User>,
             [
+              validVerificationCodeEntities[1],
+              validVerificationCodeEntities[3],
+            ] as MockedObject<VerificationCodeEntity[]>,
+            [
               validRefreshTokenEntities[1],
               validRefreshTokenEntities[3],
             ] as MockedObject<RefreshTokenEntity[]>,
@@ -321,11 +346,6 @@ describe('users', () => {
                 getPasswordHash: 'hash5',
               },
               isVerified: true,
-              verificationCode: {
-                id: {
-                  value: new ObjectId().toString(),
-                },
-              },
               isBlocked: false,
               firstName: {
                 getFirstName: 'FirstName5',
@@ -351,6 +371,9 @@ describe('users', () => {
               },
               deletedAt: null,
             } as MockedObject<User>,
+            [validVerificationCodeEntities[0]] as MockedObject<
+              VerificationCodeEntity[]
+            >,
             [validRefreshTokenEntities[0]] as MockedObject<
               RefreshTokenEntity[]
             >,
@@ -370,11 +393,6 @@ describe('users', () => {
                 getPasswordHash: 'hash6',
               },
               isVerified: true,
-              verificationCode: {
-                id: {
-                  value: new ObjectId().toString(),
-                },
-              },
               isBlocked: false,
               firstName: {
                 getFirstName: 'FirstName6',
@@ -398,6 +416,9 @@ describe('users', () => {
               profilePicture: null,
               deletedAt: null,
             } as MockedObject<User>,
+            [validVerificationCodeEntities[3]] as MockedObject<
+              VerificationCodeEntity[]
+            >,
             [validRefreshTokenEntities[3]] as MockedObject<
               RefreshTokenEntity[]
             >,
@@ -417,11 +438,6 @@ describe('users', () => {
                 getPasswordHash: 'hash7',
               },
               isVerified: true,
-              verificationCode: {
-                id: {
-                  value: new ObjectId().toString(),
-                },
-              },
               isBlocked: false,
               firstName: {
                 getFirstName: 'FirstName7',
@@ -445,6 +461,7 @@ describe('users', () => {
               profilePicture: null,
               deletedAt: null,
             } as MockedObject<User>,
+            [] as MockedObject<VerificationCodeEntity[]>,
             [] as MockedObject<RefreshTokenEntity[]>,
           ],
         ];
@@ -453,12 +470,17 @@ describe('users', () => {
           'should map User to UserEntity keeping all the property values',
           (
             user: MockedObject<User>,
+            verificationCodeEntities: MockedObject<VerificationCodeEntity[]>,
             refreshTokenEntities: MockedObject<RefreshTokenEntity[]>,
           ) => {
             // Arrange
 
             // Act
-            const userEntity = userToUserEntity(user, refreshTokenEntities);
+            const userEntity = userToUserEntity(
+              user,
+              verificationCodeEntities,
+              refreshTokenEntities,
+            );
 
             // Assert
             expect(userEntity.id).toBe(user.id.value);
@@ -474,9 +496,6 @@ describe('users', () => {
               user.passwordHash.getPasswordHash,
             );
             expect(userEntity.isVerified).toBe(user.isVerified);
-            expect(userEntity.verificationCode).toBe(
-              user.verificationCode.id.value,
-            );
             expect(userEntity.isBlocked).toBe(user.isBlocked);
             expect(userEntity.firstName).toBe(user.firstName.getFirstName);
             expect(userEntity.lastName).toBe(user.lastName.getLastName);
@@ -497,6 +516,12 @@ describe('users', () => {
 
             for (let i = 0; i < user.roles.length; i++) {
               expect(userEntity.roles[i]).toBe(user.roles[i]);
+            }
+
+            for (let i = 0; i < verificationCodeEntities.length; i++) {
+              expect(userEntity.verificationCodes.getItems()[i].id).toBe(
+                verificationCodeEntities[i].id,
+              );
             }
 
             for (let i = 0; i < refreshTokenEntities.length; i++) {

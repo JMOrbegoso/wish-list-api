@@ -604,11 +604,21 @@ describe('AuthController (e2e)', () => {
         it(`User is already verified`, () => {
           return request(app.getHttpServer())
             .get('/verify')
-            .query({ code: seed.basicUser.verificationCode })
+            .query({ code: seed.basicUserVerificationCode._id.toString() })
             .expect(400)
             .expect(({ body }) =>
               expect(body.message).toMatch(/already verified/i),
             );
+        });
+
+        it(`Verification code is expired`, () => {
+          return request(app.getHttpServer())
+            .get('/verify')
+            .query({
+              code: seed.unverifiedUserExpiredVerificationCode._id.toString(),
+            })
+            .expect(400)
+            .expect(({ body }) => expect(body.message).toMatch(/is expired/i));
         });
       });
 
@@ -626,7 +636,9 @@ describe('AuthController (e2e)', () => {
         it(`User verified successfully`, () => {
           return request(app.getHttpServer())
             .get('/verify')
-            .query({ code: seed.unverifiedUser.verificationCode })
+            .query({
+              code: seed.unverifiedUserValidVerificationCode._id.toString(),
+            })
             .expect(200)
             .expect(async () => {
               const user: UserEntity = await database
