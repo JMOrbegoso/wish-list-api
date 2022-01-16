@@ -60,7 +60,7 @@ export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
     const firstName = FirstName.create(command.firstName);
     const lastName = LastName.create(command.lastName);
     const birthday = MillisecondsDate.createFromMilliseconds(command.birthday);
-    const createdAt = MillisecondsDate.create();
+    const createdAt = MillisecondsDate.now();
     const biography = Biography.create(command.biography);
     const roles = [Role.basic()];
 
@@ -88,7 +88,7 @@ export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
     );
     const verificationCode = VerificationCode.create(
       verificationCodeId,
-      MillisecondsDate.create(),
+      MillisecondsDate.now(),
       VerificationCode.defaultDuration,
     );
 

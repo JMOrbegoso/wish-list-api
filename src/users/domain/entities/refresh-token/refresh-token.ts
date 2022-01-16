@@ -48,7 +48,7 @@ export class RefreshToken extends Entity<RefreshTokenId> {
   public static create(
     id: RefreshTokenId,
     ipAddress: IpAddress,
-    createdAt: MillisecondsDate = MillisecondsDate.create(),
+    createdAt: MillisecondsDate = MillisecondsDate.now(),
     secondsDuration: SecondsDuration = RefreshToken.defaultDuration,
     replacedAt: MillisecondsDate = null,
     replacedBy: RefreshTokenId = null,
@@ -99,7 +99,7 @@ export class RefreshToken extends Entity<RefreshTokenId> {
     if (!replacedByToken) throw new InvalidRefreshTokenError();
 
     this._replacedBy = replacedByToken.id;
-    this._replacedAt = MillisecondsDate.create();
+    this._replacedAt = MillisecondsDate.now();
   }
 
   public get wasReplaced(): boolean {
@@ -111,7 +111,7 @@ export class RefreshToken extends Entity<RefreshTokenId> {
   }
 
   public revoke(): void {
-    this._revokedAt = MillisecondsDate.create();
+    this._revokedAt = MillisecondsDate.now();
   }
 
   public get isRevoked(): boolean {

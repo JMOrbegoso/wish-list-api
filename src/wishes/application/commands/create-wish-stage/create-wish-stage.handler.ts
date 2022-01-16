@@ -25,7 +25,7 @@ export class CreateWishStageHandler
     const wishId = WishId.create(command.wishId);
     const title = WishTitle.create(command.title);
     const description = WishDescription.create(command.description);
-    const createdAt = MillisecondsDate.create();
+    const createdAt = MillisecondsDate.now();
     const urls = command.urls.map((url) => WebUrl.create(url));
     const imageUrls = command.imageUrls.map((url) => WebUrl.create(url));
 

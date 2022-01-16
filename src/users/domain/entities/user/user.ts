@@ -267,17 +267,17 @@ export class User extends AggregateRoot<UserId> {
     this._birthday = birthday;
     this._biography = biography;
 
-    this._updatedAt = MillisecondsDate.create();
+    this._updatedAt = MillisecondsDate.now();
   }
 
   public updateProfilePicture(profilePicture: WebUrl = null): void {
     this._profilePicture = profilePicture;
 
-    this._updatedAt = MillisecondsDate.create();
+    this._updatedAt = MillisecondsDate.now();
   }
 
   public delete(): void {
-    this._deletedAt = MillisecondsDate.create();
+    this._deletedAt = MillisecondsDate.now();
   }
   public undelete(): void {
     this._deletedAt = null;

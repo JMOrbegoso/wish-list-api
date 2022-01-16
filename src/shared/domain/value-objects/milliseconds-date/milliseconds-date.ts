@@ -5,7 +5,7 @@ export class MillisecondsDate extends ValueObject<number> {
     if (!value) throw new InvalidMillisecondsDateError();
   }
 
-  static create(): MillisecondsDate {
+  static now(): MillisecondsDate {
     const milliseconds = Date.now();
     return new MillisecondsDate(milliseconds);
   }

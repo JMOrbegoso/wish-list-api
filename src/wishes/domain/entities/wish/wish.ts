@@ -226,7 +226,7 @@ export class Wish extends AggregateRoot<WishId> {
   public delete(): void {
     if (this.isDeleted) throw new WishIsAlreadyDeletedError();
 
-    this._deletedAt = MillisecondsDate.create();
+    this._deletedAt = MillisecondsDate.now();
   }
 
   public undelete(): void {
@@ -269,7 +269,7 @@ export class Wish extends AggregateRoot<WishId> {
     this._startedAt = startedAt;
     this._completedAt = completedAt;
 
-    this._updatedAt = MillisecondsDate.create();
+    this._updatedAt = MillisecondsDate.now();
   }
 
   public addStage(newStage: WishStage): void {
@@ -285,7 +285,7 @@ export class Wish extends AggregateRoot<WishId> {
 
     this._stages.push(newStage);
 
-    this._updatedAt = MillisecondsDate.create();
+    this._updatedAt = MillisecondsDate.now();
   }
 
   public updateStage(
@@ -302,7 +302,7 @@ export class Wish extends AggregateRoot<WishId> {
 
     wishStage.update(title, description, urls, imageUrls);
 
-    this._updatedAt = MillisecondsDate.create();
+    this._updatedAt = MillisecondsDate.now();
   }
 
   public removeStage(stageToRemove: WishStage): void {
@@ -315,6 +315,6 @@ export class Wish extends AggregateRoot<WishId> {
 
     this._stages = this._stages.filter((stage) => !stage.equals(stageToRemove));
 
-    this._updatedAt = MillisecondsDate.create();
+    this._updatedAt = MillisecondsDate.now();
   }
 }

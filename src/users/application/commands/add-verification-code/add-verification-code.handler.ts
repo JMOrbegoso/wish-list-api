@@ -41,7 +41,7 @@ export class AddVerificationCodeHandler
     );
     const verificationCode = VerificationCode.create(
       verificationCodeId,
-      MillisecondsDate.create(),
+      MillisecondsDate.now(),
       VerificationCode.defaultDuration,
     );
 

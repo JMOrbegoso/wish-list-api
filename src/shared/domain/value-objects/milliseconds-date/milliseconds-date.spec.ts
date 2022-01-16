@@ -49,7 +49,7 @@ describe('shared', () => {
           // Act
           const currentDate = new Date();
           const milliseconds = currentDate.getTime();
-          const millisecondsDate = MillisecondsDate.create();
+          const millisecondsDate = MillisecondsDate.now();
 
           // Assert
           expect(millisecondsDate.getMilliseconds).toBeGreaterThanOrEqual(
