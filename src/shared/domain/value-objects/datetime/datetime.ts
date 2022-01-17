@@ -48,13 +48,13 @@ export class DateTime extends ValueObject<number> {
   public isLesser(other: DateTime): boolean {
     if (!other) throw new InvalidDateTimeError();
 
-    return this.getMilliseconds < other.getMilliseconds;
+    return this.value < other.value;
   }
 
   public isGreater(other: DateTime): boolean {
     if (!other) throw new InvalidDateTimeError();
 
-    return this.getMilliseconds > other.getMilliseconds;
+    return this.value > other.value;
   }
 
   public isLesserThanNow(): boolean {
@@ -66,7 +66,7 @@ export class DateTime extends ValueObject<number> {
   }
 
   public addSeconds(seconds: number): DateTime {
-    const newMilliseconds = this.getMilliseconds + 1000 * seconds;
+    const newMilliseconds = this.value + 1000 * seconds;
     const date = new Date(newMilliseconds);
     return DateTime.createFromDate(date);
   }
