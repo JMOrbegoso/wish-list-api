@@ -44,9 +44,7 @@ export class VerificationCode extends Entity<VerificationCodeId> {
   }
 
   public get expireAt(): MillisecondsDate {
-    return MillisecondsDate.createFromMilliseconds(
-      this.createdAt.getMilliseconds + 1000 * this._secondsDuration.getDuration,
-    );
+    return this.createdAt.addSeconds(this._secondsDuration.getDuration);
   }
 
   public get isExpired(): boolean {

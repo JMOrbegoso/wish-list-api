@@ -74,9 +74,7 @@ export class RefreshToken extends Entity<RefreshTokenId> {
   }
 
   public get expireAt(): MillisecondsDate {
-    return MillisecondsDate.createFromMilliseconds(
-      this.createdAt.getMilliseconds + 1000 * this.duration,
-    );
+    return this.createdAt.addSeconds(this.duration);
   }
 
   public get isExpired(): boolean {

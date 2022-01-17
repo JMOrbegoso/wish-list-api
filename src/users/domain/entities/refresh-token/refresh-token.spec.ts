@@ -23,6 +23,9 @@ describe('users', () => {
             {
               getMilliseconds: new Date().getTime(),
               equals: jest.fn().mockReturnValue(true),
+              addSeconds: jest.fn().mockReturnValue({
+                getDate: new Date(new Date().getTime() + 1000),
+              } as MockedObject<MillisecondsDate>),
             } as MockedObject<MillisecondsDate>,
             {
               getDuration: 4,
@@ -53,6 +56,9 @@ describe('users', () => {
             {
               getMilliseconds: new Date().getTime(),
               equals: jest.fn().mockReturnValue(true),
+              addSeconds: jest.fn().mockReturnValue({
+                getDate: new Date(new Date().getTime() + 1000),
+              } as MockedObject<MillisecondsDate>),
             } as MockedObject<MillisecondsDate>,
             {
               getDuration: 4,
@@ -80,6 +86,9 @@ describe('users', () => {
             {
               getMilliseconds: new Date().getTime(),
               equals: jest.fn().mockReturnValue(true),
+              addSeconds: jest.fn().mockReturnValue({
+                getDate: new Date(new Date().getTime() + 1000),
+              } as MockedObject<MillisecondsDate>),
             } as MockedObject<MillisecondsDate>,
             {
               getDuration: 4,
@@ -104,6 +113,9 @@ describe('users', () => {
             {
               getMilliseconds: new Date().getTime(),
               equals: jest.fn().mockReturnValue(true),
+              addSeconds: jest.fn().mockReturnValue({
+                getDate: new Date(new Date().getTime() + 1000),
+              } as MockedObject<MillisecondsDate>),
             } as MockedObject<MillisecondsDate>,
             {
               getDuration: 4,

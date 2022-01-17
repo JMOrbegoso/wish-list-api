@@ -120,6 +120,44 @@ describe('shared', () => {
           // Assert
           expect(result).toBe(true);
         });
+
+        it('reduce seconds to MillisecondsDate using addSeconds', () => {
+          // Arrange
+          const date = new Date('2022-01-01');
+          const secondsToDecrease = 60;
+          const millisecondsDate = MillisecondsDate.createFromDate(date);
+
+          // Act
+          const result = millisecondsDate.addSeconds(-secondsToDecrease);
+
+          // Assert
+          expect(millisecondsDate.getMilliseconds).toBe(date.getTime());
+          expect(result.getMilliseconds).not.toBe(
+            millisecondsDate.getMilliseconds,
+          );
+          expect(result.getMilliseconds).toBe(
+            date.getTime() - secondsToDecrease * 1000,
+          );
+        });
+
+        it('add seconds to MillisecondsDate using addSeconds', () => {
+          // Arrange
+          const date = new Date('2022-01-01');
+          const secondsToAdd = 60;
+          const millisecondsDate = MillisecondsDate.createFromDate(date);
+
+          // Act
+          const result = millisecondsDate.addSeconds(secondsToAdd);
+
+          // Assert
+          expect(millisecondsDate.getMilliseconds).toBe(date.getTime());
+          expect(result.getMilliseconds).not.toBe(
+            millisecondsDate.getMilliseconds,
+          );
+          expect(result.getMilliseconds).toBe(
+            date.getTime() + secondsToAdd * 1000,
+          );
+        });
       });
     });
   });

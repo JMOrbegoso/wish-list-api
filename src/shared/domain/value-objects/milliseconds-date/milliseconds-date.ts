@@ -27,4 +27,10 @@ export class MillisecondsDate extends ValueObject<number> {
   public get getDate(): Date {
     return new Date(this.value);
   }
+
+  public addSeconds(seconds: number): MillisecondsDate {
+    const newMilliseconds = this.getMilliseconds + 1000 * seconds;
+    const date = new Date(newMilliseconds);
+    return MillisecondsDate.createFromDate(date);
+  }
 }

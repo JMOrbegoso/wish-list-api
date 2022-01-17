@@ -90,7 +90,9 @@ describe('users', () => {
             value: 'verification-code-id',
           } as MockedObject<VerificationCodeId>;
           const createdAt = {
-            getMilliseconds: new Date(1990, 1, 1).getTime(),
+            addSeconds: jest.fn().mockReturnValue({
+              getDate: new Date(1990, 1, 1),
+            } as MockedObject<MillisecondsDate>),
           } as MockedObject<MillisecondsDate>;
           const durationInSeconds = 100;
           const duration = {
@@ -110,7 +112,6 @@ describe('users', () => {
             createdAt.getMilliseconds,
           );
           expect(verificationCode.duration.getDuration).toBe(durationInSeconds);
-          expect(verificationCode.expireAt.getMilliseconds).toBeTruthy();
           expect(verificationCode.isExpired).toBe(true);
         });
 
