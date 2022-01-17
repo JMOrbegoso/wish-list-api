@@ -1,9 +1,6 @@
 import { WishStageId } from '..';
 import { Entity } from '../../../../shared/domain/entities';
-import {
-  MillisecondsDate,
-  WebUrl,
-} from '../../../../shared/domain/value-objects';
+import { DateTime, WebUrl } from '../../../../shared/domain/value-objects';
 import { WishDescription, WishTitle } from '../../value-objects';
 import {
   InvalidWishStageCreatedAtError,
@@ -23,7 +20,7 @@ export class WishStage extends Entity<WishStageId> {
 
   private _title: WishTitle;
   private _description: WishDescription;
-  private _createdAt: MillisecondsDate;
+  private _createdAt: DateTime;
   private _urls: WebUrl[];
   private _imageUrls: WebUrl[];
 
@@ -31,7 +28,7 @@ export class WishStage extends Entity<WishStageId> {
     id: WishStageId,
     title: WishTitle,
     description: WishDescription,
-    createdAt: MillisecondsDate,
+    createdAt: DateTime,
     urls: WebUrl[],
     imageUrls: WebUrl[],
   ) {
@@ -63,7 +60,7 @@ export class WishStage extends Entity<WishStageId> {
     id: WishStageId,
     title: WishTitle,
     description: WishDescription,
-    createdAt: MillisecondsDate,
+    createdAt: DateTime,
     urls: WebUrl[] = [],
     imageUrls: WebUrl[] = [],
   ): WishStage {
@@ -78,7 +75,7 @@ export class WishStage extends Entity<WishStageId> {
     return this._description;
   }
 
-  public get createdAt(): MillisecondsDate {
+  public get createdAt(): DateTime {
     return this._createdAt;
   }
 

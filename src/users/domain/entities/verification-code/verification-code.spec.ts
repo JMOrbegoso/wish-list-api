@@ -1,7 +1,7 @@
 import { MockedObject } from 'ts-jest/dist/utils/testing';
 import { VerificationCode, VerificationCodeId } from '..';
 import { InvalidEntityIdError } from '../../../../shared/domain/entities';
-import { MillisecondsDate } from '../../../../shared/domain/value-objects';
+import { DateTime } from '../../../../shared/domain/value-objects';
 import { SecondsDuration } from '../../value-objects';
 import {
   InvalidVerificationCodeCreatedAtError,
@@ -14,7 +14,7 @@ describe('users', () => {
       describe('verification-code', () => {
         it('create a VerificationCode with invalid id should throw error', () => {
           // Arrange
-          const createdAt = {} as MockedObject<MillisecondsDate>;
+          const createdAt = {} as MockedObject<DateTime>;
           const duration = {} as MockedObject<SecondsDuration>;
 
           // Act
@@ -45,7 +45,7 @@ describe('users', () => {
           } as MockedObject<VerificationCodeId>;
           const createdAt = {
             getMilliseconds: new Date().getTime(),
-          } as MockedObject<MillisecondsDate>;
+          } as MockedObject<DateTime>;
 
           // Act
 
@@ -62,7 +62,7 @@ describe('users', () => {
           } as MockedObject<VerificationCodeId>;
           const createdAt = {
             getMilliseconds: 100000,
-          } as MockedObject<MillisecondsDate>;
+          } as MockedObject<DateTime>;
           const duration = {
             getDuration: 1000,
           } as MockedObject<SecondsDuration>;
@@ -92,8 +92,8 @@ describe('users', () => {
           const createdAt = {
             addSeconds: jest.fn().mockReturnValue({
               isLesserThanNow: jest.fn().mockReturnValue(true),
-            } as MockedObject<MillisecondsDate>),
-          } as MockedObject<MillisecondsDate>;
+            } as MockedObject<DateTime>),
+          } as MockedObject<DateTime>;
           const durationInSeconds = 100;
           const duration = {
             getDuration: durationInSeconds,
@@ -120,7 +120,7 @@ describe('users', () => {
           const verificationCodeId = {
             equals: jest.fn(),
           } as MockedObject<VerificationCodeId>;
-          const createdAt = {} as MockedObject<MillisecondsDate>;
+          const createdAt = {} as MockedObject<DateTime>;
           const duration = {} as MockedObject<SecondsDuration>;
           const verificationCode = VerificationCode.create(
             verificationCodeId,

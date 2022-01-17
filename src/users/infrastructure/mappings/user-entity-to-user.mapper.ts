@@ -1,4 +1,4 @@
-import { MillisecondsDate, WebUrl } from '../../../shared/domain/value-objects';
+import { DateTime, WebUrl } from '../../../shared/domain/value-objects';
 import { User, UserId } from '../../domain/entities';
 import {
   Biography,
@@ -35,15 +35,15 @@ export function userEntityToUser(userEntity: UserEntity): User {
   const isBlocked = IsBlocked.create(userEntity.isBlocked);
   const firstName = FirstName.create(userEntity.firstName);
   const lastName = LastName.create(userEntity.lastName);
-  const birthday = MillisecondsDate.createFromDate(userEntity.birthday);
-  const createdAt = MillisecondsDate.createFromDate(userEntity.createdAt);
-  const updatedAt = MillisecondsDate.createFromDate(userEntity.updatedAt);
+  const birthday = DateTime.createFromDate(userEntity.birthday);
+  const createdAt = DateTime.createFromDate(userEntity.createdAt);
+  const updatedAt = DateTime.createFromDate(userEntity.updatedAt);
   const biography = Biography.create(userEntity.biography);
   const profilePicture = userEntity.profilePicture
     ? WebUrl.create(userEntity.profilePicture)
     : null;
   const deletedAt = userEntity.deletedAt
-    ? MillisecondsDate.createFromDate(userEntity.deletedAt)
+    ? DateTime.createFromDate(userEntity.deletedAt)
     : null;
   const roles = userEntity.roles.map((r) => Role.create(r));
   const refreshTokens = userEntity.refreshTokens

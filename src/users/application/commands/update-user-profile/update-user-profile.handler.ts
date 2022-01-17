@@ -2,7 +2,7 @@ import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { UpdateUserProfileCommand } from '..';
 import { UnitOfWork } from '../../../../shared/domain/repositories';
-import { MillisecondsDate } from '../../../../shared/domain/value-objects';
+import { DateTime } from '../../../../shared/domain/value-objects';
 import { UserId } from '../../../domain/entities';
 import { UserRepository } from '../../../domain/repositories';
 import { Biography, FirstName, LastName } from '../../../domain/value-objects';
@@ -36,7 +36,7 @@ export class UpdateUserProfileHandler
     // Generate the properties of the User
     const firstName = FirstName.create(command.firstName);
     const lastName = LastName.create(command.lastName);
-    const birthday = MillisecondsDate.createFromString(command.birthday);
+    const birthday = DateTime.createFromString(command.birthday);
     const biography = Biography.create(command.biography);
 
     // Update user properties

@@ -1,7 +1,7 @@
 import { MockedObject } from 'ts-jest/dist/utils/testing';
 import { RefreshToken, RefreshTokenId } from '..';
 import { InvalidEntityIdError } from '../../../../shared/domain/entities';
-import { MillisecondsDate } from '../../../../shared/domain/value-objects';
+import { DateTime } from '../../../../shared/domain/value-objects';
 import { IpAddress, SecondsDuration } from '../../value-objects';
 import {
   InvalidRefreshTokenCreatedAtError,
@@ -25,8 +25,8 @@ describe('users', () => {
               equals: jest.fn().mockReturnValue(true),
               addSeconds: jest.fn().mockReturnValue({
                 isLesserThanNow: jest.fn().mockReturnValue(false),
-              } as MockedObject<MillisecondsDate>),
-            } as MockedObject<MillisecondsDate>,
+              } as MockedObject<DateTime>),
+            } as MockedObject<DateTime>,
             {
               getDuration: 4,
               equals: jest.fn().mockReturnValue(true),
@@ -38,15 +38,15 @@ describe('users', () => {
             {
               getMilliseconds: new Date().getTime(),
               equals: jest.fn().mockReturnValue(true),
-            } as MockedObject<MillisecondsDate>,
+            } as MockedObject<DateTime>,
             {
               getMilliseconds: new Date().getTime(),
               equals: jest.fn().mockReturnValue(true),
-            } as MockedObject<MillisecondsDate>,
+            } as MockedObject<DateTime>,
             {
               getMilliseconds: new Date().getTime(),
               equals: jest.fn().mockReturnValue(true),
-            } as MockedObject<MillisecondsDate>,
+            } as MockedObject<DateTime>,
           ],
           [
             {
@@ -58,8 +58,8 @@ describe('users', () => {
               equals: jest.fn().mockReturnValue(true),
               addSeconds: jest.fn().mockReturnValue({
                 isLesserThanNow: jest.fn().mockReturnValue(false),
-              } as MockedObject<MillisecondsDate>),
-            } as MockedObject<MillisecondsDate>,
+              } as MockedObject<DateTime>),
+            } as MockedObject<DateTime>,
             {
               getDuration: 4,
               equals: jest.fn().mockReturnValue(true),
@@ -72,11 +72,11 @@ describe('users', () => {
             {
               getMilliseconds: new Date().getTime(),
               equals: jest.fn().mockReturnValue(true),
-            } as MockedObject<MillisecondsDate>,
+            } as MockedObject<DateTime>,
             {
               getMilliseconds: new Date().getTime(),
               equals: jest.fn().mockReturnValue(true),
-            } as MockedObject<MillisecondsDate>,
+            } as MockedObject<DateTime>,
           ],
           [
             {
@@ -88,8 +88,8 @@ describe('users', () => {
               equals: jest.fn().mockReturnValue(true),
               addSeconds: jest.fn().mockReturnValue({
                 isLesserThanNow: jest.fn().mockReturnValue(false),
-              } as MockedObject<MillisecondsDate>),
-            } as MockedObject<MillisecondsDate>,
+              } as MockedObject<DateTime>),
+            } as MockedObject<DateTime>,
             {
               getDuration: 4,
               equals: jest.fn().mockReturnValue(true),
@@ -103,7 +103,7 @@ describe('users', () => {
             {
               getMilliseconds: new Date().getTime(),
               equals: jest.fn().mockReturnValue(true),
-            } as MockedObject<MillisecondsDate>,
+            } as MockedObject<DateTime>,
           ],
           [
             {
@@ -115,8 +115,8 @@ describe('users', () => {
               equals: jest.fn().mockReturnValue(true),
               addSeconds: jest.fn().mockReturnValue({
                 isLesserThanNow: jest.fn().mockReturnValue(false),
-              } as MockedObject<MillisecondsDate>),
-            } as MockedObject<MillisecondsDate>,
+              } as MockedObject<DateTime>),
+            } as MockedObject<DateTime>,
             {
               getDuration: 4,
               equals: jest.fn().mockReturnValue(true),
@@ -135,12 +135,12 @@ describe('users', () => {
           'create a RefreshToken with invalid id should throw error',
           (
             id: MockedObject<RefreshTokenId>,
-            createdAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
             secondsDuration: MockedObject<SecondsDuration>,
             ipAddress: MockedObject<IpAddress>,
-            replacedAt: MockedObject<MillisecondsDate>,
+            replacedAt: MockedObject<DateTime>,
             replacedBy: MockedObject<RefreshTokenId>,
-            revokedAt: MockedObject<MillisecondsDate>,
+            revokedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
 
@@ -165,12 +165,12 @@ describe('users', () => {
           'create a RefreshToken with invalid ipAddress should throw error',
           (
             id: MockedObject<RefreshTokenId>,
-            createdAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
             secondsDuration: MockedObject<SecondsDuration>,
             ipAddress: MockedObject<IpAddress>,
-            replacedAt: MockedObject<MillisecondsDate>,
+            replacedAt: MockedObject<DateTime>,
             replacedBy: MockedObject<RefreshTokenId>,
-            revokedAt: MockedObject<MillisecondsDate>,
+            revokedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
 
@@ -195,12 +195,12 @@ describe('users', () => {
           'create a RefreshToken with invalid createdAt should throw error',
           (
             id: MockedObject<RefreshTokenId>,
-            createdAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
             secondsDuration: MockedObject<SecondsDuration>,
             ipAddress: MockedObject<IpAddress>,
-            replacedAt: MockedObject<MillisecondsDate>,
+            replacedAt: MockedObject<DateTime>,
             replacedBy: MockedObject<RefreshTokenId>,
-            revokedAt: MockedObject<MillisecondsDate>,
+            revokedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
 
@@ -225,12 +225,12 @@ describe('users', () => {
           'create a RefreshToken with invalid secondsDuration should throw error',
           (
             id: MockedObject<RefreshTokenId>,
-            createdAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
             secondsDuration: MockedObject<SecondsDuration>,
             ipAddress: MockedObject<IpAddress>,
-            replacedAt: MockedObject<MillisecondsDate>,
+            replacedAt: MockedObject<DateTime>,
             replacedBy: MockedObject<RefreshTokenId>,
-            revokedAt: MockedObject<MillisecondsDate>,
+            revokedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
 
@@ -255,7 +255,7 @@ describe('users', () => {
           'should create a RefreshToken with [id: %p], [createdAt: %p], [secondsDuration: %p], [ipAddress: %p]',
           (
             id: MockedObject<RefreshTokenId>,
-            createdAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
             secondsDuration: MockedObject<SecondsDuration>,
             ipAddress: MockedObject<IpAddress>,
           ) => {
@@ -290,12 +290,12 @@ describe('users', () => {
           'should create a RefreshToken with [id: %p], [createdAt: %p], [secondsDuration: %p], [ipAddress: %p], [replacedAt: %p], [replacedBy: %p], [revokedAt: %p]',
           (
             id: MockedObject<RefreshTokenId>,
-            createdAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
             secondsDuration: MockedObject<SecondsDuration>,
             ipAddress: MockedObject<IpAddress>,
-            replacedAt: MockedObject<MillisecondsDate>,
+            replacedAt: MockedObject<DateTime>,
             replacedBy: MockedObject<RefreshTokenId>,
-            revokedAt: MockedObject<MillisecondsDate>,
+            revokedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
 
@@ -340,12 +340,12 @@ describe('users', () => {
           'should create a valid RefreshToken',
           (
             id: MockedObject<RefreshTokenId>,
-            createdAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
             secondsDuration: MockedObject<SecondsDuration>,
             ipAddress: MockedObject<IpAddress>,
-            replacedAt: MockedObject<MillisecondsDate>,
+            replacedAt: MockedObject<DateTime>,
             replacedBy: MockedObject<RefreshTokenId>,
-            revokedAt: MockedObject<MillisecondsDate>,
+            revokedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
             secondsDuration = {
@@ -378,12 +378,12 @@ describe('users', () => {
           'should create a expired RefreshToken',
           async (
             id: MockedObject<RefreshTokenId>,
-            createdAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
             secondsDuration: MockedObject<SecondsDuration>,
             ipAddress: MockedObject<IpAddress>,
-            replacedAt: MockedObject<MillisecondsDate>,
+            replacedAt: MockedObject<DateTime>,
             replacedBy: MockedObject<RefreshTokenId>,
-            revokedAt: MockedObject<MillisecondsDate>,
+            revokedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
             secondsDuration = {
@@ -392,8 +392,8 @@ describe('users', () => {
             createdAt = {
               addSeconds: jest.fn().mockReturnValue({
                 isLesserThanNow: jest.fn().mockReturnValue(true),
-              } as MockedObject<MillisecondsDate>),
-            } as MockedObject<MillisecondsDate>;
+              } as MockedObject<DateTime>),
+            } as MockedObject<DateTime>;
             replacedAt = null;
             replacedBy = null;
             revokedAt = null;
@@ -421,12 +421,12 @@ describe('users', () => {
           'comparing two entities should call "equals" method from RefreshTokenId',
           (
             id: MockedObject<RefreshTokenId>,
-            createdAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
             secondsDuration: MockedObject<SecondsDuration>,
             ipAddress: MockedObject<IpAddress>,
-            replacedAt: MockedObject<MillisecondsDate>,
+            replacedAt: MockedObject<DateTime>,
             replacedBy: MockedObject<RefreshTokenId>,
-            revokedAt: MockedObject<MillisecondsDate>,
+            revokedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
             const refreshToken = RefreshToken.create(
@@ -451,12 +451,12 @@ describe('users', () => {
           'replace RefreshToken with a invalid one should throw error',
           (
             id: MockedObject<RefreshTokenId>,
-            createdAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
             secondsDuration: MockedObject<SecondsDuration>,
             ipAddress: MockedObject<IpAddress>,
-            replacedAt: MockedObject<MillisecondsDate>,
+            replacedAt: MockedObject<DateTime>,
             replacedBy: MockedObject<RefreshTokenId>,
-            revokedAt: MockedObject<MillisecondsDate>,
+            revokedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
             const refreshToken = RefreshToken.create(
@@ -482,12 +482,12 @@ describe('users', () => {
           'replace RefreshToken should change the property value',
           (
             id: MockedObject<RefreshTokenId>,
-            createdAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
             secondsDuration: MockedObject<SecondsDuration>,
             ipAddress: MockedObject<IpAddress>,
-            replacedAt: MockedObject<MillisecondsDate>,
+            replacedAt: MockedObject<DateTime>,
             replacedBy: MockedObject<RefreshTokenId>,
-            revokedAt: MockedObject<MillisecondsDate>,
+            revokedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
             const refreshToken = RefreshToken.create(
@@ -521,12 +521,12 @@ describe('users', () => {
           'revoke RefreshToken should change the property value',
           (
             id: MockedObject<RefreshTokenId>,
-            createdAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
             secondsDuration: MockedObject<SecondsDuration>,
             ipAddress: MockedObject<IpAddress>,
-            replacedAt: MockedObject<MillisecondsDate>,
+            replacedAt: MockedObject<DateTime>,
             replacedBy: MockedObject<RefreshTokenId>,
-            revokedAt: MockedObject<MillisecondsDate>,
+            revokedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
             const refreshToken = RefreshToken.create(

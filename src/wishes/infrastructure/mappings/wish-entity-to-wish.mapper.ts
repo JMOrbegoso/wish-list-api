@@ -1,4 +1,4 @@
-import { MillisecondsDate, WebUrl } from '../../../shared/domain/value-objects';
+import { DateTime, WebUrl } from '../../../shared/domain/value-objects';
 import { Wish, WishId } from '../../domain/entities';
 import {
   CategoryName,
@@ -14,8 +14,8 @@ export function wishEntityToWish(wishEntity: WishEntity): Wish {
   const title = WishTitle.create(wishEntity.title);
   const description = WishDescription.create(wishEntity.description);
   const privacyLevel = WishPrivacyLevel.create(wishEntity.privacyLevel);
-  const createdAt = MillisecondsDate.createFromDate(wishEntity.createdAt);
-  const updatedAt = MillisecondsDate.createFromDate(wishEntity.updatedAt);
+  const createdAt = DateTime.createFromDate(wishEntity.createdAt);
+  const updatedAt = DateTime.createFromDate(wishEntity.updatedAt);
   const wisher = wisherEntityToWisher(wishEntity.wisher);
   const urls = wishEntity.urls.map((url) => WebUrl.create(url));
   const imageUrls = wishEntity.imageUrls.map((url) => WebUrl.create(url));
@@ -26,13 +26,13 @@ export function wishEntityToWish(wishEntity: WishEntity): Wish {
     .toArray()
     .map((stage: WishStageEntity) => wishStageEntityToWishStage(stage));
   const deletedAt = wishEntity.deletedAt
-    ? MillisecondsDate.createFromDate(wishEntity.deletedAt)
+    ? DateTime.createFromDate(wishEntity.deletedAt)
     : null;
   const startedAt = wishEntity.startedAt
-    ? MillisecondsDate.createFromDate(wishEntity.startedAt)
+    ? DateTime.createFromDate(wishEntity.startedAt)
     : null;
   const completedAt = wishEntity.completedAt
-    ? MillisecondsDate.createFromDate(wishEntity.completedAt)
+    ? DateTime.createFromDate(wishEntity.completedAt)
     : null;
 
   return Wish.create(

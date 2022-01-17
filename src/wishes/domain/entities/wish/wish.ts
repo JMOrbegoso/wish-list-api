@@ -1,9 +1,6 @@
 import { WishId, WishStage, WishStageId, Wisher } from '..';
 import { AggregateRoot } from '../../../../shared/domain/entities';
-import {
-  MillisecondsDate,
-  WebUrl,
-} from '../../../../shared/domain/value-objects';
+import { DateTime, WebUrl } from '../../../../shared/domain/value-objects';
 import {
   CategoryName,
   WishDescription,
@@ -45,32 +42,32 @@ export class Wish extends AggregateRoot<WishId> {
   private _title: WishTitle;
   private _description: WishDescription;
   private _privacyLevel: WishPrivacyLevel;
-  private _createdAt: MillisecondsDate;
-  private _updatedAt: MillisecondsDate;
+  private _createdAt: DateTime;
+  private _updatedAt: DateTime;
   private _wisher: Wisher;
   private _urls: WebUrl[];
   private _imageUrls: WebUrl[];
   private _categories: CategoryName[];
   private _stages: WishStage[];
-  private _deletedAt?: MillisecondsDate;
-  private _startedAt?: MillisecondsDate;
-  private _completedAt?: MillisecondsDate;
+  private _deletedAt?: DateTime;
+  private _startedAt?: DateTime;
+  private _completedAt?: DateTime;
 
   private constructor(
     id: WishId,
     title: WishTitle,
     description: WishDescription,
     privacyLevel: WishPrivacyLevel,
-    createdAt: MillisecondsDate,
-    updatedAt: MillisecondsDate,
+    createdAt: DateTime,
+    updatedAt: DateTime,
     wisher: Wisher,
     urls: WebUrl[],
     imageUrls: WebUrl[],
     categories: CategoryName[],
     stages: WishStage[],
-    deletedAt?: MillisecondsDate,
-    startedAt?: MillisecondsDate,
-    completedAt?: MillisecondsDate,
+    deletedAt?: DateTime,
+    startedAt?: DateTime,
+    completedAt?: DateTime,
   ) {
     super(id);
 
@@ -125,16 +122,16 @@ export class Wish extends AggregateRoot<WishId> {
     title: WishTitle,
     description: WishDescription,
     privacyLevel: WishPrivacyLevel,
-    createdAt: MillisecondsDate,
-    updatedAt: MillisecondsDate,
+    createdAt: DateTime,
+    updatedAt: DateTime,
     wisher: Wisher,
     urls: WebUrl[] = [],
     imageUrls: WebUrl[] = [],
     categories: CategoryName[] = [],
     stages: WishStage[] = [],
-    deletedAt: MillisecondsDate = null,
-    startedAt: MillisecondsDate = null,
-    completedAt: MillisecondsDate = null,
+    deletedAt: DateTime = null,
+    startedAt: DateTime = null,
+    completedAt: DateTime = null,
   ): Wish {
     return new Wish(
       id,
@@ -166,11 +163,11 @@ export class Wish extends AggregateRoot<WishId> {
     return this._privacyLevel;
   }
 
-  public get createdAt(): MillisecondsDate {
+  public get createdAt(): DateTime {
     return this._createdAt;
   }
 
-  public get updatedAt(): MillisecondsDate {
+  public get updatedAt(): DateTime {
     return this._updatedAt;
   }
 
@@ -203,15 +200,15 @@ export class Wish extends AggregateRoot<WishId> {
     );
   }
 
-  public get deletedAt(): MillisecondsDate {
+  public get deletedAt(): DateTime {
     return this._deletedAt;
   }
 
-  public get startedAt(): MillisecondsDate {
+  public get startedAt(): DateTime {
     return this._startedAt;
   }
 
-  public get completedAt(): MillisecondsDate {
+  public get completedAt(): DateTime {
     return this._completedAt;
   }
 
@@ -226,7 +223,7 @@ export class Wish extends AggregateRoot<WishId> {
   public delete(): void {
     if (this.isDeleted) throw new WishIsAlreadyDeletedError();
 
-    this._deletedAt = MillisecondsDate.now();
+    this._deletedAt = DateTime.now();
   }
 
   public undelete(): void {
@@ -242,8 +239,8 @@ export class Wish extends AggregateRoot<WishId> {
     urls: WebUrl[] = [],
     imageUrls: WebUrl[] = [],
     categories: CategoryName[] = [],
-    startedAt: MillisecondsDate = null,
-    completedAt: MillisecondsDate = null,
+    startedAt: DateTime = null,
+    completedAt: DateTime = null,
   ): void {
     if (this.isDeleted) throw new DeletedWishCannotBeUpdatedError();
 
@@ -269,7 +266,7 @@ export class Wish extends AggregateRoot<WishId> {
     this._startedAt = startedAt;
     this._completedAt = completedAt;
 
-    this._updatedAt = MillisecondsDate.now();
+    this._updatedAt = DateTime.now();
   }
 
   public addStage(newStage: WishStage): void {
@@ -285,7 +282,7 @@ export class Wish extends AggregateRoot<WishId> {
 
     this._stages.push(newStage);
 
-    this._updatedAt = MillisecondsDate.now();
+    this._updatedAt = DateTime.now();
   }
 
   public updateStage(
@@ -302,7 +299,7 @@ export class Wish extends AggregateRoot<WishId> {
 
     wishStage.update(title, description, urls, imageUrls);
 
-    this._updatedAt = MillisecondsDate.now();
+    this._updatedAt = DateTime.now();
   }
 
   public removeStage(stageToRemove: WishStage): void {
@@ -315,6 +312,6 @@ export class Wish extends AggregateRoot<WishId> {
 
     this._stages = this._stages.filter((stage) => !stage.equals(stageToRemove));
 
-    this._updatedAt = MillisecondsDate.now();
+    this._updatedAt = DateTime.now();
   }
 }

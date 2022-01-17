@@ -7,10 +7,7 @@ import {
   VerificationCode,
 } from '..';
 import { InvalidEntityIdError } from '../../../../shared/domain/entities';
-import {
-  MillisecondsDate,
-  WebUrl,
-} from '../../../../shared/domain/value-objects';
+import { DateTime, WebUrl } from '../../../../shared/domain/value-objects';
 import {
   Biography,
   Email,
@@ -93,15 +90,15 @@ const validValues = [
     {
       getMilliseconds: 1,
       equals: jest.fn().mockReturnValue(true),
-    } as MockedObject<MillisecondsDate>,
+    } as MockedObject<DateTime>,
     {
       getMilliseconds: 2,
       equals: jest.fn().mockReturnValue(true),
-    } as MockedObject<MillisecondsDate>,
+    } as MockedObject<DateTime>,
     {
       getMilliseconds: 3,
       equals: jest.fn().mockReturnValue(true),
-    } as MockedObject<MillisecondsDate>,
+    } as MockedObject<DateTime>,
     {
       getBiography: 'A nice person 0.',
       equals: jest.fn().mockReturnValue(true),
@@ -122,7 +119,7 @@ const validValues = [
     {
       getMilliseconds: 4,
       equals: jest.fn().mockReturnValue(true),
-    } as MockedObject<MillisecondsDate>,
+    } as MockedObject<DateTime>,
   ],
   [
     {
@@ -166,15 +163,15 @@ const validValues = [
     {
       getMilliseconds: 1,
       equals: jest.fn().mockReturnValue(true),
-    } as MockedObject<MillisecondsDate>,
+    } as MockedObject<DateTime>,
     {
       getMilliseconds: 2,
       equals: jest.fn().mockReturnValue(true),
-    } as MockedObject<MillisecondsDate>,
+    } as MockedObject<DateTime>,
     {
       getMilliseconds: 3,
       equals: jest.fn().mockReturnValue(true),
-    } as MockedObject<MillisecondsDate>,
+    } as MockedObject<DateTime>,
     {
       getBiography: 'A nice person 1.',
       equals: jest.fn().mockReturnValue(true),
@@ -191,7 +188,7 @@ const validValues = [
     {
       getMilliseconds: 4,
       equals: jest.fn().mockReturnValue(true),
-    } as MockedObject<MillisecondsDate>,
+    } as MockedObject<DateTime>,
   ],
   [
     {
@@ -235,15 +232,15 @@ const validValues = [
     {
       getMilliseconds: 1,
       equals: jest.fn().mockReturnValue(true),
-    } as MockedObject<MillisecondsDate>,
+    } as MockedObject<DateTime>,
     {
       getMilliseconds: 2,
       equals: jest.fn().mockReturnValue(true),
-    } as MockedObject<MillisecondsDate>,
+    } as MockedObject<DateTime>,
     {
       getMilliseconds: 3,
       equals: jest.fn().mockReturnValue(true),
-    } as MockedObject<MillisecondsDate>,
+    } as MockedObject<DateTime>,
     {
       getBiography: 'A nice person 2.',
       equals: jest.fn().mockReturnValue(true),
@@ -254,7 +251,7 @@ const validValues = [
     {
       getMilliseconds: 4,
       equals: jest.fn().mockReturnValue(true),
-    } as MockedObject<MillisecondsDate>,
+    } as MockedObject<DateTime>,
   ],
   [
     {
@@ -298,15 +295,15 @@ const validValues = [
     {
       getMilliseconds: 1,
       equals: jest.fn().mockReturnValue(true),
-    } as MockedObject<MillisecondsDate>,
+    } as MockedObject<DateTime>,
     {
       getMilliseconds: 2,
       equals: jest.fn().mockReturnValue(true),
-    } as MockedObject<MillisecondsDate>,
+    } as MockedObject<DateTime>,
     {
       getMilliseconds: 3,
       equals: jest.fn().mockReturnValue(true),
-    } as MockedObject<MillisecondsDate>,
+    } as MockedObject<DateTime>,
     {
       getBiography: 'A nice person 3.',
       equals: jest.fn().mockReturnValue(true),
@@ -361,15 +358,15 @@ const validValues = [
     {
       getMilliseconds: 1,
       equals: jest.fn().mockReturnValue(true),
-    } as MockedObject<MillisecondsDate>,
+    } as MockedObject<DateTime>,
     {
       getMilliseconds: 2,
       equals: jest.fn().mockReturnValue(true),
-    } as MockedObject<MillisecondsDate>,
+    } as MockedObject<DateTime>,
     {
       getMilliseconds: 3,
       equals: jest.fn().mockReturnValue(true),
-    } as MockedObject<MillisecondsDate>,
+    } as MockedObject<DateTime>,
     {
       getBiography: 'A nice person 4.',
       equals: jest.fn().mockReturnValue(true),
@@ -380,7 +377,7 @@ const validValues = [
     {
       getMilliseconds: 4,
       equals: jest.fn().mockReturnValue(true),
-    } as MockedObject<MillisecondsDate>,
+    } as MockedObject<DateTime>,
   ],
   [
     {
@@ -424,15 +421,15 @@ const validValues = [
     {
       getMilliseconds: 1,
       equals: jest.fn().mockReturnValue(true),
-    } as MockedObject<MillisecondsDate>,
+    } as MockedObject<DateTime>,
     {
       getMilliseconds: 2,
       equals: jest.fn().mockReturnValue(true),
-    } as MockedObject<MillisecondsDate>,
+    } as MockedObject<DateTime>,
     {
       getMilliseconds: 3,
       equals: jest.fn().mockReturnValue(true),
-    } as MockedObject<MillisecondsDate>,
+    } as MockedObject<DateTime>,
     {
       getBiography: 'A nice person 5.',
       equals: jest.fn().mockReturnValue(true),
@@ -487,15 +484,15 @@ const validValues = [
     {
       getMilliseconds: 1,
       equals: jest.fn().mockReturnValue(true),
-    } as MockedObject<MillisecondsDate>,
+    } as MockedObject<DateTime>,
     {
       getMilliseconds: 2,
       equals: jest.fn().mockReturnValue(true),
-    } as MockedObject<MillisecondsDate>,
+    } as MockedObject<DateTime>,
     {
       getMilliseconds: 3,
       equals: jest.fn().mockReturnValue(true),
-    } as MockedObject<MillisecondsDate>,
+    } as MockedObject<DateTime>,
     {
       getBiography: 'A nice person 6.',
       equals: jest.fn().mockReturnValue(true),
@@ -547,15 +544,15 @@ const validValues = [
     {
       getMilliseconds: 1,
       equals: jest.fn().mockReturnValue(true),
-    } as MockedObject<MillisecondsDate>,
+    } as MockedObject<DateTime>,
     {
       getMilliseconds: 2,
       equals: jest.fn().mockReturnValue(true),
-    } as MockedObject<MillisecondsDate>,
+    } as MockedObject<DateTime>,
     {
       getMilliseconds: 3,
       equals: jest.fn().mockReturnValue(true),
-    } as MockedObject<MillisecondsDate>,
+    } as MockedObject<DateTime>,
     {
       getBiography: 'A nice person 7.',
       equals: jest.fn().mockReturnValue(true),
@@ -583,14 +580,14 @@ describe('users', () => {
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
-            birthday: MockedObject<MillisecondsDate>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            birthday: MockedObject<DateTime>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
             refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
-            deletedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
 
@@ -633,14 +630,14 @@ describe('users', () => {
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
-            birthday: MockedObject<MillisecondsDate>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            birthday: MockedObject<DateTime>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
             refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
-            deletedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
 
@@ -683,14 +680,14 @@ describe('users', () => {
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
-            birthday: MockedObject<MillisecondsDate>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            birthday: MockedObject<DateTime>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
             refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
-            deletedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
 
@@ -733,14 +730,14 @@ describe('users', () => {
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
-            birthday: MockedObject<MillisecondsDate>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            birthday: MockedObject<DateTime>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
             refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
-            deletedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
 
@@ -783,14 +780,14 @@ describe('users', () => {
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
-            birthday: MockedObject<MillisecondsDate>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            birthday: MockedObject<DateTime>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
             refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
-            deletedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
 
@@ -833,14 +830,14 @@ describe('users', () => {
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
-            birthday: MockedObject<MillisecondsDate>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            birthday: MockedObject<DateTime>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
             refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
-            deletedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
 
@@ -883,14 +880,14 @@ describe('users', () => {
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
-            birthday: MockedObject<MillisecondsDate>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            birthday: MockedObject<DateTime>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
             refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
-            deletedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
             verificationCodes = [{} as MockedObject<VerificationCode>, null];
@@ -934,14 +931,14 @@ describe('users', () => {
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
-            birthday: MockedObject<MillisecondsDate>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            birthday: MockedObject<DateTime>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
             refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
-            deletedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
 
@@ -984,14 +981,14 @@ describe('users', () => {
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
-            birthday: MockedObject<MillisecondsDate>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            birthday: MockedObject<DateTime>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
             refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
-            deletedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
 
@@ -1034,14 +1031,14 @@ describe('users', () => {
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
-            birthday: MockedObject<MillisecondsDate>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            birthday: MockedObject<DateTime>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
             refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
-            deletedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
 
@@ -1084,14 +1081,14 @@ describe('users', () => {
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
-            birthday: MockedObject<MillisecondsDate>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            birthday: MockedObject<DateTime>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
             refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
-            deletedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
 
@@ -1134,14 +1131,14 @@ describe('users', () => {
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
-            birthday: MockedObject<MillisecondsDate>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            birthday: MockedObject<DateTime>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
             refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
-            deletedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
 
@@ -1184,14 +1181,14 @@ describe('users', () => {
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
-            birthday: MockedObject<MillisecondsDate>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            birthday: MockedObject<DateTime>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
             refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
-            deletedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
 
@@ -1234,14 +1231,14 @@ describe('users', () => {
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
-            birthday: MockedObject<MillisecondsDate>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            birthday: MockedObject<DateTime>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
             refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
-            deletedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
 
@@ -1284,14 +1281,14 @@ describe('users', () => {
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
-            birthday: MockedObject<MillisecondsDate>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            birthday: MockedObject<DateTime>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
             refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
-            deletedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
 
@@ -1334,14 +1331,14 @@ describe('users', () => {
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
-            birthday: MockedObject<MillisecondsDate>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            birthday: MockedObject<DateTime>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
             refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
-            deletedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
             roles = [{} as Role, null];
@@ -1385,14 +1382,14 @@ describe('users', () => {
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
-            birthday: MockedObject<MillisecondsDate>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            birthday: MockedObject<DateTime>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
             refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
-            deletedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
 
@@ -1435,14 +1432,14 @@ describe('users', () => {
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
-            birthday: MockedObject<MillisecondsDate>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            birthday: MockedObject<DateTime>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
             refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
-            deletedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
             refreshTokens = [{} as RefreshToken, null];
@@ -1486,9 +1483,9 @@ describe('users', () => {
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
-            birthday: MockedObject<MillisecondsDate>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            birthday: MockedObject<DateTime>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             biography: MockedObject<Biography>,
           ) => {
             // Arrange
@@ -1556,14 +1553,14 @@ describe('users', () => {
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
-            birthday: MockedObject<MillisecondsDate>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            birthday: MockedObject<DateTime>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
             refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
-            deletedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
 
@@ -1643,14 +1640,14 @@ describe('users', () => {
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
-            birthday: MockedObject<MillisecondsDate>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            birthday: MockedObject<DateTime>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
             refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
-            deletedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
             const user = User.create(
@@ -1693,14 +1690,14 @@ describe('users', () => {
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
-            birthday: MockedObject<MillisecondsDate>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            birthday: MockedObject<DateTime>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
             refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
-            deletedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
             const user = User.create(
@@ -1747,14 +1744,14 @@ describe('users', () => {
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
-            birthday: MockedObject<MillisecondsDate>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            birthday: MockedObject<DateTime>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
             refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
-            deletedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
             const user = User.create(
@@ -1797,14 +1794,14 @@ describe('users', () => {
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
-            birthday: MockedObject<MillisecondsDate>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            birthday: MockedObject<DateTime>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
             refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
-            deletedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
             const originalId = 'original-verification-code-id';
@@ -1859,14 +1856,14 @@ describe('users', () => {
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
-            birthday: MockedObject<MillisecondsDate>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            birthday: MockedObject<DateTime>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
             refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
-            deletedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
             const originalId = 'original-verification-code-id';
@@ -1877,7 +1874,7 @@ describe('users', () => {
             ];
             deletedAt = {
               getMilliseconds: 4,
-            } as MockedObject<MillisecondsDate>;
+            } as MockedObject<DateTime>;
             const user = User.create(
               userId,
               email,
@@ -1923,14 +1920,14 @@ describe('users', () => {
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
-            birthday: MockedObject<MillisecondsDate>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            birthday: MockedObject<DateTime>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
             refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
-            deletedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
             const originalId = 'original-verification-code-id';
@@ -1989,14 +1986,14 @@ describe('users', () => {
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
-            birthday: MockedObject<MillisecondsDate>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            birthday: MockedObject<DateTime>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
             refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
-            deletedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
             const originalId = 'original-verification-code-id';
@@ -2058,14 +2055,14 @@ describe('users', () => {
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
-            birthday: MockedObject<MillisecondsDate>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            birthday: MockedObject<DateTime>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
             refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
-            deletedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
             const originalId = 'original-verification-code-id';
@@ -2123,14 +2120,14 @@ describe('users', () => {
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
-            birthday: MockedObject<MillisecondsDate>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            birthday: MockedObject<DateTime>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
             refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
-            deletedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
             const originalId = 'original-verification-code-id';
@@ -2193,14 +2190,14 @@ describe('users', () => {
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
-            birthday: MockedObject<MillisecondsDate>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            birthday: MockedObject<DateTime>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
             refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
-            deletedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
             const user = User.create(
@@ -2243,14 +2240,14 @@ describe('users', () => {
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
-            birthday: MockedObject<MillisecondsDate>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            birthday: MockedObject<DateTime>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
             refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
-            deletedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
             const user = User.create(
@@ -2293,14 +2290,14 @@ describe('users', () => {
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
-            birthday: MockedObject<MillisecondsDate>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            birthday: MockedObject<DateTime>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
             refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
-            deletedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
             const user = User.create(
@@ -2331,10 +2328,9 @@ describe('users', () => {
             const newLastName = {
               getLastName: newLastNameText,
             } as MockedObject<LastName>;
-            const newBirthdayMillisecondsDate = new Date(2005, 1, 1).getTime();
             const newBirthday = {
-              getMilliseconds: newBirthdayMillisecondsDate,
-            } as MockedObject<MillisecondsDate>;
+              getMilliseconds: new Date(2005, 1, 1).getTime(),
+            } as MockedObject<DateTime>;
             const newBiographyText = 'new Biography';
             const newBiography = {
               getBiography: newBiographyText,
@@ -2370,14 +2366,14 @@ describe('users', () => {
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
-            birthday: MockedObject<MillisecondsDate>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            birthday: MockedObject<DateTime>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
             refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
-            deletedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
             const user = User.create(
@@ -2424,14 +2420,14 @@ describe('users', () => {
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
-            birthday: MockedObject<MillisecondsDate>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            birthday: MockedObject<DateTime>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
             refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
-            deletedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
             const user = User.create(
@@ -2474,14 +2470,14 @@ describe('users', () => {
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
-            birthday: MockedObject<MillisecondsDate>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            birthday: MockedObject<DateTime>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
             refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
-            deletedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
             const user = User.create(
@@ -2525,14 +2521,14 @@ describe('users', () => {
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
-            birthday: MockedObject<MillisecondsDate>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            birthday: MockedObject<DateTime>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
             refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
-            deletedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
             const user = User.create(
@@ -2576,14 +2572,14 @@ describe('users', () => {
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
-            birthday: MockedObject<MillisecondsDate>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            birthday: MockedObject<DateTime>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
             refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
-            deletedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
             const customRoles = [
@@ -2636,14 +2632,14 @@ describe('users', () => {
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
-            birthday: MockedObject<MillisecondsDate>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            birthday: MockedObject<DateTime>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
             refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
-            deletedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
             const customRoles = [
@@ -2697,14 +2693,14 @@ describe('users', () => {
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
-            birthday: MockedObject<MillisecondsDate>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            birthday: MockedObject<DateTime>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
             refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
-            deletedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
             const customRoles = [
@@ -2757,14 +2753,14 @@ describe('users', () => {
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
-            birthday: MockedObject<MillisecondsDate>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            birthday: MockedObject<DateTime>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
             refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
-            deletedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
             const customRoles = [
@@ -2816,14 +2812,14 @@ describe('users', () => {
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
-            birthday: MockedObject<MillisecondsDate>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            birthday: MockedObject<DateTime>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
             refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
-            deletedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
             const customRoles = [
@@ -2880,14 +2876,14 @@ describe('users', () => {
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
-            birthday: MockedObject<MillisecondsDate>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            birthday: MockedObject<DateTime>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
             refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
-            deletedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
             const originalId = 'refresh-token-id';
@@ -2942,14 +2938,14 @@ describe('users', () => {
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
-            birthday: MockedObject<MillisecondsDate>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            birthday: MockedObject<DateTime>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
             refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
-            deletedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
             const refreshTokenId = {
@@ -3002,14 +2998,14 @@ describe('users', () => {
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
-            birthday: MockedObject<MillisecondsDate>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            birthday: MockedObject<DateTime>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
             refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
-            deletedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
             const refreshTokenId1 = {
@@ -3071,19 +3067,19 @@ describe('users', () => {
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
-            birthday: MockedObject<MillisecondsDate>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            birthday: MockedObject<DateTime>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
             refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
-            deletedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
             deletedAt = {
               getMilliseconds: 4,
-            } as MockedObject<MillisecondsDate>;
+            } as MockedObject<DateTime>;
 
             const user = User.create(
               userId,
@@ -3126,14 +3122,14 @@ describe('users', () => {
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
-            birthday: MockedObject<MillisecondsDate>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            birthday: MockedObject<DateTime>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
             refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
-            deletedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
             isBlocked = {
@@ -3183,14 +3179,14 @@ describe('users', () => {
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
-            birthday: MockedObject<MillisecondsDate>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            birthday: MockedObject<DateTime>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
             refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
-            deletedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
             isVerified = {
@@ -3243,14 +3239,14 @@ describe('users', () => {
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
-            birthday: MockedObject<MillisecondsDate>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            birthday: MockedObject<DateTime>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
             refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
-            deletedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
             isVerified = {
@@ -3302,14 +3298,14 @@ describe('users', () => {
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
-            birthday: MockedObject<MillisecondsDate>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            birthday: MockedObject<DateTime>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
             refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
-            deletedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
             const refreshToken = {
@@ -3366,14 +3362,14 @@ describe('users', () => {
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
-            birthday: MockedObject<MillisecondsDate>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            birthday: MockedObject<DateTime>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
             refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
-            deletedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
             const refreshToken = {
@@ -3429,19 +3425,19 @@ describe('users', () => {
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
-            birthday: MockedObject<MillisecondsDate>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            birthday: MockedObject<DateTime>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
             refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
-            deletedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
             deletedAt = {
               getMilliseconds: 4,
-            } as MockedObject<MillisecondsDate>;
+            } as MockedObject<DateTime>;
 
             const user = User.create(
               userId,
@@ -3484,14 +3480,14 @@ describe('users', () => {
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
-            birthday: MockedObject<MillisecondsDate>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            birthday: MockedObject<DateTime>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
             refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
-            deletedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
             isBlocked = {
@@ -3540,14 +3536,14 @@ describe('users', () => {
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
-            birthday: MockedObject<MillisecondsDate>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            birthday: MockedObject<DateTime>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
             refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
-            deletedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
             isVerified = {
@@ -3599,14 +3595,14 @@ describe('users', () => {
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
-            birthday: MockedObject<MillisecondsDate>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            birthday: MockedObject<DateTime>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
             refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
-            deletedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
             isVerified = {
@@ -3658,14 +3654,14 @@ describe('users', () => {
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
-            birthday: MockedObject<MillisecondsDate>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            birthday: MockedObject<DateTime>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
             refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
-            deletedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
             const refreshTokenId = {
@@ -3725,14 +3721,14 @@ describe('users', () => {
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
-            birthday: MockedObject<MillisecondsDate>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            birthday: MockedObject<DateTime>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
             refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
-            deletedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
             const refreshTokenId = {
@@ -3793,14 +3789,14 @@ describe('users', () => {
             isBlocked: MockedObject<IsBlocked>,
             firstName: MockedObject<FirstName>,
             lastName: MockedObject<LastName>,
-            birthday: MockedObject<MillisecondsDate>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            birthday: MockedObject<DateTime>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             biography: MockedObject<Biography>,
             roles: MockedObject<Role[]>,
             refreshTokens: MockedObject<RefreshToken[]>,
             profilePicture: MockedObject<WebUrl>,
-            deletedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
             const refreshTokenId = {

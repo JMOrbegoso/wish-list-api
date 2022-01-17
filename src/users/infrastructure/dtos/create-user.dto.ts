@@ -7,7 +7,7 @@ import {
   MaxLength,
   MinLength,
 } from 'class-validator';
-import { MillisecondsDate } from '../../../shared/domain/value-objects';
+import { DateTime } from '../../../shared/domain/value-objects';
 import {
   Biography,
   FirstName,
@@ -56,7 +56,7 @@ export class CreateUserDto {
   lastName: string;
 
   @IsString()
-  @Matches(MillisecondsDate.Iso8601Regex, {
+  @Matches(DateTime.Iso8601Regex, {
     message: 'birthday must be a valid ISO 8601 date string',
   })
   @IsNotEmpty()

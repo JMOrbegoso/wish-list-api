@@ -2,7 +2,7 @@ import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { AddVerificationCodeCommand } from '..';
 import { UnitOfWork } from '../../../../shared/domain/repositories';
-import { MillisecondsDate } from '../../../../shared/domain/value-objects';
+import { DateTime } from '../../../../shared/domain/value-objects';
 import { VerificationCode, VerificationCodeId } from '../../../domain/entities';
 import { UserRepository } from '../../../domain/repositories';
 import { Email } from '../../../domain/value-objects';
@@ -41,7 +41,7 @@ export class AddVerificationCodeHandler
     );
     const verificationCode = VerificationCode.create(
       verificationCodeId,
-      MillisecondsDate.now(),
+      DateTime.now(),
       VerificationCode.defaultDuration,
     );
 

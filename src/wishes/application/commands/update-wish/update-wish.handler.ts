@@ -2,10 +2,7 @@ import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { UpdateWishCommand } from '..';
 import { UnitOfWork } from '../../../../shared/domain/repositories';
-import {
-  MillisecondsDate,
-  WebUrl,
-} from '../../../../shared/domain/value-objects';
+import { DateTime, WebUrl } from '../../../../shared/domain/value-objects';
 import { WishId } from '../../../domain/entities';
 import { WishRepository } from '../../../domain/repositories';
 import {
@@ -34,10 +31,10 @@ export class UpdateWishHandler implements ICommandHandler<UpdateWishCommand> {
       CategoryName.create(url),
     );
     const startedAt = command.startedAt
-      ? MillisecondsDate.createFromString(command.startedAt)
+      ? DateTime.createFromString(command.startedAt)
       : null;
     const completedAt = command.completedAt
-      ? MillisecondsDate.createFromString(command.completedAt)
+      ? DateTime.createFromString(command.completedAt)
       : null;
 
     // Get the wish  by id

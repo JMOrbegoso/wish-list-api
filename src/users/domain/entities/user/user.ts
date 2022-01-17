@@ -1,9 +1,6 @@
 import { RefreshToken, RefreshTokenId, UserId, VerificationCode } from '..';
 import { AggregateRoot } from '../../../../shared/domain/entities';
-import {
-  MillisecondsDate,
-  WebUrl,
-} from '../../../../shared/domain/value-objects';
+import { DateTime, WebUrl } from '../../../../shared/domain/value-objects';
 import {
   Biography,
   Email,
@@ -52,14 +49,14 @@ export class User extends AggregateRoot<UserId> {
   private _isBlocked: IsBlocked;
   private _firstName: FirstName;
   private _lastName: LastName;
-  private _birthday: MillisecondsDate;
-  private _createdAt: MillisecondsDate;
-  private _updatedAt: MillisecondsDate;
+  private _birthday: DateTime;
+  private _createdAt: DateTime;
+  private _updatedAt: DateTime;
   private _biography: Biography;
   private _roles: Role[];
   private _refreshTokens: RefreshToken[];
   private _profilePicture?: WebUrl;
-  private _deletedAt?: MillisecondsDate;
+  private _deletedAt?: DateTime;
 
   private constructor(
     id: UserId,
@@ -71,14 +68,14 @@ export class User extends AggregateRoot<UserId> {
     isBlocked: IsBlocked,
     firstName: FirstName,
     lastName: LastName,
-    birthday: MillisecondsDate,
-    createdAt: MillisecondsDate,
-    updatedAt: MillisecondsDate,
+    birthday: DateTime,
+    createdAt: DateTime,
+    updatedAt: DateTime,
     biography: Biography,
     roles: Role[],
     refreshTokens: RefreshToken[],
     profilePicture?: WebUrl,
-    deletedAt?: MillisecondsDate,
+    deletedAt?: DateTime,
   ) {
     super(id);
 
@@ -136,14 +133,14 @@ export class User extends AggregateRoot<UserId> {
     isBlocked: IsBlocked,
     firstName: FirstName,
     lastName: LastName,
-    birthday: MillisecondsDate,
-    createdAt: MillisecondsDate,
-    updatedAt: MillisecondsDate,
+    birthday: DateTime,
+    createdAt: DateTime,
+    updatedAt: DateTime,
     biography: Biography,
     roles: Role[] = [],
     refreshTokens: RefreshToken[] = [],
     profilePicture: WebUrl = null,
-    deletedAt: MillisecondsDate = null,
+    deletedAt: DateTime = null,
   ): User {
     return new User(
       id,
@@ -217,15 +214,15 @@ export class User extends AggregateRoot<UserId> {
     return this._lastName;
   }
 
-  public get birthday(): MillisecondsDate {
+  public get birthday(): DateTime {
     return this._birthday;
   }
 
-  public get createdAt(): MillisecondsDate {
+  public get createdAt(): DateTime {
     return this._createdAt;
   }
 
-  public get updatedAt(): MillisecondsDate {
+  public get updatedAt(): DateTime {
     return this._updatedAt;
   }
 
@@ -237,7 +234,7 @@ export class User extends AggregateRoot<UserId> {
     return this._profilePicture;
   }
 
-  public get deletedAt(): MillisecondsDate {
+  public get deletedAt(): DateTime {
     return this._deletedAt;
   }
 
@@ -259,7 +256,7 @@ export class User extends AggregateRoot<UserId> {
   public updateProfile(
     firstName: FirstName,
     lastName: LastName,
-    birthday: MillisecondsDate,
+    birthday: DateTime,
     biography: Biography,
   ): void {
     this._firstName = firstName;
@@ -267,17 +264,17 @@ export class User extends AggregateRoot<UserId> {
     this._birthday = birthday;
     this._biography = biography;
 
-    this._updatedAt = MillisecondsDate.now();
+    this._updatedAt = DateTime.now();
   }
 
   public updateProfilePicture(profilePicture: WebUrl = null): void {
     this._profilePicture = profilePicture;
 
-    this._updatedAt = MillisecondsDate.now();
+    this._updatedAt = DateTime.now();
   }
 
   public delete(): void {
-    this._deletedAt = MillisecondsDate.now();
+    this._deletedAt = DateTime.now();
   }
   public undelete(): void {
     this._deletedAt = null;

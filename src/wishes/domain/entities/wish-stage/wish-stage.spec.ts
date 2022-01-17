@@ -1,10 +1,7 @@
 import { MockedObject } from 'ts-jest/dist/utils/testing';
 import { WishStage, WishStageId } from '..';
 import { InvalidEntityIdError } from '../../../../shared/domain/entities';
-import {
-  MillisecondsDate,
-  WebUrl,
-} from '../../../../shared/domain/value-objects';
+import { DateTime, WebUrl } from '../../../../shared/domain/value-objects';
 import { WishDescription, WishTitle } from '../../value-objects';
 import {
   InvalidWishStageCreatedAtError,
@@ -36,7 +33,7 @@ describe('wishes', () => {
             } as MockedObject<WishDescription>,
             {
               getMilliseconds: 1,
-            } as MockedObject<MillisecondsDate>,
+            } as MockedObject<DateTime>,
             [
               {
                 getUrl: 'https://www.example.com',
@@ -70,7 +67,7 @@ describe('wishes', () => {
             } as MockedObject<WishDescription>,
             {
               getMilliseconds: 1,
-            } as MockedObject<MillisecondsDate>,
+            } as MockedObject<DateTime>,
             [],
             [
               {
@@ -91,7 +88,7 @@ describe('wishes', () => {
             } as MockedObject<WishDescription>,
             {
               getMilliseconds: 1,
-            } as MockedObject<MillisecondsDate>,
+            } as MockedObject<DateTime>,
             [
               {
                 getUrl: 'https://www.example.com',
@@ -112,7 +109,7 @@ describe('wishes', () => {
             } as MockedObject<WishDescription>,
             {
               getMilliseconds: 1,
-            } as MockedObject<MillisecondsDate>,
+            } as MockedObject<DateTime>,
             [],
             [],
           ],
@@ -124,7 +121,7 @@ describe('wishes', () => {
             wishStageId: MockedObject<WishStageId>,
             title: MockedObject<WishTitle>,
             description: MockedObject<WishDescription>,
-            createdAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
             urls: MockedObject<WebUrl>[],
             images: MockedObject<WebUrl>[],
           ) => {
@@ -152,7 +149,7 @@ describe('wishes', () => {
             wishStageId: MockedObject<WishStageId>,
             title: MockedObject<WishTitle>,
             description: MockedObject<WishDescription>,
-            createdAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
             urls: MockedObject<WebUrl>[],
             images: MockedObject<WebUrl>[],
           ) => {
@@ -180,7 +177,7 @@ describe('wishes', () => {
             wishStageId: MockedObject<WishStageId>,
             title: MockedObject<WishTitle>,
             description: MockedObject<WishDescription>,
-            createdAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
             urls: MockedObject<WebUrl>[],
             images: MockedObject<WebUrl>[],
           ) => {
@@ -208,7 +205,7 @@ describe('wishes', () => {
             wishStageId: MockedObject<WishStageId>,
             title: MockedObject<WishTitle>,
             description: MockedObject<WishDescription>,
-            createdAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
             urls: MockedObject<WebUrl>[],
             images: MockedObject<WebUrl>[],
           ) => {
@@ -236,7 +233,7 @@ describe('wishes', () => {
             wishStageId: MockedObject<WishStageId>,
             title: MockedObject<WishTitle>,
             description: MockedObject<WishDescription>,
-            createdAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
             urls: MockedObject<WebUrl>[],
             images: MockedObject<WebUrl>[],
           ) => {
@@ -264,7 +261,7 @@ describe('wishes', () => {
             wishStageId: MockedObject<WishStageId>,
             title: MockedObject<WishTitle>,
             description: MockedObject<WishDescription>,
-            createdAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
             urls: MockedObject<WebUrl>[],
             images: MockedObject<WebUrl>[],
           ) => {
@@ -295,7 +292,7 @@ describe('wishes', () => {
             wishStageId: MockedObject<WishStageId>,
             title: MockedObject<WishTitle>,
             description: MockedObject<WishDescription>,
-            createdAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
             urls: MockedObject<WebUrl>[],
             images: MockedObject<WebUrl>[],
           ) => {
@@ -324,7 +321,7 @@ describe('wishes', () => {
             wishStageId: MockedObject<WishStageId>,
             title: MockedObject<WishTitle>,
             description: MockedObject<WishDescription>,
-            createdAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
             urls: MockedObject<WebUrl>[],
           ) => {
             // Arrange
@@ -351,7 +348,7 @@ describe('wishes', () => {
             wishStageId: MockedObject<WishStageId>,
             title: MockedObject<WishTitle>,
             description: MockedObject<WishDescription>,
-            createdAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
             urls: MockedObject<WebUrl>[],
             images: MockedObject<WebUrl>[],
           ) => {
@@ -382,7 +379,7 @@ describe('wishes', () => {
             wishStageId: MockedObject<WishStageId>,
             title: MockedObject<WishTitle>,
             description: MockedObject<WishDescription>,
-            createdAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
             urls: MockedObject<WebUrl>[],
             images: MockedObject<WebUrl>[],
           ) => {
@@ -411,7 +408,7 @@ describe('wishes', () => {
             wishStageId: MockedObject<WishStageId>,
             title: MockedObject<WishTitle>,
             description: MockedObject<WishDescription>,
-            createdAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
           ) => {
             // Arrange
 
@@ -443,7 +440,7 @@ describe('wishes', () => {
             wishStageId: MockedObject<WishStageId>,
             title: MockedObject<WishTitle>,
             description: MockedObject<WishDescription>,
-            createdAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
             urls: MockedObject<WebUrl>[],
             images: MockedObject<WebUrl>[],
           ) => {
@@ -483,7 +480,7 @@ describe('wishes', () => {
             wishStageId: MockedObject<WishStageId>,
             title: MockedObject<WishTitle>,
             description: MockedObject<WishDescription>,
-            createdAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
             urls: MockedObject<WebUrl>[],
             images: MockedObject<WebUrl>[],
           ) => {
@@ -523,7 +520,7 @@ describe('wishes', () => {
             wishStageId: MockedObject<WishStageId>,
             title: MockedObject<WishTitle>,
             description: MockedObject<WishDescription>,
-            createdAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
             urls: MockedObject<WebUrl>[],
             images: MockedObject<WebUrl>[],
           ) => {
@@ -563,7 +560,7 @@ describe('wishes', () => {
             wishStageId: MockedObject<WishStageId>,
             title: MockedObject<WishTitle>,
             description: MockedObject<WishDescription>,
-            createdAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
             urls: MockedObject<WebUrl>[],
             images: MockedObject<WebUrl>[],
           ) => {
@@ -591,7 +588,7 @@ describe('wishes', () => {
             wishStageId: MockedObject<WishStageId>,
             title: MockedObject<WishTitle>,
             description: MockedObject<WishDescription>,
-            createdAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
             urls: MockedObject<WebUrl>[],
             images: MockedObject<WebUrl>[],
           ) => {
@@ -623,7 +620,7 @@ describe('wishes', () => {
             wishStageId: MockedObject<WishStageId>,
             title: MockedObject<WishTitle>,
             description: MockedObject<WishDescription>,
-            createdAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
             urls: MockedObject<WebUrl>[],
             images: MockedObject<WebUrl>[],
           ) => {
@@ -655,7 +652,7 @@ describe('wishes', () => {
             wishStageId: MockedObject<WishStageId>,
             title: MockedObject<WishTitle>,
             description: MockedObject<WishDescription>,
-            createdAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
             urls: MockedObject<WebUrl>[],
             images: MockedObject<WebUrl>[],
           ) => {
@@ -684,7 +681,7 @@ describe('wishes', () => {
             wishStageId: MockedObject<WishStageId>,
             title: MockedObject<WishTitle>,
             description: MockedObject<WishDescription>,
-            createdAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
             urls: MockedObject<WebUrl>[],
             images: MockedObject<WebUrl>[],
           ) => {
@@ -716,7 +713,7 @@ describe('wishes', () => {
             wishStageId: MockedObject<WishStageId>,
             title: MockedObject<WishTitle>,
             description: MockedObject<WishDescription>,
-            createdAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
             urls: MockedObject<WebUrl>[],
             images: MockedObject<WebUrl>[],
           ) => {
@@ -745,7 +742,7 @@ describe('wishes', () => {
             wishStageId: MockedObject<WishStageId>,
             title: MockedObject<WishTitle>,
             description: MockedObject<WishDescription>,
-            createdAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
             urls: MockedObject<WebUrl>[],
             images: MockedObject<WebUrl>[],
           ) => {
@@ -777,7 +774,7 @@ describe('wishes', () => {
             wishStageId: MockedObject<WishStageId>,
             title: MockedObject<WishTitle>,
             description: MockedObject<WishDescription>,
-            createdAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
             urls: MockedObject<WebUrl>[],
             images: MockedObject<WebUrl>[],
           ) => {
@@ -817,7 +814,7 @@ describe('wishes', () => {
             wishStageId: MockedObject<WishStageId>,
             title: MockedObject<WishTitle>,
             description: MockedObject<WishDescription>,
-            createdAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
             urls: MockedObject<WebUrl>[],
             images: MockedObject<WebUrl>[],
           ) => {

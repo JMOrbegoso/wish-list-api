@@ -1,13 +1,9 @@
-import {
-  InvalidMillisecondsDateError,
-  MalformedIso8601DateError,
-  MillisecondsDate,
-} from '..';
+import { DateTime, InvalidDateTimeError, MalformedIso8601DateError } from '..';
 
 describe('shared', () => {
   describe('domain', () => {
     describe('value-objects', () => {
-      describe('milliseconds-date', () => {
+      describe('datetime', () => {
         const validDates = [
           new Date('1940-12-2'),
           new Date('1960-11-11'),
@@ -24,60 +20,58 @@ describe('shared', () => {
         ];
 
         test.each([undefined, null])(
-          'should throw an error when trying to create a MillisecondsDate from %p',
+          'should throw an error when trying to create a DateTime from %p',
           (invalid) => {
             // Arrange
 
             // Act
 
             // Assert
-            expect(() => MillisecondsDate.createFromDate(invalid)).toThrowError(
-              InvalidMillisecondsDateError,
+            expect(() => DateTime.createFromDate(invalid)).toThrowError(
+              InvalidDateTimeError,
             );
           },
         );
 
-        it('should create a MillisecondsDate with the current date', () => {
+        it('should create a DateTime with the current date', () => {
           // Arrange
           const currentDate = new Date();
           const milliseconds = currentDate.getTime();
 
           // Act
-          const millisecondsDate = MillisecondsDate.now();
+          const dateTime = DateTime.now();
 
           // Assert
-          expect(millisecondsDate.getMilliseconds).toBeGreaterThanOrEqual(
-            milliseconds,
-          );
-          expect(millisecondsDate.getMilliseconds).toBeLessThan(
+          expect(dateTime.getMilliseconds).toBeGreaterThanOrEqual(milliseconds);
+          expect(dateTime.getMilliseconds).toBeLessThan(
             milliseconds + 100, //add 100ms
           );
         });
 
         test.each(validDates)(
-          'should create a MillisecondsDate from the date: %p',
+          'should create a DateTime from the date: %p',
           (date) => {
             // Arrange
 
             // Act
-            const millisecondsDate = MillisecondsDate.createFromDate(date);
+            const dateTime = DateTime.createFromDate(date);
 
             // Assert
-            expect(millisecondsDate.getMilliseconds).toBe(date.getTime());
+            expect(dateTime.getMilliseconds).toBe(date.getTime());
           },
         );
 
         test.each([undefined, null, ''])(
-          'should throw an error when trying to create a MillisecondsDate from %p',
+          'should throw an error when trying to create a DateTime from %p',
           (invalid) => {
             // Arrange
 
             // Act
 
             // Assert
-            expect(() =>
-              MillisecondsDate.createFromString(invalid),
-            ).toThrowError(InvalidMillisecondsDateError);
+            expect(() => DateTime.createFromString(invalid)).toThrowError(
+              InvalidDateTimeError,
+            );
           },
         );
 
@@ -89,73 +83,73 @@ describe('shared', () => {
           '2022-01-17T12:23:12.12Z',
           '2022-01-17T12:23:12.1234Z',
         ])(
-          'should throw an error when trying to create a MillisecondsDate from the invalid ISO 8601 string date: %p',
+          'should throw an error when trying to create a DateTime from the invalid ISO 8601 string date: %p',
           (invalid) => {
             // Arrange
 
             // Act
 
             // Assert
-            expect(() =>
-              MillisecondsDate.createFromString(invalid),
-            ).toThrowError(MalformedIso8601DateError);
+            expect(() => DateTime.createFromString(invalid)).toThrowError(
+              MalformedIso8601DateError,
+            );
           },
         );
 
         test.each(validDates)(
-          'should create a MillisecondsDate from the a ISO 8601 string date: %p',
+          'should create a DateTime from the a ISO 8601 string date: %p',
           (date) => {
             // Arrange
             const iso8601 = date.toISOString();
 
             // Act
-            const millisecondsDate = MillisecondsDate.createFromString(iso8601);
+            const dateTime = DateTime.createFromString(iso8601);
 
             // Assert
-            expect(millisecondsDate.getMilliseconds).toBe(date.getTime());
-            expect(millisecondsDate.getIso8601).toBe(iso8601);
+            expect(dateTime.getMilliseconds).toBe(date.getTime());
+            expect(dateTime.getIso8601).toBe(iso8601);
           },
         );
 
-        it('comparing two MillisecondsDate created from two different values (%p and %p) should return false', () => {
+        it('comparing two DateTime created from two different values (%p and %p) should return false', () => {
           // Arrange
           const date1 = new Date('2022-01-01');
           const date2 = new Date('2020-01-01');
-          const millisecondsDate_1 = MillisecondsDate.createFromDate(date1);
-          const millisecondsDate_2 = MillisecondsDate.createFromDate(date2);
+          const dateTime_1 = DateTime.createFromDate(date1);
+          const dateTime_2 = DateTime.createFromDate(date2);
 
           // Act
-          const result = millisecondsDate_1.equals(millisecondsDate_2);
+          const result = dateTime_1.equals(dateTime_2);
 
           // Assert
           expect(result).toBe(false);
         });
 
-        it('comparing two MillisecondsDate created from the same value (%p) should return true', () => {
+        it('comparing two DateTime created from the same value (%p) should return true', () => {
           // Arrange
           const date = new Date('2022-01-01');
-          const millisecondsDate1 = MillisecondsDate.createFromDate(date);
-          const millisecondsDate2 = MillisecondsDate.createFromDate(date);
+          const dateTime1 = DateTime.createFromDate(date);
+          const dateTime2 = DateTime.createFromDate(date);
 
           // Act
-          const result = millisecondsDate1.equals(millisecondsDate2);
+          const result = dateTime1.equals(dateTime2);
 
           // Assert
           expect(result).toBe(true);
         });
 
         test.each([undefined, null])(
-          'should throw an error when trying to compare a MillisecondsDate using isLesser from %p',
+          'should throw an error when trying to compare a DateTime using isLesser from %p',
           (invalid) => {
             // Arrange
             const date = new Date('2022-01-01');
-            const millisecondsDate = MillisecondsDate.createFromDate(date);
+            const dateTime = DateTime.createFromDate(date);
 
             // Act
 
             // Assert
-            expect(() => millisecondsDate.isLesser(invalid)).toThrowError(
-              InvalidMillisecondsDateError,
+            expect(() => dateTime.isLesser(invalid)).toThrowError(
+              InvalidDateTimeError,
             );
           },
         );
@@ -165,11 +159,11 @@ describe('shared', () => {
           const date1 = new Date('2022-01-01');
           const date2 = new Date('2020-01-01');
 
-          const millisecondsDate_1 = MillisecondsDate.createFromDate(date1);
-          const millisecondsDate_2 = MillisecondsDate.createFromDate(date2);
+          const dateTime_1 = DateTime.createFromDate(date1);
+          const dateTime_2 = DateTime.createFromDate(date2);
 
           // Act
-          const result = millisecondsDate_1.isLesser(millisecondsDate_2);
+          const result = dateTime_1.isLesser(dateTime_2);
 
           // Assert
           expect(result).toBe(false);
@@ -180,28 +174,28 @@ describe('shared', () => {
           const date1 = new Date('2020-01-01');
           const date2 = new Date('2022-01-01');
 
-          const millisecondsDate_1 = MillisecondsDate.createFromDate(date1);
-          const millisecondsDate_2 = MillisecondsDate.createFromDate(date2);
+          const dateTime_1 = DateTime.createFromDate(date1);
+          const dateTime_2 = DateTime.createFromDate(date2);
 
           // Act
-          const result = millisecondsDate_1.isLesser(millisecondsDate_2);
+          const result = dateTime_1.isLesser(dateTime_2);
 
           // Assert
           expect(result).toBe(true);
         });
 
         test.each([undefined, null])(
-          'should throw an error when trying to compare a MillisecondsDate using isGreater from %p',
+          'should throw an error when trying to compare a DateTime using isGreater from %p',
           (invalid) => {
             // Arrange
             const date = new Date('2022-01-01');
-            const millisecondsDate = MillisecondsDate.createFromDate(date);
+            const dateTime = DateTime.createFromDate(date);
 
             // Act
 
             // Assert
-            expect(() => millisecondsDate.isGreater(invalid)).toThrowError(
-              InvalidMillisecondsDateError,
+            expect(() => dateTime.isGreater(invalid)).toThrowError(
+              InvalidDateTimeError,
             );
           },
         );
@@ -211,11 +205,11 @@ describe('shared', () => {
           const date1 = new Date('2020-01-01');
           const date2 = new Date('2022-01-01');
 
-          const millisecondsDate_1 = MillisecondsDate.createFromDate(date1);
-          const millisecondsDate_2 = MillisecondsDate.createFromDate(date2);
+          const dateTime_1 = DateTime.createFromDate(date1);
+          const dateTime_2 = DateTime.createFromDate(date2);
 
           // Act
-          const result = millisecondsDate_1.isGreater(millisecondsDate_2);
+          const result = dateTime_1.isGreater(dateTime_2);
 
           // Assert
           expect(result).toBe(false);
@@ -226,49 +220,45 @@ describe('shared', () => {
           const date1 = new Date('2022-01-01');
           const date2 = new Date('2020-01-01');
 
-          const millisecondsDate_1 = MillisecondsDate.createFromDate(date1);
-          const millisecondsDate_2 = MillisecondsDate.createFromDate(date2);
+          const dateTime_1 = DateTime.createFromDate(date1);
+          const dateTime_2 = DateTime.createFromDate(date2);
 
           // Act
-          const result = millisecondsDate_1.isGreater(millisecondsDate_2);
+          const result = dateTime_1.isGreater(dateTime_2);
 
           // Assert
           expect(result).toBe(true);
         });
 
-        it('reduce seconds to MillisecondsDate using addSeconds', () => {
+        it('reduce seconds to DateTime using addSeconds', () => {
           // Arrange
           const date = new Date('2022-01-01');
           const secondsToDecrease = 60;
-          const millisecondsDate = MillisecondsDate.createFromDate(date);
+          const dateTime = DateTime.createFromDate(date);
 
           // Act
-          const result = millisecondsDate.addSeconds(-secondsToDecrease);
+          const result = dateTime.addSeconds(-secondsToDecrease);
 
           // Assert
-          expect(millisecondsDate.getMilliseconds).toBe(date.getTime());
-          expect(result.getMilliseconds).not.toBe(
-            millisecondsDate.getMilliseconds,
-          );
+          expect(dateTime.getMilliseconds).toBe(date.getTime());
+          expect(result.getMilliseconds).not.toBe(dateTime.getMilliseconds);
           expect(result.getMilliseconds).toBe(
             date.getTime() - secondsToDecrease * 1000,
           );
         });
 
-        it('add seconds to MillisecondsDate using addSeconds', () => {
+        it('add seconds to DateTime using addSeconds', () => {
           // Arrange
           const date = new Date('2022-01-01');
           const secondsToAdd = 60;
-          const millisecondsDate = MillisecondsDate.createFromDate(date);
+          const dateTime = DateTime.createFromDate(date);
 
           // Act
-          const result = millisecondsDate.addSeconds(secondsToAdd);
+          const result = dateTime.addSeconds(secondsToAdd);
 
           // Assert
-          expect(millisecondsDate.getMilliseconds).toBe(date.getTime());
-          expect(result.getMilliseconds).not.toBe(
-            millisecondsDate.getMilliseconds,
-          );
+          expect(dateTime.getMilliseconds).toBe(date.getTime());
+          expect(result.getMilliseconds).not.toBe(dateTime.getMilliseconds);
           expect(result.getMilliseconds).toBe(
             date.getTime() + secondsToAdd * 1000,
           );
@@ -279,13 +269,13 @@ describe('shared', () => {
           const date1 = new Date('2022-01-01');
           const currentDateMock = new Date('2020-01-01');
 
-          const millisecondsDate = MillisecondsDate.createFromDate(date1);
-          MillisecondsDate.now = jest
+          const dateTime = DateTime.createFromDate(date1);
+          DateTime.now = jest
             .fn()
-            .mockReturnValue(MillisecondsDate.createFromDate(currentDateMock));
+            .mockReturnValue(DateTime.createFromDate(currentDateMock));
 
           // Act
-          const result = millisecondsDate.isLesserThanNow();
+          const result = dateTime.isLesserThanNow();
 
           // Assert
           expect(result).toBe(false);
@@ -296,13 +286,13 @@ describe('shared', () => {
           const date1 = new Date('2020-01-01');
           const currentDateMock = new Date('2022-01-01');
 
-          const millisecondsDate = MillisecondsDate.createFromDate(date1);
-          MillisecondsDate.now = jest
+          const dateTime = DateTime.createFromDate(date1);
+          DateTime.now = jest
             .fn()
-            .mockReturnValue(MillisecondsDate.createFromDate(currentDateMock));
+            .mockReturnValue(DateTime.createFromDate(currentDateMock));
 
           // Act
-          const result = millisecondsDate.isLesserThanNow();
+          const result = dateTime.isLesserThanNow();
 
           // Assert
           expect(result).toBe(true);
@@ -313,13 +303,13 @@ describe('shared', () => {
           const date1 = new Date('2020-01-01');
           const currentDateMock = new Date('2022-01-01');
 
-          const millisecondsDate = MillisecondsDate.createFromDate(date1);
-          MillisecondsDate.now = jest
+          const dateTime = DateTime.createFromDate(date1);
+          DateTime.now = jest
             .fn()
-            .mockReturnValue(MillisecondsDate.createFromDate(currentDateMock));
+            .mockReturnValue(DateTime.createFromDate(currentDateMock));
 
           // Act
-          const result = millisecondsDate.isGreaterThanNow();
+          const result = dateTime.isGreaterThanNow();
 
           // Assert
           expect(result).toBe(false);
@@ -330,13 +320,13 @@ describe('shared', () => {
           const date1 = new Date('2022-01-01');
           const currentDateMock = new Date('2020-01-01');
 
-          const millisecondsDate = MillisecondsDate.createFromDate(date1);
-          MillisecondsDate.now = jest
+          const dateTime = DateTime.createFromDate(date1);
+          DateTime.now = jest
             .fn()
-            .mockReturnValue(MillisecondsDate.createFromDate(currentDateMock));
+            .mockReturnValue(DateTime.createFromDate(currentDateMock));
 
           // Act
-          const result = millisecondsDate.isGreaterThanNow();
+          const result = dateTime.isGreaterThanNow();
 
           // Assert
           expect(result).toBe(true);

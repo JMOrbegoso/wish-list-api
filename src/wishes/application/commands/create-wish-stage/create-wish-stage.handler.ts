@@ -2,10 +2,7 @@ import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { CreateWishStageCommand } from '..';
 import { UnitOfWork } from '../../../../shared/domain/repositories';
-import {
-  MillisecondsDate,
-  WebUrl,
-} from '../../../../shared/domain/value-objects';
+import { DateTime, WebUrl } from '../../../../shared/domain/value-objects';
 import { Wish, WishId, WishStage, WishStageId } from '../../../domain/entities';
 import { WishRepository } from '../../../domain/repositories';
 import { WishDescription, WishTitle } from '../../../domain/value-objects';
@@ -25,7 +22,7 @@ export class CreateWishStageHandler
     const wishId = WishId.create(command.wishId);
     const title = WishTitle.create(command.title);
     const description = WishDescription.create(command.description);
-    const createdAt = MillisecondsDate.now();
+    const createdAt = DateTime.now();
     const urls = command.urls.map((url) => WebUrl.create(url));
     const imageUrls = command.imageUrls.map((url) => WebUrl.create(url));
 

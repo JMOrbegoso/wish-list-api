@@ -9,7 +9,7 @@ import {
   Matches,
   MaxLength,
 } from 'class-validator';
-import { MillisecondsDate } from '../../../shared/domain/value-objects';
+import { DateTime } from '../../../shared/domain/value-objects';
 import { Wish } from '../../domain/entities';
 import {
   CategoryName,
@@ -57,14 +57,14 @@ export class CreateWishDto {
   categories: string[];
 
   @IsString()
-  @Matches(MillisecondsDate.Iso8601Regex, {
+  @Matches(DateTime.Iso8601Regex, {
     message: 'startedAt must be a valid ISO 8601 date string',
   })
   @IsOptional()
   startedAt: string;
 
   @IsString()
-  @Matches(MillisecondsDate.Iso8601Regex, {
+  @Matches(DateTime.Iso8601Regex, {
     message: 'completedAt must be a valid ISO 8601 date string',
   })
   @IsOptional()

@@ -2,7 +2,7 @@ import { BadRequestException } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { CreateUserCommand } from '..';
 import { UnitOfWork } from '../../../../shared/domain/repositories';
-import { MillisecondsDate } from '../../../../shared/domain/value-objects';
+import { DateTime } from '../../../../shared/domain/value-objects';
 import {
   User,
   UserId,
@@ -59,8 +59,8 @@ export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
     const isBlocked = IsBlocked.notBlocked();
     const firstName = FirstName.create(command.firstName);
     const lastName = LastName.create(command.lastName);
-    const birthday = MillisecondsDate.createFromString(command.birthday);
-    const createdAt = MillisecondsDate.now();
+    const birthday = DateTime.createFromString(command.birthday);
+    const createdAt = DateTime.now();
     const biography = Biography.create(command.biography);
     const roles = [Role.basic()];
 
@@ -88,7 +88,7 @@ export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
     );
     const verificationCode = VerificationCode.create(
       verificationCodeId,
-      MillisecondsDate.now(),
+      DateTime.now(),
       VerificationCode.defaultDuration,
     );
 
