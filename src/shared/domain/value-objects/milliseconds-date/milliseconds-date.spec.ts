@@ -119,14 +119,14 @@ describe('shared', () => {
           'should create a MillisecondsDate from the a ISO 8601 string date: %p',
           (date) => {
             // Arrange
+            const iso8601 = date.toISOString();
 
             // Act
-            const millisecondsDate = MillisecondsDate.createFromString(
-              date.toISOString(),
-            );
+            const millisecondsDate = MillisecondsDate.createFromString(iso8601);
 
             // Assert
             expect(millisecondsDate.getMilliseconds).toBe(date.getTime());
+            expect(millisecondsDate.getIso8601).toBe(iso8601);
           },
         );
 

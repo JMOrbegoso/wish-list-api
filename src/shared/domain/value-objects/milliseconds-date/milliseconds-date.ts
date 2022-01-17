@@ -45,6 +45,10 @@ export class MillisecondsDate extends ValueObject<number> {
     return new Date(this.value);
   }
 
+  public get getIso8601(): string {
+    return new Date(this.value).toISOString();
+  }
+
   public isLesser(other: MillisecondsDate): boolean {
     if (!other) throw new InvalidMillisecondsDateError();
 
