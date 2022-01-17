@@ -19,7 +19,7 @@ describe('wishes', () => {
               getDescription: 'description 0',
             },
             createdAt: {
-              getMilliseconds: 2,
+              getIso8601: '2022-01-17T12:23:12.000Z',
             },
             urls: [],
             imageUrls: [],
@@ -35,7 +35,7 @@ describe('wishes', () => {
               getDescription: 'description 1',
             },
             createdAt: {
-              getMilliseconds: 2,
+              getIso8601: '2022-01-17T12:23:12.000Z',
             },
             urls: [
               { getUrl: 'url 1' } as MockedObject<WebUrl>,
@@ -60,7 +60,7 @@ describe('wishes', () => {
             expect(dto.id).toBe(wishStage.id.value);
             expect(dto.title).toBe(wishStage.title.getTitle);
             expect(dto.description).toBe(wishStage.description.getDescription);
-            expect(dto.createdAt).toBe(wishStage.createdAt.getMilliseconds);
+            expect(dto.createdAt).toBe(wishStage.createdAt.getIso8601);
             for (let i = 0; i < wishStage.urls.length; i++) {
               expect(dto.urls[i]).toBe(wishStage.urls[i].getUrl);
             }

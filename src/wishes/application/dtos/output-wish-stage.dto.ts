@@ -5,7 +5,7 @@ export class OutputWishStageDto {
 
   description: string;
 
-  createdAt: number;
+  createdAt: string;
 
   urls: string[];
 

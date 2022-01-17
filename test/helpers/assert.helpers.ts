@@ -20,8 +20,8 @@ export function assertOutputWish(
   expect(outputWish.title).toBe(wishDb.title);
   expect(outputWish.description).toBe(wishDb.description);
   expect(outputWish.privacyLevel).toBe(wishDb.privacyLevel);
-  expect(outputWish.createdAt).toBe(wishDb.createdAt.getTime());
-  expect(outputWish.updatedAt).toBe(wishDb.updatedAt.getTime());
+  expect(outputWish.createdAt).toBe(wishDb.createdAt.toISOString());
+  expect(outputWish.updatedAt).toBe(wishDb.updatedAt.toISOString());
 
   for (let i = 0; i < wishDb.urls.length; i++)
     expect(outputWish.urls[i]).toBe(wishDb.urls[i]);
@@ -33,15 +33,15 @@ export function assertOutputWish(
     expect(outputWish.categories[i]).toBe(wishDb.categories[i]);
 
   if (wishDb.deletedAt)
-    expect(outputWish.deletedAt).toBe(wishDb.deletedAt.getTime());
+    expect(outputWish.deletedAt).toBe(wishDb.deletedAt.toISOString());
   else expect(outputWish.deletedAt).toBeNull();
 
   if (wishDb.startedAt)
-    expect(outputWish.startedAt).toBe(wishDb.startedAt.getTime());
+    expect(outputWish.startedAt).toBe(wishDb.startedAt.toISOString());
   else expect(outputWish.startedAt).toBeNull();
 
   if (wishDb.completedAt)
-    expect(outputWish.completedAt).toBe(wishDb.completedAt.getTime());
+    expect(outputWish.completedAt).toBe(wishDb.completedAt.toISOString());
   else expect(outputWish.completedAt).toBeNull();
 }
 
@@ -53,7 +53,7 @@ export function assertOutputWishStage(
   expect(outputWishStage.id).toBe(wishStageDb._id.toString());
   expect(outputWishStage.title).toBe(wishStageDb.title);
   expect(outputWishStage.description).toBe(wishStageDb.description);
-  expect(outputWishStage.createdAt).toBe(wishStageDb.createdAt.getTime());
+  expect(outputWishStage.createdAt).toBe(wishStageDb.createdAt.toISOString());
 
   for (let i = 0; i < wishStageDb.urls.length; i++)
     expect(outputWishStage.urls[i]).toBe(wishStageDb.urls[i]);
@@ -128,9 +128,9 @@ export function assertOutputUser(
   expect(outputUser.isBlocked).toBe(userDb.isBlocked);
   expect(outputUser.firstName).toBe(userDb.firstName);
   expect(outputUser.lastName).toBe(userDb.lastName);
-  expect(outputUser.birthday).toBe(userDb.birthday.getTime());
-  expect(outputUser.createdAt).toBe(userDb.createdAt.getTime());
-  expect(outputUser.updatedAt).toBe(userDb.updatedAt.getTime());
+  expect(outputUser.birthday).toBe(userDb.birthday.toISOString());
+  expect(outputUser.createdAt).toBe(userDb.createdAt.toISOString());
+  expect(outputUser.updatedAt).toBe(userDb.updatedAt.toISOString());
   expect(outputUser.biography).toBe(userDb.biography);
 
   for (let i = 0; i < userDb.roles.length; i++)
@@ -141,7 +141,7 @@ export function assertOutputUser(
   else expect(outputUser.profilePicture).toBeNull();
 
   if (userDb.deletedAt)
-    expect(outputUser.deletedAt).toBe(userDb.deletedAt.getTime());
+    expect(outputUser.deletedAt).toBe(userDb.deletedAt.toISOString());
   else expect(outputUser.deletedAt).toBeNull();
 }
 

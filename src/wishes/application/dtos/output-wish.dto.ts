@@ -12,9 +12,9 @@ export class OutputWishDto {
 
   privacyLevel: PrivacyLevel;
 
-  createdAt: number;
+  createdAt: string;
 
-  updatedAt: number;
+  updatedAt: string;
 
   urls: string[];
 
@@ -24,9 +24,9 @@ export class OutputWishDto {
 
   stages: OutputWishStageDto[];
 
-  deletedAt?: number;
+  deletedAt?: string;
 
-  startedAt?: number;
+  startedAt?: string;
 
-  completedAt?: number;
+  completedAt?: string;
 }

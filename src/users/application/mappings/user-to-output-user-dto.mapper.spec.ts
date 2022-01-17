@@ -29,13 +29,13 @@ describe('users', () => {
               getLastName: 'LastName0',
             },
             birthday: {
-              getMilliseconds: 1,
+              getIso8601: '2022-01-17T12:23:12.000Z',
             },
             createdAt: {
-              getMilliseconds: 2,
+              getIso8601: '2022-01-17T12:23:12.000Z',
             },
             updatedAt: {
-              getMilliseconds: 3,
+              getIso8601: '2022-01-17T12:23:12.000Z',
             },
             biography: {
               getBiography: 'A nice person 0.',
@@ -45,7 +45,7 @@ describe('users', () => {
               getUrl: 'https://www.example.com/0.jpg',
             },
             deletedAt: {
-              getMilliseconds: 4,
+              getIso8601: '2022-01-17T12:23:12.000Z',
             },
           } as MockedObject<User>,
           {
@@ -70,13 +70,13 @@ describe('users', () => {
               getLastName: 'LastName1',
             },
             birthday: {
-              getMilliseconds: 1,
+              getIso8601: '2022-01-17T12:23:12.000Z',
             },
             createdAt: {
-              getMilliseconds: 2,
+              getIso8601: '2022-01-17T12:23:12.000Z',
             },
             updatedAt: {
-              getMilliseconds: 3,
+              getIso8601: '2022-01-17T12:23:12.000Z',
             },
             biography: {
               getBiography: 'A nice person 1.',
@@ -86,7 +86,7 @@ describe('users', () => {
               getUrl: 'https://www.example.com/1.jpg',
             },
             deletedAt: {
-              getMilliseconds: 4,
+              getIso8601: '2022-01-17T12:23:12.000Z',
             },
           } as MockedObject<User>,
           {
@@ -111,13 +111,13 @@ describe('users', () => {
               getLastName: 'LastName2',
             },
             birthday: {
-              getMilliseconds: 1,
+              getIso8601: '2022-01-17T12:23:12.000Z',
             },
             createdAt: {
-              getMilliseconds: 2,
+              getIso8601: '2022-01-17T12:23:12.000Z',
             },
             updatedAt: {
-              getMilliseconds: 3,
+              getIso8601: '2022-01-17T12:23:12.000Z',
             },
             biography: {
               getBiography: 'A nice person 2.',
@@ -125,7 +125,7 @@ describe('users', () => {
             roles: ['Admin'],
             profilePicture: null,
             deletedAt: {
-              getMilliseconds: 4,
+              getIso8601: '2022-01-17T12:23:12.000Z',
             },
           } as MockedObject<User>,
           {
@@ -150,13 +150,13 @@ describe('users', () => {
               getLastName: 'LastName3',
             },
             birthday: {
-              getMilliseconds: 1,
+              getIso8601: '2022-01-17T12:23:12.000Z',
             },
             createdAt: {
-              getMilliseconds: 2,
+              getIso8601: '2022-01-17T12:23:12.000Z',
             },
             updatedAt: {
-              getMilliseconds: 3,
+              getIso8601: '2022-01-17T12:23:12.000Z',
             },
             biography: {
               getBiography: 'A nice person 3.',
@@ -189,13 +189,13 @@ describe('users', () => {
               getLastName: 'LastName4',
             },
             birthday: {
-              getMilliseconds: 1,
+              getIso8601: '2022-01-17T12:23:12.000Z',
             },
             createdAt: {
-              getMilliseconds: 2,
+              getIso8601: '2022-01-17T12:23:12.000Z',
             },
             updatedAt: {
-              getMilliseconds: 3,
+              getIso8601: '2022-01-17T12:23:12.000Z',
             },
             biography: {
               getBiography: 'A nice person 4.',
@@ -203,7 +203,7 @@ describe('users', () => {
             roles: ['Admin'],
             profilePicture: null,
             deletedAt: {
-              getMilliseconds: 4,
+              getIso8601: '2022-01-17T12:23:12.000Z',
             },
           } as MockedObject<User>,
           {
@@ -228,13 +228,13 @@ describe('users', () => {
               getLastName: 'LastName5',
             },
             birthday: {
-              getMilliseconds: 1,
+              getIso8601: '2022-01-17T12:23:12.000Z',
             },
             createdAt: {
-              getMilliseconds: 2,
+              getIso8601: '2022-01-17T12:23:12.000Z',
             },
             updatedAt: {
-              getMilliseconds: 3,
+              getIso8601: '2022-01-17T12:23:12.000Z',
             },
             biography: {
               getBiography: 'A nice person 5.',
@@ -267,13 +267,13 @@ describe('users', () => {
               getLastName: 'LastName6',
             },
             birthday: {
-              getMilliseconds: 1,
+              getIso8601: '2022-01-17T12:23:12.000Z',
             },
             createdAt: {
-              getMilliseconds: 2,
+              getIso8601: '2022-01-17T12:23:12.000Z',
             },
             updatedAt: {
-              getMilliseconds: 3,
+              getIso8601: '2022-01-17T12:23:12.000Z',
             },
             biography: {
               getBiography: 'A nice person 6.',
@@ -304,13 +304,13 @@ describe('users', () => {
               getLastName: 'LastName7',
             },
             birthday: {
-              getMilliseconds: 1,
+              getIso8601: '2022-01-17T12:23:12.000Z',
             },
             createdAt: {
-              getMilliseconds: 2,
+              getIso8601: '2022-01-17T12:23:12.000Z',
             },
             updatedAt: {
-              getMilliseconds: 3,
+              getIso8601: '2022-01-17T12:23:12.000Z',
             },
             biography: {
               getBiography: 'A nice person 7.',
@@ -337,9 +337,9 @@ describe('users', () => {
             expect(dto.isBlocked).toBe(user.isBlocked);
             expect(dto.firstName).toBe(user.firstName.getFirstName);
             expect(dto.lastName).toBe(user.lastName.getLastName);
-            expect(dto.birthday).toBe(user.birthday.getMilliseconds);
-            expect(dto.createdAt).toBe(user.createdAt.getMilliseconds);
-            expect(dto.updatedAt).toBe(user.updatedAt.getMilliseconds);
+            expect(dto.birthday).toBe(user.birthday.getIso8601);
+            expect(dto.createdAt).toBe(user.createdAt.getIso8601);
+            expect(dto.updatedAt).toBe(user.updatedAt.getIso8601);
             expect(dto.biography).toBe(user.biography.getBiography);
             for (let i = 0; i < user.roles.length; i++) {
               expect(dto.roles[i]).toBe(user.roles[i]);
@@ -348,7 +348,7 @@ describe('users', () => {
               expect(dto.profilePicture).toBe(user.profilePicture.getUrl);
             else expect(dto.profilePicture).toBeNull();
             if (user.deletedAt)
-              expect(dto.deletedAt).toBe(user.deletedAt.getMilliseconds);
+              expect(dto.deletedAt).toBe(user.deletedAt.getIso8601);
             else expect(dto.deletedAt).toBeNull();
           },
         );
