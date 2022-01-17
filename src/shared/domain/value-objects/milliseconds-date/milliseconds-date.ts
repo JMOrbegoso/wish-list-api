@@ -17,10 +17,6 @@ export class MillisecondsDate extends ValueObject<number> {
     return new MillisecondsDate(milliseconds);
   }
 
-  static createFromMilliseconds(value: number): MillisecondsDate {
-    return new MillisecondsDate(value);
-  }
-
   static createFromString(value: string): MillisecondsDate {
     if (!value) throw new InvalidMillisecondsDateError();
 

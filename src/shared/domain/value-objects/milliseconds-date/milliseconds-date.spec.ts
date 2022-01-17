@@ -37,20 +37,6 @@ describe('shared', () => {
           },
         );
 
-        test.each([undefined, null, 0])(
-          'should throw an error when trying to create a MillisecondsDate from %p',
-          (invalid) => {
-            // Arrange
-
-            // Act
-
-            // Assert
-            expect(() =>
-              MillisecondsDate.createFromMilliseconds(invalid),
-            ).toThrowError(InvalidMillisecondsDateError);
-          },
-        );
-
         it('should create a MillisecondsDate with the current date', () => {
           // Arrange
           const currentDate = new Date();
@@ -131,21 +117,6 @@ describe('shared', () => {
           },
         );
 
-        test.each(validDates)(
-          'should create a MillisecondsDate from the milliseconds of the date: %p',
-          (date) => {
-            // Arrange
-
-            // Act
-            const millisecondsDate = MillisecondsDate.createFromMilliseconds(
-              date.getTime(),
-            );
-
-            // Assert
-            expect(millisecondsDate.getMilliseconds).toBe(date.getTime());
-          },
-        );
-
         it('comparing two MillisecondsDate created from two different values (%p and %p) should return false', () => {
           // Arrange
           const date1 = new Date('2022-01-01');
@@ -164,9 +135,7 @@ describe('shared', () => {
           // Arrange
           const date = new Date('2022-01-01');
           const millisecondsDate1 = MillisecondsDate.createFromDate(date);
-          const millisecondsDate2 = MillisecondsDate.createFromMilliseconds(
-            date.getTime(),
-          );
+          const millisecondsDate2 = MillisecondsDate.createFromDate(date);
 
           // Act
           const result = millisecondsDate1.equals(millisecondsDate2);
