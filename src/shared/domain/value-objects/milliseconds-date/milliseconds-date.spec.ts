@@ -1,4 +1,8 @@
-import { InvalidMillisecondsDateError, MillisecondsDate } from '..';
+import {
+  InvalidMillisecondsDateError,
+  MalformedIso8601DateError,
+  MillisecondsDate,
+} from '..';
 
 describe('shared', () => {
   describe('domain', () => {
@@ -71,6 +75,55 @@ describe('shared', () => {
 
             // Act
             const millisecondsDate = MillisecondsDate.createFromDate(date);
+
+            // Assert
+            expect(millisecondsDate.getMilliseconds).toBe(date.getTime());
+          },
+        );
+
+        test.each([undefined, null, ''])(
+          'should throw an error when trying to create a MillisecondsDate from %p',
+          (invalid) => {
+            // Arrange
+
+            // Act
+
+            // Assert
+            expect(() =>
+              MillisecondsDate.createFromString(invalid),
+            ).toThrowError(InvalidMillisecondsDateError);
+          },
+        );
+
+        test.each([
+          '2020-12-10',
+          '1980/12/10',
+          'Mon Jan 17 2022 07:23:12 GMT-0500 (Colombia Standard Time)',
+          'Mon, 17 Jan 2022 12:20:40 GMT',
+          '2022-01-17T12:23:12.500Z',
+        ])(
+          'should throw an error when trying to create a MillisecondsDate from the invalid ISO 8601 string date: %p',
+          (invalid) => {
+            // Arrange
+
+            // Act
+
+            // Assert
+            expect(() =>
+              MillisecondsDate.createFromString(invalid),
+            ).toThrowError(MalformedIso8601DateError);
+          },
+        );
+
+        test.each(validDates)(
+          'should create a MillisecondsDate from the a ISO 8601 string date: %p',
+          (date) => {
+            // Arrange
+
+            // Act
+            const millisecondsDate = MillisecondsDate.createFromString(
+              date.toISOString(),
+            );
 
             // Assert
             expect(millisecondsDate.getMilliseconds).toBe(date.getTime());

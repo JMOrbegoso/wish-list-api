@@ -6,3 +6,4 @@ export * from './web-url/malformed-web-url.error';
 
 export * from './milliseconds-date/milliseconds-date';
 export * from './milliseconds-date/invalid-milliseconds-date.error';
+export * from './milliseconds-date/malformed-iso-8601-date.error';
