@@ -78,7 +78,7 @@ export class RefreshToken extends Entity<RefreshTokenId> {
   }
 
   public get isExpired(): boolean {
-    return new Date() > this.expireAt.getDate;
+    return this.expireAt.isLesserThanNow();
   }
 
   public get ipAddress(): string {

@@ -40,6 +40,14 @@ export class MillisecondsDate extends ValueObject<number> {
     return this.getMilliseconds > other.getMilliseconds;
   }
 
+  public isLesserThanNow(): boolean {
+    return this.isLesser(MillisecondsDate.now());
+  }
+
+  public isGreaterThanNow(): boolean {
+    return this.isGreater(MillisecondsDate.now());
+  }
+
   public addSeconds(seconds: number): MillisecondsDate {
     const newMilliseconds = this.getMilliseconds + 1000 * seconds;
     const date = new Date(newMilliseconds);

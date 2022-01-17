@@ -91,7 +91,7 @@ describe('users', () => {
           } as MockedObject<VerificationCodeId>;
           const createdAt = {
             addSeconds: jest.fn().mockReturnValue({
-              getDate: new Date(1990, 1, 1),
+              isLesserThanNow: jest.fn().mockReturnValue(true),
             } as MockedObject<MillisecondsDate>),
           } as MockedObject<MillisecondsDate>;
           const durationInSeconds = 100;

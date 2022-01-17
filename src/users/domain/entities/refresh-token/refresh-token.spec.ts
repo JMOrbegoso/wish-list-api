@@ -24,7 +24,7 @@ describe('users', () => {
               getMilliseconds: new Date().getTime(),
               equals: jest.fn().mockReturnValue(true),
               addSeconds: jest.fn().mockReturnValue({
-                getDate: new Date(new Date().getTime() + 1000),
+                isLesserThanNow: jest.fn().mockReturnValue(false),
               } as MockedObject<MillisecondsDate>),
             } as MockedObject<MillisecondsDate>,
             {
@@ -57,7 +57,7 @@ describe('users', () => {
               getMilliseconds: new Date().getTime(),
               equals: jest.fn().mockReturnValue(true),
               addSeconds: jest.fn().mockReturnValue({
-                getDate: new Date(new Date().getTime() + 1000),
+                isLesserThanNow: jest.fn().mockReturnValue(false),
               } as MockedObject<MillisecondsDate>),
             } as MockedObject<MillisecondsDate>,
             {
@@ -87,7 +87,7 @@ describe('users', () => {
               getMilliseconds: new Date().getTime(),
               equals: jest.fn().mockReturnValue(true),
               addSeconds: jest.fn().mockReturnValue({
-                getDate: new Date(new Date().getTime() + 1000),
+                isLesserThanNow: jest.fn().mockReturnValue(false),
               } as MockedObject<MillisecondsDate>),
             } as MockedObject<MillisecondsDate>,
             {
@@ -114,7 +114,7 @@ describe('users', () => {
               getMilliseconds: new Date().getTime(),
               equals: jest.fn().mockReturnValue(true),
               addSeconds: jest.fn().mockReturnValue({
-                getDate: new Date(new Date().getTime() + 1000),
+                isLesserThanNow: jest.fn().mockReturnValue(false),
               } as MockedObject<MillisecondsDate>),
             } as MockedObject<MillisecondsDate>,
             {
@@ -386,17 +386,17 @@ describe('users', () => {
             revokedAt: MockedObject<MillisecondsDate>,
           ) => {
             // Arrange
-            const durationInSeconds = 1;
             secondsDuration = {
-              getDuration: durationInSeconds,
+              getDuration: 1,
             } as MockedObject<SecondsDuration>;
+            createdAt = {
+              addSeconds: jest.fn().mockReturnValue({
+                isLesserThanNow: jest.fn().mockReturnValue(true),
+              } as MockedObject<MillisecondsDate>),
+            } as MockedObject<MillisecondsDate>;
             replacedAt = null;
             replacedBy = null;
             revokedAt = null;
-
-            await new Promise((resolve) =>
-              setTimeout(resolve, (durationInSeconds + 1) * 1000),
-            );
 
             // Act
             const refreshToken = RefreshToken.create(

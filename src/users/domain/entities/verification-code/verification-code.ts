@@ -48,6 +48,6 @@ export class VerificationCode extends Entity<VerificationCodeId> {
   }
 
   public get isExpired(): boolean {
-    return new Date() > this.expireAt.getDate;
+    return this.expireAt.isLesserThanNow();
   }
 }

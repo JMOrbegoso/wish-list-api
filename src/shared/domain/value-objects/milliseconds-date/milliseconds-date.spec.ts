@@ -250,6 +250,74 @@ describe('shared', () => {
             date.getTime() + secondsToAdd * 1000,
           );
         });
+
+        it('use isLesserThanNow with the date 2022-01-01 should return false because the current date is 2020-01-01', () => {
+          // Arrange
+          const date1 = new Date('2022-01-01');
+          const currentDateMock = new Date('2020-01-01');
+
+          const millisecondsDate = MillisecondsDate.createFromDate(date1);
+          MillisecondsDate.now = jest
+            .fn()
+            .mockReturnValue(MillisecondsDate.createFromDate(currentDateMock));
+
+          // Act
+          const result = millisecondsDate.isLesserThanNow();
+
+          // Assert
+          expect(result).toBe(false);
+        });
+
+        it('use isLesserThanNow with the date 2020-01-01 should return true because the current date is 2022-01-01', () => {
+          // Arrange
+          const date1 = new Date('2020-01-01');
+          const currentDateMock = new Date('2022-01-01');
+
+          const millisecondsDate = MillisecondsDate.createFromDate(date1);
+          MillisecondsDate.now = jest
+            .fn()
+            .mockReturnValue(MillisecondsDate.createFromDate(currentDateMock));
+
+          // Act
+          const result = millisecondsDate.isLesserThanNow();
+
+          // Assert
+          expect(result).toBe(true);
+        });
+
+        it('use isGreaterThanNow with the date 2020-01-01 should return false because the current date is 2022-01-01', () => {
+          // Arrange
+          const date1 = new Date('2020-01-01');
+          const currentDateMock = new Date('2022-01-01');
+
+          const millisecondsDate = MillisecondsDate.createFromDate(date1);
+          MillisecondsDate.now = jest
+            .fn()
+            .mockReturnValue(MillisecondsDate.createFromDate(currentDateMock));
+
+          // Act
+          const result = millisecondsDate.isGreaterThanNow();
+
+          // Assert
+          expect(result).toBe(false);
+        });
+
+        it('use isGreaterThanNow with the date 2022-01-01 should return true because the current date is 2020-01-01', () => {
+          // Arrange
+          const date1 = new Date('2022-01-01');
+          const currentDateMock = new Date('2020-01-01');
+
+          const millisecondsDate = MillisecondsDate.createFromDate(date1);
+          MillisecondsDate.now = jest
+            .fn()
+            .mockReturnValue(MillisecondsDate.createFromDate(currentDateMock));
+
+          // Act
+          const result = millisecondsDate.isGreaterThanNow();
+
+          // Assert
+          expect(result).toBe(true);
+        });
       });
     });
   });
