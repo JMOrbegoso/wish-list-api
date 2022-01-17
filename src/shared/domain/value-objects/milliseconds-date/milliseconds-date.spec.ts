@@ -121,6 +121,98 @@ describe('shared', () => {
           expect(result).toBe(true);
         });
 
+        test.each([undefined, null])(
+          'should throw an error when trying to compare a MillisecondsDate using isLesser from %p',
+          (invalid) => {
+            // Arrange
+            const date = new Date('2022-01-01');
+            const millisecondsDate = MillisecondsDate.createFromDate(date);
+
+            // Act
+
+            // Assert
+            expect(() => millisecondsDate.isLesser(invalid)).toThrowError(
+              InvalidMillisecondsDateError,
+            );
+          },
+        );
+
+        it('2022-01-01 date isLesser than 2020-01-01 should return false', () => {
+          // Arrange
+          const date1 = new Date('2022-01-01');
+          const date2 = new Date('2020-01-01');
+
+          const millisecondsDate_1 = MillisecondsDate.createFromDate(date1);
+          const millisecondsDate_2 = MillisecondsDate.createFromDate(date2);
+
+          // Act
+          const result = millisecondsDate_1.isLesser(millisecondsDate_2);
+
+          // Assert
+          expect(result).toBe(false);
+        });
+
+        it('2020-01-01 date isLesser than 2022-01-01 should return false', () => {
+          // Arrange
+          const date1 = new Date('2020-01-01');
+          const date2 = new Date('2022-01-01');
+
+          const millisecondsDate_1 = MillisecondsDate.createFromDate(date1);
+          const millisecondsDate_2 = MillisecondsDate.createFromDate(date2);
+
+          // Act
+          const result = millisecondsDate_1.isLesser(millisecondsDate_2);
+
+          // Assert
+          expect(result).toBe(true);
+        });
+
+        test.each([undefined, null])(
+          'should throw an error when trying to compare a MillisecondsDate using isGreater from %p',
+          (invalid) => {
+            // Arrange
+            const date = new Date('2022-01-01');
+            const millisecondsDate = MillisecondsDate.createFromDate(date);
+
+            // Act
+
+            // Assert
+            expect(() => millisecondsDate.isGreater(invalid)).toThrowError(
+              InvalidMillisecondsDateError,
+            );
+          },
+        );
+
+        it('2020-01-01 date isGreater than 2022-01-01 should return false', () => {
+          // Arrange
+          const date1 = new Date('2020-01-01');
+          const date2 = new Date('2022-01-01');
+
+          const millisecondsDate_1 = MillisecondsDate.createFromDate(date1);
+          const millisecondsDate_2 = MillisecondsDate.createFromDate(date2);
+
+          // Act
+          const result = millisecondsDate_1.isGreater(millisecondsDate_2);
+
+          // Assert
+          expect(result).toBe(false);
+        });
+
+        it('2022-01-01 date isGreater than 2020-01-01 should return true', () => {
+          // Arrange
+          const date1 = new Date('2022-01-01');
+          const date2 = new Date('2020-01-01');
+
+          const millisecondsDate_1 = MillisecondsDate.createFromDate(date1);
+          const millisecondsDate_2 = MillisecondsDate.createFromDate(date2);
+
+          // Act
+          const result = millisecondsDate_1.isGreater(millisecondsDate_2);
+
+          // Assert
+          expect(result).toBe(true);
+        });
+
         it('reduce seconds to MillisecondsDate using addSeconds', () => {
           // Arrange
           const date = new Date('2022-01-01');

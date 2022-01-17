@@ -28,6 +28,18 @@ export class MillisecondsDate extends ValueObject<number> {
     return new Date(this.value);
   }
 
+  public isLesser(other: MillisecondsDate): boolean {
+    if (!other) throw new InvalidMillisecondsDateError();
+
+    return this.getMilliseconds < other.getMilliseconds;
+  }
+
+  public isGreater(other: MillisecondsDate): boolean {
+    if (!other) throw new InvalidMillisecondsDateError();
+
+    return this.getMilliseconds > other.getMilliseconds;
+  }
+
   public addSeconds(seconds: number): MillisecondsDate {
     const newMilliseconds = this.getMilliseconds + 1000 * seconds;
     const date = new Date(newMilliseconds);
