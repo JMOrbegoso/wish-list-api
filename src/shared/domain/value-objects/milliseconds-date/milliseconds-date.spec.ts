@@ -100,7 +100,8 @@ describe('shared', () => {
           '1980/12/10',
           'Mon Jan 17 2022 07:23:12 GMT-0500 (Colombia Standard Time)',
           'Mon, 17 Jan 2022 12:20:40 GMT',
-          '2022-01-17T12:23:12.500Z',
+          '2022-01-17T12:23:12.12Z',
+          '2022-01-17T12:23:12.1234Z',
         ])(
           'should throw an error when trying to create a MillisecondsDate from the invalid ISO 8601 string date: %p',
           (invalid) => {
