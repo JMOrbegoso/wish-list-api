@@ -34,10 +34,10 @@ export class UpdateWishHandler implements ICommandHandler<UpdateWishCommand> {
       CategoryName.create(url),
     );
     const startedAt = command.startedAt
-      ? MillisecondsDate.createFromMilliseconds(command.startedAt)
+      ? MillisecondsDate.createFromString(command.startedAt)
       : null;
     const completedAt = command.completedAt
-      ? MillisecondsDate.createFromMilliseconds(command.completedAt)
+      ? MillisecondsDate.createFromString(command.completedAt)
       : null;
 
     // Get the wish  by id

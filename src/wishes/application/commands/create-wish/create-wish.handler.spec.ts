@@ -16,8 +16,8 @@ const commands = [
     [],
     [],
     [],
-    new Date().getTime(),
-    new Date().getTime(),
+    '2021-11-05T16:08:46.164Z',
+    '2021-11-05T16:08:46.164Z',
   ),
   new CreateWishCommand(
     'id 1',
@@ -38,7 +38,7 @@ const commands = [
     [],
     ['https://www.example.com/2.jpg', 'https://www.example.net/2.jpg'],
     ['tech', 'tech 2'],
-    1000000000,
+    '2021-11-05T16:08:46.164Z',
   ),
 ];
 

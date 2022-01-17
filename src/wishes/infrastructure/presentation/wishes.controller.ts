@@ -120,8 +120,8 @@ export class WishesController {
       dto.urls,
       dto.imageUrls,
       dto.categories,
-      dto.startedAt,
-      dto.completedAt,
+      dto.startedAt ? new Date(dto.startedAt).toISOString() : null,
+      dto.completedAt ? new Date(dto.completedAt).toISOString() : null,
     );
     await this.commandBus.execute(command);
   }
@@ -155,8 +155,8 @@ export class WishesController {
       dto.urls,
       dto.imageUrls,
       dto.categories,
-      dto.startedAt,
-      dto.completedAt,
+      dto.startedAt ? new Date(dto.startedAt).toISOString() : null,
+      dto.completedAt ? new Date(dto.completedAt).toISOString() : null,
     );
     await this.commandBus.execute(command);
   }

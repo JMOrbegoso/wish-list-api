@@ -39,10 +39,10 @@ export class CreateWishHandler implements ICommandHandler<CreateWishCommand> {
       CategoryName.create(url),
     );
     const startedAt = command.startedAt
-      ? MillisecondsDate.createFromMilliseconds(command.startedAt)
+      ? MillisecondsDate.createFromString(command.startedAt)
       : null;
     const completedAt = command.completedAt
-      ? MillisecondsDate.createFromMilliseconds(command.completedAt)
+      ? MillisecondsDate.createFromString(command.completedAt)
       : null;
 
     // Check if the user exist

@@ -89,7 +89,7 @@ export class UsersController {
       dto.password,
       dto.firstName,
       dto.lastName,
-      dto.birthday,
+      new Date(dto.birthday).toISOString(),
       dto.biography,
     );
     await this.commandBus.execute(command);
@@ -120,7 +120,7 @@ export class UsersController {
       dto.id,
       dto.firstName,
       dto.lastName,
-      dto.birthday,
+      new Date(dto.birthday).toISOString(),
       dto.biography,
     );
     await this.commandBus.execute(command);

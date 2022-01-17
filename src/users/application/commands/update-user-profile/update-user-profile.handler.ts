@@ -36,7 +36,7 @@ export class UpdateUserProfileHandler
     // Generate the properties of the User
     const firstName = FirstName.create(command.firstName);
     const lastName = LastName.create(command.lastName);
-    const birthday = MillisecondsDate.createFromMilliseconds(command.birthday);
+    const birthday = MillisecondsDate.createFromString(command.birthday);
     const biography = Biography.create(command.biography);
 
     // Update user properties

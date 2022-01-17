@@ -59,7 +59,7 @@ export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
     const isBlocked = IsBlocked.notBlocked();
     const firstName = FirstName.create(command.firstName);
     const lastName = LastName.create(command.lastName);
-    const birthday = MillisecondsDate.createFromMilliseconds(command.birthday);
+    const birthday = MillisecondsDate.createFromString(command.birthday);
     const createdAt = MillisecondsDate.now();
     const biography = Biography.create(command.biography);
     const roles = [Role.basic()];

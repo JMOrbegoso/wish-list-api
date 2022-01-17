@@ -6,12 +6,18 @@ import { User } from '../../../domain/entities';
 import { UserRepository } from '../../../domain/repositories';
 
 const commands = [
-  new UpdateUserProfileCommand('id 0', 'John', 'Doe', 1, 'A nice guy.'),
+  new UpdateUserProfileCommand(
+    'id 0',
+    'John',
+    'Doe',
+    '2021-11-05T16:08:46.164Z',
+    'A nice guy.',
+  ),
   new UpdateUserProfileCommand(
     'id 0',
     'FirstName0',
     'LastName0',
-    1,
+    '2021-11-05T16:08:46.164Z',
     'A nice person 0.',
   ),
 ];
