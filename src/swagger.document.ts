@@ -994,9 +994,10 @@ export const swaggerDocument: OpenAPIObject = {
             example: 'Doe',
           },
           birthday: {
-            type: 'number',
-            description: 'User birthday in milliseconds.',
-            example: 1636128526164,
+            type: 'string',
+            format: 'date-time',
+            description: 'User birthday ISO 8601 date.',
+            example: '2021-11-05T16:08:46.164Z',
           },
           biography: {
             type: 'string',
@@ -1034,9 +1035,10 @@ export const swaggerDocument: OpenAPIObject = {
             example: 'Doe',
           },
           birthday: {
-            type: 'number',
-            description: 'User birthday in milliseconds.',
-            example: 1636128526164,
+            type: 'string',
+            format: 'date-time',
+            description: 'User birthday ISO 8601 date.',
+            example: '2021-11-05T16:08:46.164Z',
           },
           biography: {
             type: 'string',
@@ -1268,14 +1270,16 @@ export const swaggerDocument: OpenAPIObject = {
             example: ['Tech'],
           },
           startedAt: {
-            type: 'number',
-            description: 'Wish started at date in milliseconds.',
-            example: 1636128526164,
+            type: 'string',
+            format: 'date-time',
+            description: 'Wish startedAt ISO 8601 date.',
+            example: '2021-11-05T16:08:46.164Z',
           },
           completedAt: {
-            type: 'number',
-            description: 'Wish completed at date in milliseconds.',
-            example: 1636128526164,
+            type: 'string',
+            format: 'date-time',
+            description: 'Wish completedAt ISO 8601 date.',
+            example: '2021-11-05T16:08:46.164Z',
           },
         },
         required: [
@@ -1329,14 +1333,16 @@ export const swaggerDocument: OpenAPIObject = {
             example: ['Tech'],
           },
           startedAt: {
-            type: 'number',
-            description: 'Wish started at date in milliseconds.',
-            example: 1636128526164,
+            type: 'string',
+            format: 'date-time',
+            description: 'Wish startedAt ISO 8601 date.',
+            example: '2021-11-05T16:08:46.164Z',
           },
           completedAt: {
-            type: 'number',
-            description: 'Wish completed at date in milliseconds.',
-            example: 1636128526164,
+            type: 'string',
+            format: 'date-time',
+            description: 'Wish completedAt ISO 8601 date.',
+            example: '2021-11-05T16:08:46.164Z',
           },
         },
         required: [

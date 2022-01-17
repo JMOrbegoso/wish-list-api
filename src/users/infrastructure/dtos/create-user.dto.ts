@@ -2,13 +2,12 @@ import {
   IsEmail,
   IsMongoId,
   IsNotEmpty,
-  IsNumber,
-  IsPositive,
   IsString,
   Matches,
   MaxLength,
   MinLength,
 } from 'class-validator';
+import { MillisecondsDate } from '../../../shared/domain/value-objects';
 import {
   Biography,
   FirstName,
@@ -56,10 +55,12 @@ export class CreateUserDto {
   @MaxLength(LastName.MaxLength)
   lastName: string;
 
-  @IsNumber()
+  @IsString()
+  @Matches(MillisecondsDate.Iso8601Regex, {
+    message: 'birthday must be a valid ISO 8601 date string',
+  })
   @IsNotEmpty()
-  @IsPositive()
-  birthday: number;
+  birthday: string;
 
   @IsString()
   @IsNotEmpty()
