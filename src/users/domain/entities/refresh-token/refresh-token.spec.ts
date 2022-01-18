@@ -21,7 +21,7 @@ describe('users', () => {
               equals: jest.fn(),
             } as MockedObject<RefreshTokenId>,
             {
-              getMilliseconds: new Date().getTime(),
+              getIso8601: new Date().toISOString(),
               equals: jest.fn().mockReturnValue(true),
               addSeconds: jest.fn().mockReturnValue({
                 isLesserThanNow: jest.fn().mockReturnValue(false),
@@ -36,15 +36,15 @@ describe('users', () => {
               equals: jest.fn().mockReturnValue(true),
             } as MockedObject<IpAddress>,
             {
-              getMilliseconds: new Date().getTime(),
+              getIso8601: new Date().toISOString(),
               equals: jest.fn().mockReturnValue(true),
             } as MockedObject<DateTime>,
             {
-              getMilliseconds: new Date().getTime(),
+              getIso8601: new Date().toISOString(),
               equals: jest.fn().mockReturnValue(true),
             } as MockedObject<DateTime>,
             {
-              getMilliseconds: new Date().getTime(),
+              getIso8601: new Date().toISOString(),
               equals: jest.fn().mockReturnValue(true),
             } as MockedObject<DateTime>,
           ],
@@ -54,7 +54,7 @@ describe('users', () => {
               equals: jest.fn(),
             } as MockedObject<RefreshTokenId>,
             {
-              getMilliseconds: new Date().getTime(),
+              getIso8601: new Date().toISOString(),
               equals: jest.fn().mockReturnValue(true),
               addSeconds: jest.fn().mockReturnValue({
                 isLesserThanNow: jest.fn().mockReturnValue(false),
@@ -70,11 +70,11 @@ describe('users', () => {
             } as MockedObject<IpAddress>,
             null,
             {
-              getMilliseconds: new Date().getTime(),
+              getIso8601: new Date().toISOString(),
               equals: jest.fn().mockReturnValue(true),
             } as MockedObject<DateTime>,
             {
-              getMilliseconds: new Date().getTime(),
+              getIso8601: new Date().toISOString(),
               equals: jest.fn().mockReturnValue(true),
             } as MockedObject<DateTime>,
           ],
@@ -84,7 +84,7 @@ describe('users', () => {
               equals: jest.fn(),
             } as MockedObject<RefreshTokenId>,
             {
-              getMilliseconds: new Date().getTime(),
+              getIso8601: new Date().toISOString(),
               equals: jest.fn().mockReturnValue(true),
               addSeconds: jest.fn().mockReturnValue({
                 isLesserThanNow: jest.fn().mockReturnValue(false),
@@ -101,7 +101,7 @@ describe('users', () => {
             null,
             null,
             {
-              getMilliseconds: new Date().getTime(),
+              getIso8601: new Date().toISOString(),
               equals: jest.fn().mockReturnValue(true),
             } as MockedObject<DateTime>,
           ],
@@ -111,7 +111,7 @@ describe('users', () => {
               equals: jest.fn(),
             } as MockedObject<RefreshTokenId>,
             {
-              getMilliseconds: new Date().getTime(),
+              getIso8601: new Date().toISOString(),
               equals: jest.fn().mockReturnValue(true),
               addSeconds: jest.fn().mockReturnValue({
                 isLesserThanNow: jest.fn().mockReturnValue(false),
@@ -271,8 +271,8 @@ describe('users', () => {
 
             // Assert
             expect(refreshToken.id.value).toBe(id.value);
-            expect(refreshToken.createdAt.getMilliseconds).toBe(
-              createdAt.getMilliseconds,
+            expect(refreshToken.createdAt.getIso8601).toBe(
+              createdAt.getIso8601,
             );
             expect(refreshToken.duration).toBe(secondsDuration.getDuration);
             expect(refreshToken.ipAddress).toBe(ipAddress.getIpAddress);
@@ -312,15 +312,15 @@ describe('users', () => {
 
             // Assert
             expect(refreshToken.id.value).toBe(id.value);
-            expect(refreshToken.createdAt.getMilliseconds).toBe(
-              createdAt.getMilliseconds,
+            expect(refreshToken.createdAt.getIso8601).toBe(
+              createdAt.getIso8601,
             );
             expect(refreshToken.duration).toBe(secondsDuration.getDuration);
             expect(refreshToken.ipAddress).toBe(ipAddress.getIpAddress);
 
             if (replacedAt)
-              expect(refreshToken.replacedAt.getMilliseconds).toBe(
-                replacedAt.getMilliseconds,
+              expect(refreshToken.replacedAt.getIso8601).toBe(
+                replacedAt.getIso8601,
               );
             else expect(refreshToken.replacedAt).toBeNull();
 
@@ -329,8 +329,8 @@ describe('users', () => {
             else expect(refreshToken.replacedBy).toBeNull();
 
             if (revokedAt)
-              expect(refreshToken.revokedAt.getMilliseconds).toBe(
-                revokedAt.getMilliseconds,
+              expect(refreshToken.revokedAt.getIso8601).toBe(
+                revokedAt.getIso8601,
               );
             else expect(refreshToken.revokedAt).toBeNull();
           },

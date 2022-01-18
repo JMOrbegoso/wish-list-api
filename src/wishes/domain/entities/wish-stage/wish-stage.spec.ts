@@ -32,7 +32,7 @@ describe('wishes', () => {
               getDescription: 'description',
             } as MockedObject<WishDescription>,
             {
-              getMilliseconds: 1,
+              getIso8601: '1',
             } as MockedObject<DateTime>,
             [
               {
@@ -66,7 +66,7 @@ describe('wishes', () => {
               getDescription: 'description',
             } as MockedObject<WishDescription>,
             {
-              getMilliseconds: 1,
+              getIso8601: '1',
             } as MockedObject<DateTime>,
             [],
             [
@@ -87,7 +87,7 @@ describe('wishes', () => {
               getDescription: 'description',
             } as MockedObject<WishDescription>,
             {
-              getMilliseconds: 1,
+              getIso8601: '1',
             } as MockedObject<DateTime>,
             [
               {
@@ -108,7 +108,7 @@ describe('wishes', () => {
               getDescription: 'description',
             } as MockedObject<WishDescription>,
             {
-              getMilliseconds: 1,
+              getIso8601: '1',
             } as MockedObject<DateTime>,
             [],
             [],
@@ -426,9 +426,7 @@ describe('wishes', () => {
             expect(wishStage.description.getDescription).toBe(
               description.getDescription,
             );
-            expect(wishStage.createdAt.getMilliseconds).toBe(
-              createdAt.getMilliseconds,
-            );
+            expect(wishStage.createdAt.getIso8601).toBe(createdAt.getIso8601);
             expect(wishStage.urls.length).toBe(0);
             expect(wishStage.imageUrls.length).toBe(0);
           },
@@ -462,9 +460,7 @@ describe('wishes', () => {
             expect(wishStage.description.getDescription).toBe(
               description.getDescription,
             );
-            expect(wishStage.createdAt.getMilliseconds).toBe(
-              createdAt.getMilliseconds,
-            );
+            expect(wishStage.createdAt.getIso8601).toBe(createdAt.getIso8601);
             expect(wishStage.urls.length).toBe(urls.length);
             for (let i = 0; i < urls.length; i++)
               expect(wishStage.urls[i].getUrl).toBe(urls[i].getUrl);

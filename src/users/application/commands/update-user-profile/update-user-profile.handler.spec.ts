@@ -76,13 +76,13 @@ describe('users', () => {
                 getLastName: 'LastName0',
               },
               birthday: {
-                getMilliseconds: 1,
+                getIso8601: '1',
               },
               createdAt: {
-                getMilliseconds: 2,
+                getIso8601: '2',
               },
               updatedAt: {
-                getMilliseconds: 3,
+                getIso8601: '3',
               },
               biography: {
                 getBiography: 'A nice person 0.',
@@ -91,7 +91,7 @@ describe('users', () => {
                 getUrl: 'https://www.example.com/0.jpg',
               },
               deletedAt: {
-                getMilliseconds: 4,
+                getIso8601: '4',
               },
               isDeleted: true,
             } as MockedObject<User>;
@@ -142,13 +142,13 @@ describe('users', () => {
                 getLastName: 'LastName0',
               },
               birthday: {
-                getMilliseconds: 1,
+                getIso8601: '1',
               },
               createdAt: {
-                getMilliseconds: 2,
+                getIso8601: '2',
               },
               updatedAt: {
-                getMilliseconds: 3,
+                getIso8601: '3',
               },
               biography: {
                 getBiography: 'A nice person 0.',
@@ -206,13 +206,13 @@ describe('users', () => {
                 getLastName: 'LastName0',
               },
               birthday: {
-                getMilliseconds: 1,
+                getIso8601: '1',
               },
               createdAt: {
-                getMilliseconds: 2,
+                getIso8601: '2',
               },
               updatedAt: {
-                getMilliseconds: 3,
+                getIso8601: '3',
               },
               biography: {
                 getBiography: 'A nice person 0.',
@@ -270,13 +270,13 @@ describe('users', () => {
                 getLastName: 'LastName0',
               },
               birthday: {
-                getMilliseconds: 1,
+                getIso8601: '1',
               },
               createdAt: {
-                getMilliseconds: 2,
+                getIso8601: '2',
               },
               updatedAt: {
-                getMilliseconds: 3,
+                getIso8601: '3',
               },
               biography: {
                 getBiography: 'A nice person 0.',
@@ -285,7 +285,7 @@ describe('users', () => {
                 getUrl: 'https://www.example.com/0.jpg',
               },
               deletedAt: {
-                getMilliseconds: 4,
+                getIso8601: '4',
               },
               updateProfile: jest.fn(),
             } as MockedObject<User>;

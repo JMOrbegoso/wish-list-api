@@ -71,8 +71,8 @@ export function assertWishStage(
   expect(wishStageEntity._id.toString()).toBe(wishStageDb._id.toString());
   expect(wishStageEntity.title).toBe(wishStageDb.title);
   expect(wishStageEntity.description).toBe(wishStageDb.description);
-  expect(wishStageEntity.createdAt.getTime()).toBe(
-    wishStageDb.createdAt.getTime(),
+  expect(wishStageEntity.createdAt.toISOString()).toBe(
+    wishStageDb.createdAt.toISOString(),
   );
 
   for (let i = 0; i < wishStageDb.urls.length; i++)
@@ -90,7 +90,9 @@ export function assertWish(wishEntity: WishEntity, wishDb: WishDb): void {
   expect(wishEntity.title).toBe(wishDb.title);
   expect(wishEntity.description).toBe(wishDb.description);
   expect(wishEntity.privacyLevel).toBe(wishDb.privacyLevel);
-  expect(wishEntity.createdAt.getTime()).toBe(wishDb.createdAt.getTime());
+  expect(wishEntity.createdAt.toISOString()).toBe(
+    wishDb.createdAt.toISOString(),
+  );
   expect(wishEntity.updatedAt).toBeTruthy();
 
   for (let i = 0; i < wishDb.urls.length; i++)
@@ -103,15 +105,21 @@ export function assertWish(wishEntity: WishEntity, wishDb: WishDb): void {
     expect(wishEntity.categories[i]).toBe(wishDb.categories[i]);
 
   if (wishDb.deletedAt)
-    expect(wishEntity.deletedAt.getTime()).toBe(wishDb.deletedAt.getTime());
+    expect(wishEntity.deletedAt.toISOString()).toBe(
+      wishDb.deletedAt.toISOString(),
+    );
   else expect(wishEntity.deletedAt).toBeNull();
 
   if (wishDb.startedAt)
-    expect(wishEntity.startedAt.getTime()).toBe(wishDb.startedAt.getTime());
+    expect(wishEntity.startedAt.toISOString()).toBe(
+      wishDb.startedAt.toISOString(),
+    );
   else expect(wishEntity.startedAt).toBeNull();
 
   if (wishDb.completedAt)
-    expect(wishEntity.completedAt.getTime()).toBe(wishDb.completedAt.getTime());
+    expect(wishEntity.completedAt.toISOString()).toBe(
+      wishDb.completedAt.toISOString(),
+    );
   else expect(wishEntity.completedAt).toBeNull();
 }
 
@@ -153,15 +161,15 @@ export function assertRefreshToken(
 
   expect(refreshToken._id.toString()).toBe(refreshTokenDb._id.toString());
   expect(refreshToken.user.toString()).toBe(refreshTokenDb.user.toString());
-  expect(refreshToken.createdAt.getTime()).toBe(
-    refreshTokenDb.createdAt.getTime(),
+  expect(refreshToken.createdAt.toISOString()).toBe(
+    refreshTokenDb.createdAt.toISOString(),
   );
   expect(refreshToken.duration).toBe(refreshTokenDb.duration);
   expect(refreshToken.ipAddress).toBe(refreshTokenDb.ipAddress);
 
   if (refreshTokenDb.replacedAt)
-    expect(refreshToken.replacedAt.getTime()).toBe(
-      refreshTokenDb.replacedAt.getTime(),
+    expect(refreshToken.replacedAt.toISOString()).toBe(
+      refreshTokenDb.replacedAt.toISOString(),
     );
   else expect(refreshToken.replacedAt).toBeNull();
 
@@ -170,8 +178,8 @@ export function assertRefreshToken(
   else expect(refreshToken.replacedBy).toBeNull();
 
   if (refreshTokenDb.revokedAt)
-    expect(refreshToken.revokedAt.getTime()).toBe(
-      refreshTokenDb.revokedAt.getTime(),
+    expect(refreshToken.revokedAt.toISOString()).toBe(
+      refreshTokenDb.revokedAt.toISOString(),
     );
   else expect(refreshToken.revokedAt).toBeNull();
 }

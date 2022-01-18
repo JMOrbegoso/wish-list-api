@@ -88,15 +88,15 @@ const validValues = [
       equals: jest.fn().mockReturnValue(true),
     } as MockedObject<LastName>,
     {
-      getMilliseconds: 1,
+      getIso8601: '1',
       equals: jest.fn().mockReturnValue(true),
     } as MockedObject<DateTime>,
     {
-      getMilliseconds: 2,
+      getIso8601: '2',
       equals: jest.fn().mockReturnValue(true),
     } as MockedObject<DateTime>,
     {
-      getMilliseconds: 3,
+      getIso8601: '3',
       equals: jest.fn().mockReturnValue(true),
     } as MockedObject<DateTime>,
     {
@@ -117,7 +117,7 @@ const validValues = [
       equals: jest.fn().mockReturnValue(true),
     } as MockedObject<WebUrl>,
     {
-      getMilliseconds: 4,
+      getIso8601: '4',
       equals: jest.fn().mockReturnValue(true),
     } as MockedObject<DateTime>,
   ],
@@ -161,15 +161,15 @@ const validValues = [
       equals: jest.fn().mockReturnValue(true),
     } as MockedObject<LastName>,
     {
-      getMilliseconds: 1,
+      getIso8601: '1',
       equals: jest.fn().mockReturnValue(true),
     } as MockedObject<DateTime>,
     {
-      getMilliseconds: 2,
+      getIso8601: '2',
       equals: jest.fn().mockReturnValue(true),
     } as MockedObject<DateTime>,
     {
-      getMilliseconds: 3,
+      getIso8601: '3',
       equals: jest.fn().mockReturnValue(true),
     } as MockedObject<DateTime>,
     {
@@ -186,7 +186,7 @@ const validValues = [
       equals: jest.fn().mockReturnValue(true),
     } as MockedObject<WebUrl>,
     {
-      getMilliseconds: 4,
+      getIso8601: '4',
       equals: jest.fn().mockReturnValue(true),
     } as MockedObject<DateTime>,
   ],
@@ -230,15 +230,15 @@ const validValues = [
       equals: jest.fn().mockReturnValue(true),
     } as MockedObject<LastName>,
     {
-      getMilliseconds: 1,
+      getIso8601: '1',
       equals: jest.fn().mockReturnValue(true),
     } as MockedObject<DateTime>,
     {
-      getMilliseconds: 2,
+      getIso8601: '2',
       equals: jest.fn().mockReturnValue(true),
     } as MockedObject<DateTime>,
     {
-      getMilliseconds: 3,
+      getIso8601: '3',
       equals: jest.fn().mockReturnValue(true),
     } as MockedObject<DateTime>,
     {
@@ -249,7 +249,7 @@ const validValues = [
     [] as MockedObject<RefreshToken[]>,
     null,
     {
-      getMilliseconds: 4,
+      getIso8601: '4',
       equals: jest.fn().mockReturnValue(true),
     } as MockedObject<DateTime>,
   ],
@@ -293,15 +293,15 @@ const validValues = [
       equals: jest.fn().mockReturnValue(true),
     } as MockedObject<LastName>,
     {
-      getMilliseconds: 1,
+      getIso8601: '1',
       equals: jest.fn().mockReturnValue(true),
     } as MockedObject<DateTime>,
     {
-      getMilliseconds: 2,
+      getIso8601: '2',
       equals: jest.fn().mockReturnValue(true),
     } as MockedObject<DateTime>,
     {
-      getMilliseconds: 3,
+      getIso8601: '3',
       equals: jest.fn().mockReturnValue(true),
     } as MockedObject<DateTime>,
     {
@@ -356,15 +356,15 @@ const validValues = [
       equals: jest.fn().mockReturnValue(true),
     } as MockedObject<LastName>,
     {
-      getMilliseconds: 1,
+      getIso8601: '1',
       equals: jest.fn().mockReturnValue(true),
     } as MockedObject<DateTime>,
     {
-      getMilliseconds: 2,
+      getIso8601: '2',
       equals: jest.fn().mockReturnValue(true),
     } as MockedObject<DateTime>,
     {
-      getMilliseconds: 3,
+      getIso8601: '3',
       equals: jest.fn().mockReturnValue(true),
     } as MockedObject<DateTime>,
     {
@@ -375,7 +375,7 @@ const validValues = [
     [] as MockedObject<RefreshToken[]>,
     null,
     {
-      getMilliseconds: 4,
+      getIso8601: '4',
       equals: jest.fn().mockReturnValue(true),
     } as MockedObject<DateTime>,
   ],
@@ -419,15 +419,15 @@ const validValues = [
       equals: jest.fn().mockReturnValue(true),
     } as MockedObject<LastName>,
     {
-      getMilliseconds: 1,
+      getIso8601: '1',
       equals: jest.fn().mockReturnValue(true),
     } as MockedObject<DateTime>,
     {
-      getMilliseconds: 2,
+      getIso8601: '2',
       equals: jest.fn().mockReturnValue(true),
     } as MockedObject<DateTime>,
     {
-      getMilliseconds: 3,
+      getIso8601: '3',
       equals: jest.fn().mockReturnValue(true),
     } as MockedObject<DateTime>,
     {
@@ -482,15 +482,15 @@ const validValues = [
       equals: jest.fn().mockReturnValue(true),
     } as MockedObject<LastName>,
     {
-      getMilliseconds: 1,
+      getIso8601: '1',
       equals: jest.fn().mockReturnValue(true),
     } as MockedObject<DateTime>,
     {
-      getMilliseconds: 2,
+      getIso8601: '2',
       equals: jest.fn().mockReturnValue(true),
     } as MockedObject<DateTime>,
     {
-      getMilliseconds: 3,
+      getIso8601: '3',
       equals: jest.fn().mockReturnValue(true),
     } as MockedObject<DateTime>,
     {
@@ -542,15 +542,15 @@ const validValues = [
       equals: jest.fn().mockReturnValue(true),
     } as MockedObject<LastName>,
     {
-      getMilliseconds: 1,
+      getIso8601: '1',
       equals: jest.fn().mockReturnValue(true),
     } as MockedObject<DateTime>,
     {
-      getMilliseconds: 2,
+      getIso8601: '2',
       equals: jest.fn().mockReturnValue(true),
     } as MockedObject<DateTime>,
     {
-      getMilliseconds: 3,
+      getIso8601: '3',
       equals: jest.fn().mockReturnValue(true),
     } as MockedObject<DateTime>,
     {
@@ -1523,15 +1523,9 @@ describe('users', () => {
             expect(user.isBlocked).toBe(isBlocked.getStatus);
             expect(user.firstName.getFirstName).toBe(firstName.getFirstName);
             expect(user.lastName.getLastName).toBe(lastName.getLastName);
-            expect(user.birthday.getMilliseconds).toBe(
-              birthday.getMilliseconds,
-            );
-            expect(user.createdAt.getMilliseconds).toBe(
-              createdAt.getMilliseconds,
-            );
-            expect(user.updatedAt.getMilliseconds).toBe(
-              updatedAt.getMilliseconds,
-            );
+            expect(user.birthday.getIso8601).toBe(birthday.getIso8601);
+            expect(user.createdAt.getIso8601).toBe(createdAt.getIso8601);
+            expect(user.updatedAt.getIso8601).toBe(updatedAt.getIso8601);
             expect(user.biography.getBiography).toBe(biography.getBiography);
 
             expect(user.roles.length).toBe(0);
@@ -1601,23 +1595,15 @@ describe('users', () => {
             expect(user.isBlocked).toBe(isBlocked.getStatus);
             expect(user.firstName.getFirstName).toBe(firstName.getFirstName);
             expect(user.lastName.getLastName).toBe(lastName.getLastName);
-            expect(user.birthday.getMilliseconds).toBe(
-              birthday.getMilliseconds,
-            );
-            expect(user.createdAt.getMilliseconds).toBe(
-              createdAt.getMilliseconds,
-            );
-            expect(user.updatedAt.getMilliseconds).toBe(
-              updatedAt.getMilliseconds,
-            );
+            expect(user.birthday.getIso8601).toBe(birthday.getIso8601);
+            expect(user.createdAt.getIso8601).toBe(createdAt.getIso8601);
+            expect(user.updatedAt.getIso8601).toBe(updatedAt.getIso8601);
             expect(user.biography.getBiography).toBe(biography.getBiography);
             if (profilePicture)
               expect(user.profilePicture.getUrl).toBe(profilePicture.getUrl);
             else expect(user.profilePicture).toBeNull();
             if (deletedAt)
-              expect(user.deletedAt.getMilliseconds).toBe(
-                deletedAt.getMilliseconds,
-              );
+              expect(user.deletedAt.getIso8601).toBe(deletedAt.getIso8601);
             else expect(user.deletedAt).toBeNull();
             for (let i = 0; i < roles.length; i++) {
               expect(user.roles[i]).toBe(roles[i]);
@@ -1873,7 +1859,7 @@ describe('users', () => {
               } as MockedObject<VerificationCode>,
             ];
             deletedAt = {
-              getMilliseconds: 4,
+              getIso8601: '4',
             } as MockedObject<DateTime>;
             const user = User.create(
               userId,
@@ -2329,7 +2315,7 @@ describe('users', () => {
               getLastName: newLastNameText,
             } as MockedObject<LastName>;
             const newBirthday = {
-              getMilliseconds: new Date(2005, 1, 1).getTime(),
+              getIso8601: new Date(2005, 1, 1).toISOString(),
             } as MockedObject<DateTime>;
             const newBiographyText = 'new Biography';
             const newBiography = {
@@ -2347,9 +2333,7 @@ describe('users', () => {
             // Assert
             expect(user.firstName.getFirstName).toBe(newFirstName.getFirstName);
             expect(user.lastName.getLastName).toBe(newLastName.getLastName);
-            expect(user.birthday.getMilliseconds).toBe(
-              newBirthday.getMilliseconds,
-            );
+            expect(user.birthday.getIso8601).toBe(newBirthday.getIso8601);
             expect(user.biography.getBiography).toBe(newBiography.getBiography);
           },
         );
@@ -3078,7 +3062,7 @@ describe('users', () => {
           ) => {
             // Arrange
             deletedAt = {
-              getMilliseconds: 4,
+              getIso8601: '4',
             } as MockedObject<DateTime>;
 
             const user = User.create(
@@ -3436,7 +3420,7 @@ describe('users', () => {
           ) => {
             // Arrange
             deletedAt = {
-              getMilliseconds: 4,
+              getIso8601: '4',
             } as MockedObject<DateTime>;
 
             const user = User.create(

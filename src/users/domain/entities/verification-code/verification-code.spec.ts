@@ -44,7 +44,7 @@ describe('users', () => {
             value: 'verification-code-id',
           } as MockedObject<VerificationCodeId>;
           const createdAt = {
-            getMilliseconds: new Date().getTime(),
+            getIso8601: new Date().toISOString(),
           } as MockedObject<DateTime>;
 
           // Act
@@ -61,7 +61,7 @@ describe('users', () => {
             value: 'verification-code-id',
           } as MockedObject<VerificationCodeId>;
           const createdAt = {
-            getMilliseconds: 100000,
+            getIso8601: new Date().toISOString(),
           } as MockedObject<DateTime>;
           const duration = {
             getDuration: 1000,
@@ -76,8 +76,8 @@ describe('users', () => {
 
           // Assert
           expect(verificationCode.id.value).toBe(verificationCodeId.value);
-          expect(verificationCode.createdAt.getMilliseconds).toBe(
-            createdAt.getMilliseconds,
+          expect(verificationCode.createdAt.getIso8601).toBe(
+            createdAt.getIso8601,
           );
           expect(verificationCode.duration.getDuration).toBe(
             duration.getDuration,
@@ -108,8 +108,8 @@ describe('users', () => {
 
           // Assert
           expect(verificationCode.id.value).toBe(verificationCodeId.value);
-          expect(verificationCode.createdAt.getMilliseconds).toBe(
-            createdAt.getMilliseconds,
+          expect(verificationCode.createdAt.getIso8601).toBe(
+            createdAt.getIso8601,
           );
           expect(verificationCode.duration.getDuration).toBe(durationInSeconds);
           expect(verificationCode.isExpired).toBe(true);

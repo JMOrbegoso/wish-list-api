@@ -51,10 +51,10 @@ const validValues = [
       getPrivacyLevel: PrivacyLevel.Public,
     } as MockedObject<WishPrivacyLevel>,
     {
-      getMilliseconds: 1,
+      getIso8601: '1',
     } as MockedObject<DateTime>,
     {
-      getMilliseconds: 1,
+      getIso8601: '1',
     } as MockedObject<DateTime>,
     {
       id: { value: 'id-0' },
@@ -85,13 +85,13 @@ const validValues = [
       } as MockedObject<WishStage>,
     ],
     {
-      getMilliseconds: 1,
+      getIso8601: '1',
     } as MockedObject<DateTime>,
     {
-      getMilliseconds: 1,
+      getIso8601: '1',
     } as MockedObject<DateTime>,
     {
-      getMilliseconds: 1,
+      getIso8601: '1',
     } as MockedObject<DateTime>,
   ],
   [
@@ -109,10 +109,10 @@ const validValues = [
       getPrivacyLevel: PrivacyLevel.Public,
     } as MockedObject<WishPrivacyLevel>,
     {
-      getMilliseconds: 1,
+      getIso8601: '1',
     } as MockedObject<DateTime>,
     {
-      getMilliseconds: 1,
+      getIso8601: '1',
     } as MockedObject<DateTime>,
     {
       id: { value: 'id-0' },
@@ -153,7 +153,7 @@ const validValues = [
     null,
     null,
     {
-      getMilliseconds: 1,
+      getIso8601: '1',
     } as MockedObject<DateTime>,
   ],
   [
@@ -171,10 +171,10 @@ const validValues = [
       getPrivacyLevel: PrivacyLevel.Public,
     } as MockedObject<WishPrivacyLevel>,
     {
-      getMilliseconds: 1,
+      getIso8601: '1',
     } as MockedObject<DateTime>,
     {
-      getMilliseconds: 1,
+      getIso8601: '1',
     } as MockedObject<DateTime>,
     {
       id: { value: 'id-0' },
@@ -196,7 +196,7 @@ const validValues = [
     ],
     [],
     {
-      getMilliseconds: 1,
+      getIso8601: '1',
     } as MockedObject<DateTime>,
     null,
     null,
@@ -216,10 +216,10 @@ const validValues = [
       getPrivacyLevel: PrivacyLevel.Public,
     } as MockedObject<WishPrivacyLevel>,
     {
-      getMilliseconds: 1,
+      getIso8601: '1',
     } as MockedObject<DateTime>,
     {
-      getMilliseconds: 1,
+      getIso8601: '1',
     } as MockedObject<DateTime>,
     {
       id: { value: 'id-0' },
@@ -1135,12 +1135,8 @@ describe('wishes', () => {
             expect(wish.privacyLevel.getPrivacyLevel).toBe(
               privacyLevel.getPrivacyLevel,
             );
-            expect(wish.createdAt.getMilliseconds).toBe(
-              createdAt.getMilliseconds,
-            );
-            expect(wish.updatedAt.getMilliseconds).toBe(
-              updatedAt.getMilliseconds,
-            );
+            expect(wish.createdAt.getIso8601).toBe(createdAt.getIso8601);
+            expect(wish.updatedAt.getIso8601).toBe(updatedAt.getIso8601);
 
             expect(wish.wisher.id.value).toBe(wisher.id.value);
 
@@ -1200,12 +1196,8 @@ describe('wishes', () => {
             expect(wish.privacyLevel.getPrivacyLevel).toBe(
               privacyLevel.getPrivacyLevel,
             );
-            expect(wish.createdAt.getMilliseconds).toBe(
-              createdAt.getMilliseconds,
-            );
-            expect(wish.updatedAt.getMilliseconds).toBe(
-              updatedAt.getMilliseconds,
-            );
+            expect(wish.createdAt.getIso8601).toBe(createdAt.getIso8601);
+            expect(wish.updatedAt.getIso8601).toBe(updatedAt.getIso8601);
 
             expect(wish.wisher.id.value).toBe(wisher.id.value);
 
@@ -1223,21 +1215,15 @@ describe('wishes', () => {
               expect(wish.stages[i].id.value).toBe(stages[i].id.value);
 
             if (deletedAt)
-              expect(wish.deletedAt.getMilliseconds).toBe(
-                deletedAt.getMilliseconds,
-              );
+              expect(wish.deletedAt.getIso8601).toBe(deletedAt.getIso8601);
             else expect(wish.deletedAt).toBeNull();
 
             if (startedAt)
-              expect(wish.startedAt.getMilliseconds).toBe(
-                startedAt.getMilliseconds,
-              );
+              expect(wish.startedAt.getIso8601).toBe(startedAt.getIso8601);
             else expect(wish.startedAt).toBeNull();
 
             if (completedAt)
-              expect(wish.completedAt.getMilliseconds).toBe(
-                completedAt.getMilliseconds,
-              );
+              expect(wish.completedAt.getIso8601).toBe(completedAt.getIso8601);
             else expect(wish.completedAt).toBeNull();
           },
         );
@@ -1567,7 +1553,7 @@ describe('wishes', () => {
           ) => {
             // Arrange
             deletedAt = {
-              getMilliseconds: 1,
+              getIso8601: '1',
             } as MockedObject<DateTime>;
             const wish = Wish.create(
               wishId,
@@ -1693,7 +1679,7 @@ describe('wishes', () => {
           ) => {
             // Arrange
             deletedAt = {
-              getMilliseconds: 1,
+              getIso8601: '1',
             } as MockedObject<DateTime>;
             const wish = Wish.create(
               wishId,
@@ -1741,7 +1727,7 @@ describe('wishes', () => {
           ) => {
             // Arrange
             deletedAt = {
-              getMilliseconds: 1,
+              getIso8601: '1',
             } as MockedObject<DateTime>;
             const wish = Wish.create(
               wishId,
@@ -2233,9 +2219,7 @@ describe('wishes', () => {
             expect(wish.categories.length).toBe(0);
             expect(wish.stages.length).toBe(stages.length);
 
-            expect(wish.updatedAt.getMilliseconds).not.toBe(
-              updatedAt.getMilliseconds,
-            );
+            expect(wish.updatedAt.getIso8601).not.toBe(updatedAt.getIso8601);
           },
         );
 
@@ -2287,10 +2271,10 @@ describe('wishes', () => {
               getName: 'new category',
             } as MockedObject<CategoryName>);
             const startedAt = {
-              getMilliseconds: 1000,
+              getIso8601: '1',
             } as MockedObject<DateTime>;
             const completedAt = {
-              getMilliseconds: 1000,
+              getIso8601: '1',
             } as MockedObject<DateTime>;
 
             // Act
@@ -2322,15 +2306,9 @@ describe('wishes', () => {
             expect(wish.categories.length).toBe(newCategories.length);
             for (let i = 0; i < newCategories.length; i++)
               expect(wish.categories[i].getName).toBe(newCategories[i].getName);
-            expect(wish.updatedAt.getMilliseconds).not.toBe(
-              updatedAt.getMilliseconds,
-            );
-            expect(wish.startedAt.getMilliseconds).toBe(
-              startedAt.getMilliseconds,
-            );
-            expect(wish.completedAt.getMilliseconds).toBe(
-              completedAt.getMilliseconds,
-            );
+            expect(wish.updatedAt.getIso8601).not.toBe(updatedAt.getIso8601);
+            expect(wish.startedAt.getIso8601).toBe(startedAt.getIso8601);
+            expect(wish.completedAt.getIso8601).toBe(completedAt.getIso8601);
           },
         );
 
@@ -2354,7 +2332,7 @@ describe('wishes', () => {
           ) => {
             // Arrange
             deletedAt = {
-              getMilliseconds: 1,
+              getIso8601: '1',
             } as MockedObject<DateTime>;
             const wish = Wish.create(
               wishId,
@@ -2559,9 +2537,7 @@ describe('wishes', () => {
 
             // Assert
             expect(wish.stages.length).toBe(finalStagesLength);
-            expect(wish.updatedAt.getMilliseconds).not.toBe(
-              updatedAt.getMilliseconds,
-            );
+            expect(wish.updatedAt.getIso8601).not.toBe(updatedAt.getIso8601);
           },
         );
 
@@ -2585,7 +2561,7 @@ describe('wishes', () => {
           ) => {
             // Arrange
             deletedAt = {
-              getMilliseconds: 1,
+              getIso8601: '1',
             } as MockedObject<DateTime>;
             const wish = Wish.create(
               wishId,
@@ -2703,9 +2679,7 @@ describe('wishes', () => {
 
             // Assert
             expect(stage.update.mock.calls).toHaveLength(1);
-            expect(wish.updatedAt.getMilliseconds).not.toBe(
-              updatedAt.getMilliseconds,
-            );
+            expect(wish.updatedAt.getIso8601).not.toBe(updatedAt.getIso8601);
           },
         );
 
@@ -2729,7 +2703,7 @@ describe('wishes', () => {
           ) => {
             // Arrange
             deletedAt = {
-              getMilliseconds: 1,
+              getIso8601: '1',
             } as MockedObject<DateTime>;
             const wish = Wish.create(
               wishId,
@@ -2882,9 +2856,7 @@ describe('wishes', () => {
 
             // Assert
             expect(wish.stages.length).toBe(finalStagesLength);
-            expect(wish.updatedAt.getMilliseconds).not.toBe(
-              updatedAt.getMilliseconds,
-            );
+            expect(wish.updatedAt.getIso8601).not.toBe(updatedAt.getIso8601);
           },
         );
       });

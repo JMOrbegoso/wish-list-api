@@ -50,8 +50,8 @@ describe('wishes', () => {
             expect(wishStage.description.getDescription).toBe(
               wishStageEntity.description,
             );
-            expect(wishStage.createdAt.getDate.getTime()).toBe(
-              wishStageEntity.createdAt.getTime(),
+            expect(wishStage.createdAt.getIso8601).toBe(
+              wishStageEntity.createdAt.toISOString(),
             );
             for (let i = 0; i < wishStageEntity.urls.length; i++)
               expect(wishStageEntity.urls[i]).toBe(wishStage.urls[i].getUrl);

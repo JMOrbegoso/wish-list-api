@@ -21,8 +21,8 @@ describe('users', () => {
           // Assert
           expect(verificationCode.id.value).toBe(verificationCodeEntity.id);
 
-          expect(verificationCode.createdAt.getDate.getTime()).toBe(
-            verificationCodeEntity.createdAt.getTime(),
+          expect(verificationCode.createdAt.getIso8601).toBe(
+            verificationCodeEntity.createdAt.toISOString(),
           );
           expect(verificationCode.duration.getDuration).toBe(
             verificationCodeEntity.duration,

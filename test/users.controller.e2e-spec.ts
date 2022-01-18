@@ -1262,8 +1262,9 @@ describe('UsersController (e2e)', () => {
               expect(userUpdated.createdAt.toISOString()).toBe(
                 seed.basicUser.createdAt.toISOString(),
               );
-              expect(userUpdated.updatedAt.toISOString()).not.toBe(
-                seed.basicUser.updatedAt.toISOString(),
+              expect(userUpdated.updatedAt).toBeTruthy();
+              expect(userUpdated.updatedAt.getTime()).toBeGreaterThan(
+                seed.publicWish_1.updatedAt.getTime(),
               );
               expect(userUpdated.biography).toBe(biography);
               expect(userUpdated.roles).toHaveLength(
