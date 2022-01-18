@@ -235,7 +235,7 @@ describe('UsersController (e2e)', () => {
               lastName,
               birthday,
               biography,
-            } as unknown as CreateUserDto)
+            } as CreateUserDto)
             .expect(400)
             .expect(({ body }) =>
               expect(
@@ -257,7 +257,7 @@ describe('UsersController (e2e)', () => {
               lastName,
               birthday,
               biography,
-            } as unknown as CreateUserDto)
+            } as CreateUserDto)
             .expect(400)
             .expect(({ body }) =>
               expect(
@@ -303,7 +303,7 @@ describe('UsersController (e2e)', () => {
               lastName,
               birthday,
               biography,
-            } as unknown as CreateUserDto)
+            } as CreateUserDto)
             .expect(400)
             .expect(({ body }) =>
               expect(
@@ -326,7 +326,7 @@ describe('UsersController (e2e)', () => {
               lastName,
               birthday,
               biography,
-            } as unknown as CreateUserDto)
+            } as CreateUserDto)
             .expect(400)
             .expect(({ body }) =>
               expect(
@@ -349,7 +349,7 @@ describe('UsersController (e2e)', () => {
               lastName,
               birthday,
               biography,
-            } as unknown as CreateUserDto)
+            } as CreateUserDto)
             .expect(400)
             .expect(({ body }) =>
               expect(
@@ -371,7 +371,7 @@ describe('UsersController (e2e)', () => {
               lastName,
               birthday,
               biography,
-            } as unknown as CreateUserDto)
+            } as CreateUserDto)
             .expect(400)
             .expect(({ body }) =>
               expect(
@@ -417,7 +417,7 @@ describe('UsersController (e2e)', () => {
               lastName,
               birthday,
               biography,
-            } as unknown as CreateUserDto)
+            } as CreateUserDto)
             .expect(400)
             .expect(({ body }) =>
               expect(
@@ -440,7 +440,7 @@ describe('UsersController (e2e)', () => {
               lastName,
               birthday,
               biography,
-            } as unknown as CreateUserDto)
+            } as CreateUserDto)
             .expect(400)
             .expect(({ body }) =>
               expect(
@@ -463,7 +463,7 @@ describe('UsersController (e2e)', () => {
               lastName,
               birthday,
               biography,
-            } as unknown as CreateUserDto)
+            } as CreateUserDto)
             .expect(400)
             .expect(({ body }) =>
               expect(
@@ -487,7 +487,7 @@ describe('UsersController (e2e)', () => {
               lastName,
               birthday,
               biography,
-            } as unknown as CreateUserDto)
+            } as CreateUserDto)
             .expect(400)
             .expect(({ body }) =>
               expect(
@@ -533,7 +533,7 @@ describe('UsersController (e2e)', () => {
               lastName,
               birthday,
               biography,
-            } as unknown as CreateUserDto)
+            } as CreateUserDto)
             .expect(400)
             .expect(({ body }) =>
               expect(
@@ -555,7 +555,7 @@ describe('UsersController (e2e)', () => {
               firstName,
               birthday,
               biography,
-            } as unknown as CreateUserDto)
+            } as CreateUserDto)
             .expect(400)
             .expect(({ body }) =>
               expect(
@@ -601,7 +601,7 @@ describe('UsersController (e2e)', () => {
               lastName: 'a'.repeat(LastName.MaxLength + 1),
               birthday,
               biography,
-            } as unknown as CreateUserDto)
+            } as CreateUserDto)
             .expect(400)
             .expect(({ body }) =>
               expect(
@@ -623,7 +623,7 @@ describe('UsersController (e2e)', () => {
               firstName,
               lastName,
               biography,
-            } as unknown as CreateUserDto)
+            } as CreateUserDto)
             .expect(400)
             .expect(({ body }) =>
               expect(
@@ -640,8 +640,8 @@ describe('UsersController (e2e)', () => {
             .send({
               id,
               email,
-              password,
               username,
+              password,
               firstName,
               lastName,
               birthday: 1000,
@@ -669,7 +669,7 @@ describe('UsersController (e2e)', () => {
               lastName,
               birthday: '2020-01-01',
               biography,
-            } as unknown as CreateUserDto)
+            } as CreateUserDto)
             .expect(400)
             .expect(({ body }) =>
               expect(
@@ -691,7 +691,7 @@ describe('UsersController (e2e)', () => {
               firstName,
               lastName,
               birthday,
-            } as unknown as CreateUserDto)
+            } as CreateUserDto)
             .expect(400)
             .expect(({ body }) =>
               expect(
@@ -737,7 +737,7 @@ describe('UsersController (e2e)', () => {
               lastName,
               birthday,
               biography: 'a'.repeat(Biography.MaxLength + 1),
-            } as unknown as CreateUserDto)
+            } as CreateUserDto)
             .expect(400)
             .expect(({ body }) =>
               expect(
@@ -917,7 +917,7 @@ describe('UsersController (e2e)', () => {
               lastName,
               birthday,
               biography,
-            } as unknown as UpdateUserProfileDto)
+            } as UpdateUserProfileDto)
             .auth(accessTokenBasicUser, { type: 'bearer' })
             .expect(400)
             .expect(({ body }) =>
@@ -961,7 +961,7 @@ describe('UsersController (e2e)', () => {
               lastName,
               birthday,
               biography,
-            } as unknown as UpdateUserProfileDto)
+            } as UpdateUserProfileDto)
             .auth(accessTokenBasicUser, { type: 'bearer' })
             .expect(400)
             .expect(({ body }) =>
@@ -982,7 +982,7 @@ describe('UsersController (e2e)', () => {
               firstName,
               birthday,
               biography,
-            } as unknown as UpdateUserProfileDto)
+            } as UpdateUserProfileDto)
             .auth(accessTokenBasicUser, { type: 'bearer' })
             .expect(400)
             .expect(({ body }) =>
@@ -1026,7 +1026,7 @@ describe('UsersController (e2e)', () => {
               lastName: 'a'.repeat(LastName.MaxLength + 1),
               birthday,
               biography,
-            } as unknown as UpdateUserProfileDto)
+            } as UpdateUserProfileDto)
             .auth(accessTokenBasicUser, { type: 'bearer' })
             .expect(400)
             .expect(({ body }) =>
@@ -1047,7 +1047,7 @@ describe('UsersController (e2e)', () => {
               firstName,
               lastName,
               biography,
-            } as unknown as UpdateUserProfileDto)
+            } as UpdateUserProfileDto)
             .auth(accessTokenBasicUser, { type: 'bearer' })
             .expect(400)
             .expect(({ body }) =>
@@ -1112,7 +1112,7 @@ describe('UsersController (e2e)', () => {
               firstName,
               lastName,
               birthday,
-            } as unknown as UpdateUserProfileDto)
+            } as UpdateUserProfileDto)
             .auth(accessTokenBasicUser, { type: 'bearer' })
             .expect(400)
             .expect(({ body }) =>
@@ -1156,7 +1156,7 @@ describe('UsersController (e2e)', () => {
               lastName,
               birthday,
               biography: 'a'.repeat(Biography.MaxLength + 1),
-            } as unknown as UpdateUserProfileDto)
+            } as UpdateUserProfileDto)
             .auth(accessTokenBasicUser, { type: 'bearer' })
             .expect(400)
             .expect(({ body }) =>

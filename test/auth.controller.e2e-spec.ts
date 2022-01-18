@@ -377,7 +377,7 @@ describe('AuthController (e2e)', () => {
             .post('/refresh')
             .send({
               refresh_token: 'refresh_token',
-            } as unknown as RefreshTokenDto)
+            } as RefreshTokenDto)
             .expect(400)
             .expect(({ body }) =>
               expect(
