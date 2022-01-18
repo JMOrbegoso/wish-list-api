@@ -6,7 +6,7 @@ export class CreateUserCommand {
     public readonly password: string,
     public readonly firstName: string,
     public readonly lastName: string,
-    public readonly birthday: number,
+    public readonly birthday: string,
     public readonly biography: string,
   ) {}
 }

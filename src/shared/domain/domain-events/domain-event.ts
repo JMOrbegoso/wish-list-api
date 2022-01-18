@@ -1,11 +1,11 @@
 import { EntityId } from '../entities';
-import { MillisecondsDate } from '../value-objects';
+import { DateTime } from '../value-objects';
 
 export abstract class DomainEvent {
-  public readonly createdAt: MillisecondsDate;
+  public readonly createdAt: DateTime;
 
   protected constructor() {
-    this.createdAt = MillisecondsDate.create();
+    this.createdAt = DateTime.now();
   }
 
   abstract getAggregateRootId(): EntityId;

@@ -1,4 +1,4 @@
-import { MillisecondsDate, WebUrl } from '../../../shared/domain/value-objects';
+import { DateTime, WebUrl } from '../../../shared/domain/value-objects';
 import { WishStage, WishStageId } from '../../domain/entities';
 import { WishDescription, WishTitle } from '../../domain/value-objects';
 import { WishStageEntity } from '../persistence/entities';
@@ -9,7 +9,7 @@ export function wishStageEntityToWishStage(
   const wishStageId = WishStageId.create(wishStageEntity.id);
   const title = WishTitle.create(wishStageEntity.title);
   const description = WishDescription.create(wishStageEntity.description);
-  const createdAt = MillisecondsDate.createFromDate(wishStageEntity.createdAt);
+  const createdAt = DateTime.createFromDate(wishStageEntity.createdAt);
   const urls = wishStageEntity.urls.map((url) => WebUrl.create(url));
   const imageUrls = wishStageEntity.imageUrls.map((url) => WebUrl.create(url));
 

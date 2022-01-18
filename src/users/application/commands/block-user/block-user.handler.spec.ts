@@ -5,165 +5,78 @@ import { UnitOfWork } from '../../../../shared/domain/repositories';
 import { User } from '../../../domain/entities';
 import { UserRepository } from '../../../domain/repositories';
 
-const commands = [
-  new BlockUserCommand('id-0'),
-  new BlockUserCommand('id-1'),
-  new BlockUserCommand('id-2'),
-];
-
 describe('users', () => {
   describe('application', () => {
     describe('commands', () => {
       describe('block-user', () => {
-        test.each(commands)(
-          'should throw NotFoundException',
-          (command: BlockUserCommand) => {
-            // Arrange
-            const userRepository = {
-              getOneById: jest.fn().mockReturnValue(null),
-            } as MockedObject<UserRepository>;
+        const command = new BlockUserCommand('id-0');
 
-            const unitOfWork = {} as MockedObject<UnitOfWork>;
+        it('should throw NotFoundException', () => {
+          // Arrange
+          const userRepository = {
+            getOneById: jest.fn().mockReturnValue(null),
+          } as MockedObject<UserRepository>;
 
-            const handler = new BlockUserHandler(unitOfWork, userRepository);
+          const unitOfWork = {} as MockedObject<UnitOfWork>;
 
-            // Act
+          const handler = new BlockUserHandler(unitOfWork, userRepository);
 
-            // Assert
-            return expect(handler.execute(command)).rejects.toThrowError(
-              NotFoundException,
-            );
-          },
-        );
+          // Act
 
-        test.each(commands)(
-          'should throw BadRequestException',
-          (command: BlockUserCommand) => {
-            // Arrange
-            const user = {
-              id: {
-                value: 'id-0',
-              },
-              email: {
-                getEmail: 'email0@email.com',
-              },
-              username: {
-                getUsername: 'John_Doe_0',
-              },
-              passwordHash: {
-                getPasswordHash: 'hash0',
-              },
-              isVerified: true,
-              isBlocked: true,
-              firstName: {
-                getFirstName: 'FirstName0',
-              },
-              lastName: {
-                getLastName: 'LastName0',
-              },
-              birthday: {
-                getMilliseconds: 1,
-              },
-              createdAt: {
-                getMilliseconds: 2,
-              },
-              updatedAt: {
-                getMilliseconds: 3,
-              },
-              biography: {
-                getBiography: 'A nice person 0.',
-              },
-              profilePicture: {
-                getUrl: 'https://www.example.com/0.jpg',
-              },
-              deletedAt: {
-                getMilliseconds: 4,
-              },
-            } as MockedObject<User>;
+          // Assert
+          return expect(handler.execute(command)).rejects.toThrowError(
+            NotFoundException,
+          );
+        });
 
-            const userRepository = {
-              getOneById: jest.fn().mockReturnValue(user),
-            } as MockedObject<UserRepository>;
+        it('should throw BadRequestException because the user is blocked', () => {
+          // Arrange
+          const user = {
+            isBlocked: true,
+          } as MockedObject<User>;
 
-            const unitOfWork = {} as MockedObject<UnitOfWork>;
+          const userRepository = {
+            getOneById: jest.fn().mockReturnValue(user),
+          } as MockedObject<UserRepository>;
 
-            const handler = new BlockUserHandler(unitOfWork, userRepository);
+          const unitOfWork = {} as MockedObject<UnitOfWork>;
 
-            // Act
+          const handler = new BlockUserHandler(unitOfWork, userRepository);
 
-            // Assert
-            return expect(handler.execute(command)).rejects.toThrowError(
-              BadRequestException,
-            );
-          },
-        );
+          // Act
 
-        test.each(commands)(
-          'should call the method block of the User, call the update method of the UserRepository and the commitChanges method of the UnitOfWork',
-          async (command: BlockUserCommand) => {
-            // Arrange
-            const user = {
-              id: {
-                value: 'id-0',
-              },
-              email: {
-                getEmail: 'email0@email.com',
-              },
-              username: {
-                getUsername: 'John_Doe_0',
-              },
-              passwordHash: {
-                getPasswordHash: 'hash0',
-              },
-              isVerified: true,
-              isBlocked: false,
-              firstName: {
-                getFirstName: 'FirstName0',
-              },
-              lastName: {
-                getLastName: 'LastName0',
-              },
-              birthday: {
-                getMilliseconds: 1,
-              },
-              createdAt: {
-                getMilliseconds: 2,
-              },
-              updatedAt: {
-                getMilliseconds: 3,
-              },
-              biography: {
-                getBiography: 'A nice person 0.',
-              },
-              profilePicture: {
-                getUrl: 'https://www.example.com/0.jpg',
-              },
-              deletedAt: {
-                getMilliseconds: 4,
-              },
-              block: jest.fn(),
-            } as MockedObject<User>;
+          // Assert
+          return expect(handler.execute(command)).rejects.toThrowError(
+            BadRequestException,
+          );
+        });
 
-            const userRepository = {
-              getOneById: jest.fn().mockReturnValue(user),
-              updateUser: jest.fn(),
-            } as MockedObject<UserRepository>;
+        it('should call the method block of the User, call the update method of the UserRepository and the commitChanges method of the UnitOfWork', async () => {
+          // Arrange
+          const user = {
+            isBlocked: false,
+            block: jest.fn(),
+          } as MockedObject<User>;
 
-            const unitOfWork = {
-              commitChanges: jest.fn(),
-            } as MockedObject<UnitOfWork>;
+          const userRepository = {
+            getOneById: jest.fn().mockReturnValue(user),
+            updateUser: jest.fn(),
+          } as MockedObject<UserRepository>;
 
-            const handler = new BlockUserHandler(unitOfWork, userRepository);
+          const unitOfWork = {
+            commitChanges: jest.fn(),
+          } as MockedObject<UnitOfWork>;
 
-            // Act
-            await handler.execute(command);
+          const handler = new BlockUserHandler(unitOfWork, userRepository);
 
-            // Assert
-            expect(user.block.mock.calls).toHaveLength(1);
-            expect(userRepository.updateUser.mock.calls).toHaveLength(1);
-            expect(unitOfWork.commitChanges.mock.calls).toHaveLength(1);
-          },
-        );
+          // Act
+          await handler.execute(command);
+
+          // Assert
+          expect(user.block.mock.calls).toHaveLength(1);
+          expect(userRepository.updateUser.mock.calls).toHaveLength(1);
+          expect(unitOfWork.commitChanges.mock.calls).toHaveLength(1);
+        });
       });
     });
   });

@@ -8,6 +8,7 @@ import config from '../../../config';
 import { UnitOfWork } from '../../../shared/domain/repositories';
 import { UnitOfWorkMongoDb } from '../../../shared/infrastructure/repositories';
 import {
+  AddVerificationCodeHandler,
   BlockUserHandler,
   CreateUserHandler,
   DeleteUserHandler,
@@ -47,23 +48,24 @@ import { UsersManagementController } from './users-management.controller';
 import { UsersController } from './users.controller';
 
 const queryHandlers = [
-  GetUsersHandler,
-  GetUserByIdHandler,
   GetUserByEmailHandler,
+  GetUserByIdHandler,
   GetUserByUsernameHandler,
+  GetUsersHandler,
 ];
 const commandHandlers = [
-  CreateUserHandler,
-  UpdateUserProfileHandler,
-  UpdateUserProfilePictureHandler,
-  UpdateUserPasswordHandler,
-  DeleteUserHandler,
-  UndeleteUserHandler,
+  AddVerificationCodeHandler,
   BlockUserHandler,
+  CreateUserHandler,
+  DeleteUserHandler,
   LocalLoginHandler,
   RefreshAccessTokenHandler,
-  VerifyUserHandler,
   UnblockUserHandler,
+  UndeleteUserHandler,
+  UpdateUserPasswordHandler,
+  UpdateUserProfileHandler,
+  UpdateUserProfilePictureHandler,
+  VerifyUserHandler,
 ];
 const passportStrategies = [JwtPassportStrategy];
 

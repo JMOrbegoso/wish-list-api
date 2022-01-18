@@ -1,10 +1,7 @@
 import { MockedObject } from 'ts-jest/dist/utils/testing';
 import { Wish, WishId, WishStage, WishStageId, Wisher } from '..';
 import { InvalidEntityIdError } from '../../../../shared/domain/entities';
-import {
-  MillisecondsDate,
-  WebUrl,
-} from '../../../../shared/domain/value-objects';
+import { DateTime, WebUrl } from '../../../../shared/domain/value-objects';
 import {
   CategoryName,
   PrivacyLevel,
@@ -54,11 +51,11 @@ const validValues = [
       getPrivacyLevel: PrivacyLevel.Public,
     } as MockedObject<WishPrivacyLevel>,
     {
-      getMilliseconds: 1,
-    } as MockedObject<MillisecondsDate>,
+      getIso8601: '1',
+    } as MockedObject<DateTime>,
     {
-      getMilliseconds: 1,
-    } as MockedObject<MillisecondsDate>,
+      getIso8601: '1',
+    } as MockedObject<DateTime>,
     {
       id: { value: 'id-0' },
     } as MockedObject<Wisher>,
@@ -88,14 +85,14 @@ const validValues = [
       } as MockedObject<WishStage>,
     ],
     {
-      getMilliseconds: 1,
-    } as MockedObject<MillisecondsDate>,
+      getIso8601: '1',
+    } as MockedObject<DateTime>,
     {
-      getMilliseconds: 1,
-    } as MockedObject<MillisecondsDate>,
+      getIso8601: '1',
+    } as MockedObject<DateTime>,
     {
-      getMilliseconds: 1,
-    } as MockedObject<MillisecondsDate>,
+      getIso8601: '1',
+    } as MockedObject<DateTime>,
   ],
   [
     {
@@ -112,11 +109,11 @@ const validValues = [
       getPrivacyLevel: PrivacyLevel.Public,
     } as MockedObject<WishPrivacyLevel>,
     {
-      getMilliseconds: 1,
-    } as MockedObject<MillisecondsDate>,
+      getIso8601: '1',
+    } as MockedObject<DateTime>,
     {
-      getMilliseconds: 1,
-    } as MockedObject<MillisecondsDate>,
+      getIso8601: '1',
+    } as MockedObject<DateTime>,
     {
       id: { value: 'id-0' },
     } as MockedObject<Wisher>,
@@ -156,8 +153,8 @@ const validValues = [
     null,
     null,
     {
-      getMilliseconds: 1,
-    } as MockedObject<MillisecondsDate>,
+      getIso8601: '1',
+    } as MockedObject<DateTime>,
   ],
   [
     {
@@ -174,11 +171,11 @@ const validValues = [
       getPrivacyLevel: PrivacyLevel.Public,
     } as MockedObject<WishPrivacyLevel>,
     {
-      getMilliseconds: 1,
-    } as MockedObject<MillisecondsDate>,
+      getIso8601: '1',
+    } as MockedObject<DateTime>,
     {
-      getMilliseconds: 1,
-    } as MockedObject<MillisecondsDate>,
+      getIso8601: '1',
+    } as MockedObject<DateTime>,
     {
       id: { value: 'id-0' },
     } as MockedObject<Wisher>,
@@ -199,8 +196,8 @@ const validValues = [
     ],
     [],
     {
-      getMilliseconds: 1,
-    } as MockedObject<MillisecondsDate>,
+      getIso8601: '1',
+    } as MockedObject<DateTime>,
     null,
     null,
   ],
@@ -219,11 +216,11 @@ const validValues = [
       getPrivacyLevel: PrivacyLevel.Public,
     } as MockedObject<WishPrivacyLevel>,
     {
-      getMilliseconds: 1,
-    } as MockedObject<MillisecondsDate>,
+      getIso8601: '1',
+    } as MockedObject<DateTime>,
     {
-      getMilliseconds: 1,
-    } as MockedObject<MillisecondsDate>,
+      getIso8601: '1',
+    } as MockedObject<DateTime>,
     {
       id: { value: 'id-0' },
     } as MockedObject<Wisher>,
@@ -260,16 +257,16 @@ describe('wishes', () => {
             title: MockedObject<WishTitle>,
             description: MockedObject<WishDescription>,
             privacyLevel: MockedObject<WishPrivacyLevel>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             wisher: MockedObject<Wisher>,
             urls: MockedObject<WebUrl>[],
             images: MockedObject<WebUrl>[],
             categories: MockedObject<CategoryName>[],
             stages: MockedObject<WishStage>[],
-            deletedAt: MockedObject<MillisecondsDate>,
-            startedAt: MockedObject<MillisecondsDate>,
-            completedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
+            startedAt: MockedObject<DateTime>,
+            completedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
 
@@ -304,16 +301,16 @@ describe('wishes', () => {
             title: MockedObject<WishTitle>,
             description: MockedObject<WishDescription>,
             privacyLevel: MockedObject<WishPrivacyLevel>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             wisher: MockedObject<Wisher>,
             urls: MockedObject<WebUrl>[],
             images: MockedObject<WebUrl>[],
             categories: MockedObject<CategoryName>[],
             stages: MockedObject<WishStage>[],
-            deletedAt: MockedObject<MillisecondsDate>,
-            startedAt: MockedObject<MillisecondsDate>,
-            completedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
+            startedAt: MockedObject<DateTime>,
+            completedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
 
@@ -348,16 +345,16 @@ describe('wishes', () => {
             title: MockedObject<WishTitle>,
             description: MockedObject<WishDescription>,
             privacyLevel: MockedObject<WishPrivacyLevel>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             wisher: MockedObject<Wisher>,
             urls: MockedObject<WebUrl>[],
             images: MockedObject<WebUrl>[],
             categories: MockedObject<CategoryName>[],
             stages: MockedObject<WishStage>[],
-            deletedAt: MockedObject<MillisecondsDate>,
-            startedAt: MockedObject<MillisecondsDate>,
-            completedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
+            startedAt: MockedObject<DateTime>,
+            completedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
 
@@ -392,16 +389,16 @@ describe('wishes', () => {
             title: MockedObject<WishTitle>,
             description: MockedObject<WishDescription>,
             privacyLevel: MockedObject<WishPrivacyLevel>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             wisher: MockedObject<Wisher>,
             urls: MockedObject<WebUrl>[],
             images: MockedObject<WebUrl>[],
             categories: MockedObject<CategoryName>[],
             stages: MockedObject<WishStage>[],
-            deletedAt: MockedObject<MillisecondsDate>,
-            startedAt: MockedObject<MillisecondsDate>,
-            completedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
+            startedAt: MockedObject<DateTime>,
+            completedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
 
@@ -436,16 +433,16 @@ describe('wishes', () => {
             title: MockedObject<WishTitle>,
             description: MockedObject<WishDescription>,
             privacyLevel: MockedObject<WishPrivacyLevel>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             wisher: MockedObject<Wisher>,
             urls: MockedObject<WebUrl>[],
             images: MockedObject<WebUrl>[],
             categories: MockedObject<CategoryName>[],
             stages: MockedObject<WishStage>[],
-            deletedAt: MockedObject<MillisecondsDate>,
-            startedAt: MockedObject<MillisecondsDate>,
-            completedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
+            startedAt: MockedObject<DateTime>,
+            completedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
 
@@ -480,16 +477,16 @@ describe('wishes', () => {
             title: MockedObject<WishTitle>,
             description: MockedObject<WishDescription>,
             privacyLevel: MockedObject<WishPrivacyLevel>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             wisher: MockedObject<Wisher>,
             urls: MockedObject<WebUrl>[],
             images: MockedObject<WebUrl>[],
             categories: MockedObject<CategoryName>[],
             stages: MockedObject<WishStage>[],
-            deletedAt: MockedObject<MillisecondsDate>,
-            startedAt: MockedObject<MillisecondsDate>,
-            completedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
+            startedAt: MockedObject<DateTime>,
+            completedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
 
@@ -524,16 +521,16 @@ describe('wishes', () => {
             title: MockedObject<WishTitle>,
             description: MockedObject<WishDescription>,
             privacyLevel: MockedObject<WishPrivacyLevel>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             wisher: MockedObject<Wisher>,
             urls: MockedObject<WebUrl>[],
             images: MockedObject<WebUrl>[],
             categories: MockedObject<CategoryName>[],
             stages: MockedObject<WishStage>[],
-            deletedAt: MockedObject<MillisecondsDate>,
-            startedAt: MockedObject<MillisecondsDate>,
-            completedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
+            startedAt: MockedObject<DateTime>,
+            completedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
 
@@ -568,16 +565,16 @@ describe('wishes', () => {
             title: MockedObject<WishTitle>,
             description: MockedObject<WishDescription>,
             privacyLevel: MockedObject<WishPrivacyLevel>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             wisher: MockedObject<Wisher>,
             urls: MockedObject<WebUrl>[],
             images: MockedObject<WebUrl>[],
             categories: MockedObject<CategoryName>[],
             stages: MockedObject<WishStage>[],
-            deletedAt: MockedObject<MillisecondsDate>,
-            startedAt: MockedObject<MillisecondsDate>,
-            completedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
+            startedAt: MockedObject<DateTime>,
+            completedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
 
@@ -612,16 +609,16 @@ describe('wishes', () => {
             title: MockedObject<WishTitle>,
             description: MockedObject<WishDescription>,
             privacyLevel: MockedObject<WishPrivacyLevel>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             wisher: MockedObject<Wisher>,
             urls: MockedObject<WebUrl>[],
             images: MockedObject<WebUrl>[],
             categories: MockedObject<CategoryName>[],
             stages: MockedObject<WishStage>[],
-            deletedAt: MockedObject<MillisecondsDate>,
-            startedAt: MockedObject<MillisecondsDate>,
-            completedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
+            startedAt: MockedObject<DateTime>,
+            completedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
 
@@ -659,16 +656,16 @@ describe('wishes', () => {
             title: MockedObject<WishTitle>,
             description: MockedObject<WishDescription>,
             privacyLevel: MockedObject<WishPrivacyLevel>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             wisher: MockedObject<Wisher>,
             urls: MockedObject<WebUrl>[],
             images: MockedObject<WebUrl>[],
             categories: MockedObject<CategoryName>[],
             stages: MockedObject<WishStage>[],
-            deletedAt: MockedObject<MillisecondsDate>,
-            startedAt: MockedObject<MillisecondsDate>,
-            completedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
+            startedAt: MockedObject<DateTime>,
+            completedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
 
@@ -704,16 +701,16 @@ describe('wishes', () => {
             title: MockedObject<WishTitle>,
             description: MockedObject<WishDescription>,
             privacyLevel: MockedObject<WishPrivacyLevel>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             wisher: MockedObject<Wisher>,
             urls: MockedObject<WebUrl>[],
             images: MockedObject<WebUrl>[],
             categories: MockedObject<CategoryName>[],
             stages: MockedObject<WishStage>[],
-            deletedAt: MockedObject<MillisecondsDate>,
-            startedAt: MockedObject<MillisecondsDate>,
-            completedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
+            startedAt: MockedObject<DateTime>,
+            completedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
 
@@ -748,16 +745,16 @@ describe('wishes', () => {
             title: MockedObject<WishTitle>,
             description: MockedObject<WishDescription>,
             privacyLevel: MockedObject<WishPrivacyLevel>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             wisher: MockedObject<Wisher>,
             urls: MockedObject<WebUrl>[],
             images: MockedObject<WebUrl>[],
             categories: MockedObject<CategoryName>[],
             stages: MockedObject<WishStage>[],
-            deletedAt: MockedObject<MillisecondsDate>,
-            startedAt: MockedObject<MillisecondsDate>,
-            completedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
+            startedAt: MockedObject<DateTime>,
+            completedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
 
@@ -795,16 +792,16 @@ describe('wishes', () => {
             title: MockedObject<WishTitle>,
             description: MockedObject<WishDescription>,
             privacyLevel: MockedObject<WishPrivacyLevel>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             wisher: MockedObject<Wisher>,
             urls: MockedObject<WebUrl>[],
             images: MockedObject<WebUrl>[],
             categories: MockedObject<CategoryName>[],
             stages: MockedObject<WishStage>[],
-            deletedAt: MockedObject<MillisecondsDate>,
-            startedAt: MockedObject<MillisecondsDate>,
-            completedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
+            startedAt: MockedObject<DateTime>,
+            completedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
 
@@ -840,16 +837,16 @@ describe('wishes', () => {
             title: MockedObject<WishTitle>,
             description: MockedObject<WishDescription>,
             privacyLevel: MockedObject<WishPrivacyLevel>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             wisher: MockedObject<Wisher>,
             urls: MockedObject<WebUrl>[],
             images: MockedObject<WebUrl>[],
             categories: MockedObject<CategoryName>[],
             stages: MockedObject<WishStage>[],
-            deletedAt: MockedObject<MillisecondsDate>,
-            startedAt: MockedObject<MillisecondsDate>,
-            completedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
+            startedAt: MockedObject<DateTime>,
+            completedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
 
@@ -884,16 +881,16 @@ describe('wishes', () => {
             title: MockedObject<WishTitle>,
             description: MockedObject<WishDescription>,
             privacyLevel: MockedObject<WishPrivacyLevel>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             wisher: MockedObject<Wisher>,
             urls: MockedObject<WebUrl>[],
             images: MockedObject<WebUrl>[],
             categories: MockedObject<CategoryName>[],
             stages: MockedObject<WishStage>[],
-            deletedAt: MockedObject<MillisecondsDate>,
-            startedAt: MockedObject<MillisecondsDate>,
-            completedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
+            startedAt: MockedObject<DateTime>,
+            completedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
 
@@ -931,16 +928,16 @@ describe('wishes', () => {
             title: MockedObject<WishTitle>,
             description: MockedObject<WishDescription>,
             privacyLevel: MockedObject<WishPrivacyLevel>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             wisher: MockedObject<Wisher>,
             urls: MockedObject<WebUrl>[],
             images: MockedObject<WebUrl>[],
             categories: MockedObject<CategoryName>[],
             stages: MockedObject<WishStage>[],
-            deletedAt: MockedObject<MillisecondsDate>,
-            startedAt: MockedObject<MillisecondsDate>,
-            completedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
+            startedAt: MockedObject<DateTime>,
+            completedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
 
@@ -976,16 +973,16 @@ describe('wishes', () => {
             title: MockedObject<WishTitle>,
             description: MockedObject<WishDescription>,
             privacyLevel: MockedObject<WishPrivacyLevel>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             wisher: MockedObject<Wisher>,
             urls: MockedObject<WebUrl>[],
             images: MockedObject<WebUrl>[],
             categories: MockedObject<CategoryName>[],
             stages: MockedObject<WishStage>[],
-            deletedAt: MockedObject<MillisecondsDate>,
-            startedAt: MockedObject<MillisecondsDate>,
-            completedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
+            startedAt: MockedObject<DateTime>,
+            completedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
 
@@ -1020,16 +1017,16 @@ describe('wishes', () => {
             title: MockedObject<WishTitle>,
             description: MockedObject<WishDescription>,
             privacyLevel: MockedObject<WishPrivacyLevel>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             wisher: MockedObject<Wisher>,
             urls: MockedObject<WebUrl>[],
             images: MockedObject<WebUrl>[],
             categories: MockedObject<CategoryName>[],
             stages: MockedObject<WishStage>[],
-            deletedAt: MockedObject<MillisecondsDate>,
-            startedAt: MockedObject<MillisecondsDate>,
-            completedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
+            startedAt: MockedObject<DateTime>,
+            completedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
 
@@ -1067,16 +1064,16 @@ describe('wishes', () => {
             title: MockedObject<WishTitle>,
             description: MockedObject<WishDescription>,
             privacyLevel: MockedObject<WishPrivacyLevel>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             wisher: MockedObject<Wisher>,
             urls: MockedObject<WebUrl>[],
             images: MockedObject<WebUrl>[],
             categories: MockedObject<CategoryName>[],
             stages: MockedObject<WishStage>[],
-            deletedAt: MockedObject<MillisecondsDate>,
-            startedAt: MockedObject<MillisecondsDate>,
-            completedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
+            startedAt: MockedObject<DateTime>,
+            completedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
 
@@ -1112,8 +1109,8 @@ describe('wishes', () => {
             title: MockedObject<WishTitle>,
             description: MockedObject<WishDescription>,
             privacyLevel: MockedObject<WishPrivacyLevel>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             wisher: MockedObject<Wisher>,
           ) => {
             // Arrange
@@ -1138,12 +1135,8 @@ describe('wishes', () => {
             expect(wish.privacyLevel.getPrivacyLevel).toBe(
               privacyLevel.getPrivacyLevel,
             );
-            expect(wish.createdAt.getMilliseconds).toBe(
-              createdAt.getMilliseconds,
-            );
-            expect(wish.updatedAt.getMilliseconds).toBe(
-              updatedAt.getMilliseconds,
-            );
+            expect(wish.createdAt.getIso8601).toBe(createdAt.getIso8601);
+            expect(wish.updatedAt.getIso8601).toBe(updatedAt.getIso8601);
 
             expect(wish.wisher.id.value).toBe(wisher.id.value);
 
@@ -1163,16 +1156,16 @@ describe('wishes', () => {
             title: MockedObject<WishTitle>,
             description: MockedObject<WishDescription>,
             privacyLevel: MockedObject<WishPrivacyLevel>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             wisher: MockedObject<Wisher>,
             urls: MockedObject<WebUrl>[],
             images: MockedObject<WebUrl>[],
             categories: MockedObject<CategoryName>[],
             stages: MockedObject<WishStage>[],
-            deletedAt: MockedObject<MillisecondsDate>,
-            startedAt: MockedObject<MillisecondsDate>,
-            completedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
+            startedAt: MockedObject<DateTime>,
+            completedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
 
@@ -1203,12 +1196,8 @@ describe('wishes', () => {
             expect(wish.privacyLevel.getPrivacyLevel).toBe(
               privacyLevel.getPrivacyLevel,
             );
-            expect(wish.createdAt.getMilliseconds).toBe(
-              createdAt.getMilliseconds,
-            );
-            expect(wish.updatedAt.getMilliseconds).toBe(
-              updatedAt.getMilliseconds,
-            );
+            expect(wish.createdAt.getIso8601).toBe(createdAt.getIso8601);
+            expect(wish.updatedAt.getIso8601).toBe(updatedAt.getIso8601);
 
             expect(wish.wisher.id.value).toBe(wisher.id.value);
 
@@ -1226,21 +1215,15 @@ describe('wishes', () => {
               expect(wish.stages[i].id.value).toBe(stages[i].id.value);
 
             if (deletedAt)
-              expect(wish.deletedAt.getMilliseconds).toBe(
-                deletedAt.getMilliseconds,
-              );
+              expect(wish.deletedAt.getIso8601).toBe(deletedAt.getIso8601);
             else expect(wish.deletedAt).toBeNull();
 
             if (startedAt)
-              expect(wish.startedAt.getMilliseconds).toBe(
-                startedAt.getMilliseconds,
-              );
+              expect(wish.startedAt.getIso8601).toBe(startedAt.getIso8601);
             else expect(wish.startedAt).toBeNull();
 
             if (completedAt)
-              expect(wish.completedAt.getMilliseconds).toBe(
-                completedAt.getMilliseconds,
-              );
+              expect(wish.completedAt.getIso8601).toBe(completedAt.getIso8601);
             else expect(wish.completedAt).toBeNull();
           },
         );
@@ -1252,16 +1235,16 @@ describe('wishes', () => {
             title: MockedObject<WishTitle>,
             description: MockedObject<WishDescription>,
             privacyLevel: MockedObject<WishPrivacyLevel>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             wisher: MockedObject<Wisher>,
             urls: MockedObject<WebUrl>[],
             images: MockedObject<WebUrl>[],
             categories: MockedObject<CategoryName>[],
             stages: MockedObject<WishStage>[],
-            deletedAt: MockedObject<MillisecondsDate>,
-            startedAt: MockedObject<MillisecondsDate>,
-            completedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
+            startedAt: MockedObject<DateTime>,
+            completedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
             const originalUrl = 'https://www.example.com/original';
@@ -1308,16 +1291,16 @@ describe('wishes', () => {
             title: MockedObject<WishTitle>,
             description: MockedObject<WishDescription>,
             privacyLevel: MockedObject<WishPrivacyLevel>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             wisher: MockedObject<Wisher>,
             urls: MockedObject<WebUrl>[],
             images: MockedObject<WebUrl>[],
             categories: MockedObject<CategoryName>[],
             stages: MockedObject<WishStage>[],
-            deletedAt: MockedObject<MillisecondsDate>,
-            startedAt: MockedObject<MillisecondsDate>,
-            completedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
+            startedAt: MockedObject<DateTime>,
+            completedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
             const originalImageUrl = 'https://www.example.com/original.jpg';
@@ -1364,16 +1347,16 @@ describe('wishes', () => {
             title: MockedObject<WishTitle>,
             description: MockedObject<WishDescription>,
             privacyLevel: MockedObject<WishPrivacyLevel>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             wisher: MockedObject<Wisher>,
             urls: MockedObject<WebUrl>[],
             images: MockedObject<WebUrl>[],
             categories: MockedObject<CategoryName>[],
             stages: MockedObject<WishStage>[],
-            deletedAt: MockedObject<MillisecondsDate>,
-            startedAt: MockedObject<MillisecondsDate>,
-            completedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
+            startedAt: MockedObject<DateTime>,
+            completedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
             const originalCategoryName = 'original category';
@@ -1420,16 +1403,16 @@ describe('wishes', () => {
             title: MockedObject<WishTitle>,
             description: MockedObject<WishDescription>,
             privacyLevel: MockedObject<WishPrivacyLevel>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             wisher: MockedObject<Wisher>,
             urls: MockedObject<WebUrl>[],
             images: MockedObject<WebUrl>[],
             categories: MockedObject<CategoryName>[],
             stages: MockedObject<WishStage>[],
-            deletedAt: MockedObject<MillisecondsDate>,
-            startedAt: MockedObject<MillisecondsDate>,
-            completedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
+            startedAt: MockedObject<DateTime>,
+            completedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
             const wishStageOriginalId = 'wish-stage-original-id';
@@ -1515,16 +1498,16 @@ describe('wishes', () => {
             title: MockedObject<WishTitle>,
             description: MockedObject<WishDescription>,
             privacyLevel: MockedObject<WishPrivacyLevel>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             wisher: MockedObject<Wisher>,
             urls: MockedObject<WebUrl>[],
             images: MockedObject<WebUrl>[],
             categories: MockedObject<CategoryName>[],
             stages: MockedObject<WishStage>[],
-            deletedAt: MockedObject<MillisecondsDate>,
-            startedAt: MockedObject<MillisecondsDate>,
-            completedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
+            startedAt: MockedObject<DateTime>,
+            completedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
             const wish = Wish.create(
@@ -1559,19 +1542,19 @@ describe('wishes', () => {
             title: MockedObject<WishTitle>,
             description: MockedObject<WishDescription>,
             privacyLevel: MockedObject<WishPrivacyLevel>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             wisher: MockedObject<Wisher>,
             urls: MockedObject<WebUrl>[],
             images: MockedObject<WebUrl>[],
             categories: MockedObject<CategoryName>[],
             stages: MockedObject<WishStage>[],
-            deletedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
             deletedAt = {
-              getMilliseconds: 1,
-            } as MockedObject<MillisecondsDate>;
+              getIso8601: '1',
+            } as MockedObject<DateTime>;
             const wish = Wish.create(
               wishId,
               title,
@@ -1601,16 +1584,16 @@ describe('wishes', () => {
             title: MockedObject<WishTitle>,
             description: MockedObject<WishDescription>,
             privacyLevel: MockedObject<WishPrivacyLevel>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             wisher: MockedObject<Wisher>,
             urls: MockedObject<WebUrl>[],
             images: MockedObject<WebUrl>[],
             categories: MockedObject<CategoryName>[],
             stages: MockedObject<WishStage>[],
-            deletedAt: MockedObject<MillisecondsDate>,
-            startedAt: MockedObject<MillisecondsDate>,
-            completedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
+            startedAt: MockedObject<DateTime>,
+            completedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
             const wish = Wish.create(
@@ -1646,8 +1629,8 @@ describe('wishes', () => {
             title: MockedObject<WishTitle>,
             description: MockedObject<WishDescription>,
             privacyLevel: MockedObject<WishPrivacyLevel>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             wisher: MockedObject<Wisher>,
             urls: MockedObject<WebUrl>[],
             images: MockedObject<WebUrl>[],
@@ -1683,21 +1666,21 @@ describe('wishes', () => {
             title: MockedObject<WishTitle>,
             description: MockedObject<WishDescription>,
             privacyLevel: MockedObject<WishPrivacyLevel>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             wisher: MockedObject<Wisher>,
             urls: MockedObject<WebUrl>[],
             images: MockedObject<WebUrl>[],
             categories: MockedObject<CategoryName>[],
             stages: MockedObject<WishStage>[],
-            deletedAt: MockedObject<MillisecondsDate>,
-            startedAt: MockedObject<MillisecondsDate>,
-            completedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
+            startedAt: MockedObject<DateTime>,
+            completedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
             deletedAt = {
-              getMilliseconds: 1,
-            } as MockedObject<MillisecondsDate>;
+              getIso8601: '1',
+            } as MockedObject<DateTime>;
             const wish = Wish.create(
               wishId,
               title,
@@ -1731,21 +1714,21 @@ describe('wishes', () => {
             title: MockedObject<WishTitle>,
             description: MockedObject<WishDescription>,
             privacyLevel: MockedObject<WishPrivacyLevel>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             wisher: MockedObject<Wisher>,
             urls: MockedObject<WebUrl>[],
             images: MockedObject<WebUrl>[],
             categories: MockedObject<CategoryName>[],
             stages: MockedObject<WishStage>[],
-            deletedAt: MockedObject<MillisecondsDate>,
-            startedAt: MockedObject<MillisecondsDate>,
-            completedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
+            startedAt: MockedObject<DateTime>,
+            completedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
             deletedAt = {
-              getMilliseconds: 1,
-            } as MockedObject<MillisecondsDate>;
+              getIso8601: '1',
+            } as MockedObject<DateTime>;
             const wish = Wish.create(
               wishId,
               title,
@@ -1786,8 +1769,8 @@ describe('wishes', () => {
             title: MockedObject<WishTitle>,
             description: MockedObject<WishDescription>,
             privacyLevel: MockedObject<WishPrivacyLevel>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             wisher: MockedObject<Wisher>,
             urls: MockedObject<WebUrl>[],
             images: MockedObject<WebUrl>[],
@@ -1832,8 +1815,8 @@ describe('wishes', () => {
             title: MockedObject<WishTitle>,
             description: MockedObject<WishDescription>,
             privacyLevel: MockedObject<WishPrivacyLevel>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             wisher: MockedObject<Wisher>,
             urls: MockedObject<WebUrl>[],
             images: MockedObject<WebUrl>[],
@@ -1871,8 +1854,8 @@ describe('wishes', () => {
             title: MockedObject<WishTitle>,
             description: MockedObject<WishDescription>,
             privacyLevel: MockedObject<WishPrivacyLevel>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             wisher: MockedObject<Wisher>,
             urls: MockedObject<WebUrl>[],
             images: MockedObject<WebUrl>[],
@@ -1910,8 +1893,8 @@ describe('wishes', () => {
             title: MockedObject<WishTitle>,
             description: MockedObject<WishDescription>,
             privacyLevel: MockedObject<WishPrivacyLevel>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             wisher: MockedObject<Wisher>,
             urls: MockedObject<WebUrl>[],
             images: MockedObject<WebUrl>[],
@@ -1956,8 +1939,8 @@ describe('wishes', () => {
             title: MockedObject<WishTitle>,
             description: MockedObject<WishDescription>,
             privacyLevel: MockedObject<WishPrivacyLevel>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             wisher: MockedObject<Wisher>,
             urls: MockedObject<WebUrl>[],
             images: MockedObject<WebUrl>[],
@@ -2005,8 +1988,8 @@ describe('wishes', () => {
             title: MockedObject<WishTitle>,
             description: MockedObject<WishDescription>,
             privacyLevel: MockedObject<WishPrivacyLevel>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             wisher: MockedObject<Wisher>,
             urls: MockedObject<WebUrl>[],
             images: MockedObject<WebUrl>[],
@@ -2051,8 +2034,8 @@ describe('wishes', () => {
             title: MockedObject<WishTitle>,
             description: MockedObject<WishDescription>,
             privacyLevel: MockedObject<WishPrivacyLevel>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             wisher: MockedObject<Wisher>,
             urls: MockedObject<WebUrl>[],
             images: MockedObject<WebUrl>[],
@@ -2100,8 +2083,8 @@ describe('wishes', () => {
             title: MockedObject<WishTitle>,
             description: MockedObject<WishDescription>,
             privacyLevel: MockedObject<WishPrivacyLevel>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             wisher: MockedObject<Wisher>,
             urls: MockedObject<WebUrl>[],
             images: MockedObject<WebUrl>[],
@@ -2139,8 +2122,8 @@ describe('wishes', () => {
             title: MockedObject<WishTitle>,
             description: MockedObject<WishDescription>,
             privacyLevel: MockedObject<WishPrivacyLevel>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             wisher: MockedObject<Wisher>,
             urls: MockedObject<WebUrl>[],
             images: MockedObject<WebUrl>[],
@@ -2188,8 +2171,8 @@ describe('wishes', () => {
             title: MockedObject<WishTitle>,
             description: MockedObject<WishDescription>,
             privacyLevel: MockedObject<WishPrivacyLevel>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             wisher: MockedObject<Wisher>,
             urls: MockedObject<WebUrl>[],
             images: MockedObject<WebUrl>[],
@@ -2236,9 +2219,7 @@ describe('wishes', () => {
             expect(wish.categories.length).toBe(0);
             expect(wish.stages.length).toBe(stages.length);
 
-            expect(wish.updatedAt.getMilliseconds).not.toBe(
-              updatedAt.getMilliseconds,
-            );
+            expect(wish.updatedAt.getIso8601).not.toBe(updatedAt.getIso8601);
           },
         );
 
@@ -2249,8 +2230,8 @@ describe('wishes', () => {
             title: MockedObject<WishTitle>,
             description: MockedObject<WishDescription>,
             privacyLevel: MockedObject<WishPrivacyLevel>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             wisher: MockedObject<Wisher>,
             urls: MockedObject<WebUrl>[],
             images: MockedObject<WebUrl>[],
@@ -2290,11 +2271,11 @@ describe('wishes', () => {
               getName: 'new category',
             } as MockedObject<CategoryName>);
             const startedAt = {
-              getMilliseconds: 1000,
-            } as MockedObject<MillisecondsDate>;
+              getIso8601: '1',
+            } as MockedObject<DateTime>;
             const completedAt = {
-              getMilliseconds: 1000,
-            } as MockedObject<MillisecondsDate>;
+              getIso8601: '1',
+            } as MockedObject<DateTime>;
 
             // Act
             wish.update(
@@ -2325,15 +2306,9 @@ describe('wishes', () => {
             expect(wish.categories.length).toBe(newCategories.length);
             for (let i = 0; i < newCategories.length; i++)
               expect(wish.categories[i].getName).toBe(newCategories[i].getName);
-            expect(wish.updatedAt.getMilliseconds).not.toBe(
-              updatedAt.getMilliseconds,
-            );
-            expect(wish.startedAt.getMilliseconds).toBe(
-              startedAt.getMilliseconds,
-            );
-            expect(wish.completedAt.getMilliseconds).toBe(
-              completedAt.getMilliseconds,
-            );
+            expect(wish.updatedAt.getIso8601).not.toBe(updatedAt.getIso8601);
+            expect(wish.startedAt.getIso8601).toBe(startedAt.getIso8601);
+            expect(wish.completedAt.getIso8601).toBe(completedAt.getIso8601);
           },
         );
 
@@ -2344,21 +2319,21 @@ describe('wishes', () => {
             title: MockedObject<WishTitle>,
             description: MockedObject<WishDescription>,
             privacyLevel: MockedObject<WishPrivacyLevel>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             wisher: MockedObject<Wisher>,
             urls: MockedObject<WebUrl>[],
             images: MockedObject<WebUrl>[],
             categories: MockedObject<CategoryName>[],
             stages: MockedObject<WishStage>[],
-            deletedAt: MockedObject<MillisecondsDate>,
-            startedAt: MockedObject<MillisecondsDate>,
-            completedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
+            startedAt: MockedObject<DateTime>,
+            completedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
             deletedAt = {
-              getMilliseconds: 1,
-            } as MockedObject<MillisecondsDate>;
+              getIso8601: '1',
+            } as MockedObject<DateTime>;
             const wish = Wish.create(
               wishId,
               title,
@@ -2392,8 +2367,8 @@ describe('wishes', () => {
             title: MockedObject<WishTitle>,
             description: MockedObject<WishDescription>,
             privacyLevel: MockedObject<WishPrivacyLevel>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             wisher: MockedObject<Wisher>,
             urls: MockedObject<WebUrl>[],
             images: MockedObject<WebUrl>[],
@@ -2431,8 +2406,8 @@ describe('wishes', () => {
             title: MockedObject<WishTitle>,
             description: MockedObject<WishDescription>,
             privacyLevel: MockedObject<WishPrivacyLevel>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             wisher: MockedObject<Wisher>,
             urls: MockedObject<WebUrl>[],
             images: MockedObject<WebUrl>[],
@@ -2472,8 +2447,8 @@ describe('wishes', () => {
             title: MockedObject<WishTitle>,
             description: MockedObject<WishDescription>,
             privacyLevel: MockedObject<WishPrivacyLevel>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             wisher: MockedObject<Wisher>,
             urls: MockedObject<WebUrl>[],
             images: MockedObject<WebUrl>[],
@@ -2517,8 +2492,8 @@ describe('wishes', () => {
             title: MockedObject<WishTitle>,
             description: MockedObject<WishDescription>,
             privacyLevel: MockedObject<WishPrivacyLevel>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             wisher: MockedObject<Wisher>,
             urls: MockedObject<WebUrl>[],
             images: MockedObject<WebUrl>[],
@@ -2532,7 +2507,7 @@ describe('wishes', () => {
               id: {} as MockedObject<WishStageId> as WishStageId,
               title: title as WishTitle,
               description: description as WishDescription,
-              createdAt: createdAt as MillisecondsDate,
+              createdAt: createdAt as DateTime,
               urls: urls as WebUrl[],
               imageUrls: images as WebUrl[],
             } as MockedObject<WishStage>;
@@ -2562,9 +2537,7 @@ describe('wishes', () => {
 
             // Assert
             expect(wish.stages.length).toBe(finalStagesLength);
-            expect(wish.updatedAt.getMilliseconds).not.toBe(
-              updatedAt.getMilliseconds,
-            );
+            expect(wish.updatedAt.getIso8601).not.toBe(updatedAt.getIso8601);
           },
         );
 
@@ -2575,21 +2548,21 @@ describe('wishes', () => {
             title: MockedObject<WishTitle>,
             description: MockedObject<WishDescription>,
             privacyLevel: MockedObject<WishPrivacyLevel>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             wisher: MockedObject<Wisher>,
             urls: MockedObject<WebUrl>[],
             images: MockedObject<WebUrl>[],
             categories: MockedObject<CategoryName>[],
             stages: MockedObject<WishStage>[],
-            deletedAt: MockedObject<MillisecondsDate>,
-            startedAt: MockedObject<MillisecondsDate>,
-            completedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
+            startedAt: MockedObject<DateTime>,
+            completedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
             deletedAt = {
-              getMilliseconds: 1,
-            } as MockedObject<MillisecondsDate>;
+              getIso8601: '1',
+            } as MockedObject<DateTime>;
             const wish = Wish.create(
               wishId,
               title,
@@ -2623,8 +2596,8 @@ describe('wishes', () => {
             title: MockedObject<WishTitle>,
             description: MockedObject<WishDescription>,
             privacyLevel: MockedObject<WishPrivacyLevel>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             wisher: MockedObject<Wisher>,
             urls: MockedObject<WebUrl>[],
             images: MockedObject<WebUrl>[],
@@ -2670,8 +2643,8 @@ describe('wishes', () => {
             title: MockedObject<WishTitle>,
             description: MockedObject<WishDescription>,
             privacyLevel: MockedObject<WishPrivacyLevel>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             wisher: MockedObject<Wisher>,
             urls: MockedObject<WebUrl>[],
             images: MockedObject<WebUrl>[],
@@ -2706,9 +2679,7 @@ describe('wishes', () => {
 
             // Assert
             expect(stage.update.mock.calls).toHaveLength(1);
-            expect(wish.updatedAt.getMilliseconds).not.toBe(
-              updatedAt.getMilliseconds,
-            );
+            expect(wish.updatedAt.getIso8601).not.toBe(updatedAt.getIso8601);
           },
         );
 
@@ -2719,21 +2690,21 @@ describe('wishes', () => {
             title: MockedObject<WishTitle>,
             description: MockedObject<WishDescription>,
             privacyLevel: MockedObject<WishPrivacyLevel>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             wisher: MockedObject<Wisher>,
             urls: MockedObject<WebUrl>[],
             images: MockedObject<WebUrl>[],
             categories: MockedObject<CategoryName>[],
             stages: MockedObject<WishStage>[],
-            deletedAt: MockedObject<MillisecondsDate>,
-            startedAt: MockedObject<MillisecondsDate>,
-            completedAt: MockedObject<MillisecondsDate>,
+            deletedAt: MockedObject<DateTime>,
+            startedAt: MockedObject<DateTime>,
+            completedAt: MockedObject<DateTime>,
           ) => {
             // Arrange
             deletedAt = {
-              getMilliseconds: 1,
-            } as MockedObject<MillisecondsDate>;
+              getIso8601: '1',
+            } as MockedObject<DateTime>;
             const wish = Wish.create(
               wishId,
               title,
@@ -2767,8 +2738,8 @@ describe('wishes', () => {
             title: MockedObject<WishTitle>,
             description: MockedObject<WishDescription>,
             privacyLevel: MockedObject<WishPrivacyLevel>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             wisher: MockedObject<Wisher>,
             urls: MockedObject<WebUrl>[],
             images: MockedObject<WebUrl>[],
@@ -2806,8 +2777,8 @@ describe('wishes', () => {
             title: MockedObject<WishTitle>,
             description: MockedObject<WishDescription>,
             privacyLevel: MockedObject<WishPrivacyLevel>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             wisher: MockedObject<Wisher>,
             urls: MockedObject<WebUrl>[],
             images: MockedObject<WebUrl>[],
@@ -2851,8 +2822,8 @@ describe('wishes', () => {
             title: MockedObject<WishTitle>,
             description: MockedObject<WishDescription>,
             privacyLevel: MockedObject<WishPrivacyLevel>,
-            createdAt: MockedObject<MillisecondsDate>,
-            updatedAt: MockedObject<MillisecondsDate>,
+            createdAt: MockedObject<DateTime>,
+            updatedAt: MockedObject<DateTime>,
             wisher: MockedObject<Wisher>,
             urls: MockedObject<WebUrl>[],
             images: MockedObject<WebUrl>[],
@@ -2885,9 +2856,7 @@ describe('wishes', () => {
 
             // Assert
             expect(wish.stages.length).toBe(finalStagesLength);
-            expect(wish.updatedAt.getMilliseconds).not.toBe(
-              updatedAt.getMilliseconds,
-            );
+            expect(wish.updatedAt.getIso8601).not.toBe(updatedAt.getIso8601);
           },
         );
       });

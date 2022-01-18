@@ -14,4 +14,8 @@ export class VerificationCodeId extends EntityId {
   public equals(other?: VerificationCodeId): boolean {
     return super._equals(other);
   }
+
+  public get base64(): string {
+    return Buffer.from(this.value.toString()).toString('base64');
+  }
 }

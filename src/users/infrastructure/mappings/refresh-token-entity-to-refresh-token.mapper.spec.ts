@@ -57,14 +57,14 @@ describe('users', () => {
             // Assert
             expect(refreshToken.id.value).toBe(refreshTokenEntity.id);
 
-            expect(refreshToken.createdAt.getMilliseconds).toBe(
-              refreshTokenEntity.createdAt.getTime(),
+            expect(refreshToken.createdAt.getIso8601).toBe(
+              refreshTokenEntity.createdAt.toISOString(),
             );
             expect(refreshToken.duration).toBe(refreshTokenEntity.duration);
             expect(refreshToken.ipAddress).toBe(refreshTokenEntity.ipAddress);
             if (refreshTokenEntity.replacedAt)
-              expect(refreshToken.replacedAt.getMilliseconds).toBe(
-                refreshTokenEntity.replacedAt.getTime(),
+              expect(refreshToken.replacedAt.getIso8601).toBe(
+                refreshTokenEntity.replacedAt.toISOString(),
               );
             else expect(refreshToken.replacedAt).toBeNull();
             if (refreshTokenEntity.replacedBy)
@@ -73,8 +73,8 @@ describe('users', () => {
               );
             else expect(refreshToken.replacedBy).toBeNull();
             if (refreshTokenEntity.revokedAt)
-              expect(refreshToken.revokedAt.getMilliseconds).toBe(
-                refreshTokenEntity.revokedAt.getTime(),
+              expect(refreshToken.revokedAt.getIso8601).toBe(
+                refreshTokenEntity.revokedAt.toISOString(),
               );
             else expect(refreshToken.revokedAt).toBeNull();
           },

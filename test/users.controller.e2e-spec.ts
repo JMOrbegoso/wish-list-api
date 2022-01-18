@@ -129,7 +129,7 @@ describe('UsersController (e2e)', () => {
       const password = 'Pa$$w0rd';
       const firstName = 'John';
       const lastName = 'Doe';
-      const birthday = new Date().getTime();
+      const birthday = new Date().toISOString();
       const biography = 'A nice person.';
 
       describe(`should return 400`, () => {
@@ -235,7 +235,7 @@ describe('UsersController (e2e)', () => {
               lastName,
               birthday,
               biography,
-            } as unknown as CreateUserDto)
+            } as CreateUserDto)
             .expect(400)
             .expect(({ body }) =>
               expect(
@@ -257,7 +257,7 @@ describe('UsersController (e2e)', () => {
               lastName,
               birthday,
               biography,
-            } as unknown as CreateUserDto)
+            } as CreateUserDto)
             .expect(400)
             .expect(({ body }) =>
               expect(
@@ -303,7 +303,7 @@ describe('UsersController (e2e)', () => {
               lastName,
               birthday,
               biography,
-            } as unknown as CreateUserDto)
+            } as CreateUserDto)
             .expect(400)
             .expect(({ body }) =>
               expect(
@@ -326,7 +326,7 @@ describe('UsersController (e2e)', () => {
               lastName,
               birthday,
               biography,
-            } as unknown as CreateUserDto)
+            } as CreateUserDto)
             .expect(400)
             .expect(({ body }) =>
               expect(
@@ -349,7 +349,7 @@ describe('UsersController (e2e)', () => {
               lastName,
               birthday,
               biography,
-            } as unknown as CreateUserDto)
+            } as CreateUserDto)
             .expect(400)
             .expect(({ body }) =>
               expect(
@@ -371,7 +371,7 @@ describe('UsersController (e2e)', () => {
               lastName,
               birthday,
               biography,
-            } as unknown as CreateUserDto)
+            } as CreateUserDto)
             .expect(400)
             .expect(({ body }) =>
               expect(
@@ -417,7 +417,7 @@ describe('UsersController (e2e)', () => {
               lastName,
               birthday,
               biography,
-            } as unknown as CreateUserDto)
+            } as CreateUserDto)
             .expect(400)
             .expect(({ body }) =>
               expect(
@@ -440,7 +440,7 @@ describe('UsersController (e2e)', () => {
               lastName,
               birthday,
               biography,
-            } as unknown as CreateUserDto)
+            } as CreateUserDto)
             .expect(400)
             .expect(({ body }) =>
               expect(
@@ -463,7 +463,7 @@ describe('UsersController (e2e)', () => {
               lastName,
               birthday,
               biography,
-            } as unknown as CreateUserDto)
+            } as CreateUserDto)
             .expect(400)
             .expect(({ body }) =>
               expect(
@@ -487,7 +487,7 @@ describe('UsersController (e2e)', () => {
               lastName,
               birthday,
               biography,
-            } as unknown as CreateUserDto)
+            } as CreateUserDto)
             .expect(400)
             .expect(({ body }) =>
               expect(
@@ -533,7 +533,7 @@ describe('UsersController (e2e)', () => {
               lastName,
               birthday,
               biography,
-            } as unknown as CreateUserDto)
+            } as CreateUserDto)
             .expect(400)
             .expect(({ body }) =>
               expect(
@@ -555,7 +555,7 @@ describe('UsersController (e2e)', () => {
               firstName,
               birthday,
               biography,
-            } as unknown as CreateUserDto)
+            } as CreateUserDto)
             .expect(400)
             .expect(({ body }) =>
               expect(
@@ -601,7 +601,7 @@ describe('UsersController (e2e)', () => {
               lastName: 'a'.repeat(LastName.MaxLength + 1),
               birthday,
               biography,
-            } as unknown as CreateUserDto)
+            } as CreateUserDto)
             .expect(400)
             .expect(({ body }) =>
               expect(
@@ -623,7 +623,7 @@ describe('UsersController (e2e)', () => {
               firstName,
               lastName,
               biography,
-            } as unknown as CreateUserDto)
+            } as CreateUserDto)
             .expect(400)
             .expect(({ body }) =>
               expect(
@@ -634,7 +634,30 @@ describe('UsersController (e2e)', () => {
             );
         });
 
-        it(`birthday should be a number`, () => {
+        it(`birthday should be a date string`, () => {
+          return request(app.getHttpServer())
+            .post('/users')
+            .send({
+              id,
+              email,
+              username,
+              password,
+              firstName,
+              lastName,
+              birthday: 1000,
+              biography,
+            } as unknown as CreateUserDto)
+            .expect(400)
+            .expect(({ body }) =>
+              expect(
+                (body.message as string[]).some((m) =>
+                  m.match(/birthday must be a valid ISO 8601 date string/i),
+                ),
+              ).toBeTruthy(),
+            );
+        });
+
+        it(`birthday should be an ISO 8601 date string`, () => {
           return request(app.getHttpServer())
             .post('/users')
             .send({
@@ -644,14 +667,14 @@ describe('UsersController (e2e)', () => {
               username,
               firstName,
               lastName,
-              birthday: '1000',
+              birthday: '2020-01-01',
               biography,
-            } as unknown as CreateUserDto)
+            } as CreateUserDto)
             .expect(400)
             .expect(({ body }) =>
               expect(
                 (body.message as string[]).some((m) =>
-                  m.match(/birthday must be a positive number/i),
+                  m.match(/birthday must be a valid ISO 8601 date string/i),
                 ),
               ).toBeTruthy(),
             );
@@ -668,7 +691,7 @@ describe('UsersController (e2e)', () => {
               firstName,
               lastName,
               birthday,
-            } as unknown as CreateUserDto)
+            } as CreateUserDto)
             .expect(400)
             .expect(({ body }) =>
               expect(
@@ -714,7 +737,7 @@ describe('UsersController (e2e)', () => {
               lastName,
               birthday,
               biography: 'a'.repeat(Biography.MaxLength + 1),
-            } as unknown as CreateUserDto)
+            } as CreateUserDto)
             .expect(400)
             .expect(({ body }) =>
               expect(
@@ -813,7 +836,7 @@ describe('UsersController (e2e)', () => {
               expect(userCreated.isBlocked).toBeFalsy();
               expect(userCreated.firstName).toBe(firstName);
               expect(userCreated.lastName).toBe(lastName);
-              expect(userCreated.birthday.getTime()).toBe(birthday);
+              expect(userCreated.birthday.toISOString()).toBe(birthday);
               expect(userCreated.createdAt).toBeTruthy();
               expect(userCreated.updatedAt).toBeTruthy();
               expect(userCreated.biography).toBe(biography);
@@ -838,7 +861,7 @@ describe('UsersController (e2e)', () => {
               expect(verificationCodeCreated).toBeTruthy();
 
               expect(verificationCodeCreated.user.toString()).toBe(id);
-              expect(verificationCodeCreated.createdAt.getTime()).toBeTruthy();
+              expect(verificationCodeCreated.createdAt).toBeTruthy();
               expect(verificationCodeCreated.duration).toBeTruthy();
             });
         });
@@ -881,7 +904,7 @@ describe('UsersController (e2e)', () => {
     describe('PATCH', () => {
       const firstName = 'New FirstName';
       const lastName = 'New LastName';
-      const birthday = new Date().getTime();
+      const birthday = new Date().toISOString();
       const biography = 'New Biography.';
 
       describe(`should return 400`, () => {
@@ -894,7 +917,7 @@ describe('UsersController (e2e)', () => {
               lastName,
               birthday,
               biography,
-            } as unknown as UpdateUserProfileDto)
+            } as UpdateUserProfileDto)
             .auth(accessTokenBasicUser, { type: 'bearer' })
             .expect(400)
             .expect(({ body }) =>
@@ -938,7 +961,7 @@ describe('UsersController (e2e)', () => {
               lastName,
               birthday,
               biography,
-            } as unknown as UpdateUserProfileDto)
+            } as UpdateUserProfileDto)
             .auth(accessTokenBasicUser, { type: 'bearer' })
             .expect(400)
             .expect(({ body }) =>
@@ -959,7 +982,7 @@ describe('UsersController (e2e)', () => {
               firstName,
               birthday,
               biography,
-            } as unknown as UpdateUserProfileDto)
+            } as UpdateUserProfileDto)
             .auth(accessTokenBasicUser, { type: 'bearer' })
             .expect(400)
             .expect(({ body }) =>
@@ -1003,7 +1026,7 @@ describe('UsersController (e2e)', () => {
               lastName: 'a'.repeat(LastName.MaxLength + 1),
               birthday,
               biography,
-            } as unknown as UpdateUserProfileDto)
+            } as UpdateUserProfileDto)
             .auth(accessTokenBasicUser, { type: 'bearer' })
             .expect(400)
             .expect(({ body }) =>
@@ -1024,7 +1047,7 @@ describe('UsersController (e2e)', () => {
               firstName,
               lastName,
               biography,
-            } as unknown as UpdateUserProfileDto)
+            } as UpdateUserProfileDto)
             .auth(accessTokenBasicUser, { type: 'bearer' })
             .expect(400)
             .expect(({ body }) =>
@@ -1036,7 +1059,7 @@ describe('UsersController (e2e)', () => {
             );
         });
 
-        it(`birthday should be a number`, () => {
+        it(`birthday should be a date string`, () => {
           const id = seed.basicUser._id.toString();
           return request(app.getHttpServer())
             .patch(`/users/profile/${id}`)
@@ -1044,7 +1067,7 @@ describe('UsersController (e2e)', () => {
               id,
               firstName,
               lastName,
-              birthday: '1000',
+              birthday: 1000,
               biography,
             } as unknown as UpdateUserProfileDto)
             .auth(accessTokenBasicUser, { type: 'bearer' })
@@ -1052,7 +1075,29 @@ describe('UsersController (e2e)', () => {
             .expect(({ body }) =>
               expect(
                 (body.message as string[]).some((m) =>
-                  m.match(/birthday must be a positive number/i),
+                  m.match(/birthday must be a valid ISO 8601 date string/i),
+                ),
+              ).toBeTruthy(),
+            );
+        });
+
+        it(`birthday should be an ISO 8601 date string`, () => {
+          const id = seed.basicUser._id.toString();
+          return request(app.getHttpServer())
+            .patch(`/users/profile/${id}`)
+            .send({
+              id,
+              firstName,
+              lastName,
+              birthday: '2020-01-01',
+              biography,
+            } as UpdateUserProfileDto)
+            .auth(accessTokenBasicUser, { type: 'bearer' })
+            .expect(400)
+            .expect(({ body }) =>
+              expect(
+                (body.message as string[]).some((m) =>
+                  m.match(/birthday must be a valid ISO 8601 date string/i),
                 ),
               ).toBeTruthy(),
             );
@@ -1067,7 +1112,7 @@ describe('UsersController (e2e)', () => {
               firstName,
               lastName,
               birthday,
-            } as unknown as UpdateUserProfileDto)
+            } as UpdateUserProfileDto)
             .auth(accessTokenBasicUser, { type: 'bearer' })
             .expect(400)
             .expect(({ body }) =>
@@ -1111,7 +1156,7 @@ describe('UsersController (e2e)', () => {
               lastName,
               birthday,
               biography: 'a'.repeat(Biography.MaxLength + 1),
-            } as unknown as UpdateUserProfileDto)
+            } as UpdateUserProfileDto)
             .auth(accessTokenBasicUser, { type: 'bearer' })
             .expect(400)
             .expect(({ body }) =>
@@ -1213,12 +1258,13 @@ describe('UsersController (e2e)', () => {
               expect(userUpdated.isBlocked).toBe(seed.basicUser.isBlocked);
               expect(userUpdated.firstName).toBe(firstName);
               expect(userUpdated.lastName).toBe(lastName);
-              expect(userUpdated.birthday.getTime()).toBe(birthday);
-              expect(userUpdated.createdAt.getTime()).toBe(
-                seed.basicUser.createdAt.getTime(),
+              expect(userUpdated.birthday.toISOString()).toBe(birthday);
+              expect(userUpdated.createdAt.toISOString()).toBe(
+                seed.basicUser.createdAt.toISOString(),
               );
-              expect(userUpdated.updatedAt.getTime()).not.toBe(
-                seed.basicUser.updatedAt.getTime(),
+              expect(userUpdated.updatedAt).toBeTruthy();
+              expect(userUpdated.updatedAt.getTime()).toBeGreaterThan(
+                seed.publicWish_1.updatedAt.getTime(),
               );
               expect(userUpdated.biography).toBe(biography);
               expect(userUpdated.roles).toHaveLength(

@@ -186,8 +186,8 @@ describe('WishesController (e2e)', () => {
         'https://www.example.com/new-wish/2.jpg',
       ];
       const categories = ['category 1', 'category 2'];
-      const startedAt = new Date().getTime();
-      const completedAt = new Date().getTime();
+      const startedAt = new Date().toISOString();
+      const completedAt = new Date().toISOString();
 
       describe(`should return 401`, () => {
         it(`unauthenticated request`, () => {
@@ -483,7 +483,7 @@ describe('WishesController (e2e)', () => {
               imageUrls,
               categories,
               startedAt,
-            } as unknown as CreateWishDto)
+            } as CreateWishDto)
             .auth(accessTokenBasicUser, { type: 'bearer' })
             .expect(400)
             .expect(({ body }) =>
@@ -797,12 +797,119 @@ describe('WishesController (e2e)', () => {
             );
         });
 
+        it(`startedAt should be a string`, () => {
+          const wisherId = seed.basicUserAsWisher._id.toString();
+          return request(app.getHttpServer())
+            .post('/wishes')
+            .send({
+              id,
+              wisherId,
+              title,
+              description,
+              privacyLevel,
+              urls,
+              imageUrls,
+              categories,
+              startedAt: 1000,
+            } as unknown as CreateWishDto)
+            .auth(accessTokenBasicUser, { type: 'bearer' })
+            .expect(400)
+            .expect(({ body }) =>
+              expect(
+                (body.message as string[]).some((m) =>
+                  m.match(/startedAt must be a valid ISO 8601 date string/i),
+                ),
+              ).toBeTruthy(),
+            );
+        });
+
+        it(`startedAt should be an ISO 8601 date string`, () => {
+          const wisherId = seed.basicUserAsWisher._id.toString();
+          return request(app.getHttpServer())
+            .post('/wishes')
+            .send({
+              id,
+              wisherId,
+              title,
+              description,
+              privacyLevel,
+              urls,
+              imageUrls,
+              categories,
+              startedAt: '2020-01-01',
+            } as CreateWishDto)
+            .auth(accessTokenBasicUser, { type: 'bearer' })
+            .expect(400)
+            .expect(({ body }) =>
+              expect(
+                (body.message as string[]).some((m) =>
+                  m.match(/startedAt must be a valid ISO 8601 date string/i),
+                ),
+              ).toBeTruthy(),
+            );
+        });
+
+        it(`completedAt should be a string`, () => {
+          const wisherId = seed.basicUserAsWisher._id.toString();
+          return request(app.getHttpServer())
+            .post('/wishes')
+            .send({
+              id,
+              wisherId,
+              title,
+              description,
+              privacyLevel,
+              urls,
+              imageUrls,
+              categories,
+              startedAt,
+              completedAt: 1000,
+            } as unknown as CreateWishDto)
+            .auth(accessTokenBasicUser, { type: 'bearer' })
+            .expect(400)
+            .expect(({ body }) =>
+              expect(
+                (body.message as string[]).some((m) =>
+                  m.match(/completedAt must be a valid ISO 8601 date string/i),
+                ),
+              ).toBeTruthy(),
+            );
+        });
+
+        it(`completedAt should be an ISO 8601 date string`, () => {
+          const wisherId = seed.basicUserAsWisher._id.toString();
+          return request(app.getHttpServer())
+            .post('/wishes')
+            .send({
+              id,
+              wisherId,
+              title,
+              description,
+              privacyLevel,
+              urls,
+              imageUrls,
+              categories,
+              startedAt,
+              completedAt: '2020-01-01',
+            } as CreateWishDto)
+            .auth(accessTokenBasicUser, { type: 'bearer' })
+            .expect(400)
+            .expect(({ body }) =>
+              expect(
+                (body.message as string[]).some((m) =>
+                  m.match(/completedAt must be a valid ISO 8601 date string/i),
+                ),
+              ).toBeTruthy(),
+            );
+        });
+
         it(`id already in use`, () => {
+          const wisherId = seed.basicUserAsWisher._id.toString();
           return request(app.getHttpServer())
             .post('/wishes')
             .send({
               id: seed.publicWish_1._id.toString(),
-              wisherId: seed.basicUserAsWisher._id.toString(),
+              wisherId,
               title,
               description,
               privacyLevel,
@@ -940,8 +1047,8 @@ describe('WishesController (e2e)', () => {
                 expect(wishCreated.categories[i]).toBe(categories[i]);
 
               expect(wishCreated.deletedAt).toBeFalsy();
-              expect(wishCreated.startedAt.getTime()).toBe(startedAt);
-              expect(wishCreated.completedAt.getTime()).toBe(completedAt);
+              expect(wishCreated.startedAt.toISOString()).toBe(startedAt);
+              expect(wishCreated.completedAt.toISOString()).toBe(completedAt);
             })
             .expect(async () => {
               const wishersDb: WisherEntity[] = await database
@@ -1013,8 +1120,8 @@ describe('WishesController (e2e)', () => {
                 expect(wishCreated.categories[i]).toBe(categories[i]);
 
               expect(wishCreated.deletedAt).toBeFalsy();
-              expect(wishCreated.startedAt.getTime()).toBe(startedAt);
-              expect(wishCreated.completedAt.getTime()).toBe(completedAt);
+              expect(wishCreated.startedAt.toISOString()).toBe(startedAt);
+              expect(wishCreated.completedAt.toISOString()).toBe(completedAt);
             })
             .expect(async () => {
               const wishersDb: WisherEntity[] = await database
@@ -1053,8 +1160,8 @@ describe('WishesController (e2e)', () => {
         'https://www.example.com/new-url/2.jpg',
       ];
       const categories = ['new category 1', 'new category 2'];
-      const startedAt = new Date().getTime();
-      const completedAt = new Date().getTime();
+      const startedAt = new Date().toISOString();
+      const completedAt = new Date().toISOString();
 
       describe(`should return 401`, () => {
         it(`unauthenticated request`, () => {
@@ -1528,6 +1635,108 @@ describe('WishesController (e2e)', () => {
             );
         });
 
+        it(`startedAt should be a string`, () => {
+          const id = seed.publicWish_1._id.toString();
+          return request(app.getHttpServer())
+            .patch(`/wishes/${id}`)
+            .send({
+              id,
+              title,
+              description,
+              privacyLevel,
+              urls,
+              imageUrls,
+              categories,
+              startedAt: 1000,
+            } as unknown as UpdateWishDto)
+            .auth(accessTokenBasicUser, { type: 'bearer' })
+            .expect(400)
+            .expect(({ body }) =>
+              expect(
+                (body.message as string[]).some((m) =>
+                  m.match(/startedAt must be a valid ISO 8601 date string/i),
+                ),
+              ).toBeTruthy(),
+            );
+        });
+
+        it(`startedAt should be an ISO 8601 date string`, () => {
+          const id = seed.publicWish_1._id.toString();
+          return request(app.getHttpServer())
+            .patch(`/wishes/${id}`)
+            .send({
+              id,
+              title,
+              description,
+              privacyLevel,
+              urls,
+              imageUrls,
+              categories,
+              startedAt: '2020-01-01',
+            } as UpdateWishDto)
+            .auth(accessTokenBasicUser, { type: 'bearer' })
+            .expect(400)
+            .expect(({ body }) =>
+              expect(
+                (body.message as string[]).some((m) =>
+                  m.match(/startedAt must be a valid ISO 8601 date string/i),
+                ),
+              ).toBeTruthy(),
+            );
+        });
+
+        it(`completedAt should be a string`, () => {
+          const id = seed.publicWish_1._id.toString();
+          return request(app.getHttpServer())
+            .patch(`/wishes/${id}`)
+            .send({
+              id,
+              title,
+              description,
+              privacyLevel,
+              urls,
+              imageUrls,
+              categories,
+              startedAt,
+              completedAt: 1000,
+            } as unknown as UpdateWishDto)
+            .auth(accessTokenBasicUser, { type: 'bearer' })
+            .expect(400)
+            .expect(({ body }) =>
+              expect(
+                (body.message as string[]).some((m) =>
+                  m.match(/completedAt must be a valid ISO 8601 date string/i),
+                ),
+              ).toBeTruthy(),
+            );
+        });
+
+        it(`completedAt should be an ISO 8601 date string`, () => {
+          const id = seed.publicWish_1._id.toString();
+          return request(app.getHttpServer())
+            .patch(`/wishes/${id}`)
+            .send({
+              id,
+              title,
+              description,
+              privacyLevel,
+              urls,
+              imageUrls,
+              categories,
+              startedAt,
+              completedAt: '2020-01-01',
+            } as UpdateWishDto)
+            .auth(accessTokenBasicUser, { type: 'bearer' })
+            .expect(400)
+            .expect(({ body }) =>
+              expect(
+                (body.message as string[]).some((m) =>
+                  m.match(/completedAt must be a valid ISO 8601 date string/i),
+                ),
+              ).toBeTruthy(),
+            );
+        });
+
         it(`ids are different`, () => {
           const id = 'wish-id-1';
           return request(app.getHttpServer())
@@ -1585,8 +1794,8 @@ describe('WishesController (e2e)', () => {
               expect(wishUpdated.description).toBe(description);
               expect(wishUpdated.privacyLevel).toBe(privacyLevel);
               expect(wishUpdated.createdAt).toBeTruthy();
-              expect(wishUpdated.createdAt.getTime()).toBe(
-                seed.publicWish_1.createdAt.getTime(),
+              expect(wishUpdated.createdAt.toISOString()).toBe(
+                seed.publicWish_1.createdAt.toISOString(),
               );
               expect(wishUpdated.updatedAt).toBeTruthy();
               expect(wishUpdated.updatedAt.getTime()).toBeGreaterThan(
@@ -1685,8 +1894,8 @@ describe('WishesController (e2e)', () => {
               expect(wishUpdated.description).toBe(description);
               expect(wishUpdated.privacyLevel).toBe(privacyLevel);
               expect(wishUpdated.createdAt).toBeTruthy();
-              expect(wishUpdated.createdAt.getTime()).toBe(
-                seed.publicWish_1.createdAt.getTime(),
+              expect(wishUpdated.createdAt.toISOString()).toBe(
+                seed.publicWish_1.createdAt.toISOString(),
               );
               expect(wishUpdated.updatedAt).toBeTruthy();
               expect(wishUpdated.updatedAt.getTime()).toBeGreaterThan(
@@ -1706,8 +1915,8 @@ describe('WishesController (e2e)', () => {
                 expect(wishUpdated.categories[i]).toBe(categories[i]);
 
               expect(wishUpdated.deletedAt).toBeNull();
-              expect(wishUpdated.startedAt.getTime()).toBe(startedAt);
-              expect(wishUpdated.completedAt.getTime()).toBe(completedAt);
+              expect(wishUpdated.startedAt.toISOString()).toBe(startedAt);
+              expect(wishUpdated.completedAt.toISOString()).toBe(completedAt);
             })
             .expect(async () => {
               const wishersDb: WisherEntity[] = await database

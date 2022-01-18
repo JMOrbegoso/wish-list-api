@@ -6,85 +6,98 @@ import { Wish } from '../../../domain/entities';
 import { WishRepository } from '../../../domain/repositories';
 import { PrivacyLevel } from '../../../domain/value-objects';
 
-const commands = [
-  new UpdateWishCommand(
-    'id 0',
-    'title 0',
-    'description 0',
-    PrivacyLevel.Public,
-    [],
-    [],
-    [],
-  ),
-  new UpdateWishCommand(
-    'id 1',
-    'title 1',
-    'description 2',
-    PrivacyLevel.JustFriends,
-    ['https://wwww.example.com/1'],
-    [],
-    ['tech'],
-  ),
-  new UpdateWishCommand(
-    'id 2',
-    'title 2',
-    'description 2',
-    PrivacyLevel.OnlyMe,
-    ['https://wwww.example.com/2'],
-    ['https://wwww.example.com/2.jpg'],
-    ['tech'],
-  ),
-];
-
 describe('wishes', () => {
   describe('application', () => {
     describe('commands', () => {
       describe('update-wish', () => {
-        test.each(commands)(
-          'update a wish that does not exist should throw error',
-          (command: UpdateWishCommand) => {
-            // Arrange
-            const wishRepository = {
-              getOneById: jest.fn().mockReturnValue(null),
-            } as MockedObject<WishRepository>;
-
-            const unitOfWork = {} as MockedObject<UnitOfWork>;
-
-            const handler = new UpdateWishHandler(wishRepository, unitOfWork);
-
-            // Act
-
-            // Assert
-            return expect(handler.execute(command)).rejects.toThrowError(
-              NotFoundException,
-            );
-          },
+        const command = new UpdateWishCommand(
+          'id 0',
+          'title 0',
+          'description 0',
+          PrivacyLevel.Public,
+          [],
+          [],
+          [],
         );
 
-        test.each(commands)(
-          'update a deleted wish should throw error',
-          (command: UpdateWishCommand) => {
-            // Arrange
-            const wish = { isDeleted: true } as MockedObject<Wish>;
+        it('update a wish that does not exist should throw error', () => {
+          // Arrange
+          const wishRepository = {
+            getOneById: jest.fn().mockReturnValue(null),
+          } as MockedObject<WishRepository>;
 
-            const wishRepository = {
-              getOneById: jest.fn().mockReturnValue(wish),
-            } as MockedObject<WishRepository>;
+          const unitOfWork = {} as MockedObject<UnitOfWork>;
 
-            const unitOfWork = {} as MockedObject<UnitOfWork>;
+          const handler = new UpdateWishHandler(wishRepository, unitOfWork);
 
-            const handler = new UpdateWishHandler(wishRepository, unitOfWork);
+          // Act
 
-            // Act
+          // Assert
+          return expect(handler.execute(command)).rejects.toThrowError(
+            NotFoundException,
+          );
+        });
 
-            // Assert
-            return expect(handler.execute(command)).rejects.toThrowError(
-              BadRequestException,
-            );
-          },
-        );
+        it('update a deleted wish should throw error', () => {
+          // Arrange
+          const wish = { isDeleted: true } as MockedObject<Wish>;
 
-        test.each(commands)(
+          const wishRepository = {
+            getOneById: jest.fn().mockReturnValue(wish),
+          } as MockedObject<WishRepository>;
+
+          const unitOfWork = {} as MockedObject<UnitOfWork>;
+
+          const handler = new UpdateWishHandler(wishRepository, unitOfWork);
+
+          // Act
+
+          // Assert
+          return expect(handler.execute(command)).rejects.toThrowError(
+            BadRequestException,
+          );
+        });
+
+        test.each([
+          new UpdateWishCommand(
+            'id 0',
+            'title 0',
+            'description 0',
+            PrivacyLevel.Public,
+            [],
+            [],
+            [],
+          ),
+          new UpdateWishCommand(
+            'id 1',
+            'title 1',
+            'description 2',
+            PrivacyLevel.JustFriends,
+            ['https://wwww.example.com/1'],
+            [],
+            ['tech'],
+          ),
+          new UpdateWishCommand(
+            'id 2',
+            'title 2',
+            'description 2',
+            PrivacyLevel.OnlyMe,
+            ['https://wwww.example.com/2'],
+            ['https://wwww.example.com/2.jpg'],
+            ['tech'],
+          ),
+          new UpdateWishCommand(
+            'id 3',
+            'title 3',
+            'description 3',
+            PrivacyLevel.OnlyMe,
+            ['https://wwww.example.com/3'],
+            ['https://wwww.example.com/3.jpg'],
+            ['tech'],
+            '2021-11-05T16:08:46.164Z',
+            '2021-11-05T16:08:46.164Z',
+          ),
+        ])(
           'should call the method update from the WishRepository, the method commitChanges from the UnitOfWork',
           async (command: UpdateWishCommand) => {
             // Arrange

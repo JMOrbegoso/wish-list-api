@@ -2,7 +2,7 @@ import { BadRequestException } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { CreateUserCommand } from '..';
 import { UnitOfWork } from '../../../../shared/domain/repositories';
-import { MillisecondsDate } from '../../../../shared/domain/value-objects';
+import { DateTime } from '../../../../shared/domain/value-objects';
 import {
   User,
   UserId,
@@ -59,8 +59,8 @@ export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
     const isBlocked = IsBlocked.notBlocked();
     const firstName = FirstName.create(command.firstName);
     const lastName = LastName.create(command.lastName);
-    const birthday = MillisecondsDate.createFromMilliseconds(command.birthday);
-    const createdAt = MillisecondsDate.create();
+    const birthday = DateTime.createFromString(command.birthday);
+    const createdAt = DateTime.now();
     const biography = Biography.create(command.biography);
     const roles = [Role.basic()];
 
@@ -88,7 +88,7 @@ export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
     );
     const verificationCode = VerificationCode.create(
       verificationCodeId,
-      MillisecondsDate.create(),
+      DateTime.now(),
       VerificationCode.defaultDuration,
     );
 
@@ -99,15 +99,16 @@ export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
     // Save changes using Unit of Work
     await this.unitOfWork.commitChanges();
 
-    // Send an account confirmation code the user email
-    const verificationCodeBase64 = Buffer.from(
-      verificationCode.id.value.toString(),
-    ).toString('base64');
-
+    // Send the account confirmation email
     await this.emailSenderService.send(
-      user.email.getEmail,
-      'Confirm Account',
-      `your code is ${verificationCodeBase64}`,
+      email.getEmail,
+      'Welcome to Wish List - Account confirmation email',
+      `<h1>
+        Welcome ${firstName.getFirstName} ${lastName.getLastName}
+      </h1>
+      <p>
+        You can activate your account ${username.getUsername} using this verification code: ${verificationCode.id.base64}
+      </p>`,
     );
   }
 }

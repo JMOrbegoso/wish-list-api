@@ -13,11 +13,11 @@ export class OutputUserDto {
 
   lastName: string;
 
-  birthday: number;
+  birthday: string;
 
-  createdAt: number;
+  createdAt: string;
 
-  updatedAt: number;
+  updatedAt: string;
 
   biography: string;
 
@@ -25,5 +25,5 @@ export class OutputUserDto {
 
   profilePicture: string;
 
-  deletedAt: number;
+  deletedAt: string;
 }

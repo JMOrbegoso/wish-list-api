@@ -92,6 +92,28 @@ export const swaggerDocument: OpenAPIObject = {
         tags: ['Auth'],
       },
     },
+    '/api/add-verification-code': {
+      post: {
+        operationId: 'AddVerificationCode',
+        parameters: [],
+        requestBody: {
+          required: true,
+          content: {
+            'application/json': {
+              schema: { $ref: '#/components/schemas/UserEmailDto' },
+            },
+          },
+        },
+        responses: {
+          200: { description: 'Verification code successfully sent.' },
+          400: {
+            description: 'Invalid user email or user.',
+          },
+          404: { description: 'User not found.' },
+        },
+        tags: ['Auth'],
+      },
+    },
     '/api/users': {
       get: {
         operationId: 'GetAllUsers',
@@ -803,6 +825,17 @@ export const swaggerDocument: OpenAPIObject = {
         },
         required: ['code'],
       },
+      UserEmailDto: {
+        type: 'object',
+        properties: {
+          email: {
+            type: 'string',
+            description: 'User email.',
+            example: 'john@doe.com',
+          },
+        },
+        required: ['email'],
+      },
       AuthTokensDto: {
         type: 'object',
         properties: {
@@ -870,19 +903,22 @@ export const swaggerDocument: OpenAPIObject = {
             example: 'Doe',
           },
           birthday: {
-            type: 'number',
-            description: 'User birthday in milliseconds.',
-            example: 1636128526164,
+            type: 'string',
+            format: 'date-time',
+            description: 'User birthday ISO 8601 date.',
+            example: '2021-11-05T16:08:46.164Z',
           },
           createdAt: {
-            type: 'number',
-            description: 'User createdAt date in milliseconds.',
-            example: 1636128526164,
+            type: 'string',
+            format: 'date-time',
+            description: 'User createdAt ISO 8601 date.',
+            example: '2021-11-05T16:08:46.164Z',
           },
           updatedAt: {
-            type: 'number',
-            description: 'User updatedAt date in milliseconds.',
-            example: 1636128526164,
+            type: 'string',
+            format: 'date-time',
+            description: 'User updatedAt ISO 8601 date.',
+            example: '2021-11-05T16:08:46.164Z',
           },
           biography: {
             type: 'string',
@@ -901,9 +937,10 @@ export const swaggerDocument: OpenAPIObject = {
             example: 'https://www.example.com',
           },
           deletedAt: {
-            type: 'number',
-            description: 'User deletedAt date in milliseconds.',
-            example: 1636128526164,
+            type: 'string',
+            format: 'date-time',
+            description: 'User deletedAt ISO 8601 date.',
+            example: '2021-11-05T16:08:46.164Z',
           },
         },
         required: [
@@ -957,9 +994,10 @@ export const swaggerDocument: OpenAPIObject = {
             example: 'Doe',
           },
           birthday: {
-            type: 'number',
-            description: 'User birthday in milliseconds.',
-            example: 1636128526164,
+            type: 'string',
+            format: 'date-time',
+            description: 'User birthday ISO 8601 date.',
+            example: '2021-11-05T16:08:46.164Z',
           },
           biography: {
             type: 'string',
@@ -997,9 +1035,10 @@ export const swaggerDocument: OpenAPIObject = {
             example: 'Doe',
           },
           birthday: {
-            type: 'number',
-            description: 'User birthday in milliseconds.',
-            example: 1636128526164,
+            type: 'string',
+            format: 'date-time',
+            description: 'User birthday ISO 8601 date.',
+            example: '2021-11-05T16:08:46.164Z',
           },
           biography: {
             type: 'string',
@@ -1044,9 +1083,10 @@ export const swaggerDocument: OpenAPIObject = {
             example: 'Find a nice laptop model to buy.',
           },
           createdAt: {
-            type: 'number',
-            description: 'Wish stage creation date in milliseconds.',
-            example: 1636128526164,
+            type: 'string',
+            format: 'date-time',
+            description: 'Wish stage createdAt ISO 8601 date.',
+            example: '2021-11-05T16:08:46.164Z',
           },
           urls: {
             type: 'array',
@@ -1103,14 +1143,16 @@ export const swaggerDocument: OpenAPIObject = {
             $ref: '#/components/schemas/PrivacyLevel',
           },
           createdAt: {
-            type: 'number',
-            description: 'Wish creation date in milliseconds.',
-            example: 1636128526164,
+            type: 'string',
+            format: 'date-time',
+            description: 'Wish createdAt ISO 8601 date.',
+            example: '2021-11-05T16:08:46.164Z',
           },
           updatedAt: {
-            type: 'number',
-            description: 'Wish update date in milliseconds.',
-            example: 1636128526164,
+            type: 'string',
+            format: 'date-time',
+            description: 'Wish updatedAt ISO 8601 date.',
+            example: '2021-11-05T16:08:46.164Z',
           },
           urls: {
             type: 'array',
@@ -1142,19 +1184,22 @@ export const swaggerDocument: OpenAPIObject = {
             description: 'Wish stages.',
           },
           deletedAt: {
-            type: 'number',
-            description: 'Wish delete date in milliseconds.',
-            example: 1636128526164,
+            type: 'string',
+            format: 'date-time',
+            description: 'Wish deletedAt ISO 8601 date.',
+            example: '2021-11-05T16:08:46.164Z',
           },
           startedAt: {
-            type: 'number',
-            description: 'Wish started at date in milliseconds.',
-            example: 1636128526164,
+            type: 'string',
+            format: 'date-time',
+            description: 'Wish startedAt ISO 8601 date.',
+            example: '2021-11-05T16:08:46.164Z',
           },
           completedAt: {
-            type: 'number',
-            description: 'Wish completion date in milliseconds.',
-            example: 1636128526164,
+            type: 'string',
+            format: 'date-time',
+            description: 'Wish completedAt ISO 8601 date.',
+            example: '2021-11-05T16:08:46.164Z',
           },
         },
         required: [
@@ -1225,14 +1270,16 @@ export const swaggerDocument: OpenAPIObject = {
             example: ['Tech'],
           },
           startedAt: {
-            type: 'number',
-            description: 'Wish started at date in milliseconds.',
-            example: 1636128526164,
+            type: 'string',
+            format: 'date-time',
+            description: 'Wish startedAt ISO 8601 date.',
+            example: '2021-11-05T16:08:46.164Z',
           },
           completedAt: {
-            type: 'number',
-            description: 'Wish completed at date in milliseconds.',
-            example: 1636128526164,
+            type: 'string',
+            format: 'date-time',
+            description: 'Wish completedAt ISO 8601 date.',
+            example: '2021-11-05T16:08:46.164Z',
           },
         },
         required: [
@@ -1286,14 +1333,16 @@ export const swaggerDocument: OpenAPIObject = {
             example: ['Tech'],
           },
           startedAt: {
-            type: 'number',
-            description: 'Wish started at date in milliseconds.',
-            example: 1636128526164,
+            type: 'string',
+            format: 'date-time',
+            description: 'Wish startedAt ISO 8601 date.',
+            example: '2021-11-05T16:08:46.164Z',
           },
           completedAt: {
-            type: 'number',
-            description: 'Wish completed at date in milliseconds.',
-            example: 1636128526164,
+            type: 'string',
+            format: 'date-time',
+            description: 'Wish completedAt ISO 8601 date.',
+            example: '2021-11-05T16:08:46.164Z',
           },
         },
         required: [
