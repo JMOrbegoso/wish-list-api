@@ -5,91 +5,78 @@ import { UnitOfWork } from '../../../../shared/domain/repositories';
 import { User } from '../../../domain/entities';
 import { UserRepository } from '../../../domain/repositories';
 
-const commands = [
-  new UndeleteUserCommand('id 0'),
-  new UndeleteUserCommand('id 1'),
-  new UndeleteUserCommand('id 2'),
-];
-
 describe('users', () => {
   describe('application', () => {
     describe('commands', () => {
       describe('undelete-user', () => {
-        test.each(commands)(
-          'should throw NotFoundException',
-          (command: UndeleteUserCommand) => {
-            // Arrange
-            const userRepository = {
-              getOneById: jest.fn().mockReturnValue(null),
-            } as MockedObject<UserRepository>;
+        const command = new UndeleteUserCommand('id 0');
 
-            const unitOfWork = {} as MockedObject<UnitOfWork>;
+        it('should throw NotFoundException', () => {
+          // Arrange
+          const userRepository = {
+            getOneById: jest.fn().mockReturnValue(null),
+          } as MockedObject<UserRepository>;
 
-            const handler = new UndeleteUserHandler(unitOfWork, userRepository);
+          const unitOfWork = {} as MockedObject<UnitOfWork>;
 
-            // Act
+          const handler = new UndeleteUserHandler(unitOfWork, userRepository);
 
-            // Assert
-            return expect(handler.execute(command)).rejects.toThrowError(
-              NotFoundException,
-            );
-          },
-        );
+          // Act
 
-        test.each(commands)(
-          'should throw BadRequestException because the user is not deleted',
-          (command: UndeleteUserCommand) => {
-            // Arrange
-            const user = {
-              isDeleted: false,
-            } as MockedObject<User>;
+          // Assert
+          return expect(handler.execute(command)).rejects.toThrowError(
+            NotFoundException,
+          );
+        });
 
-            const userRepository = {
-              getOneById: jest.fn().mockReturnValue(user),
-            } as MockedObject<UserRepository>;
+        it('should throw BadRequestException because the user is not deleted', () => {
+          // Arrange
+          const user = {
+            isDeleted: false,
+          } as MockedObject<User>;
 
-            const unitOfWork = {} as MockedObject<UnitOfWork>;
+          const userRepository = {
+            getOneById: jest.fn().mockReturnValue(user),
+          } as MockedObject<UserRepository>;
 
-            const handler = new UndeleteUserHandler(unitOfWork, userRepository);
+          const unitOfWork = {} as MockedObject<UnitOfWork>;
 
-            // Act
+          const handler = new UndeleteUserHandler(unitOfWork, userRepository);
 
-            // Assert
-            return expect(handler.execute(command)).rejects.toThrowError(
-              BadRequestException,
-            );
-          },
-        );
+          // Act
 
-        test.each(commands)(
-          'should call the method delete of the User, call the update method of the UserRepository and the commitChanges method of the UnitOfWork',
-          async (command: UndeleteUserCommand) => {
-            // Arrange
-            const user = {
-              isDeleted: true,
-              undelete: jest.fn(),
-            } as MockedObject<User>;
+          // Assert
+          return expect(handler.execute(command)).rejects.toThrowError(
+            BadRequestException,
+          );
+        });
 
-            const userRepository = {
-              getOneById: jest.fn().mockReturnValue(user),
-              updateUser: jest.fn(),
-            } as MockedObject<UserRepository>;
+        it('should call the method delete of the User, call the update method of the UserRepository and the commitChanges method of the UnitOfWork', async () => {
+          // Arrange
+          const user = {
+            isDeleted: true,
+            undelete: jest.fn(),
+          } as MockedObject<User>;
 
-            const unitOfWork = {
-              commitChanges: jest.fn(),
-            } as MockedObject<UnitOfWork>;
+          const userRepository = {
+            getOneById: jest.fn().mockReturnValue(user),
+            updateUser: jest.fn(),
+          } as MockedObject<UserRepository>;
 
-            const handler = new UndeleteUserHandler(unitOfWork, userRepository);
+          const unitOfWork = {
+            commitChanges: jest.fn(),
+          } as MockedObject<UnitOfWork>;
 
-            // Act
-            await handler.execute(command);
+          const handler = new UndeleteUserHandler(unitOfWork, userRepository);
 
-            // Assert
-            expect(user.undelete.mock.calls).toHaveLength(1);
-            expect(userRepository.updateUser.mock.calls).toHaveLength(1);
-            expect(unitOfWork.commitChanges.mock.calls).toHaveLength(1);
-          },
-        );
+          // Act
+          await handler.execute(command);
+
+          // Assert
+          expect(user.undelete.mock.calls).toHaveLength(1);
+          expect(userRepository.updateUser.mock.calls).toHaveLength(1);
+          expect(unitOfWork.commitChanges.mock.calls).toHaveLength(1);
+        });
       });
     });
   });

@@ -10,6 +10,8 @@ describe('users', () => {
   describe('application', () => {
     describe('commands', () => {
       describe('add-verification-code', () => {
+        const command = new AddVerificationCodeCommand('jhon@doe.com');
+
         it('command is null, so handler should throw BadRequestException', () => {
           // Arrange
           const uniqueIdGeneratorService =
@@ -35,6 +37,8 @@ describe('users', () => {
 
         it('email in command is null, so handler should throw BadRequestException', () => {
           // Arrange
+          const command = new AddVerificationCodeCommand(null);
+
           const uniqueIdGeneratorService =
             {} as MockedObject<UniqueIdGeneratorService>;
           const emailSenderService = {} as MockedObject<EmailSenderService>;
@@ -47,8 +51,6 @@ describe('users', () => {
             userRepository,
             unitOfWork,
           );
-
-          const command = new AddVerificationCodeCommand(null);
 
           // Act
 
@@ -74,8 +76,6 @@ describe('users', () => {
             userRepository,
             unitOfWork,
           );
-
-          const command = new AddVerificationCodeCommand('jhon@doe.com');
 
           // Act
 
@@ -103,8 +103,6 @@ describe('users', () => {
             userRepository,
             unitOfWork,
           );
-
-          const command = new AddVerificationCodeCommand('jhon@doe.com');
 
           // Act
 
@@ -136,8 +134,6 @@ describe('users', () => {
             unitOfWork,
           );
 
-          const command = new AddVerificationCodeCommand('jhon@doe.com');
-
           // Act
 
           // Assert
@@ -168,8 +164,6 @@ describe('users', () => {
             userRepository,
             unitOfWork,
           );
-
-          const command = new AddVerificationCodeCommand('jhon@doe.com');
 
           // Act
 
@@ -213,8 +207,6 @@ describe('users', () => {
             userRepository,
             unitOfWork,
           );
-
-          const command = new AddVerificationCodeCommand('jhon@doe.com');
 
           // Act
           await handler.execute(command);
