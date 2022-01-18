@@ -23,10 +23,10 @@ describe('wishes', () => {
               getPrivacyLevel: PrivacyLevel.Public,
             },
             createdAt: {
-              getMilliseconds: 2,
+              getIso8601: '2022-01-17T12:23:12.000Z',
             },
             updatedAt: {
-              getMilliseconds: 2,
+              getIso8601: '2022-01-17T12:23:12.000Z',
             },
             wisher: {
               id: {
@@ -61,7 +61,7 @@ describe('wishes', () => {
                   getDescription: 'description 0',
                 },
                 createdAt: {
-                  getMilliseconds: 2,
+                  getIso8601: '2022-01-17T12:23:12.000Z',
                 },
                 urls: [],
                 imageUrls: [],
@@ -77,7 +77,7 @@ describe('wishes', () => {
                   getDescription: 'description 0',
                 },
                 createdAt: {
-                  getMilliseconds: 2,
+                  getIso8601: '2022-01-17T12:23:12.000Z',
                 },
                 urls: [],
                 imageUrls: [],
@@ -101,10 +101,10 @@ describe('wishes', () => {
               getPrivacyLevel: PrivacyLevel.Public,
             },
             createdAt: {
-              getMilliseconds: 2,
+              getIso8601: '2022-01-17T12:23:12.000Z',
             },
             updatedAt: {
-              getMilliseconds: 2,
+              getIso8601: '2022-01-17T12:23:12.000Z',
             },
             wisher: {
               id: {
@@ -116,13 +116,13 @@ describe('wishes', () => {
             categories: [],
             stages: [],
             deletedAt: {
-              getMilliseconds: 2,
+              getIso8601: '2022-01-17T12:23:12.000Z',
             },
             startedAt: {
-              getMilliseconds: 2,
+              getIso8601: '2022-01-17T12:23:12.000Z',
             },
             completedAt: {
-              getMilliseconds: 2,
+              getIso8601: '2022-01-17T12:23:12.000Z',
             },
           } as MockedObject<Wish>,
         ];
@@ -140,8 +140,8 @@ describe('wishes', () => {
             expect(dto.title).toBe(wish.title.getTitle);
             expect(dto.description).toBe(wish.description.getDescription);
             expect(dto.privacyLevel).toBe(wish.privacyLevel.getPrivacyLevel);
-            expect(dto.createdAt).toBe(wish.createdAt.getMilliseconds);
-            expect(dto.updatedAt).toBe(wish.updatedAt.getMilliseconds);
+            expect(dto.createdAt).toBe(wish.createdAt.getIso8601);
+            expect(dto.updatedAt).toBe(wish.updatedAt.getIso8601);
             expect(dto.wisherId).toBe(wish.wisher.id.value);
             for (let i = 0; i < wish.urls.length; i++) {
               expect(dto.urls[i]).toBe(wish.urls[i].getUrl);
@@ -157,15 +157,15 @@ describe('wishes', () => {
             }
 
             if (wish.deletedAt)
-              expect(dto.deletedAt).toBe(wish.deletedAt.getMilliseconds);
+              expect(dto.deletedAt).toBe(wish.deletedAt.getIso8601);
             else expect(dto.deletedAt).toBeNull();
 
             if (wish.startedAt)
-              expect(dto.startedAt).toBe(wish.startedAt.getMilliseconds);
+              expect(dto.startedAt).toBe(wish.startedAt.getIso8601);
             else expect(dto.startedAt).toBeNull();
 
             if (wish.completedAt)
-              expect(dto.completedAt).toBe(wish.completedAt.getMilliseconds);
+              expect(dto.completedAt).toBe(wish.completedAt.getIso8601);
             else expect(dto.completedAt).toBeNull();
           },
         );

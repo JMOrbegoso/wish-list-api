@@ -1,6 +1,6 @@
 import { RefreshTokenId } from '..';
 import { Entity } from '../../../../shared/domain/entities';
-import { MillisecondsDate } from '../../../../shared/domain/value-objects';
+import { DateTime } from '../../../../shared/domain/value-objects';
 import { IpAddress, SecondsDuration } from '../../value-objects';
 import {
   InvalidRefreshTokenCreatedAtError,
@@ -12,21 +12,21 @@ import {
 export class RefreshToken extends Entity<RefreshTokenId> {
   public static readonly defaultDuration = SecondsDuration.twoWeeks();
 
-  private _createdAt: MillisecondsDate;
+  private _createdAt: DateTime;
   private _secondsDuration: SecondsDuration;
   private _ipAddress: IpAddress;
-  private _replacedAt?: MillisecondsDate;
+  private _replacedAt?: DateTime;
   private _replacedBy?: RefreshTokenId;
-  private _revokedAt?: MillisecondsDate;
+  private _revokedAt?: DateTime;
 
   private constructor(
     id: RefreshTokenId,
-    createdAt: MillisecondsDate,
+    createdAt: DateTime,
     secondsDuration: SecondsDuration,
     ipAddress: IpAddress,
-    replacedAt?: MillisecondsDate,
+    replacedAt?: DateTime,
     replacedBy?: RefreshTokenId,
-    revokedAt?: MillisecondsDate,
+    revokedAt?: DateTime,
   ) {
     super(id);
 
@@ -48,11 +48,11 @@ export class RefreshToken extends Entity<RefreshTokenId> {
   public static create(
     id: RefreshTokenId,
     ipAddress: IpAddress,
-    createdAt: MillisecondsDate = MillisecondsDate.create(),
+    createdAt: DateTime = DateTime.now(),
     secondsDuration: SecondsDuration = RefreshToken.defaultDuration,
-    replacedAt: MillisecondsDate = null,
+    replacedAt: DateTime = null,
     replacedBy: RefreshTokenId = null,
-    revokedAt: MillisecondsDate = null,
+    revokedAt: DateTime = null,
   ): RefreshToken {
     return new RefreshToken(
       id,
@@ -65,7 +65,7 @@ export class RefreshToken extends Entity<RefreshTokenId> {
     );
   }
 
-  public get createdAt(): MillisecondsDate {
+  public get createdAt(): DateTime {
     return this._createdAt;
   }
 
@@ -73,21 +73,19 @@ export class RefreshToken extends Entity<RefreshTokenId> {
     return this._secondsDuration.getDuration;
   }
 
-  public get expireAt(): MillisecondsDate {
-    return MillisecondsDate.createFromMilliseconds(
-      this.createdAt.getMilliseconds + 1000 * this.duration,
-    );
+  public get expireAt(): DateTime {
+    return this.createdAt.addSeconds(this.duration);
   }
 
   public get isExpired(): boolean {
-    return new Date() > this.expireAt.getDate;
+    return this.expireAt.isLesserThanNow();
   }
 
   public get ipAddress(): string {
     return this._ipAddress.getIpAddress;
   }
 
-  public get replacedAt(): MillisecondsDate {
+  public get replacedAt(): DateTime {
     return this._replacedAt;
   }
 
@@ -99,19 +97,19 @@ export class RefreshToken extends Entity<RefreshTokenId> {
     if (!replacedByToken) throw new InvalidRefreshTokenError();
 
     this._replacedBy = replacedByToken.id;
-    this._replacedAt = MillisecondsDate.create();
+    this._replacedAt = DateTime.now();
   }
 
   public get wasReplaced(): boolean {
     return !!this._replacedBy;
   }
 
-  public get revokedAt(): MillisecondsDate {
+  public get revokedAt(): DateTime {
     return this._revokedAt;
   }
 
   public revoke(): void {
-    this._revokedAt = MillisecondsDate.create();
+    this._revokedAt = DateTime.now();
   }
 
   public get isRevoked(): boolean {

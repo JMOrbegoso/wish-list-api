@@ -2,10 +2,7 @@ import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { CreateWishCommand } from '..';
 import { UnitOfWork } from '../../../../shared/domain/repositories';
-import {
-  MillisecondsDate,
-  WebUrl,
-} from '../../../../shared/domain/value-objects';
+import { DateTime, WebUrl } from '../../../../shared/domain/value-objects';
 import { UserId } from '../../../../users/domain/entities';
 import { UserRepository } from '../../../../users/domain/repositories';
 import { Wish, WishId, Wisher, WisherId } from '../../../domain/entities';
@@ -39,10 +36,10 @@ export class CreateWishHandler implements ICommandHandler<CreateWishCommand> {
       CategoryName.create(url),
     );
     const startedAt = command.startedAt
-      ? MillisecondsDate.createFromMilliseconds(command.startedAt)
+      ? DateTime.createFromString(command.startedAt)
       : null;
     const completedAt = command.completedAt
-      ? MillisecondsDate.createFromMilliseconds(command.completedAt)
+      ? DateTime.createFromString(command.completedAt)
       : null;
 
     // Check if the user exist
@@ -69,8 +66,8 @@ export class CreateWishHandler implements ICommandHandler<CreateWishCommand> {
       title,
       description,
       privacyLevel,
-      MillisecondsDate.create(),
-      MillisecondsDate.create(),
+      DateTime.now(),
+      DateTime.now(),
       wisher,
       urls,
       imageUrls,

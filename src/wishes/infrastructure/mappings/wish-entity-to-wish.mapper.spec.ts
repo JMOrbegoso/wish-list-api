@@ -93,11 +93,11 @@ describe('wishes', () => {
             expect(wish.privacyLevel.getPrivacyLevel).toBe(
               wishEntity.privacyLevel,
             );
-            expect(wish.createdAt.getDate.getTime()).toBe(
-              wishEntity.createdAt.getTime(),
+            expect(wish.createdAt.getIso8601).toBe(
+              wishEntity.createdAt.toISOString(),
             );
-            expect(wish.updatedAt.getDate.getTime()).toBe(
-              wishEntity.updatedAt.getTime(),
+            expect(wish.updatedAt.getIso8601).toBe(
+              wishEntity.updatedAt.toISOString(),
             );
             expect(wish.wisher.id.value).toBe(wishEntity.wisher.id);
             for (let i = 0; i < wishEntity.urls.length; i++)
@@ -110,20 +110,20 @@ describe('wishes', () => {
               expect(wishEntity.stages[i].id).toBe(wish.stages[i].id.value);
 
             if (wishEntity.deletedAt)
-              expect(wish.deletedAt.getMilliseconds).toBe(
-                new Date(wishEntity.deletedAt).getTime(),
+              expect(wish.deletedAt.getIso8601).toBe(
+                wishEntity.deletedAt.toISOString(),
               );
             else expect(wish.deletedAt).toBeNull();
 
             if (wishEntity.startedAt)
-              expect(wish.startedAt.getMilliseconds).toBe(
-                new Date(wishEntity.startedAt).getTime(),
+              expect(wish.startedAt.getIso8601).toBe(
+                wishEntity.startedAt.toISOString(),
               );
             else expect(wish.startedAt).toBeNull();
 
             if (wishEntity.completedAt)
-              expect(wish.completedAt.getMilliseconds).toBe(
-                new Date(wishEntity.completedAt).getTime(),
+              expect(wish.completedAt.getIso8601).toBe(
+                wishEntity.completedAt.toISOString(),
               );
             else expect(wish.completedAt).toBeNull();
           },

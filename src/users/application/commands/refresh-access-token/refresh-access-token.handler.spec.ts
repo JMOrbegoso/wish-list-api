@@ -305,13 +305,13 @@ describe('users', () => {
                 getLastName: 'lastname',
               },
               birthday: {
-                getMilliseconds: 1,
+                getIso8601: '1',
               },
               createdAt: {
-                getMilliseconds: 1,
+                getIso8601: '1',
               },
               updatedAt: {
-                getMilliseconds: 1,
+                getIso8601: '1',
               },
               isVerified: true,
               isBlocked: false,
@@ -382,13 +382,13 @@ describe('users', () => {
                 getLastName: 'lastname',
               },
               birthday: {
-                getMilliseconds: 1,
+                getIso8601: '1',
               },
               createdAt: {
-                getMilliseconds: 1,
+                getIso8601: '1',
               },
               updatedAt: {
-                getMilliseconds: 1,
+                getIso8601: '1',
               },
               isVerified: true,
               isBlocked: true,
@@ -459,13 +459,13 @@ describe('users', () => {
                 getLastName: 'lastname',
               },
               birthday: {
-                getMilliseconds: 1,
+                getIso8601: '1',
               },
               createdAt: {
-                getMilliseconds: 1,
+                getIso8601: '1',
               },
               updatedAt: {
-                getMilliseconds: 1,
+                getIso8601: '1',
               },
               isVerified: false,
               isBlocked: false,
@@ -541,13 +541,13 @@ describe('users', () => {
                 getLastName: 'lastname',
               },
               birthday: {
-                getMilliseconds: 1,
+                getIso8601: '1',
               },
               createdAt: {
-                getMilliseconds: 1,
+                getIso8601: '1',
               },
               updatedAt: {
-                getMilliseconds: 1,
+                getIso8601: '1',
               },
               isVerified: true,
               isBlocked: false,

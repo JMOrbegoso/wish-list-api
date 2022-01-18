@@ -371,14 +371,14 @@ describe('users', () => {
             expect(user.isBlocked).toBe(userEntity.isBlocked);
             expect(user.firstName.getFirstName).toBe(userEntity.firstName);
             expect(user.lastName.getLastName).toBe(userEntity.lastName);
-            expect(user.birthday.getMilliseconds).toBe(
-              new Date(userEntity.birthday).getTime(),
+            expect(user.birthday.getIso8601).toBe(
+              userEntity.birthday.toISOString(),
             );
-            expect(user.createdAt.getMilliseconds).toBe(
-              new Date(userEntity.createdAt).getTime(),
+            expect(user.createdAt.getIso8601).toBe(
+              userEntity.createdAt.toISOString(),
             );
-            expect(user.updatedAt.getMilliseconds).toBe(
-              new Date(userEntity.updatedAt).getTime(),
+            expect(user.updatedAt.getIso8601).toBe(
+              userEntity.updatedAt.toISOString(),
             );
             expect(user.biography.getBiography).toBe(userEntity.biography);
             if (userEntity.profilePicture)
@@ -387,8 +387,8 @@ describe('users', () => {
               );
             else expect(user.profilePicture).toBeNull();
             if (userEntity.deletedAt)
-              expect(user.deletedAt.getMilliseconds).toBe(
-                new Date(userEntity.deletedAt).getTime(),
+              expect(user.deletedAt.getIso8601).toBe(
+                userEntity.deletedAt.toISOString(),
               );
             else expect(user.deletedAt).toBeNull();
             for (let i = 0; i < userEntity.roles.length; i++) {

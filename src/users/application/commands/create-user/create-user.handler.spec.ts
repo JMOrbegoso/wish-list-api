@@ -40,7 +40,7 @@ describe('users', () => {
             'password',
             'John',
             'Doe',
-            2,
+            '2021-11-05T16:08:46.164Z',
             'Nice guy.',
           );
 
@@ -93,7 +93,7 @@ describe('users', () => {
             'password',
             'John',
             'Doe',
-            2,
+            '2021-11-05T16:08:46.164Z',
             'Nice guy.',
           );
 
@@ -132,13 +132,13 @@ describe('users', () => {
             userRepository.addUser.mock.calls[0][0].lastName.getLastName,
           ).toBe(command.lastName);
           expect(
-            userRepository.addUser.mock.calls[0][0].birthday.getMilliseconds,
+            userRepository.addUser.mock.calls[0][0].birthday.getIso8601,
           ).toBe(command.birthday);
           expect(
-            userRepository.addUser.mock.calls[0][0].createdAt.getMilliseconds,
+            userRepository.addUser.mock.calls[0][0].createdAt.getIso8601,
           ).not.toBeNull();
           expect(
-            userRepository.addUser.mock.calls[0][0].updatedAt.getMilliseconds,
+            userRepository.addUser.mock.calls[0][0].updatedAt.getIso8601,
           ).not.toBeNull();
           expect(
             userRepository.addUser.mock.calls[0][0].biography.getBiography,

@@ -34,6 +34,17 @@ const commands = [
     ['https://wwww.example.com/2.jpg'],
     ['tech'],
   ),
+  new UpdateWishCommand(
+    'id 3',
+    'title 3',
+    'description 3',
+    PrivacyLevel.OnlyMe,
+    ['https://wwww.example.com/3'],
+    ['https://wwww.example.com/3.jpg'],
+    ['tech'],
+    '2021-11-05T16:08:46.164Z',
+    '2021-11-05T16:08:46.164Z',
+  ),
 ];
 
 describe('wishes', () => {

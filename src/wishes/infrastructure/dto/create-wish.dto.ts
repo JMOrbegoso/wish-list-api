@@ -4,12 +4,12 @@ import {
   IsEnum,
   IsMongoId,
   IsNotEmpty,
-  IsNumber,
   IsOptional,
-  IsPositive,
   IsString,
+  Matches,
   MaxLength,
 } from 'class-validator';
+import { DateTime } from '../../../shared/domain/value-objects';
 import { Wish } from '../../domain/entities';
 import {
   CategoryName,
@@ -56,13 +56,17 @@ export class CreateWishDto {
   @MaxLength(CategoryName.MaxLength, { each: true })
   categories: string[];
 
-  @IsNumber()
-  @IsPositive()
+  @IsString()
+  @Matches(DateTime.Iso8601Regex, {
+    message: 'startedAt must be a valid ISO 8601 date string',
+  })
   @IsOptional()
-  startedAt: number;
+  startedAt: string;
 
-  @IsNumber()
-  @IsPositive()
+  @IsString()
+  @Matches(DateTime.Iso8601Regex, {
+    message: 'completedAt must be a valid ISO 8601 date string',
+  })
   @IsOptional()
-  completedAt: number;
+  completedAt: string;
 }

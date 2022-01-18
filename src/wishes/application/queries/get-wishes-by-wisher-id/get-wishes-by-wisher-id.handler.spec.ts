@@ -50,10 +50,10 @@ describe('wishes', () => {
                 getPrivacyLevel: PrivacyLevel.Public,
               },
               createdAt: {
-                getMilliseconds: 2,
+                getIso8601: '2',
               },
               updatedAt: {
-                getMilliseconds: 2,
+                getIso8601: '2',
               },
               wisher: {
                 id: {
@@ -65,10 +65,10 @@ describe('wishes', () => {
               categories: [],
               stages: [],
               deletedAt: {
-                getMilliseconds: 2,
+                getIso8601: '2',
               },
               completedAt: {
-                getMilliseconds: 2,
+                getIso8601: '2',
               },
             } as MockedObject<Wish>;
 
