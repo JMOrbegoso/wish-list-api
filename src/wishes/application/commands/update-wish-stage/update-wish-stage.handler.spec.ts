@@ -6,117 +6,121 @@ import { Wish, WishStage, WishStageId } from '../../../domain/entities';
 import { NonExistentWishStageError } from '../../../domain/entities/wish/exceptions';
 import { WishRepository } from '../../../domain/repositories';
 
-const commands = [
-  new UpdateWishStageCommand(
-    'wish-stage-id-0',
-    'title 0',
-    'description 0',
-    [],
-    [],
-  ),
-  new UpdateWishStageCommand(
-    'wish-stage-id-1',
-    'title 1',
-    'description 1',
-    ['https://www.example.com', 'https://www.example.net'],
-    ['https://www.example.com/1.jpg', 'https://www.example.net/1.jpg'],
-  ),
-  new UpdateWishStageCommand(
-    'wish-stage-id-2',
-    'title 2',
-    'description 2',
-    [],
-    ['https://www.example.com/2.jpg', 'https://www.example.net/2.jpg'],
-  ),
-];
-
 describe('wishes', () => {
   describe('application', () => {
     describe('commands', () => {
       describe('update-wish-stage', () => {
-        test.each(commands)(
-          'update a wish stage in a wish that does not exist should throw error',
-          (command: UpdateWishStageCommand) => {
-            // Arrange
-            const wishRepository = {
-              getWishByWishStageId: jest.fn().mockReturnValue(null),
-            } as MockedObject<WishRepository>;
-
-            const unitOfWork = {} as MockedObject<UnitOfWork>;
-
-            const handler = new UpdateWishStageHandler(
-              wishRepository,
-              unitOfWork,
-            );
-
-            // Act
-
-            // Assert
-            return expect(handler.execute(command)).rejects.toThrowError(
-              NotFoundException,
-            );
-          },
+        const command = new UpdateWishStageCommand(
+          'wish-stage-id-3',
+          'title 3',
+          'description 3',
+          [],
+          [],
         );
 
-        test.each(commands)(
-          'update a wish stage on a deleted wish should throw error',
-          (command: UpdateWishStageCommand) => {
-            // Arrange
-            const wish = {
-              isDeleted: true,
-            } as MockedObject<Wish>;
+        it('update a wish stage in a wish that does not exist should throw error', () => {
+          // Arrange
+          const wishRepository = {
+            getWishByWishStageId: jest.fn().mockReturnValue(null),
+          } as MockedObject<WishRepository>;
 
-            const wishRepository = {
-              getWishByWishStageId: jest.fn().mockReturnValue(wish),
-            } as MockedObject<WishRepository>;
+          const unitOfWork = {} as MockedObject<UnitOfWork>;
 
-            const unitOfWork = {} as MockedObject<UnitOfWork>;
+          const handler = new UpdateWishStageHandler(
+            wishRepository,
+            unitOfWork,
+          );
 
-            const handler = new UpdateWishStageHandler(
-              wishRepository,
-              unitOfWork,
-            );
+          // Act
 
-            // Act
+          // Assert
+          return expect(handler.execute(command)).rejects.toThrowError(
+            NotFoundException,
+          );
+        });
 
-            // Assert
-            return expect(handler.execute(command)).rejects.toThrowError(
-              BadRequestException,
-            );
-          },
-        );
+        it('update a wish stage on a deleted wish should throw error', () => {
+          // Arrange
+          const wish = {
+            isDeleted: true,
+          } as MockedObject<Wish>;
 
-        test.each(commands)(
-          'update a wish stage that not exist should throw error',
-          (command: UpdateWishStageCommand) => {
-            // Arrange
-            const wish = {
-              updateStage: jest.fn().mockImplementation(() => {
-                throw new NonExistentWishStageError();
-              }),
-            } as MockedObject<Wish>;
+          const wishRepository = {
+            getWishByWishStageId: jest.fn().mockReturnValue(wish),
+          } as MockedObject<WishRepository>;
 
-            const wishRepository = {
-              getWishByWishStageId: jest.fn().mockReturnValue(wish),
-            } as MockedObject<WishRepository>;
+          const unitOfWork = {} as MockedObject<UnitOfWork>;
 
-            const unitOfWork = {} as MockedObject<UnitOfWork>;
+          const handler = new UpdateWishStageHandler(
+            wishRepository,
+            unitOfWork,
+          );
 
-            const handler = new UpdateWishStageHandler(
-              wishRepository,
-              unitOfWork,
-            );
+          // Act
 
-            // Act
+          // Assert
+          return expect(handler.execute(command)).rejects.toThrowError(
+            BadRequestException,
+          );
+        });
 
-            // Assert
-            return expect(handler.execute(command)).rejects.toThrowError(
-              NonExistentWishStageError,
-            );
-          },
-        );
+        it('update a wish stage that not exist should throw error', () => {
+          // Arrange
+          const wish = {
+            updateStage: jest.fn().mockImplementation(() => {
+              throw new NonExistentWishStageError();
+            }),
+          } as MockedObject<Wish>;
 
-        test.each(commands)(
+          const wishRepository = {
+            getWishByWishStageId: jest.fn().mockReturnValue(wish),
+          } as MockedObject<WishRepository>;
+
+          const unitOfWork = {} as MockedObject<UnitOfWork>;
+
+          const handler = new UpdateWishStageHandler(
+            wishRepository,
+            unitOfWork,
+          );
+
+          // Act
+
+          // Assert
+          return expect(handler.execute(command)).rejects.toThrowError(
+            NonExistentWishStageError,
+          );
+        });
+
+        test.each([
+          new UpdateWishStageCommand(
+            'wish-stage-id-0',
+            'title 0',
+            'description 0',
+            ['https://www.example.com', 'https://www.example.net'],
+            ['https://www.example.com/0.jpg', 'https://www.example.net/0.jpg'],
+          ),
+          new UpdateWishStageCommand(
+            'wish-stage-id-1',
+            'title 1',
+            'description 1',
+            ['https://www.example.com', 'https://www.example.net'],
+            [],
+          ),
+          new UpdateWishStageCommand(
+            'wish-stage-id-2',
+            'title 2',
+            'description 2',
+            [],
+            ['https://www.example.com/2.jpg', 'https://www.example.net/2.jpg'],
+          ),
+          new UpdateWishStageCommand(
+            'wish-stage-id-3',
+            'title 3',
+            'description 3',
+            [],
+            [],
+          ),
+        ])(
           'should call the method updateWishStage from the WishRepository, the method commitChanges from the UnitOfWork',
           async (command: UpdateWishStageCommand) => {
             // Arrange
