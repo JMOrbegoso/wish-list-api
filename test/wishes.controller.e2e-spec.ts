@@ -483,7 +483,7 @@ describe('WishesController (e2e)', () => {
               imageUrls,
               categories,
               startedAt,
-            } as unknown as CreateWishDto)
+            } as CreateWishDto)
             .auth(accessTokenBasicUser, { type: 'bearer' })
             .expect(400)
             .expect(({ body }) =>
@@ -811,7 +811,7 @@ describe('WishesController (e2e)', () => {
               imageUrls,
               categories,
               startedAt: 1000,
-            } as unknown as UpdateWishDto)
+            } as unknown as CreateWishDto)
             .auth(accessTokenBasicUser, { type: 'bearer' })
             .expect(400)
             .expect(({ body }) =>
@@ -837,7 +837,7 @@ describe('WishesController (e2e)', () => {
               imageUrls,
               categories,
               startedAt: '2020-01-01',
-            } as unknown as UpdateWishDto)
+            } as CreateWishDto)
             .auth(accessTokenBasicUser, { type: 'bearer' })
             .expect(400)
             .expect(({ body }) =>
@@ -864,7 +864,7 @@ describe('WishesController (e2e)', () => {
               categories,
               startedAt,
               completedAt: 1000,
-            } as unknown as UpdateWishDto)
+            } as unknown as CreateWishDto)
             .auth(accessTokenBasicUser, { type: 'bearer' })
             .expect(400)
             .expect(({ body }) =>
@@ -891,7 +891,7 @@ describe('WishesController (e2e)', () => {
               categories,
               startedAt,
               completedAt: '2020-01-01',
-            } as unknown as UpdateWishDto)
+            } as CreateWishDto)
             .auth(accessTokenBasicUser, { type: 'bearer' })
             .expect(400)
             .expect(({ body }) =>
@@ -1673,7 +1673,7 @@ describe('WishesController (e2e)', () => {
               imageUrls,
               categories,
               startedAt: '2020-01-01',
-            } as unknown as UpdateWishDto)
+            } as UpdateWishDto)
             .auth(accessTokenBasicUser, { type: 'bearer' })
             .expect(400)
             .expect(({ body }) =>
@@ -1725,7 +1725,7 @@ describe('WishesController (e2e)', () => {
               categories,
               startedAt,
               completedAt: '2020-01-01',
-            } as unknown as UpdateWishDto)
+            } as UpdateWishDto)
             .auth(accessTokenBasicUser, { type: 'bearer' })
             .expect(400)
             .expect(({ body }) =>
