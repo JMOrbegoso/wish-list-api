@@ -292,34 +292,6 @@ describe('users', () => {
               id: {
                 value: 'id-0',
               },
-              email: {
-                getEmail: 'email',
-              },
-              username: {
-                getUsername: 'username',
-              },
-              firstName: {
-                getFirstName: 'firstname',
-              },
-              lastName: {
-                getLastName: 'lastname',
-              },
-              birthday: {
-                getIso8601: '1',
-              },
-              createdAt: {
-                getIso8601: '1',
-              },
-              updatedAt: {
-                getIso8601: '1',
-              },
-              isVerified: true,
-              isBlocked: false,
-              biography: {
-                getBiography: 'bio',
-              },
-              roles: ['Admin'],
-              profilePicture: null,
               isDeleted: true,
               getRefreshToken: jest.fn().mockReturnValue(refreshTokenToReplace),
             } as MockedObject<User>;
@@ -369,35 +341,8 @@ describe('users', () => {
               id: {
                 value: 'id-0',
               },
-              email: {
-                getEmail: 'email',
-              },
-              username: {
-                getUsername: 'username',
-              },
-              firstName: {
-                getFirstName: 'firstname',
-              },
-              lastName: {
-                getLastName: 'lastname',
-              },
-              birthday: {
-                getIso8601: '1',
-              },
-              createdAt: {
-                getIso8601: '1',
-              },
-              updatedAt: {
-                getIso8601: '1',
-              },
-              isVerified: true,
-              isBlocked: true,
-              biography: {
-                getBiography: 'bio',
-              },
-              roles: ['Admin'],
-              profilePicture: null,
               isDeleted: false,
+              isBlocked: true,
               getRefreshToken: jest.fn().mockReturnValue(refreshTokenToReplace),
             } as MockedObject<User>;
 
@@ -446,35 +391,9 @@ describe('users', () => {
               id: {
                 value: 'id-0',
               },
-              email: {
-                getEmail: 'email',
-              },
-              username: {
-                getUsername: 'username',
-              },
-              firstName: {
-                getFirstName: 'firstname',
-              },
-              lastName: {
-                getLastName: 'lastname',
-              },
-              birthday: {
-                getIso8601: '1',
-              },
-              createdAt: {
-                getIso8601: '1',
-              },
-              updatedAt: {
-                getIso8601: '1',
-              },
-              isVerified: false,
-              isBlocked: false,
-              biography: {
-                getBiography: 'bio',
-              },
-              roles: ['Admin'],
-              profilePicture: null,
               isDeleted: false,
+              isBlocked: false,
+              isVerified: false,
               getRefreshToken: jest.fn().mockReturnValue(refreshTokenToReplace),
             } as MockedObject<User>;
 
@@ -528,6 +447,9 @@ describe('users', () => {
               id: {
                 value: 'id-0',
               },
+              isDeleted: false,
+              isBlocked: false,
+              isVerified: true,
               email: {
                 getEmail: 'email',
               },
@@ -549,8 +471,6 @@ describe('users', () => {
               updatedAt: {
                 getIso8601: '1',
               },
-              isVerified: true,
-              isBlocked: false,
               biography: {
                 getBiography: 'bio',
               },

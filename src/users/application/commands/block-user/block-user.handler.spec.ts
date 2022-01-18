@@ -37,48 +37,11 @@ describe('users', () => {
         );
 
         test.each(commands)(
-          'should throw BadRequestException',
+          'should throw BadRequestException because the user is blocked',
           (command: BlockUserCommand) => {
             // Arrange
             const user = {
-              id: {
-                value: 'id-0',
-              },
-              email: {
-                getEmail: 'email0@email.com',
-              },
-              username: {
-                getUsername: 'John_Doe_0',
-              },
-              passwordHash: {
-                getPasswordHash: 'hash0',
-              },
-              isVerified: true,
               isBlocked: true,
-              firstName: {
-                getFirstName: 'FirstName0',
-              },
-              lastName: {
-                getLastName: 'LastName0',
-              },
-              birthday: {
-                getIso8601: '1',
-              },
-              createdAt: {
-                getIso8601: '2',
-              },
-              updatedAt: {
-                getIso8601: '3',
-              },
-              biography: {
-                getBiography: 'A nice person 0.',
-              },
-              profilePicture: {
-                getUrl: 'https://www.example.com/0.jpg',
-              },
-              deletedAt: {
-                getIso8601: '4',
-              },
             } as MockedObject<User>;
 
             const userRepository = {
@@ -103,44 +66,7 @@ describe('users', () => {
           async (command: BlockUserCommand) => {
             // Arrange
             const user = {
-              id: {
-                value: 'id-0',
-              },
-              email: {
-                getEmail: 'email0@email.com',
-              },
-              username: {
-                getUsername: 'John_Doe_0',
-              },
-              passwordHash: {
-                getPasswordHash: 'hash0',
-              },
-              isVerified: true,
               isBlocked: false,
-              firstName: {
-                getFirstName: 'FirstName0',
-              },
-              lastName: {
-                getLastName: 'LastName0',
-              },
-              birthday: {
-                getIso8601: '1',
-              },
-              createdAt: {
-                getIso8601: '2',
-              },
-              updatedAt: {
-                getIso8601: '3',
-              },
-              biography: {
-                getBiography: 'A nice person 0.',
-              },
-              profilePicture: {
-                getUrl: 'https://www.example.com/0.jpg',
-              },
-              deletedAt: {
-                getIso8601: '4',
-              },
               block: jest.fn(),
             } as MockedObject<User>;
 

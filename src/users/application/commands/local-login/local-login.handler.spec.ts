@@ -90,42 +90,9 @@ describe('users', () => {
           (command: LocalLoginCommand) => {
             // Arrange
             const user = {
-              id: {
-                value: 'id-0',
-              },
-              email: {
-                getEmail: 'email0@email.com',
-              },
-              username: {
-                getUsername: 'John_Doe_0',
-              },
               passwordHash: {
-                getPasswordHash: 'hash0',
+                getPasswordHash: 'password-hash',
               },
-              isVerified: true,
-              isBlocked: false,
-              firstName: {
-                getFirstName: 'FirstName0',
-              },
-              lastName: {
-                getLastName: 'LastName0',
-              },
-              birthday: {
-                getIso8601: '1',
-              },
-              createdAt: {
-                getIso8601: '2',
-              },
-              updatedAt: {
-                getIso8601: '3',
-              },
-              biography: {
-                getBiography: 'A nice person 0.',
-              },
-              profilePicture: {
-                getUrl: 'https://www.example.com/0.jpg',
-              },
-              deletedAt: null,
             } as MockedObject<User>;
 
             const userRepository = {
@@ -163,45 +130,10 @@ describe('users', () => {
           (command: LocalLoginCommand) => {
             // Arrange
             const user = {
-              id: {
-                value: 'id-0',
-              },
-              email: {
-                getEmail: 'email0@email.com',
-              },
-              username: {
-                getUsername: 'John_Doe_0',
-              },
-              passwordHash: {
-                getPasswordHash: 'hash0',
-              },
-              isVerified: true,
-              isBlocked: false,
-              firstName: {
-                getFirstName: 'FirstName0',
-              },
-              lastName: {
-                getLastName: 'LastName0',
-              },
-              birthday: {
-                getIso8601: '1',
-              },
-              createdAt: {
-                getIso8601: '2',
-              },
-              updatedAt: {
-                getIso8601: '3',
-              },
-              biography: {
-                getBiography: 'A nice person 0.',
-              },
-              profilePicture: {
-                getUrl: 'https://www.example.com/0.jpg',
-              },
-              deletedAt: {
-                getIso8601: '4',
-              },
               isDeleted: true,
+              passwordHash: {
+                getPasswordHash: 'password-hash',
+              },
             } as MockedObject<User>;
 
             const userRepository = {
@@ -239,43 +171,11 @@ describe('users', () => {
           (command: LocalLoginCommand) => {
             // Arrange
             const user = {
-              id: {
-                value: 'id-0',
-              },
-              email: {
-                getEmail: 'email0@email.com',
-              },
-              username: {
-                getUsername: 'John_Doe_0',
-              },
-              passwordHash: {
-                getPasswordHash: 'hash0',
-              },
-              isVerified: true,
-              isBlocked: true,
-              firstName: {
-                getFirstName: 'FirstName0',
-              },
-              lastName: {
-                getLastName: 'LastName0',
-              },
-              birthday: {
-                getIso8601: '1',
-              },
-              createdAt: {
-                getIso8601: '2',
-              },
-              updatedAt: {
-                getIso8601: '3',
-              },
-              biography: {
-                getBiography: 'A nice person 0.',
-              },
-              profilePicture: {
-                getUrl: 'https://www.example.com/0.jpg',
-              },
-              deletedAt: null,
               isDeleted: false,
+              isBlocked: true,
+              passwordHash: {
+                getPasswordHash: 'password-hash',
+              },
             } as MockedObject<User>;
 
             const userRepository = {
@@ -313,43 +213,12 @@ describe('users', () => {
           (command: LocalLoginCommand) => {
             // Arrange
             const user = {
-              id: {
-                value: 'id-0',
-              },
-              email: {
-                getEmail: 'email0@email.com',
-              },
-              username: {
-                getUsername: 'John_Doe_0',
-              },
-              passwordHash: {
-                getPasswordHash: 'hash0',
-              },
-              isVerified: false,
-              isBlocked: false,
-              firstName: {
-                getFirstName: 'FirstName0',
-              },
-              lastName: {
-                getLastName: 'LastName0',
-              },
-              birthday: {
-                getIso8601: '1',
-              },
-              createdAt: {
-                getIso8601: '2',
-              },
-              updatedAt: {
-                getIso8601: '3',
-              },
-              biography: {
-                getBiography: 'A nice person 0.',
-              },
-              profilePicture: {
-                getUrl: 'https://www.example.com/0.jpg',
-              },
-              deletedAt: null,
               isDeleted: false,
+              isBlocked: false,
+              isVerified: false,
+              passwordHash: {
+                getPasswordHash: 'password-hash',
+              },
             } as MockedObject<User>;
 
             const userRepository = {
@@ -387,6 +256,12 @@ describe('users', () => {
           async (command: LocalLoginCommand) => {
             // Arrange
             const user = {
+              isDeleted: false,
+              isBlocked: false,
+              isVerified: true,
+              passwordHash: {
+                getPasswordHash: 'password-hash',
+              },
               id: {
                 value: 'id-0',
               },
@@ -396,11 +271,6 @@ describe('users', () => {
               username: {
                 getUsername: 'John_Doe_0',
               },
-              passwordHash: {
-                getPasswordHash: 'hash0',
-              },
-              isVerified: true,
-              isBlocked: false,
               firstName: {
                 getFirstName: 'FirstName0',
               },
@@ -422,8 +292,6 @@ describe('users', () => {
               profilePicture: {
                 getUrl: 'https://www.example.com/0.jpg',
               },
-              deletedAt: null,
-              isDeleted: false,
               addRefreshToken: jest.fn(),
             } as MockedObject<User>;
 
