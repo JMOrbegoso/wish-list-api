@@ -1,5 +1,5 @@
-<h1 align="center">Wish List API</h1>
-<h2 align="center">Backend API built with NestJS using Domain-Driven Design and Clean Architecture</h2>
+<h1 align="center">Wish List API 🌟</h1>
+<h2 align="center">Backend REST API built with NestJS and following the principles of Domain-Driven Design and Clean Architecture</h2>
 
 <br/>
 
@@ -12,7 +12,7 @@
     <img src="https://img.shields.io/badge/Docker-informational?style=flat&logo=docker&logoColor=white" alt="Docker badge"/>
 </p>
 
-Wish List API is a backend API to post wishes, you can publish and keep track of them, recording the progress you make, until you fulfill them.
+Wish List API is a backend REST API where you can publish your wishes, share them, and keep them on track, recording the progress you make, until you fulfill them.
 
 ## ✨ Features
 
